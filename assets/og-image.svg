@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">NKIS Works / Slarog</title>
+  <desc id="desc">スロット差枚グラフの作成、保存、連結アプリのリンクプレビュー画像</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f2f6fb"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#fbfcff"/>
+      <stop offset="1" stop-color="#edf3f9"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#f6f8fb"/>
+  <path d="M0 508H1200V630H0Z" fill="#eef3f7"/>
+  <rect x="72" y="68" width="1056" height="494" rx="8" fill="url(#panel)" stroke="#d9e1ec"/>
+  <rect x="112" y="112" width="56" height="56" rx="8" fill="#10151f"/>
+  <path d="M129 153V127h7l17 17v-17h7v26h-7l-17-17v17h-7Z" fill="#ffffff"/>
+  <text x="192" y="139" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="28" font-weight="800" fill="#10151f">NKIS Works</text>
+  <text x="192" y="169" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="18" font-weight="700" fill="#667184">Slarog official site</text>
+  <text x="112" y="282" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="70" font-weight="900" fill="#10151f">差枚グラフを、</text>
+  <text x="112" y="367" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="70" font-weight="900" fill="#1f5eff">あとで読める記録へ。</text>
+  <text x="116" y="435" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="27" font-weight="600" fill="#4c586a">作成・保存・検索・複数日連結まで、ひとつの流れで。</text>
+  <g transform="translate(792 126)">
+    <rect x="0" y="0" width="238" height="390" rx="36" fill="#10151f"/>
+    <rect x="14" y="16" width="210" height="358" rx="26" fill="url(#screen)"/>
+    <rect x="74" y="28" width="90" height="20" rx="10" fill="#0b0f16"/>
+    <text x="36" y="92" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="14" font-weight="800" fill="#667184">2026.07.06 / Hall A</text>
+    <text x="36" y="126" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="30" font-weight="900" fill="#10151f">差枚推移</text>
+    <rect x="34" y="154" width="170" height="140" rx="8" fill="#ffffff" stroke="#d9e1ec"/>
+    <path d="M48 224H192M48 184H192M48 264H192" stroke="#d9e1ec"/>
+    <path d="M48 224H192" stroke="#667184" stroke-dasharray="7 7"/>
+    <path d="M50 244C66 186 86 256 106 216C132 164 150 174 166 198C182 222 190 178 194 166" fill="none" stroke="#1f5eff" stroke-width="7" stroke-linecap="round"/>
+    <rect x="34" y="312" width="170" height="26" rx="6" fill="#ffffff" stroke="#d9e1ec"/>
+    <rect x="34" y="346" width="96" height="10" rx="5" fill="#0e9db0"/>
+  </g>
+</svg>

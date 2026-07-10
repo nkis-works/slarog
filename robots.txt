@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nkis-works.github.io/slarog/sitemap.xml
