@@ -565,6 +565,12 @@ summary:focus-visible {
   color: var(--ink-soft);
   line-height: 2;
 }
+.trust-copy .trust-note {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
 .policy-tags {
   display: flex;
   flex-wrap: wrap;
