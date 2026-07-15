@@ -220,6 +220,7 @@ summary:focus-visible {
   gap: 8px;
   margin-top: 22px;
 }
+.hero-meta.centered { justify-content: center; }
 .hero-meta span {
   display: inline-flex;
   align-items: center;
@@ -359,13 +360,13 @@ summary:focus-visible {
 .card-two { left: 26px; bottom: 54px; }
 
 .quiet-strip {
-  padding-top: 56px;
-  padding-bottom: 80px;
+  padding-top: 42px;
+  padding-bottom: 72px;
   text-align: center;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
-.quiet-strip p {
+.quiet-strip .review-kicker {
   color: var(--blue);
   font-size: 12px;
   font-weight: 800;
@@ -377,6 +378,21 @@ summary:focus-visible {
   font-size: 40px;
   line-height: 1.32;
   letter-spacing: 0;
+}
+.review-claim {
+  max-width: 720px;
+  margin: 22px auto 0;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.75;
+}
+.review-lead {
+  max-width: 760px;
+  margin: 12px auto 0;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.95;
 }
 
 .section-heading { max-width: 720px; }

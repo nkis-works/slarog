@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
   <title id="title">NKIS Works / Slarog</title>
-  <desc id="desc">ホールのスランプグラフを作成、保存、連結できる記録アプリのリンクプレビュー画像</desc>
+  <desc id="desc">ホールのスランプグラフを作成、保存、比較・検証できる記録アプリのリンクプレビュー画像</desc>
   <defs>
     <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1">
       <stop stop-color="#ffffff"/>
@@ -20,7 +20,7 @@
   <text x="192" y="169" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="18" font-weight="700" fill="#667184">Slarog official site</text>
   <text x="112" y="282" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="62" font-weight="900" fill="#10151f">ホールのスランプグラフを、</text>
   <text x="112" y="367" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="70" font-weight="900" fill="#1f5eff">見返せる記録に。</text>
-  <text x="116" y="435" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="27" font-weight="600" fill="#4c586a">画像から作成・保存・検索・複数日連結まで。</text>
+  <text x="116" y="435" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="27" font-weight="600" fill="#4c586a">過去の推移をつないで比較・検証。</text>
   <g transform="translate(760 132)">
     <rect x="0" y="0" width="300" height="92" rx="8" fill="#10151f"/>
     <text x="28" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="18" font-weight="800" fill="#ffffff">無料で1台を記録</text>
