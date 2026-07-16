@@ -19,20 +19,20 @@ JavaScriptの`Math.round`へ直接依存しない。分子の絶対値へ半分�
 
 ## 3. 表示規則
 
-| 項目 | 規則 |
-|---|---|
-| 差枚ベース出玉率 | 小数第1位、half away from zero |
-| 実IN/OUT出玉率 | 小数第1位、half away from zero |
-| 回収率 | 小数第1位、half away from zero |
-| 1,000Gあたり差枚 | 1枚単位、half away from zero |
-| 差枚 | 1枚単位、入力整数を維持 |
-| 必要回収枚数 | 不足しないよう数学的ceil |
-| 理論交換額の表示 | 1円未満をfloor |
-| 交換単位反映額 | 単位へfloor |
-| 現金差額 | 1円単位 |
+| 項目                 | 規則                                       |
+| -------------------- | ------------------------------------------ |
+| 差枚ベース出玉率     | 小数第1位、half away from zero             |
+| 実IN/OUT出玉率       | 小数第1位、half away from zero             |
+| 回収率               | 小数第1位、half away from zero             |
+| 1,000Gあたり差枚     | 1枚単位、half away from zero               |
+| 差枚                 | 1枚単位、入力整数を維持                    |
+| 必要回収枚数         | 不足しないよう数学的ceil                   |
+| 理論交換額の表示     | 1円未満をfloor                             |
+| 交換単位反映額       | 単位へfloor                                |
+| 現金差額             | 1円単位                                    |
 | 貯メダル込み価値差額 | 内部有理数、表示は1円へhalf away from zero |
-| コイン持ち | 小数第1位、half away from zero |
-| 貸出・交換枚数 | 入力した10進精度を有理数として保持 |
+| コイン持ち           | 小数第1位、half away from zero             |
+| 貸出・交換枚数       | 入力した10進精度を有理数として保持         |
 
 ## 4. floorとceil
 
