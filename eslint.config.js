@@ -33,7 +33,12 @@ export default tseslint.config(
     },
   },
   {
-    files: ['playwright.config.ts', 'tools/slot-balance/e2e/**/*.ts'],
+    files: [
+      'playwright.config.ts',
+      'playwright.dist.config.ts',
+      'tools/slot-balance/e2e/**/*.ts',
+      'tools/slot-balance/e2e-dist/**/*.ts',
+    ],
     languageOptions: {
       globals: globals.node,
     },

@@ -63,6 +63,39 @@ export async function validateDist({ expectedMode, expectedOrigin } = {}) {
     'dist に広告IDまたは広告配信コードを含められません。',
   );
   assert(!/sourceMappingURL/i.test(allText), 'dist にソースマップ参照を含められません。');
+  assert(
+    !/(?:-----BEGIN [A-Z ]*PRIVATE KEY-----|AKIA[0-9A-Z]{16})/.test(allText),
+    'dist に秘密情報らしき文字列を含められません。',
+  );
+
+  const toolHtml = await readFile(resolve(dist, 'tools/slot-balance/index.html'), 'utf8');
+  assert(
+    (toolHtml.match(/SLOT_BALANCE_MANUAL_AD_INSERTION_POINT/g) ?? []).length === 1,
+    '手動広告の挿入位置は1か所だけ必要です。',
+  );
+  assert(
+    !/<(?:iframe|script)[^>]+(?:googlesyndication|doubleclick|google-analytics|googletagmanager)/i.test(
+      allText,
+    ),
+    'dist に広告・解析用の外部実行要素を含められません。',
+  );
+  assert(
+    !/<form[^>]+action\s*=\s*["'](?:https?:)?\/\//i.test(allText),
+    'dist のフォームを外部送信先へ接続できません。',
+  );
+  assert(
+    !/(?:Phase\s*(?:1|2|2A|2B)|MVP|実装中|開発用|TODO|\bdebug\b)/i.test(
+      textEntries
+        .filter(([file]) => file.endsWith('.html'))
+        .map(([, content]) => content)
+        .join('\n'),
+    ),
+    '公開HTMLに制作途中の文言があります。',
+  );
+
+  const trackedBundle = await readFile(resolve('tools/slot-balance/assets/slot-balance-app.js'));
+  const distBundle = await readFile(resolve(dist, 'tools/slot-balance/assets/slot-balance-app.js'));
+  assert(trackedBundle.equals(distBundle), '追跡bundleとdist bundleが一致しません。');
 
   const headers = await readFile(resolve(dist, '_headers'), 'utf8');
   for (const line of [
