@@ -1,0 +1,9 @@
+assets/screenshots/
+assets/app.js
+assets/styles.css
+build/
+coverage/
+node_modules/
+*.html
+robots.txt
+sitemap.xml
