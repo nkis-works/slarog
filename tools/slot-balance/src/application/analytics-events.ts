@@ -35,6 +35,33 @@ const MODES = new Set<AnalyticsMode>(['net_medals', 'investment_recovery', 'segm
 const OUTCOMES = new Set<AnalyticsOutcome>(['success', 'failure']);
 const CALCULATION_KINDS = new Set<AnalyticsCalculationKind>(['estimated', 'actual_in_out']);
 const VIEWPORTS = new Set<ViewportCategory>(['small_mobile', 'mobile', 'tablet', 'desktop']);
+const ERROR_CODE_FORMAT = /^[a-z0-9_]+$/;
+const ALLOWED_ERROR_CODES = new Set([
+  'actual_in_not_positive',
+  'actual_out_negative',
+  'exchange_rate_required',
+  'games_not_positive',
+  'in_out_values_required',
+  'integer_required',
+  'invalid_exchange_rate',
+  'invalid_exchange_unit',
+  'invalid_lend_rate',
+  'invalid_numeric_input',
+  'invalid_transfer_payload',
+  'negative_cash_investment',
+  'negative_current_medals',
+  'negative_exchanged_yen',
+  'negative_stored_medals',
+  'net_used_medals_not_positive',
+  'non_finite_number',
+  'normal_games_not_positive',
+  'recovery_exchange_rate_required',
+  'segment_range_overlap',
+  'segment_range_reversed',
+  'segments_required',
+  'stale_calculation_result',
+  'unsafe_integer',
+]);
 
 function asRecord(value: unknown): Record<string, unknown> {
   return typeof value === 'object' && value !== null ? (value as Record<string, unknown>) : {};
@@ -54,7 +81,13 @@ export function sanitizeAnalyticsMetadata(value: unknown): AnalyticsMetadata {
   if (typeof outcome === 'string' && OUTCOMES.has(outcome as AnalyticsOutcome)) {
     metadata.outcome = outcome as AnalyticsOutcome;
   }
-  if (typeof errorCode === 'string' && errorCode.length > 0 && errorCode.length <= 100) {
+  if (
+    typeof errorCode === 'string' &&
+    errorCode.length > 0 &&
+    errorCode.length <= 64 &&
+    ERROR_CODE_FORMAT.test(errorCode) &&
+    ALLOWED_ERROR_CODES.has(errorCode)
+  ) {
     metadata.errorCode = errorCode;
   }
   if (
