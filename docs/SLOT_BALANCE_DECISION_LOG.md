@@ -71,3 +71,33 @@ Phase 2Aはブラウザ保存、Cookie、API、広告、analytics、URL query／
 ## D-018 PlaywrightとVisual QA
 
 Playwright＋axeで主要計算、privacy、keyboard、7幅、既存ページ回帰を検証する。Visual QA成果物は`artifacts/phase2a/`へ置いてGit管理対象外とし、mobile 390px／desktop 1,440pxの6画面を実画像で確認する。
+
+## D-019 Curated dist
+
+2026-07-17。Cloudflare Pagesはrepository rootではなく`dist/`だけを配信する。build開始時に`dist/`を削除し、root 5 HTML、robots、sitemap、root assets、スロバランスHTML／CSS／bundle、`_headers`、`_redirects`の23ファイルだけをallowlistから生成する。TypeScript、tests、E2E、docs、package情報、source map、秘密情報、広告IDはbuild checkで拒否する。
+
+## D-020 Preview／production分離
+
+previewは全HTMLとheaderをnoindex、canonical／`og:url`なし、robots全面拒否、空sitemapとする。productionは確認済みHTTPS originの`SITE_ORIGIN`を必須とし、未設定、localhost、`pages.dev`、`github.io`、path／query／fragment付きの値を拒否する。正式ドメインを推測または仮置きしない。
+
+## D-021 Cloudflare CSPとredirect
+
+`_headers`へ厳格CSP、nosniff、referrer、DENY、Permissions-Policyを置く。meta CSPは、metaで無効な`frame-ancestors`だけを除いてheaderと一致させる。inline JSON-LDは`unsafe-inline`なしでは実行できないため削除し、構造化データよりCSPの単純性を優先する。
+
+`_redirects`は`/tools/slot-balance`と`/tools/slot-balance/index.html`を末尾スラッシュURLへ301正規化する。Cloudflare配布物だけに含めるためsourceのローカル確認とGitHub Pages互換性を壊さない。SPA fallbackは採用しない。
+
+## D-022 公式導線と公開文言
+
+公式トップの主役はスラログのまま維持し、desktop／mobile navigation、コンパクトな無料Webツールカード、supportからスロバランスへ到達可能にする。privacy／termsは端末内計算、保存・送信なし、広告・analytics未稼働、概算と判断非対応という現在の事実へ更新する。広告またはanalyticsを有効化する前に再更新する。
+
+## D-023 広告差込位置だけを固定
+
+Slarog CTAの後・一般計算式の前に`SLOT_BALANCE_MANUAL_AD_INSERTION_POINT`コメントを1件だけ置く。Phase 2B0では広告DOM、空枠、script、ID、`ads.txt`、広告domainのCSP許可を追加しない。将来もAuto Ads、anchor、sticky、全画面、interstitialを使わず、正式IDと同意要件確認後のmanual responsive display ad 1枠に限定する。
+
+## D-024 追跡bundleは移行期間だけ維持
+
+既存GitHub Pagesを移行完了まで壊さないため、追跡対象`tools/slot-balance/assets/slot-balance-app.js`を維持する。同じesbuild出力をdistへも書き、byte一致を検査する。Cloudflare productionと旧GitHub Pages URL処理が完了した後、追跡bundleを外してdistだけを生成する変更を別途判断する。
+
+## D-025 Dist E2EとVisual QA
+
+source E2E 22件を維持しつつ、最終`dist/`専用E2E 14件を追加する。全6ページ、manifest、導線、section順、header／meta CSP、redirect、console全level、network、browser storage、4幅を検証する。Visual QAはmobile／desktop 10画面を`artifacts/phase2b0/`へ置き、Git管理対象外とする。

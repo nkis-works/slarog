@@ -89,3 +89,23 @@ Playwright 22件で次を確認する。
 - Visual QA: mobile 390pxとdesktop 1,440pxで3モード、計6枚。
 
 unit testは9ファイル83件。E2Eは3 specファイル22件。生成bundleは2回のbuildで同一SHA-256を確認する。
+
+## 10. Phase 2B0 release QA
+
+- 公開manifest: `dist/`が固定allowlistの23ファイルだけで、`.ts`、`.map`、docs、tests、E2E、package情報、lock、artifactsを含まない。
+- build: previewはnoindex、canonical／`og:url`なし、空sitemap。productionは`SITE_ORIGIN`未指定で失敗する。
+- 再現性: preview build 2回で全23ファイルのSHA-256一覧が一致する。
+- bundle: 追跡対象とdist側の`slot-balance-app.js`がbyte一致する。
+- 全ページ: index、support、privacy、terms、404、slot-balanceとCSS／JavaScriptが正常に配信される。
+- 導線: 公式desktop／mobile navigation、トップ、supportからツールへ移動でき、ツールから公式、support、privacy、termsへ戻れる。
+- content: section順、計算式9項目、FAQ 10項目、Slarog CTAが広告差込位置より前、開発段階文言なし。
+- 広告無効: コメント1件だけで広告DOM、空枠、script、ID、外部requestがない。
+- security: header／meta CSP整合、`unsafe-inline`／`unsafe-eval`なし、iframe／外部form／外部runtimeなし。
+- privacy: console全level、page error、fetch、XHR、WebSocket、EventSource、beacon、外部requestが0。
+- 保存: localStorage、sessionStorage、Cookie、IndexedDB、Cache Storageが空。
+- 漏えい: 入力値をURL query／hash、console、storageへ出さない。
+- responsive: 全6ページを320、390、768、1,440pxで確認し、横overflowなし。
+- accessibility: source E2Eのaxe critical／serious 0を維持する。
+- Visual QA: mobile／desktop 10画面を実画像で確認する。
+
+unitは9ファイル83件、source E2Eは22件、dist E2Eは14件とする。公開候補の最終gateは`npm run check:all`である。

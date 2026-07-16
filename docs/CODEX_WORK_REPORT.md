@@ -1,4 +1,57 @@
-# Codex Work Report: Slot Balance Phase 1 / Phase 2A
+# Codex Work Report: Slot Balance Phase 1 / Phase 2A / Phase 2B0
+
+## Phase 2B0 update（2026-07-17）
+
+### Gitと範囲
+
+- Base: `feature/slot-balance-functional-ui` / `800d59657f8a7bca8b74e83a039271f5093e1eb8`
+- Work branch: `feature/slot-balance-cloudflare-release-candidate`
+- Phase 2B0 commits:
+  - `24a9328 build: add curated Cloudflare Pages distribution`
+  - `94e4f6d feat: prepare slot balance public content and site navigation`
+  - `9562334 test: validate release distribution and privacy boundaries`
+  - `docs: document Cloudflare migration and ad rollout`（本報告を含む）
+- `main`、GitHub Pages設定、Cloudflare account／Pages project／DNS、custom domain、AdSenseは変更していない。
+- merge、tag、production deployは行っていない。
+
+### 公開候補build
+
+`scripts/build-site.mjs`が毎回`dist/`を削除し、23ファイルの固定allowlistからCloudflare Pages公開物を再生成する。HTML 5件、robots、sitemap、root assets、スロバランスHTML／CSS／bundle、`_headers`、`_redirects`だけを含め、TypeScript、tests、E2E、docs、package情報、source map、秘密情報、広告IDは除外する。
+
+previewは全ページを`noindex, nofollow`とし、canonical、`og:url`、公開URL入りsitemapを生成しない。productionは確認済みのHTTPS `SITE_ORIGIN`を必須とし、未設定、localhost、`pages.dev`、`github.io`、path／query／fragment付きの値を拒否する。正式オリジン未確定のため、Phase 2B0ではproduction成功buildを作らず、未指定時のfail-closedだけを検証した。
+
+### 公開コンテンツ
+
+公式サイトのdesktop／mobile navigation、トップページの控えめなツール案内、supportから`/tools/slot-balance/`への導線を追加した。スロバランスは、結果と動的根拠、Slarog CTA、広告差込位置、一般計算式9項目、使い方、FAQ 10項目、免責の順に整理した。
+
+広告はHTMLコメント`SLOT_BALANCE_MANUAL_AD_INSERTION_POINT`の1か所だけを固定し、広告DOM、空枠、script、request、ID、`ads.txt`、広告domainのCSP許可を追加していない。privacyとtermsは端末内計算、保存・送信なし、広告・analytics未稼働、概算と判断非対応という現在の事実へ更新した。
+
+### 検証
+
+```text
+format:check  PASS
+lint          PASS
+typecheck     PASS
+unit          PASS（9 files / 83 tests）
+preview build PASS（23 files、2回同一SHA-256一覧）
+source E2E    PASS（22 tests）
+dist E2E      PASS（14 tests）
+axe           PASS（critical / serious 0）
+check         PASS
+check:all     PASS
+```
+
+dist E2Eでは全6ページ、導線、section順、header／meta CSP、redirect、320／390／768／1,440px、console全level、外部通信、fetch／XHR／WebSocket／EventSource／beacon、localStorage／sessionStorage／Cookie／IndexedDB／Cache Storage、URLへの入力漏えいを確認した。
+
+### Visual QAと運用文書
+
+mobile／desktop 10画面を`artifacts/phase2b0/`へ取得し、全画像を確認した。初回の公式トップ画像でlazy imageが未読込の黒い状態だったため、撮影前に全画像を読込するようE2Eを修正して再取得した。最終画像はスラログを主役に保ち、ツール導線、入力、結果、CTA、計算式、FAQに横崩れや文字切れがない。
+
+Cloudflare Pages設定、custom domain／DNS／SSL、rollback、GitHub Pages旧URL、Search Console、AdSense手動1枠の順序と停止条件を、それぞれの運用文書へ記録した。
+
+### Phase 2B1へ持ち越し
+
+Cloudflare account／Pages project、branch preview、custom domain、DNS、SSL、正式`SITE_ORIGIN`、PR／main merge、production deploy、GitHub Pages停止、旧URL処理、Search Console、AdSense申請、publisher／slot ID、`ads.txt`、CMP、実広告、analytics、履歴、共有、transfer、deep link、ストアリンク、tagは未実装である。
 
 ## Phase 2A update（2026-07-16）
 

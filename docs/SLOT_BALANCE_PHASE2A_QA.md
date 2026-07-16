@@ -1,5 +1,7 @@
 # スロバランス Phase 2A QA記録
 
+> Phase 2Aのbaseline記録である。Phase 2B0でもsource E2E 22件、unit 83件、axe、主要計算回帰は継続してPASSした。公開成果物の追加検証は`SLOT_BALANCE_PHASE2B0_QA.md`を参照する。
+
 ## 自動検証
 
 | 項目          | 結果                 |
@@ -45,3 +47,12 @@
 ## 最終評価
 
 入力と結果が主役で、既存NKIS Worksサイトと同じ白・淡灰・青を使用している。派手な装飾、過剰なshadow、外部assetはない。mobileは1列、desktopは最大幅を保ち、動的区間、単位、数式、警告に重なりや横はみ出しはない。
+
+## Phase 2B0継続回帰
+
+- source E2E: 22件PASS。
+- unit: 9ファイル83件PASS。
+- axe: critical／serious 0。
+- 既存5ページ＋toolの回帰PASS。
+- Phase 2Aの3モード、stale、validation、provenance、privacy境界を維持。
+- curated dist用E2E 14件とVisual QA 10画面はPhase 2B0記録へ分離。
