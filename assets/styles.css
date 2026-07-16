@@ -649,6 +649,40 @@ summary:focus-visible {
   font-weight: 760;
 }
 
+.web-tool {
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+.web-tool-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 32px;
+  border: 1px solid rgba(31, 94, 255, 0.24);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #ffffff, #edf4ff);
+  padding: 30px 34px;
+  box-shadow: var(--shadow-tight);
+}
+.tool-kicker {
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 820;
+}
+.web-tool-card h2 {
+  margin-top: 5px;
+  font-size: 28px;
+  line-height: 1.3;
+}
+.web-tool-card p:not(.tool-kicker) {
+  max-width: 690px;
+  margin-top: 8px;
+  color: var(--muted);
+}
+.web-tool-card .button {
+  min-width: 190px;
+}
+
 .faq { padding-top: 78px; }
 .faq-list {
   max-width: 860px;
@@ -961,6 +995,12 @@ details p {
   .trust-card,
   .support-layout,
   .legal-layout { grid-template-columns: 1fr; }
+  .web-tool-card {
+    grid-template-columns: 1fr;
+  }
+  .web-tool-card .button {
+    width: fit-content;
+  }
   .support-side,
   .legal-nav { position: static; }
   .flow-line { grid-template-columns: repeat(2, 1fr); }
@@ -1009,6 +1049,7 @@ details p {
   .feature-section,
   .trust-card,
   .plan-card,
+  .web-tool-card,
   .content-card,
   .legal-card { padding: 24px; }
   .visual-shell { min-height: 520px; }

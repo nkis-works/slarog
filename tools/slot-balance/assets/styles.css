@@ -850,6 +850,96 @@ summary:focus-visible,
   text-decoration: none;
 }
 
+.formula-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.formula-card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  padding: 15px 14px;
+}
+
+.formula-card h3 {
+  font-size: 0.92rem;
+}
+
+.formula-card p {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.formula-card .formula-expression {
+  border-left: 3px solid var(--blue);
+  background: var(--surface);
+  color: var(--ink-soft);
+  padding: 7px 9px;
+  font-weight: 760;
+  overflow-wrap: anywhere;
+}
+
+.rounding-note {
+  margin-top: 16px;
+  border-left: 4px solid var(--amber);
+  background: var(--amber-soft);
+  color: #50330a;
+  padding: 12px 14px;
+  font-size: 0.8rem;
+}
+
+.tool-faq .faq-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.tool-faq details {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+}
+
+.tool-faq summary {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  list-style: none;
+  padding: 11px 13px;
+  font-size: 0.84rem;
+  font-weight: 780;
+}
+
+.tool-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.tool-faq summary::after {
+  content: '+';
+  flex: 0 0 auto;
+  color: var(--blue);
+  font-size: 1.1rem;
+}
+
+.tool-faq details[open] summary::after {
+  content: '−';
+}
+
+.tool-faq details p {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  padding: 12px 13px 14px;
+  font-size: 0.78rem;
+}
+
 .steps {
   display: grid;
   gap: 14px;
@@ -990,6 +1080,10 @@ summary:focus-visible,
   }
 
   .choice-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .formula-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 

@@ -19,8 +19,9 @@ test('page, relative links, privacy copy, network and accessibility are sound', 
   await expect(
     page.getByText('設定判別、勝敗予測、続行・ヤメ判断を行うツールではありません。'),
   ).toBeVisible();
+  await expect(page.getByText('入力した数値は、この端末内で計算されます。')).toBeVisible();
   await expect(
-    page.getByText('入力内容はこの端末内で計算されます。Phase 2Aでは保存・外部送信を行いません。'),
+    page.getByText('計算内容をサーバーへ送信したり、自動保存したりしません。'),
   ).toBeVisible();
 
   await expect(page.getByRole('link', { name: 'スラログ公式サイトへ戻る' })).toHaveAttribute(

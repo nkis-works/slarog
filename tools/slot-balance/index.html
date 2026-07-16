@@ -42,7 +42,8 @@
         <p class="intro-lead">差枚・投資・IN/OUTを、条件を分けて整理する無料計算ツール。</p>
         <div class="intro-notes">
           <p><strong>無料・登録不要</strong>で、スマートフォンからそのまま使えます。</p>
-          <p>入力内容はこの端末内で計算されます。Phase 2Aでは保存・外部送信を行いません。</p>
+          <p>入力した数値は、この端末内で計算されます。</p>
+          <p>計算内容をサーバーへ送信したり、自動保存したりしません。</p>
         </div>
         <p class="important-note">設定判別、勝敗予測、続行・ヤメ判断を行うツールではありません。</p>
       </section>
@@ -455,13 +456,124 @@
         <a href="../../index.html">スラログ公式サイトを見る</a>
       </aside>
 
+      <!-- SLOT_BALANCE_MANUAL_AD_INSERTION_POINT -->
+
+      <section class="guide formula-guide shell" id="formulas" aria-labelledby="formula-heading">
+        <div class="section-heading compact-heading">
+          <p class="section-number">06</p>
+          <div>
+            <h2 id="formula-heading">計算式</h2>
+            <p>画面で使う主な式と、数値の扱い方をまとめています。</p>
+          </div>
+        </div>
+        <div class="formula-grid">
+          <article class="formula-card">
+            <h3>差枚ベースの概算出玉率</h3>
+            <p class="formula-expression">想定IN ＝ G数 × 3枚</p>
+            <p class="formula-expression">想定OUT ＝ 想定IN ＋ 差枚</p>
+            <p class="formula-expression">概算出玉率 ＝ 想定OUT ÷ 想定IN × 100</p>
+            <p>1Gあたり3枚を投入したものとして置く概算です。実際のIN・OUTを測った値ではありません。</p>
+          </article>
+          <article class="formula-card">
+            <h3>1,000Gあたり差枚</h3>
+            <p class="formula-expression">差枚 ÷ G数 × 1,000</p>
+            <p>入力した範囲の差枚を1,000Gあたりへ換算します。</p>
+          </article>
+          <article class="formula-card">
+            <h3>実IN・実OUTの出玉率</h3>
+            <p class="formula-expression">実OUT ÷ 実IN × 100</p>
+            <p>複数区間では、各区間のINとOUTを合計してから計算します。</p>
+          </article>
+          <article class="formula-card">
+            <h3>現在枚数の理論交換額</h3>
+            <p class="formula-expression">現在枚数 × 1,000 ÷ 1,000円分への交換枚数</p>
+            <p>交換単位による切り捨て前の理論値です。</p>
+          </article>
+          <article class="formula-card">
+            <h3>交換単位を反映した見込額</h3>
+            <p class="formula-expression">⌊ 理論交換額 ÷ 交換単位 ⌋ × 交換単位</p>
+            <p>交換単位を入力した場合は、その単位に満たない金額を切り捨てます。未入力の場合は1円未満を切り捨てます。</p>
+          </article>
+          <article class="formula-card">
+            <h3>現金投資に対する回収率</h3>
+            <p class="formula-expression">総回収見込額 ÷ 現金投資額 × 100</p>
+            <p>総回収見込額は、交換済み金額と現在枚数の交換見込額の合計です。</p>
+          </article>
+          <article class="formula-card">
+            <h3>貯メダル価値を含む回収率</h3>
+            <p class="formula-expression">総回収見込額 ÷（現金投資額 ＋ 使用貯メダルの理論価値）× 100</p>
+            <p>使用貯メダルの理論価値は、使用枚数と交換条件から別に換算します。</p>
+          </article>
+          <article class="formula-card">
+            <h3>通常時の正味使用枚数</h3>
+            <p class="formula-expression">開始時枚数 ＋ 追加枚数 − 終了時枚数 − 持ち出し枚数</p>
+            <p>内訳入力を選んだ場合だけ使用します。</p>
+          </article>
+          <article class="formula-card">
+            <h3>50枚あたりの通常時コイン持ち</h3>
+            <p class="formula-expression">通常時G数 ÷ 正味使用枚数 × 50</p>
+            <p>AT・ボーナスを除いた同じ通常時区間の数値を使います。</p>
+          </article>
+        </div>
+        <p class="rounding-note">表示桁は項目ごとに丸めます。交換単位を使う見込額は切り捨て、回収に必要な枚数は不足しないよう切り上げます。</p>
+      </section>
+
       <section class="guide shell" aria-labelledby="guide-heading">
-        <div class="section-heading compact-heading"><p class="section-number">06</p><div><h2 id="guide-heading">使い方</h2><p>自動計算ではなく、入力を確認してから計算します。</p></div></div>
+        <div class="section-heading compact-heading"><p class="section-number">07</p><div><h2 id="guide-heading">使い方</h2><p>自動計算ではなく、入力を確認してから計算します。</p></div></div>
         <ol class="steps">
           <li><span>1</span><div><h3>目的を選ぶ</h3><p>差枚、投資・回収、区間・IN/OUTから選びます。</p></div></li>
           <li><span>2</span><div><h3>同じ範囲の数値を入力</h3><p>全角数字、カンマ、G・枚・円を含む入力にも対応します。</p></div></li>
           <li><span>3</span><div><h3>結果と根拠を確認</h3><p>入力を変えた場合は、古い結果を使わず再計算してください。</p></div></li>
         </ol>
+      </section>
+
+      <section class="guide tool-faq shell" id="faq" aria-labelledby="faq-heading">
+        <div class="section-heading compact-heading">
+          <p class="section-number">08</p>
+          <div><h2 id="faq-heading">よくある質問</h2><p>入力範囲や結果の見方に関する確認事項です。</p></div>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>設定判別に使えますか？</summary>
+            <p>使えません。入力値から数値を整理するツールで、設定を判別・推測する機能はありません。</p>
+          </details>
+          <details>
+            <summary>差枚と現在手元にある枚数は同じですか？</summary>
+            <p>異なります。差枚は投入と払い出しの差、現在枚数は今交換できる手元の枚数として入力します。</p>
+          </details>
+          <details>
+            <summary>概算出玉率と実測出玉率の違いは何ですか？</summary>
+            <p>概算はG数から1Gあたり3枚のINを置きます。実測は入力した実INと実OUTから計算します。</p>
+          </details>
+          <details>
+            <summary>非等価交換にも対応していますか？</summary>
+            <p>1,000円分への交換に必要な枚数を入力すると、現在枚数の交換見込額を計算できます。</p>
+          </details>
+          <details>
+            <summary>交換単位とは何ですか？</summary>
+            <p>交換できる金額の刻みです。入力すると、その単位に満たない金額を切り捨てて見込額を表示します。</p>
+          </details>
+          <details>
+            <summary>使用した貯メダルを現金投資と分けるのはなぜですか？</summary>
+            <p>現金の収支と、貯メダルの理論価値を含む収支を混同せず確認できるようにするためです。</p>
+          </details>
+          <details>
+            <summary>入力した数値は保存・送信されますか？</summary>
+            <p>保存・送信されません。このページを開いている端末内で計算し、自動保存もしません。</p>
+          </details>
+          <details>
+            <summary>実際の交換結果と違うことがあるのはなぜですか？</summary>
+            <p>店舗ごとの交換方法、端数処理、交換単位などが異なるためです。結果は入力条件に基づく見込値です。</p>
+          </details>
+          <details>
+            <summary>通常時コイン持ちにAT・ボーナスを含めてもよいですか？</summary>
+            <p>含めないでください。AT・ボーナスを除いた同じ通常時区間のG数と正味使用枚数が必要です。</p>
+          </details>
+          <details>
+            <summary>結果から続行・ヤメを決められますか？</summary>
+            <p>このツールは続行・ヤメを判断しません。結果は記録整理の参考として確認し、最終判断はご自身で行ってください。</p>
+          </details>
+        </div>
       </section>
 
       <section class="disclaimer shell" aria-labelledby="disclaimer-heading">
