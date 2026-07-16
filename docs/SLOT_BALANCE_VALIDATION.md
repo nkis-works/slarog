@@ -62,14 +62,15 @@ errorは計算を止める。warningは結果を返しつつ確認を促す。in
 
 ## 5. 区間・IN/OUT
 
-| code                     | severity | 条件                 |
-| ------------------------ | -------- | -------------------- |
-| `segments_required`      | error    | 区間配列が空         |
-| `segment_range_reversed` | error    | endGame < startGame  |
-| `segment_range_overlap`  | error    | 明示区間が重複       |
-| `actual_in_not_positive` | error    | 実IN <= 0            |
-| `actual_out_negative`    | error    | 実OUT < 0            |
-| `in_out_values_required` | error    | 直接値も区間値もない |
+| code                      | severity | 条件                 |
+| ------------------------- | -------- | -------------------- |
+| `segments_required`       | error    | 区間配列が空         |
+| `segment_range_reversed`  | error    | endGame < startGame  |
+| `segment_range_overlap`   | error    | 明示区間が重複       |
+| `actual_in_not_positive`  | error    | 実IN <= 0            |
+| `actual_out_negative`     | error    | 実OUT < 0            |
+| `in_out_values_required`  | error    | 直接値も区間値もない |
+| `segments_limit_exceeded` | error    | 区間が100件を超える  |
 
 区間重複は集計の二重計上を発生させるためerrorとする。率の大小自体を良い・悪いの判定へ使わない。
 
@@ -94,3 +95,27 @@ infoが計算前提の不足を示す場合、`ok`はfalseではなくても値�
 - 枚数: 1,000,000枚超
 
 しきい値超過は入力ミスの可能性を示すwarningであり、数学的に成立する限り計算を止めない。
+
+## 8. Phase 2A UI入力
+
+| code                     | severity | 条件                             |
+| ------------------------ | -------- | -------------------------------- |
+| `required_input`         | error    | UI必須項目が空欄                 |
+| `paired_inputs_required` | error    | 投資モードのG数と差枚が片方だけ  |
+| `confirmation_required`  | error    | コイン持ちの必須確認が未チェック |
+
+raw文字列はフォーム状態へ保持し、submit時にPhase 1 normalizerへ渡す。同じcodeは概要で重複表示せず、field付近の修正案、`aria-invalid`、ページ上部のerror summaryを併用する。errorでは旧結果を更新せず、入力変更によりstaleのまま残す。
+
+## 9. Transfer contract v1の意味検証
+
+- `net_medals`: 1以上のsafe integer `games`とsafe integer `netMedals`を必須とする。
+- `investment_recovery`: `games`と`netMedals`は両方あるか両方ない状態とする。金額フィールドは引き続き除外する。
+- `segments_inout`: 1〜100件の同一形式segmentを必須とする。区間差枚形式は`games`と`netMedals`、実測形式は`actualIn`と`actualOut`を対で要求する。形式混在と1segment内の混在を拒否する。
+- `actualIn >= 1`、`actualOut >= 0`、実在する`YYYY-MM-DD`、label 100文字、machineName 200文字、memo 500文字を検証する。
+- 制御文字、上限超過、空segment、不正scope、不正計算versionはpayload全体を`ok: false`相当として拒否し、黙って切り詰めない。
+
+互換形式はversion 1のまま維持し、URL・deep linkは生成しない。
+
+## 10. Analytics errorCode
+
+`errorCode`はvalidator／application／UIの安定codeだけを明示allowlistで許可する。`^[a-z0-9_]+$`かつ64文字以下でも、allowlist外は省略する。生の金額、機種名、自由文、改行、未知codeは保持しない。

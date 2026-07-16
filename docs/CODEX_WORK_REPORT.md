@@ -1,4 +1,75 @@
-# Codex Work Report: Slot Balance Phase 1
+# Codex Work Report: Slot Balance Phase 1 / Phase 2A
+
+## Phase 2A update（2026-07-16）
+
+### Gitと範囲
+
+- Base: `feature/slot-balance-complete-core` / `ea2e5722eb4a76de7fdd14f145c2c978ebafa206`
+- Work branch: `feature/slot-balance-functional-ui`
+- Phase 2A commits:
+  - `832e5f0 fix: harden slot balance transfer and analytics boundaries`
+  - `3530613 feat: add functional slot balance web interface`
+  - `a998a6c test: add slot balance browser and accessibility coverage`
+  - `docs: document slot balance phase 2a implementation`（本報告を含む）
+- main、GitHub Pages設定、既存`index.html`、privacy、terms、sitemapは変更していない。
+- merge、tag、deployは行っていない。
+
+### 境界補強
+
+Transfer v1へmode別必須項目、safe integer、pair、形式混在禁止、segment 1〜100件、実在日付、制御文字、文字数上限を追加した。不正値は黙って除去・切り詰めずpayload全体を拒否する。金額は引き続き除外し、URL／deep linkは生成しない。
+
+Analytics `errorCode`は`^[a-z0-9_]+$`、64文字以下、安定code allowlistの3条件を必須とし、未知codeを省略する。生の金額、機種名、全文メッセージ、改行をテストした。`CALCULATION_VERSION`は`1.0.0`、transfer versionは1のまま維持した。
+
+### UI
+
+`tools/slot-balance/index.html`へ次を実装した。
+
+- 差枚から見る
+- 投資・回収を見る
+- 区間差枚／実IN/OUT／通常時コイン持ち
+- raw文字列からnormalizerを通したPhase 1 calculator接続
+- mode別revision、stale表示、結果混在防止
+- error summary、field error、warning／info、ARIA live
+- `ValueProvenance`由来の入力／計算／概算／参考／実測ラベル
+- 分かること／分からないこと、`CalculationExplanation`
+- Slarogへの通常の相対リンク
+- CSP、外部asset・通信・storageなし
+
+### Build
+
+UI entrypointをbrowser向けIIFEへbundleし、追跡対象の`tools/slot-balance/assets/slot-balance-app.js`へ出力する。source mapとruntime dependencyはない。検証時105.0KB。2回buildのSHA-256はいずれも次で一致した。
+
+```text
+bb22de6837ea4edd5d056b3f2872cdb1dcfae9c6995594cd4a09b080916b7ecf
+```
+
+Phase 1の`build/slot-balance/slot-balance-domain.js`はruntime consumerがないため生成を終了した。判断理由はDecision Log D-013へ記録した。
+
+### 検証
+
+```text
+format:check  PASS
+lint          PASS
+typecheck     PASS
+unit          PASS（9 files / 83 tests）
+build         PASS（決定性確認を含む）
+E2E           PASS（3 spec files / 22 tests）
+axe           PASS（critical / serious 0）
+check         PASS
+check:all     PASS
+```
+
+E2Eは主要計算全モード、全角入力、stale、privacy、相対リンク、keyboard、320／360／390／430／768／1024／1440px、既存5ページ＋ツールページ、console error、外部requestを確認した。
+
+### Visual QA
+
+viewport 390pxのmobile 3画面と1,440pxのdesktop 3画面を`artifacts/phase2a/`へ取得し、実画像を確認した。初回確認で補助文字のコントラスト不足と、full-page自動撮影時のskip link固定表示を発見した。補助色を濃くし、skip linkを標準的なabsolute配置へ変更し、撮影時の人工的focusを除外して再撮影した。
+
+最終評価は、入力と結果の関係が明瞭、既存サイトと同じ白・淡灰・青、カード入れ子と影を抑制、390px／1,440pxとも横崩れなしである。
+
+### Phase 2Bへ持ち越し
+
+履歴・migration・削除、共有カード、SNS／Web Share、計算結果transfer、アプリdeep link、ストアリンク、広告、analytics送信、Cookie同意、既存index導線、sitemap、robots、privacy／terms本番更新、main merge、deploy、tagを未実装のまま維持した。
 
 ## 1. Git
 

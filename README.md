@@ -20,12 +20,12 @@ robots.txt
 sitemap.xml
 .nojekyll
 assets/                 共通CSS、JavaScript、画像
-tools/slot-balance/     スロバランス（Phase 1はドメイン実装のみ）
+tools/slot-balance/     スロバランス（Phase 2A実動作UI・ドメイン・E2E）
 docs/                   仕様・計算・QA資料
 scripts/                開発用ビルド処理
 ```
 
-Phase 1ではスロバランスの公開ページや既存サイトからの導線を追加していません。`tools/slot-balance/src`は将来のUIから利用するTypeScriptドメインコードです。
+Phase 2Aでは`tools/slot-balance/index.html`と実動作UIを追加済みです。既存`index.html`からの公開導線、sitemap、privacy、terms、GitHub Pages設定はまだ変更していません。
 
 ## ローカル確認
 
@@ -35,7 +35,7 @@ Phase 1ではスロバランスの公開ページや既存サイトからの導�
 python3 -m http.server 4173
 ```
 
-その後、`http://localhost:4173/`を開きます。`index.html`を直接開くこともできます。
+その後、既存サイトは`http://localhost:4173/`、スロバランスは`http://localhost:4173/tools/slot-balance/index.html`を開きます。CSPと相対URLを含めた確認のため、スロバランスは`file://`ではなくHTTP server経由で確認してください。
 
 ## スロバランス開発
 
@@ -43,17 +43,22 @@ python3 -m http.server 4173
 
 ```bash
 npm install
+npx playwright install chromium
 npm run format:check
 npm run lint
 npm run typecheck
 npm run test
 npm run build
 npm run check
+npm run test:e2e
+npm run check:all
 ```
 
-`npm run build`はブラウザ向けES moduleを`build/slot-balance/slot-balance-domain.js`へ生成します。`build/`は検証用の未追跡成果物で、GitHub Pagesへ公開されません。Phase 2でUIを実装する際に、検証済みエントリポイントを公開用静的JavaScriptへ出力します。
+`npm run build`は`tools/slot-balance/src/ui/app.ts`をbrowser向けIIFEへbundleし、追跡対象の`tools/slot-balance/assets/slot-balance-app.js`へ出力します。source mapとruntime dependencyは含めません。2回のbuildで同じSHA-256になる決定的出力を維持します。
 
-## スロバランスのPhase 1範囲
+`npm run test:e2e`はlocalhost:4173でPlaywrightを実行し、主要計算、stale、privacy、キーボード、axe、レスポンシブ、既存ページ回帰、Visual QAを確認します。スクリーンショットは無視対象の`artifacts/phase2a/`へ出力します。
+
+## スロバランスの実装済み範囲
 
 - TypeScript strictの計算ドメイン
 - 入力正規化と構造化validation
@@ -62,8 +67,13 @@ npm run check
 - versionedなスラログ引き継ぎ契約
 - privacy-safeなanalyticsイベント契約
 - 正解値付きunit testと不変条件テスト
+- 3モードのモバイル優先UI
+- 入力revisionによるstale表示
+- error summary、field error、ARIA live、provenance、根拠表示
+- スラログ公式サイトへの通常の相対リンク
+- Playwright E2E、axe、7幅レスポンシブ、既存サイト回帰、6画面Visual QA
 
-UI、履歴、共有カード、広告、解析送信、公開導線、E2E、本番公開はPhase 1の対象外です。
+履歴、共有カード、広告、analytics送信、計算結果transfer、アプリdeep link、公開導線、sitemap、privacy／terms本番更新、本番公開はPhase 2Aの対象外です。
 
 ## 公開前チェック
 

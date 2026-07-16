@@ -4,13 +4,13 @@
 
 スロバランス（SLOT BALANCE）は、差枚・投資・回収を根拠つきで整理する、無料・登録不要のスロット専用Webツールである。設定、将来の出玉、続行・ヤメの正解を判定しない。
 
-本命コピーは「差枚・投資・回収を、根拠つきで整理する無料ツール。」とする。結果には使用入力、式、前提、概算か実IN/OUTか、分かること／分からないことを含める。
+Phase 2Aの主文は「差枚・投資・IN/OUTを、条件を分けて整理する無料計算ツール。」とする。結果には使用入力、式、前提、概算か実IN/OUTか、分かること／分からないことを含める。
 
-## 2. 公開とPhase 1の境界
+## 2. 公開とPhase 2Aの境界
 
-最終公開候補はGitHub Pages配下の`/tools/slot-balance/`である。Phase 1は仕様、ドメイン計算、テストだけを実装し、HTMLページ、公開導線、広告、analytics送信、履歴、共有カード、deep link、E2E、デプロイを実装しない。
+最終公開候補はGitHub Pages配下の`/tools/slot-balance/`である。Phase 2Aはこの静的HTMLページ、3モードUI、browser bundle、E2Eまで実装する。既存`index.html`からの公開導線、広告、analytics送信、履歴、共有カード、計算結果transfer、deep link、sitemap、privacy／terms本番更新、デプロイは実装しない。
 
-既存サイトは`main`のルートをGitHub Pagesが直接配信する。Phase 1のブラウザbundleは`build/`へ生成し、公開成果物へ含めない。
+既存サイトは`main`のルートをGitHub Pagesが直接配信する。Phase 2Aのbrowser bundleは`tools/slot-balance/assets/slot-balance-app.js`へ生成し、将来mainへmergeした場合にそのまま静的配信できる追跡対象とする。ただしPhase 2Aではmainへmergeしない。
 
 ## 3. 計算バージョン
 
@@ -22,6 +22,7 @@
 - `calculated`: 入力から一意に求まる値
 - `estimated`: 3枚掛け換算、交換条件による見込額など仮定を含む値
 - `reference`: 公表値等との比較用参考値
+- `actual`: 入力された実IN/OUTに基づく実測値
 
 値の出所は構造化データとして返し、画面文言へ埋め込まない。
 
@@ -77,8 +78,12 @@ Phase 1ではデータ送信を行わない。analytics契約にはモード、�
 
 ## 9. stale防止
 
-将来UIは入力revisionと最後に計算したrevisionを保持する。両者が一致しない場合、履歴、共有、スラログ引き継ぎへ結果を渡せない。Phase 1のtransfer準備関数もrevision一致を必須とする。
+UIは計算種別ごとに現在入力revisionと最後に計算したrevisionを保持する。入力が1文字でも変われば旧結果へ「再計算してください」を表示し、別モードの結果を現モードへ表示しない。将来の履歴、共有、スラログ引き継ぎでもrevision一致を必須とする。
 
-## 10. Phase 1完了条件
+## 10. 保存・通信・セキュリティ
 
-仕様文書、strict TypeScript、normalizer、validator、各calculator、provenance、explanation、knowledge boundary、version、transfer契約、analytics契約、正解値テスト、不変条件テスト、format、lint、typecheck、test、build、checkが成功すること。
+Phase 2AはlocalStorage、sessionStorage、IndexedDB、Cookie、外部通信、analytics、広告、API、URL query／hashへの入力埋め込みを使用しない。外部CSS・JavaScript・font・iframe・`eval`・`new Function`を使用せず、ユーザー入力は`textContent`で描画する。CSP metaで`connect-src 'none'`を指定する。
+
+## 11. Phase 2A完了条件
+
+Phase 1のドメイン要件に加え、transfer意味検証、analytics errorCode allowlist、3モードUI、全角入力、stale、構造化validation、provenance、knowledge boundary、explanation、相対URL、モバイル・アクセシビリティ、Playwright E2E、既存サイト回帰、Visual QA、決定的build、`check`、`check:all`が成功すること。
