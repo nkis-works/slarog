@@ -1,12 +1,13 @@
 import { build } from 'esbuild';
 
 await build({
-  entryPoints: ['tools/slot-balance/src/index.ts'],
-  outfile: 'build/slot-balance/slot-balance-domain.js',
+  entryPoints: ['tools/slot-balance/src/ui/app.ts'],
+  outfile: 'tools/slot-balance/assets/slot-balance-app.js',
   bundle: true,
-  format: 'esm',
+  format: 'iife',
   platform: 'browser',
   target: ['es2022'],
-  sourcemap: true,
+  sourcemap: false,
+  legalComments: 'none',
   logLevel: 'info',
 });

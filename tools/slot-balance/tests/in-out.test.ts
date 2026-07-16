@@ -12,7 +12,7 @@ describe('actual IN/OUT calculator', () => {
       actualNetMedals: 500,
     });
     expect(result.values?.payoutRate.display).toBe(104.2);
-    expect(result.provenance['payoutRate']).toBe('calculated');
+    expect(result.provenance['payoutRate']).toBe('actual');
   });
 
   it('returns a hard error when actual IN is zero', () => {
@@ -52,5 +52,13 @@ describe('actual IN/OUT calculator', () => {
     expect(result.ok).toBe(true);
     expect(result.values?.totalIn).toBe(100);
     expect(result.warnings.map(({ code }) => code)).toContain('in_out_source_conflict');
+  });
+
+  it('rejects more than 100 IN/OUT segments', () => {
+    const result = calculateInOut({
+      segments: Array.from({ length: 101 }, () => ({ actualIn: 1, actualOut: 1 })),
+    });
+    expect(result.ok).toBe(false);
+    expect(result.errors[0]?.code).toBe('segments_limit_exceeded');
   });
 });

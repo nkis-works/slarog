@@ -1,4 +1,4 @@
-export type ValueProvenance = 'input' | 'calculated' | 'estimated' | 'reference';
+export type ValueProvenance = 'input' | 'calculated' | 'estimated' | 'reference' | 'actual';
 
 export type ValidationSeverity = 'error' | 'warning' | 'info';
 

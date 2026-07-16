@@ -43,4 +43,12 @@ describe('segment calculator', () => {
     expect(result.ok).toBe(false);
     expect(result.errors[0]?.code).toBe('segments_required');
   });
+
+  it('rejects more than 100 segments', () => {
+    const result = calculateSegments({
+      segments: Array.from({ length: 101 }, () => ({ games: 1, netMedals: 0 })),
+    });
+    expect(result.ok).toBe(false);
+    expect(result.errors[0]?.code).toBe('segments_limit_exceeded');
+  });
 });

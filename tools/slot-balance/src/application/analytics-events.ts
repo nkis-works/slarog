@@ -39,6 +39,7 @@ const ERROR_CODE_FORMAT = /^[a-z0-9_]+$/;
 const ALLOWED_ERROR_CODES = new Set([
   'actual_in_not_positive',
   'actual_out_negative',
+  'confirmation_required',
   'exchange_rate_required',
   'games_not_positive',
   'in_out_values_required',
@@ -56,10 +57,13 @@ const ALLOWED_ERROR_CODES = new Set([
   'non_finite_number',
   'normal_games_not_positive',
   'recovery_exchange_rate_required',
+  'required_input',
   'segment_range_overlap',
   'segment_range_reversed',
   'segments_required',
+  'segments_limit_exceeded',
   'stale_calculation_result',
+  'paired_inputs_required',
   'unsafe_integer',
 ]);
 

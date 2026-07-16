@@ -335,6 +335,17 @@ export function validateSegments(input: SegmentsInput): ValidationMessage[] {
       ),
     ];
   }
+  if (input.segments.length > 100) {
+    return [
+      message(
+        'error',
+        'segments_limit_exceeded',
+        'segments',
+        '区間は100件まで入力できます。',
+        '対象を分けるか、不要な区間を削除してください。',
+      ),
+    ];
+  }
   input.segments.forEach((segment, index) => {
     for (const item of validateNetMedals({ games: segment.games, netMedals: segment.netMedals })) {
       messages.push({ ...item, field: `segments.${index}.${item.field ?? 'range'}` });
@@ -383,6 +394,17 @@ export function validateSegments(input: SegmentsInput): ValidationMessage[] {
 
 export function validateInOut(input: InOutInput): ValidationMessage[] {
   const messages: ValidationMessage[] = [];
+  if ((input.segments?.length ?? 0) > 100) {
+    return [
+      message(
+        'error',
+        'segments_limit_exceeded',
+        'segments',
+        'IN/OUT区間は100件まで入力できます。',
+        '対象を分けるか、不要な区間を削除してください。',
+      ),
+    ];
+  }
   const hasSegments = (input.segments?.length ?? 0) > 0;
   const hasDirect = input.actualIn !== undefined || input.actualOut !== undefined;
   if (!hasSegments && !hasDirect) {
