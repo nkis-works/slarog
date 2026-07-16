@@ -6,3 +6,4 @@ __MACOSX/
 node_modules/
 dist/
 build/
+artifacts/

@@ -14,7 +14,12 @@
     "useUnknownInCatchVariables": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "node"]
   },
-  "include": ["tools/slot-balance/src/**/*.ts", "tools/slot-balance/tests/**/*.ts"]
+  "include": [
+    "playwright.config.ts",
+    "tools/slot-balance/src/**/*.ts",
+    "tools/slot-balance/tests/**/*.ts",
+    "tools/slot-balance/e2e/**/*.ts"
+  ]
 }

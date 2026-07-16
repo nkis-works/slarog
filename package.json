@@ -13,12 +13,17 @@
     "format:check": "prettier --check . --ignore-unknown",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
+    "test": "vitest run tools/slot-balance/tests",
     "build": "node scripts/build-slot-balance.mjs",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build"
+    "test:e2e": "playwright test",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build",
+    "check:all": "npm run check && npm run test:e2e"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.1",
     "esbuild": "^0.28.1",
     "eslint": "^10.7.0",
     "globals": "^17.7.0",

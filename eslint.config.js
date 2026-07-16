@@ -4,7 +4,13 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['assets/**', 'build/**', 'coverage/**', 'node_modules/**'],
+    ignores: [
+      'assets/**',
+      'build/**',
+      'coverage/**',
+      'node_modules/**',
+      'tools/slot-balance/assets/slot-balance-app.js',
+    ],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
@@ -20,6 +26,12 @@ export default tseslint.config(
   },
   {
     files: ['scripts/**/*.mjs'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+  {
+    files: ['playwright.config.ts', 'tools/slot-balance/e2e/**/*.ts'],
     languageOptions: {
       globals: globals.node,
     },

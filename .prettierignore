@@ -1,9 +1,11 @@
 assets/screenshots/
 assets/app.js
 assets/styles.css
+artifacts/
 build/
 coverage/
 node_modules/
+tools/slot-balance/assets/slot-balance-app.js
 *.html
 robots.txt
 sitemap.xml
