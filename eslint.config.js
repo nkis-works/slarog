@@ -6,8 +6,10 @@ export default tseslint.config(
   {
     ignores: [
       'assets/**',
+      'artifacts/**',
       'build/**',
       'coverage/**',
+      'dist/**',
       'node_modules/**',
       'tools/slot-balance/assets/slot-balance-app.js',
     ],
