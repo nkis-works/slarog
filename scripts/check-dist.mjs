@@ -108,6 +108,12 @@ export async function validateDist({ expectedMode, expectedOrigin } = {}) {
     assert(headers.includes(line), `_headers に必須設定がありません: ${line}`);
   }
   assert(!/unsafe-inline|unsafe-eval/i.test(headers), '_headers のCSPにunsafe指定があります。');
+  for (const rule of [
+    'https://nkisworks-site.pages.dev/*\n  X-Robots-Tag: noindex',
+    'https://:version.nkisworks-site.pages.dev/*\n  X-Robots-Tag: noindex',
+  ]) {
+    assert(headers.includes(rule), `_headers にpages.devのnoindex設定がありません: ${rule}`);
+  }
 
   const redirects = await readFile(resolve(dist, '_redirects'), 'utf8');
   assert(

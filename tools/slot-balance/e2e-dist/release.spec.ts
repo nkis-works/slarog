@@ -175,6 +175,8 @@ test('headers, meta CSP, redirects and runtime surfaces stay fail-closed', async
   expect(headerCsp).toBe(
     "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
   );
+  expect(headers).toContain('https://nkisworks-site.pages.dev/*\n  X-Robots-Tag: noindex');
+  expect(headers).toContain('https://:version.nkisworks-site.pages.dev/*\n  X-Robots-Tag: noindex');
   expect(headers).toContain('X-Robots-Tag: noindex, nofollow');
   expect(headers).not.toMatch(/unsafe-inline|unsafe-eval/i);
   expect(redirects.trim().split('\n')).toEqual([
