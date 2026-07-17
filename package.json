@@ -1,0 +1,40 @@
+{
+  "name": "nkisworks-slarog-website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "serve": "python3 -m http.server 4173",
+    "serve:dist": "python3 -m http.server 4174 --directory dist",
+    "format": "prettier --write . --ignore-unknown",
+    "format:check": "prettier --check . --ignore-unknown",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run tools/slot-balance/tests",
+    "build": "npm run build:preview",
+    "build:preview": "node scripts/build-site.mjs preview",
+    "build:production": "node scripts/build-site.mjs production",
+    "check:dist": "node scripts/check-dist.mjs",
+    "test:e2e": "playwright test",
+    "test:e2e:dist": "playwright test --config playwright.dist.config.ts",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build:preview && npm run check:dist",
+    "check:all": "npm run check && npm run test:e2e && npm run test:e2e:dist"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.1",
+    "esbuild": "^0.28.1",
+    "eslint": "^10.7.0",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.5",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.64.0",
+    "vitest": "^4.1.10"
+  }
+}

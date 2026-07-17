@@ -1,0 +1,111 @@
+# スロバランス QAケース
+
+## 1. 差枚
+
+| Case |     G |   差枚 | 換算IN | 換算OUT | 出玉率 |      1,000G差枚 |
+| ---- | ----: | -----: | -----: | ------: | -----: | --------------: |
+| A    | 4,000 |   +500 | 12,000 |  12,500 | 104.2% |            +125 |
+| B    | 2,500 |   -750 |  7,500 |   6,750 |  90.0% |            -300 |
+| C    | 3,000 |   -200 |  9,000 |   8,800 |  97.8% |             -67 |
+| D    | 1,000 | -3,000 |  3,000 |       0 |   0.0% |          -3,000 |
+| E    | 1,000 | -3,001 |  3,000 |      -1 | 非表示 | -3,001、warning |
+| F    |     0 |   任意 |      - |       - |  error |               - |
+
+## 2. 実IN/OUT
+
+IN 12,000、OUT 12,500は104.2%、差枚+500。IN 0はhard error。
+
+## 3. 区間
+
+- A: 1,000G、+200枚、106.7%
+- B: 2,000G、-400枚、93.3%
+- 合計: 3,000G、-200枚、97.8%
+
+単純平均100.0%を採用しない。
+
+## 4. 投資・回収
+
+### Case 1
+
+20,000円、現在1,200枚、50枚/1,000円。交換見込24,000円、現金差額+4,000円、120.0%、回収ライン1,000枚、200枚超過。
+
+### Case 2
+
+Case 1に使用貯メダル500枚を追加。貯メダル価値10,000円、総投資相当30,000円、貯メダル込み差額-6,000円、貯メダル込み回収ライン1,500枚、あと300枚。
+
+### Case 3
+
+20,000円、現在1,000枚、56枚/1,000円、交換単位500円。理論交換額125,000/7円（floor表示17,857円）、交換見込17,500円、現金差額-2,500円、87.5%、回収ライン1,120枚、あと120枚。
+
+### Case 4
+
+現金0円、貯メダル500枚、現在600枚、50枚/1,000円。現金回収率なし、貯メダル価値10,000円、交換見込12,000円、価値差額+2,000円、120.0%。
+
+### Case 5
+
+現金10,000円、交換済み5,000円、現在400枚、50枚/1,000円、交換単位500円。現在交換見込8,000円、総回収13,000円、現金差額+3,000円、130.0%、残り回収ライン250枚、150枚超過。
+
+## 5. コイン持ち
+
+680G、正味使用1,000枚は34.0G/50枚。開始500、追加500、終了0、持ち出し0も同じ結果。正味使用0以下では値を返さない。
+
+## 6. 正規化
+
+- `４,０００Ｇ` → `4000`
+- `＋５００枚` → `500`
+- `20 000円` → `20000`
+- 空欄 → `undefined`
+- `0` → `0`
+- `4千G` → error。`千`を黙って捨てない
+
+## 7. 不変条件
+
+- 差枚0かつG > 0なら100.0%
+- 同じGでは差枚増加により率が低下しない
+- 区間集計は総G・総差枚の直接計算と一致
+- 現在枚数増加で交換見込額は低下しない
+- 交換済み金額増加で残り回収ラインは増加しない
+- 使用貯メダル0なら2つの回収ラインは一致
+- 交換単位反映額は理論値を超えない
+- 切り捨て差は交換単位未満
+- 同義の正規化入力は同じ値になる
+- 入力revisionが変わったstale結果はtransferできない
+
+## 8. プライバシー
+
+analyticsは具体的な金額、差枚、G数、機種名、店舗名、メモを除去する。transferは金額を許可せず、シリアライズしても復活しない。Phase 1ではURLを生成しない。
+
+## 9. Phase 2A browser QA
+
+Playwright 22件で次を確認する。
+
+- 差枚: 全角4,000G／+500枚、104.2%、+125枚/1,000G、換算IN/OUT、0G error、-3,001枚時の率非表示、stale。
+- 投資・回収: Case 1〜5に対応する現金のみ、貯メダル併用、非等価＋交換単位、交換済み金額、現金0円。
+- 区間: 2区間の追加・削除・Undo、合計3,000G／-200枚／97.8%、単純平均不採用。
+- 実IN/OUT: 12,000／12,500、104.2%、+500枚、IN 0 error。
+- コイン持ち: 必須確認、直接入力と内訳入力で34.0G/50枚。
+- privacy: storage、Cookie、URL露出、外部request、consoleへの生入力がない。
+- 共通: 相対リンク、キーボード、axeのcritical／serious 0、320〜1,440pxの7幅、既存5ページとツールページの回帰。
+- Visual QA: mobile 390pxとdesktop 1,440pxで3モード、計6枚。
+
+unit testは9ファイル83件。E2Eは3 specファイル22件。生成bundleは2回のbuildで同一SHA-256を確認する。
+
+## 10. Phase 2B0 release QA
+
+- 公開manifest: `dist/`が固定allowlistの23ファイルだけで、`.ts`、`.map`、docs、tests、E2E、package情報、lock、artifactsを含まない。
+- build: previewはnoindex、canonical／`og:url`なし、空sitemap。productionは`SITE_ORIGIN`未指定で失敗する。
+- 再現性: preview build 2回で全23ファイルのSHA-256一覧が一致する。
+- bundle: 追跡対象とdist側の`slot-balance-app.js`がbyte一致する。
+- 全ページ: index、support、privacy、terms、404、slot-balanceとCSS／JavaScriptが正常に配信される。
+- 導線: 公式desktop／mobile navigation、トップ、supportからツールへ移動でき、ツールから公式、support、privacy、termsへ戻れる。
+- content: section順、計算式9項目、FAQ 10項目、Slarog CTAが広告差込位置より前、開発段階文言なし。
+- 広告無効: コメント1件だけで広告DOM、空枠、script、ID、外部requestがない。
+- security: header／meta CSP整合、`unsafe-inline`／`unsafe-eval`なし、iframe／外部form／外部runtimeなし。
+- privacy: console全level、page error、fetch、XHR、WebSocket、EventSource、beacon、外部requestが0。
+- 保存: localStorage、sessionStorage、Cookie、IndexedDB、Cache Storageが空。
+- 漏えい: 入力値をURL query／hash、console、storageへ出さない。
+- responsive: 全6ページを320、390、768、1,440pxで確認し、横overflowなし。
+- accessibility: source E2Eのaxe critical／serious 0を維持する。
+- Visual QA: mobile／desktop 10画面を実画像で確認する。
+
+unitは9ファイル83件、source E2Eは22件、dist E2Eは14件とする。公開候補の最終gateは`npm run check:all`である。
