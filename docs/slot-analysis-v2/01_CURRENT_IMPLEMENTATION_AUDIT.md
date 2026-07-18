@@ -12,18 +12,18 @@ PACHIMITE、スラログiOS/Android本体、ICHIGEKIではない。フォルダ�
 
 ## 技術・公開構成
 
-| 項目 | 現状 |
-| --- | --- |
-| ページ | ルートの静的HTMLと `tools/slot-balance/index.html` |
-| スタイル | ルートCSS、ツール専用 `styles.css` |
-| ドメインロジック | `tools/slot-balance/src/domain/` のTypeScript |
-| UI | `tools/slot-balance/src/ui/`、ビルド済み `app.bundle.js` |
-| テスト | Vitest 83件、source E2E 22件、dist E2E 14件 |
-| ビルド | Node 22、esbuild、`scripts/build-site.mjs` |
-| 公開成果物 | `dist/`。明示allowlist方式 |
-| Pages | Cloudflare Pages。productionは `main`、outputは `dist` |
-| Preview | `pages.dev` は `X-Robots-Tag: noindex, nofollow` |
-| セキュリティ | CSP、Referrer-Policy等を `_headers` へ生成 |
+| 項目             | 現状                                                     |
+| ---------------- | -------------------------------------------------------- |
+| ページ           | ルートの静的HTMLと `tools/slot-balance/index.html`       |
+| スタイル         | ルートCSS、ツール専用 `styles.css`                       |
+| ドメインロジック | `tools/slot-balance/src/domain/` のTypeScript            |
+| UI               | `tools/slot-balance/src/ui/`、ビルド済み `app.bundle.js` |
+| テスト           | Vitest 83件、source E2E 22件、dist E2E 14件              |
+| ビルド           | Node 22、esbuild、`scripts/build-site.mjs`               |
+| 公開成果物       | `dist/`。明示allowlist方式                               |
+| Pages            | Cloudflare Pages。productionは `main`、outputは `dist`   |
+| Preview          | `pages.dev` は `X-Robots-Tag: noindex, nofollow`         |
+| セキュリティ     | CSP、Referrer-Policy等を `_headers` へ生成               |
 
 `scripts/build-site.mjs` は公開ファイルを明示列挙する。`docs/`、`prototypes/`、`artifacts/` は現行allowlist外であり、設計物が自動公開されない境界になっている。本フェーズはこのファイルを変更しない。
 
@@ -83,13 +83,13 @@ PACHIMITE、スラログiOS/Android本体、ICHIGEKIではない。フォルダ�
 
 ## 入力・出力・検証マップ
 
-| モード | 主要入力 | 主要出力 | 主な検証 |
-| --- | --- | --- | --- |
-| 差枚 | games, netMedals | rate, /1000G, assumed IN/OUT | 正数G、整数差枚、OUT非負 |
-| 投資・回収 | cash, medals, rate, unit | exchange, balance, return rate | 非負、正レート、単位整数 |
-| 区間 | segment games/net | total rate/net | 2区間以上、各値有効 |
-| 実IN/OUT | actualIn/out, optional games | actual rate | IN正、OUT非負 |
-| コイン持ち | normalGames/netUsedまたは内訳 | games/50 medals等 | 前提確認、分母正 |
+| モード     | 主要入力                      | 主要出力                       | 主な検証                 |
+| ---------- | ----------------------------- | ------------------------------ | ------------------------ |
+| 差枚       | games, netMedals              | rate, /1000G, assumed IN/OUT   | 正数G、整数差枚、OUT非負 |
+| 投資・回収 | cash, medals, rate, unit      | exchange, balance, return rate | 非負、正レート、単位整数 |
+| 区間       | segment games/net             | total rate/net                 | 2区間以上、各値有効      |
+| 実IN/OUT   | actualIn/out, optional games  | actual rate                    | IN正、OUT非負            |
+| コイン持ち | normalGames/netUsedまたは内訳 | games/50 medals等              | 前提確認、分母正         |
 
 ## 本番を壊しうるリスク
 

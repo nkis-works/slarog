@@ -67,13 +67,11 @@ svg {
   border-radius: 8px;
   opacity: 0;
   pointer-events: none;
-  visibility: hidden;
 }
 .skip-link:focus-visible {
   top: 8px;
   opacity: 1;
   pointer-events: auto;
-  visibility: visible;
 }
 .prototype-banner {
   padding: 7px 16px;

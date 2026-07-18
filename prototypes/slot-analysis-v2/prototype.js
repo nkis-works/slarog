@@ -3,6 +3,7 @@
  * 本番のdomain engineを置き換えるコードではありません。
  * 外部通信、Cookie、Web Storage、URLへの入力値反映は行いません。
  */
+/* global document, matchMedia, requestAnimationFrame */
 
 (() => {
   'use strict';
