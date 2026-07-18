@@ -181,8 +181,13 @@ export function analyzeSegments(
   if (input.benchmarkRate !== undefined) {
     const benchmark = benchmarkValues(totalGames, totalNetMedals, input.benchmarkRate);
     if (!benchmark.ok) return benchmark;
-    const { condition: _condition, ...benchmarkWithoutCondition } = benchmark.value;
-    aggregateBenchmark = benchmarkWithoutCondition;
+    aggregateBenchmark = {
+      benchmarkRate: benchmark.value.benchmarkRate,
+      expectedNetMedals: benchmark.value.expectedNetMedals,
+      differenceNetMedals: benchmark.value.differenceNetMedals,
+      contributionNetMedals: benchmark.value.contributionNetMedals,
+      relation: benchmark.value.relation,
+    };
   }
   const aggregate: SegmentAnalysisValues['aggregate'] = {
     aggregateGames: totalGames,
