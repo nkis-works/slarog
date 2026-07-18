@@ -1,0 +1,1 @@
+export const SLOT_ANALYSIS_CALCULATION_VERSION = '2.0.0';
