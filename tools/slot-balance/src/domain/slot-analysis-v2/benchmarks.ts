@@ -1,6 +1,6 @@
-import { compare, divide, integer, multiply, subtract } from '../rational';
-import { roundHalfAwayFromZeroInteger } from '../rounding';
+import { divide, integer, multiply, subtract } from '../rational';
 import {
+  classifyBenchmarkDifference,
   domainError,
   exact,
   failure,
@@ -13,12 +13,10 @@ import {
 } from './shared';
 import type {
   BenchmarkBatchInput,
-  BenchmarkDifferenceDisplayCode,
   BenchmarkInput,
   BenchmarkValues,
   SlotAnalysisDomainError,
   SlotAnalysisDomainResult,
-  SlotAnalysisRelation,
 } from './types';
 
 export const STANDARD_BENCHMARK_RATES = Object.freeze(['100', '103', '105'] as const);
@@ -42,6 +40,9 @@ export function calculateBenchmark(
   if (gamesError) errors.push(gamesError);
   if (netError) errors.push(netError);
   if (benchmarkRate.error) errors.push(benchmarkRate.error);
+  if (!gamesError && !netError && BigInt(input.games) * 3n + BigInt(input.netMedals) < 0n) {
+    errors.push(domainError('assumed_out_negative', 'netMedals'));
+  }
   if (errors.length > 0 || !benchmarkRate.value) return failure(errors);
 
   const assumedIn = multiply(integer(input.games), integer(3));
@@ -54,28 +55,25 @@ export function calculateBenchmark(
     return failure([domainError('result_not_finite', 'benchmarkRate')]);
   }
 
-  const comparison = compare(differenceNetMedals, integer(0));
-  const relation: SlotAnalysisRelation =
-    comparison > 0 ? 'above' : comparison < 0 ? 'below' : 'equal';
-  const roundedDifference = roundHalfAwayFromZeroInteger(differenceNetMedals);
-  const differenceDisplayCode: BenchmarkDifferenceDisplayCode =
-    comparison === 0
-      ? 'exact_zero'
-      : roundedDifference === 0n
-        ? comparison > 0
-          ? 'less_than_one_above'
-          : 'less_than_one_below'
-        : 'rounded_value';
+  const { relation, differenceDisplayCode } = classifyBenchmarkDifference(differenceNetMedals);
 
-  return success({
-    games: input.games,
-    netMedals: input.netMedals,
-    benchmarkRate: exact(benchmarkRate.value),
-    expectedNetMedals: metric(expectedNetMedals, 0),
-    differenceNetMedals: metric(differenceNetMedals, 0),
-    relation,
-    differenceDisplayCode,
-  });
+  return success(
+    {
+      games: input.games,
+      netMedals: input.netMedals,
+      benchmarkRate: exact(benchmarkRate.value),
+      expectedNetMedals: metric(expectedNetMedals, 0),
+      differenceNetMedals: metric(differenceNetMedals, 0),
+      relation,
+      differenceDisplayCode,
+    },
+    {
+      formulaIds: ['benchmark_expected_net_medals', 'benchmark_difference'],
+      assumptionCodes: ['three_medals_per_game', 'benchmark_is_comparison_not_prediction'],
+      roundingCodes: ['half_away_from_zero_to_integer_medal'],
+      warningCodes: [],
+    },
+  );
 }
 
 export function calculateStandardBenchmarks(
@@ -87,5 +85,10 @@ export function calculateStandardBenchmarks(
     if (!result.ok) return result;
     values.push(result.value);
   }
-  return success(values);
+  return success(values, {
+    formulaIds: ['benchmark_expected_net_medals', 'benchmark_difference'],
+    assumptionCodes: ['three_medals_per_game', 'benchmark_is_comparison_not_prediction'],
+    roundingCodes: ['half_away_from_zero_to_integer_medal'],
+    warningCodes: [],
+  });
 }

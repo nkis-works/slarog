@@ -66,18 +66,26 @@ export function calculateDrawdownRecovery(
     }
   }
 
-  return success({
-    maximumDrawdown: {
-      medals: maxDrawdown,
-      ...(drawdownPeakIndex === undefined
-        ? {}
-        : { startIndex: drawdownPeakIndex, endIndex: drawdownTroughIndex }),
+  return success(
+    {
+      maximumDrawdown: {
+        medals: maxDrawdown,
+        ...(drawdownPeakIndex === undefined
+          ? {}
+          : { startIndex: drawdownPeakIndex, endIndex: drawdownTroughIndex }),
+      },
+      maximumRecoveryAfterDrawdown: {
+        medals: maxRecovery,
+        ...(maxRecoveryTroughIndex === undefined
+          ? {}
+          : { startIndex: maxRecoveryTroughIndex, endIndex: maxRecoveryEndIndex }),
+      },
     },
-    maximumRecoveryAfterDrawdown: {
-      medals: maxRecovery,
-      ...(maxRecoveryTroughIndex === undefined
-        ? {}
-        : { startIndex: maxRecoveryTroughIndex, endIndex: maxRecoveryEndIndex }),
+    {
+      formulaIds: ['maximum_endpoint_drawdown', 'maximum_recovery_after_drawdown'],
+      assumptionCodes: ['endpoint_movements_only'],
+      roundingCodes: [],
+      warningCodes: [],
     },
-  });
+  );
 }

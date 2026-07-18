@@ -5,6 +5,46 @@ export type SlotAnalysisRelation = 'above' | 'equal' | 'below';
 export type BenchmarkDifferenceDisplayCode =
   'rounded_value' | 'exact_zero' | 'less_than_one_above' | 'less_than_one_below';
 
+export type SlotAnalysisFormulaId =
+  | 'quick_performance_rate'
+  | 'net_medals_per_1000_games'
+  | 'benchmark_expected_net_medals'
+  | 'benchmark_difference'
+  | 'payout_rate_sensitivity'
+  | 'target_total_net_medals'
+  | 'target_required_future_net_medals'
+  | 'target_required_future_payout_rate'
+  | 'cumulative_point_difference'
+  | 'segment_performance_rate'
+  | 'segment_benchmark_contribution'
+  | 'aggregate_performance_rate'
+  | 'maximum_endpoint_drawdown'
+  | 'maximum_recovery_after_drawdown';
+
+export type SlotAnalysisAssumptionCode =
+  | 'three_medals_per_game'
+  | 'benchmark_is_comparison_not_prediction'
+  | 'mathematical_boundary_not_prediction'
+  | 'cumulative_points_are_observations'
+  | 'endpoint_movements_only';
+
+export type SlotAnalysisRoundingCode =
+  | 'half_away_from_zero_to_one_decimal'
+  | 'half_away_from_zero_to_integer_medal'
+  | 'ceil_to_integer_medal_boundary';
+
+export type SlotAnalysisWarningCode = 'future_out_clamped_to_zero';
+
+export interface SlotAnalysisResultMetadata {
+  readonly calculationVersion: '2.0.0';
+  readonly formulaIds: readonly SlotAnalysisFormulaId[];
+  readonly assumptionCodes: readonly SlotAnalysisAssumptionCode[];
+  readonly roundingCodes: readonly SlotAnalysisRoundingCode[];
+  readonly warningCodes: readonly SlotAnalysisWarningCode[];
+}
+
+export type SlotAnalysisMetadataInput = Omit<SlotAnalysisResultMetadata, 'calculationVersion'>;
+
 export type TargetReverseStatus =
   'must_gain' | 'no_net_change_required' | 'can_lose_up_to' | 'any_nonnegative_out_suffices';
 
@@ -49,6 +89,7 @@ export type SlotAnalysisDomainResult<T> =
   | {
       readonly ok: true;
       readonly value: T;
+      readonly metadata: SlotAnalysisResultMetadata;
       readonly errors: readonly [];
     }
   | {
@@ -142,6 +183,7 @@ export interface SegmentBenchmarkValues {
   readonly differenceNetMedals: SlotAnalysisCalculatedNumber;
   readonly contributionNetMedals: SlotAnalysisCalculatedNumber;
   readonly relation: SlotAnalysisRelation;
+  readonly differenceDisplayCode: BenchmarkDifferenceDisplayCode;
   readonly condition: SegmentCondition;
 }
 

@@ -95,14 +95,23 @@ function benchmarkValues(
       : result.value.relation === 'below'
         ? 'below_benchmark_segment'
         : 'on_benchmark';
-  return success({
-    benchmarkRate: result.value.benchmarkRate,
-    expectedNetMedals: result.value.expectedNetMedals,
-    differenceNetMedals: result.value.differenceNetMedals,
-    contributionNetMedals: result.value.differenceNetMedals,
-    relation: result.value.relation,
-    condition,
-  });
+  return success(
+    {
+      benchmarkRate: result.value.benchmarkRate,
+      expectedNetMedals: result.value.expectedNetMedals,
+      differenceNetMedals: result.value.differenceNetMedals,
+      contributionNetMedals: result.value.differenceNetMedals,
+      relation: result.value.relation,
+      differenceDisplayCode: result.value.differenceDisplayCode,
+      condition,
+    },
+    {
+      formulaIds: [...result.metadata.formulaIds, 'segment_benchmark_contribution'],
+      assumptionCodes: result.metadata.assumptionCodes,
+      roundingCodes: result.metadata.roundingCodes,
+      warningCodes: result.metadata.warningCodes,
+    },
+  );
 }
 
 export function analyzeSegments(
@@ -187,6 +196,7 @@ export function analyzeSegments(
       differenceNetMedals: benchmark.value.differenceNetMedals,
       contributionNetMedals: benchmark.value.contributionNetMedals,
       relation: benchmark.value.relation,
+      differenceDisplayCode: benchmark.value.differenceDisplayCode,
     };
   }
   const aggregate: SegmentAnalysisValues['aggregate'] = {
@@ -223,12 +233,44 @@ export function analyzeSegments(
   const drawdownRecovery = calculateDrawdownRecovery(cumulativePoints);
   if (!drawdownRecovery.ok) return drawdownRecovery;
 
-  return success({
-    segments,
-    aggregate,
-    cumulativeEndpoints,
-    drawdownRecovery: mapMovementIndices(drawdownRecovery.value, sourceIndices),
-  });
+  return success(
+    {
+      segments,
+      aggregate,
+      cumulativeEndpoints,
+      drawdownRecovery: mapMovementIndices(drawdownRecovery.value, sourceIndices),
+    },
+    {
+      formulaIds: [
+        'segment_performance_rate',
+        'net_medals_per_1000_games',
+        'aggregate_performance_rate',
+        ...(input.benchmarkRate === undefined
+          ? []
+          : [
+              'benchmark_expected_net_medals' as const,
+              'benchmark_difference' as const,
+              'segment_benchmark_contribution' as const,
+            ]),
+        'maximum_endpoint_drawdown',
+        'maximum_recovery_after_drawdown',
+      ],
+      assumptionCodes: [
+        'three_medals_per_game',
+        'endpoint_movements_only',
+        ...(input.benchmarkRate === undefined
+          ? []
+          : ['benchmark_is_comparison_not_prediction' as const]),
+      ],
+      roundingCodes: [
+        'half_away_from_zero_to_one_decimal',
+        ...(input.benchmarkRate === undefined
+          ? []
+          : ['half_away_from_zero_to_integer_medal' as const]),
+      ],
+      warningCodes: [],
+    },
+  );
 }
 
 export function sumExactContributions(segments: readonly SegmentValues[]): Rational | undefined {

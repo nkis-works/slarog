@@ -93,21 +93,39 @@ export function calculateTargetReverse(
   else if (minimumFutureNetMedals === 0) status = 'no_net_change_required';
   else status = 'can_lose_up_to';
 
-  return success({
-    currentGames: input.currentGames,
-    currentNetMedals: input.currentNetMedals,
-    targetTotalGames: input.targetTotalGames,
-    targetPayoutRate: exact(targetRate.value),
-    remainingGames,
-    exactTargetTotalNetMedals: metric(exactTargetTotalNetMedals, 0),
-    exactRequiredFutureNetMedals: metric(exactRequiredFutureNetMedals, 0),
-    minimumIntegerFutureNetMedals: minimumFutureNetMedals,
-    minimumFutureOutMedals,
-    requiredFuturePayoutRate: metric(boundaryFuturePayoutRate, 1),
-    status,
-    ...(status === 'can_lose_up_to' ? { allowedLossMedals: Math.abs(minimumFutureNetMedals) } : {}),
-    clampedToNonnegativeOut,
-    assumptions: ['three_medals_per_game', 'mathematical_boundary_not_prediction'],
-    warnings: clampedToNonnegativeOut ? ['future_out_clamped_to_zero'] : [],
-  });
+  return success(
+    {
+      currentGames: input.currentGames,
+      currentNetMedals: input.currentNetMedals,
+      targetTotalGames: input.targetTotalGames,
+      targetPayoutRate: exact(targetRate.value),
+      remainingGames,
+      exactTargetTotalNetMedals: metric(exactTargetTotalNetMedals, 0),
+      exactRequiredFutureNetMedals: metric(exactRequiredFutureNetMedals, 0),
+      minimumIntegerFutureNetMedals: minimumFutureNetMedals,
+      minimumFutureOutMedals,
+      requiredFuturePayoutRate: metric(boundaryFuturePayoutRate, 1),
+      status,
+      ...(status === 'can_lose_up_to'
+        ? { allowedLossMedals: Math.abs(minimumFutureNetMedals) }
+        : {}),
+      clampedToNonnegativeOut,
+      assumptions: ['three_medals_per_game', 'mathematical_boundary_not_prediction'],
+      warnings: clampedToNonnegativeOut ? ['future_out_clamped_to_zero'] : [],
+    },
+    {
+      formulaIds: [
+        'target_total_net_medals',
+        'target_required_future_net_medals',
+        'target_required_future_payout_rate',
+      ],
+      assumptionCodes: ['three_medals_per_game', 'mathematical_boundary_not_prediction'],
+      roundingCodes: [
+        'half_away_from_zero_to_integer_medal',
+        'ceil_to_integer_medal_boundary',
+        'half_away_from_zero_to_one_decimal',
+      ],
+      warningCodes: clampedToNonnegativeOut ? ['future_out_clamped_to_zero'] : [],
+    },
+  );
 }

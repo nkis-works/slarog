@@ -1,5 +1,12 @@
 import { analyzeSegments } from './segments';
-import { MAX_THREE_MEDAL_GAMES, domainError, failure, success, validateNetMedals } from './shared';
+import {
+  MAX_THREE_MEDAL_GAMES,
+  domainError,
+  failure,
+  mergeMetadata,
+  success,
+  validateNetMedals,
+} from './shared';
 import type {
   CumulativePointAnalysisInput,
   CumulativePointAnalysisValues,
@@ -99,7 +106,15 @@ export function convertCumulativePoints(
     });
   }
 
-  return success({ points, segments });
+  return success(
+    { points, segments },
+    {
+      formulaIds: ['cumulative_point_difference'],
+      assumptionCodes: ['cumulative_points_are_observations'],
+      roundingCodes: [],
+      warningCodes: [],
+    },
+  );
 }
 
 export function analyzeCumulativePoints(
@@ -118,5 +133,8 @@ export function analyzeCumulativePoints(
     cumulativeGames: point.cumulativeGames,
     cumulativeNetMedals: point.cumulativeNetMedals,
   }));
-  return success({ ...analysis.value, points: conversion.value.points, cumulativeEndpoints });
+  return success(
+    { ...analysis.value, points: conversion.value.points, cumulativeEndpoints },
+    mergeMetadata(conversion.metadata, analysis.metadata),
+  );
 }
