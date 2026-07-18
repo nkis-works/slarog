@@ -12,14 +12,17 @@ describe('slot analysis v2 privacy and purity boundary', () => {
       'benchmarks.ts',
       'cumulative-points.ts',
       'drawdown.ts',
+      'index.ts',
       'segments.ts',
       'sensitivity.ts',
       'shared.ts',
       'target-reverse.ts',
+      'types.ts',
+      'version.ts',
     ];
     const source = files.map((file) => readFileSync(resolve(directory, file), 'utf8')).join('\n');
     expect(source).not.toMatch(
-      /\b(?:document|window|fetch|XMLHttpRequest|localStorage|sessionStorage|indexedDB|Date\.now|Math\.random)\b/,
+      /\b(?:document|window|console|fetch|XMLHttpRequest|localStorage|sessionStorage|indexedDB|WebSocket|EventSource|setTimeout|setInterval|Date\.now|Math\.random)\b|navigator\.sendBeacon|performance\.now|crypto\.getRandomValues/,
     );
   });
 
