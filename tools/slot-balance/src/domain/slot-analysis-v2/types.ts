@@ -34,6 +34,7 @@ export type SlotAnalysisDomainErrorCode =
   | 'cumulative_points_limit_exceeded'
   | 'cumulative_games_not_integer'
   | 'cumulative_games_not_safe'
+  | 'cumulative_games_negative'
   | 'cumulative_games_not_increasing'
   | 'cumulative_net_medals_not_integer'
   | 'cumulative_net_medals_not_safe';
@@ -112,4 +113,95 @@ export interface TargetReverseValues {
   readonly status: TargetReverseStatus;
   readonly allowedLossMedals?: number;
   readonly clampedToNonnegativeOut: boolean;
+}
+
+export type SegmentCondition =
+  'above_benchmark_segment' | 'below_benchmark_segment' | 'on_benchmark';
+
+export interface SegmentProvenance {
+  readonly source: 'direct' | 'cumulative_points';
+  readonly sourceSegmentIndex?: number;
+  readonly sourceStartPointIndex?: number;
+  readonly sourceEndPointIndex?: number;
+}
+
+export interface SegmentInput {
+  readonly label?: string;
+  readonly games: number;
+  readonly netMedals: number;
+  readonly provenance?: SegmentProvenance;
+}
+
+export interface SegmentBenchmarkValues {
+  readonly benchmarkRate: Readonly<ExactRational>;
+  readonly expectedNetMedals: SlotAnalysisCalculatedNumber;
+  readonly differenceNetMedals: SlotAnalysisCalculatedNumber;
+  readonly contributionNetMedals: SlotAnalysisCalculatedNumber;
+  readonly relation: SlotAnalysisRelation;
+  readonly condition: SegmentCondition;
+}
+
+export interface SegmentValues {
+  readonly input: Readonly<SegmentInput>;
+  readonly provenance: SegmentProvenance;
+  readonly payoutRate: SlotAnalysisCalculatedNumber;
+  readonly netMedalsPer1000Games: SlotAnalysisCalculatedNumber;
+  readonly benchmark?: SegmentBenchmarkValues;
+}
+
+export interface SegmentAggregateValues {
+  readonly totalGames: number;
+  readonly totalNetMedals: number;
+  readonly payoutRate: SlotAnalysisCalculatedNumber;
+  readonly netMedalsPer1000Games: SlotAnalysisCalculatedNumber;
+  readonly benchmark?: Omit<SegmentBenchmarkValues, 'condition'>;
+}
+
+export interface IndexedMedalMovement {
+  readonly medals: number;
+  readonly startIndex?: number;
+  readonly endIndex?: number;
+}
+
+export interface DrawdownRecoveryValues {
+  readonly maxDrawdown: IndexedMedalMovement;
+  readonly maxRecoveryAfterDecline: IndexedMedalMovement;
+}
+
+export interface SegmentAnalysisInput {
+  readonly segments: readonly SegmentInput[];
+  readonly benchmarkRate?: number | string;
+}
+
+export interface SegmentAnalysisValues {
+  readonly segments: readonly SegmentValues[];
+  readonly aggregate: SegmentAggregateValues;
+  readonly drawdownRecovery: DrawdownRecoveryValues;
+}
+
+export interface CumulativePointInput {
+  readonly label?: string;
+  readonly games: number;
+  readonly netMedals: number;
+}
+
+export interface CumulativePointConversionInput {
+  readonly points: readonly CumulativePointInput[];
+}
+
+export interface CumulativePointConversionValues {
+  readonly points: readonly Readonly<CumulativePointInput>[];
+  readonly segments: readonly Readonly<SegmentInput>[];
+}
+
+export interface CumulativePointAnalysisInput extends CumulativePointConversionInput {
+  readonly benchmarkRate?: number | string;
+}
+
+export interface CumulativePointAnalysisValues extends SegmentAnalysisValues {
+  readonly points: readonly Readonly<CumulativePointInput>[];
+}
+
+export interface DrawdownPointInput {
+  readonly netMedals: number;
 }
