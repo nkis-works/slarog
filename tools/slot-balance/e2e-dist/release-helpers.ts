@@ -58,16 +58,14 @@ export async function expectNoHorizontalOverflow(page: Page): Promise<void> {
 export async function gotoDistTool(page: Page): Promise<void> {
   const response = await page.goto(DIST_TOOL_PATH);
   expect(response?.status()).toBe(200);
-  await expect(page).toHaveTitle('スロバランス｜差枚・投資・IN/OUT無料計算ツール');
+  await expect(page).toHaveTitle('スロット出玉分析｜機械割・実績出玉率・区間差枚を無料計算');
 }
 
 export async function calculateDistNet(page: Page): Promise<void> {
-  await page.locator('[name="net.games"]').fill('4,321G');
-  await page.locator('[name="net.netMedals"]').fill('+987枚');
-  await page.locator('[data-calculate="net"]').click();
-  await expect(
-    page.locator('#result-net .metric__label', { hasText: '差枚ベース出玉率' }),
-  ).toBeVisible();
+  await page.locator('#quick-games').fill('4,321G');
+  await page.locator('#quick-net').fill('+987枚');
+  await page.locator('#quick-form button[type="submit"]').click();
+  await expect(page.locator('#quick-rate')).toBeVisible();
 }
 
 declare global {

@@ -63,29 +63,17 @@ test('public copy, section order, manual ad boundary and navigation are complete
   await page.getByRole('link', { name: 'スロバランス' }).first().click();
   await expect(page).toHaveURL(`${DIST_ORIGIN}/tools/slot-balance/`);
 
-  await expect(page.getByText('入力した数値は、この端末内で計算されます。')).toBeVisible();
-  await expect(
-    page.getByText('計算内容をサーバーへ送信したり、自動保存したりしません。'),
-  ).toBeVisible();
-  await expect(page.locator('#formulas .formula-card')).toHaveCount(9);
-  await expect(page.locator('#faq details')).toHaveCount(10);
+  await expect(page.getByText('無料・登録不要・端末内で計算')).toBeVisible();
+  await expect(page.getByText('未来の結果や設定を予測するものではありません。')).toBeVisible();
+  await expect(page.getByText('保存・送信しません。ページを離れると消えます。')).toBeAttached();
+  await expect(page.locator('#formulas article')).toHaveCount(6);
+  await expect(page.locator('#faq details')).toHaveCount(6);
   await expect(page.getByText('広告', { exact: true })).toHaveCount(0);
 
   const structure = await page.evaluate(() => {
     const main = document.querySelector('main');
     if (!main) return { ordered: false, markerCount: 0, markerBetween: false };
-    const selectors = [
-      '.tool',
-      '#calculation-results',
-      '[aria-labelledby="messages-heading"]',
-      '[aria-labelledby="boundary-heading"]',
-      '[aria-labelledby="explanations-heading"]',
-      '.slarog-cta',
-      '#formulas',
-      '[aria-labelledby="guide-heading"]',
-      '#faq',
-      '.disclaimer',
-    ];
+    const selectors = ['.hero', '#quick-result', '.slarog-cta', '#formulas', '#faq', '.disclaimer'];
     const elements = selectors.map((selector) => main.querySelector(selector));
     const children = Array.from(main.children);
     const childNodes = Array.from(main.childNodes);
@@ -129,7 +117,7 @@ test('public copy, section order, manual ad boundary and navigation are complete
     await gotoDistTool(page);
   }
 
-  await page.getByRole('link', { name: 'スラログ公式サイトへ戻る' }).click();
+  await page.getByRole('link', { name: 'NKIS Works公式サイトへ' }).click();
   await expect(page).toHaveURL(`${DIST_ORIGIN}/index.html`);
 });
 

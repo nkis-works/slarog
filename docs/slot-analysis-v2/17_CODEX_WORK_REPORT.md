@@ -183,3 +183,41 @@ The prototype was also operated through the app browser: quick calculation and t
 - Every successful v2 result is specified to expose immutable metadata with calculation version, formula, assumption, rounding, and warning codes.
 - UI calculation-condition copy must be derived from domain metadata through an adapter; the renderer must not infer formulas or exact relations from rounded display values.
 - Prototype Playwright remains 14 tests and now checks the corrected exchange input and representative result.
+
+## M. Release Core UI implementation
+
+- Branch: `feature/slot-analysis-v2-ui`, stacked on `feature/slot-analysis-v2-domain`.
+- Existing path retained: `/tools/slot-balance/`; no canonical, sitemap, redirect, Cloudflare, DNS, GitHub Pages, or production URL change.
+- Implemented the two-field quick start, actual payout result, per-1,000G value, metadata-driven calculation conditions, neutral 100/103/105% benchmarks, stale-result guard, and one-at-a-time advanced launchers.
+- Implemented sign-aware target reverse, direct and cumulative segment entry, aggregate and per-segment performance, selected-only benchmark contribution, endpoint drawdown/recovery, row limits and undo.
+- Reconnected investment/recovery with three basic fields and progressive detail, actual IN/OUT, and confirmed-scope coin hold.
+- Kept all input in memory only. Automated probes confirmed no storage, Cookie, IndexedDB, Cache Storage, query, hash, external request, dynamic transport, console output, or page error.
+- Preserved the Slarog CTA before one comment-only future manual-ad boundary. No ad DOM, reserved gap, script, Analytics, CMP, history, share, export, or machine database was added.
+
+### UI verification
+
+| Check                   | Result                                                                                              |
+| ----------------------- | --------------------------------------------------------------------------------------------------- |
+| `npm run format:check`  | pass                                                                                                |
+| `npm run lint`          | pass                                                                                                |
+| `npm run typecheck`     | pass                                                                                                |
+| `npm run test`          | 19 files / 136 tests pass                                                                           |
+| `npm run build:preview` | pass                                                                                                |
+| `npm run check:dist`    | 23 curated files pass                                                                               |
+| Source Playwright       | 39 pass: 21 functional/common + 18 visual artifacts                                                 |
+| Dist Playwright         | 14 pass                                                                                             |
+| `npm run check:all`     | pass                                                                                                |
+| axe                     | critical/serious 0                                                                                  |
+| Responsive              | 320/360/390/430/768/1024/1440 no horizontal overflow                                                |
+| Runtime/privacy         | console/pageerror/request/storage/Cookie/query/hash 0                                               |
+| Deterministic build     | two complete dist digests match: `1a932d5af9a8614f7f16eacc0c8d25a3363ec770936ac08bb60b68bcbcee1d1c` |
+
+### UI visual artifacts
+
+`artifacts/slot-analysis-v2-ui/` contains all 18 requested initial, quick, benchmark, target, segment, cumulative, investment, IN/OUT, coin-hold, and full-page mobile/desktop captures. Representative initial, quick, target, segment, investment, and full-page views were inspected after generation; the screenshot-only skip-link artifact and mobile segment card boundary were corrected before final capture.
+
+### UI stop condition
+
+- UI branch remains unmerged and is intended for a Draft PR against `feature/slot-analysis-v2-domain`.
+- No deployment or production setting was changed.
+- Design PR #3 and Domain PR #4 remain stacked review inputs; this report does not authorize merging any of them.

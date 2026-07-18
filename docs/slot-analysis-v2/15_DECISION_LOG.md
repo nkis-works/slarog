@@ -202,3 +202,9 @@
 - Decision: 累積差枚、終点差枚、最大下落、最大回復はBigIntで中間計算し、すべての累積終点と移動量がsafe integer範囲内だと確認してからNumberへ変換する。
 - Reason: 大きな正負区間で最終合計だけsafeに戻る場合や、個別地点はsafeでも差分がunsafeになる場合を見逃さない。
 - Rejected: 最終合計だけの検査、Number加算後の`Number.isSafeInteger`、unsafe値の丸め継続。
+
+### V2-D034 — Release Core implementation keeps the existing public path
+
+- Decision: Release Core UIは既存の`/tools/slot-balance/`へ接続し、このPRではURL、canonical、sitemap、redirectを変更しない。
+- Reason: UIと計算契約のレビューを配信・URL移行から分離し、既存公開経路を壊さない。
+- Rejected: UI実装と同時の`/tools/slot-analysis/`移行、旧URL転送、本番公開。
