@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="description" content="スロット出玉分析v2の非公開設計プロトタイプ" />
+    <title>スロット出玉分析 v2｜非公開設計プロトタイプ</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./prototype.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">メインコンテンツへ移動</a>
+    <div class="prototype-banner" role="note">非公開設計プロトタイプ — 本番機能・広告・解析ではありません</div>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="./index.html" aria-label="NKIS Works プロトタイプ先頭">
+          <span class="brand-mark" aria-hidden="true">N</span><span>NKIS Works</span>
+        </a>
+        <nav aria-label="プロトタイプ内ナビゲーション">
+          <a href="#quick">クイック分析</a><a href="#details">詳細分析</a><a href="#faq">FAQ</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero shell" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">無料・登録不要・端末内で計算</p>
+          <h1 id="page-title">スロット出玉分析</h1>
+          <p class="hero-lead">総ゲーム数と差枚から、実績出玉率と3つの基準との差を確認できます。</p>
+          <p class="boundary-copy">過去の入力値を計算するツールです。未来の結果、設定、機種性能を予測するものではありません。</p>
+        </div>
+        <ul class="trust-list" aria-label="このプロトタイプの特長">
+          <li><span aria-hidden="true">✓</span> 機種選択なし</li>
+          <li><span aria-hidden="true">✓</span> 入力は保存しない</li>
+          <li><span aria-hidden="true">✓</span> 計算根拠を表示</li>
+        </ul>
+      </section>
+
+      <section class="shell quick-layout" id="quick" aria-labelledby="quick-title">
+        <div class="panel input-panel">
+          <p class="section-kicker">まずは2項目</p>
+          <h2 id="quick-title">実績をすぐに確認</h2>
+          <form id="quick-form" novalidate>
+            <div id="quick-error-summary" class="error-summary" hidden tabindex="-1"></div>
+            <div class="field-grid">
+              <div class="field">
+                <label for="quick-games">総ゲーム数</label>
+                <div class="input-with-unit">
+                  <input id="quick-games" name="games" inputmode="numeric" autocomplete="off" aria-describedby="quick-games-help quick-games-error" placeholder="4,000" />
+                  <span>G</span>
+                </div>
+                <p class="field-help" id="quick-games-help">データ表示の総回転数</p>
+                <p class="field-error" id="quick-games-error"></p>
+              </div>
+              <div class="field">
+                <label for="quick-net">差枚</label>
+                <div class="input-with-unit">
+                  <input id="quick-net" name="net" inputmode="numeric" autocomplete="off" aria-describedby="quick-net-help quick-net-error" placeholder="+500" />
+                  <span>枚</span>
+                </div>
+                <p class="field-help" id="quick-net-help">増えた枚数は+、減った枚数は−</p>
+                <p class="field-error" id="quick-net-error"></p>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="button primary" type="submit">実績を計算</button>
+              <button class="button text-button" type="reset">入力をリセット</button>
+            </div>
+          </form>
+          <div class="privacy-note"><span aria-hidden="true">●</span> 入力値はこの画面内だけで計算し、保存・送信しません。</div>
+        </div>
+
+        <aside class="panel before-result" id="before-result" aria-labelledby="before-title">
+          <p class="section-kicker">計算すると分かること</p>
+          <h2 id="before-title">実績を、同じものさしで見る</h2>
+          <ol class="outcome-preview">
+            <li><span>01</span><div><strong>実績出玉率</strong><small>3枚/Gの想定INから計算</small></div></li>
+            <li><span>02</span><div><strong>1,000G換算</strong><small>ゲーム数が違う実績の比較に</small></div></li>
+            <li><span>03</span><div><strong>基準との差</strong><small>100・103・105%を同時に確認</small></div></li>
+          </ol>
+        </aside>
+
+        <section class="panel result-panel" id="quick-result" hidden aria-labelledby="quick-result-title">
+          <div class="result-heading">
+            <div><p class="section-kicker">この入力の実績</p><h2 id="quick-result-title" tabindex="-1">計算結果</h2></div>
+            <span class="neutral-badge">過去実績</span>
+          </div>
+          <div class="hero-result">
+            <span class="result-label">実績出玉率</span><strong id="result-rate">—</strong><small>想定IN = 3枚 × 総ゲーム数</small>
+          </div>
+          <div class="metric-grid">
+            <div class="metric-card"><span>1,000Gあたり差枚</span><strong id="result-per-thousand">—</strong></div>
+            <div class="metric-card"><span>想定IN → OUT</span><strong id="result-flow">—</strong></div>
+          </div>
+          <div class="benchmark-block">
+            <div class="block-heading">
+              <div><h3>基準との差</h3><p>選ぶと、この基準との差を1文で確認できます。</p></div>
+              <a href="./result-variants.html">表示案を比較</a>
+            </div>
+            <div id="benchmark-list" class="benchmark-list" role="group" aria-label="比較基準">
+              <button type="button" class="benchmark-row" data-rate="100"><span class="benchmark-rate">100%</span><span><small>基準差枚</small><strong data-expected>—</strong></span><span><small>実績との差</small><strong data-difference>—</strong></span><span class="relation" data-relation>—</span></button>
+              <button type="button" class="benchmark-row" data-rate="103"><span class="benchmark-rate">103%</span><span><small>基準差枚</small><strong data-expected>—</strong></span><span><small>実績との差</small><strong data-difference>—</strong></span><span class="relation" data-relation>—</span></button>
+              <button type="button" class="benchmark-row" data-rate="105"><span class="benchmark-rate">105%</span><span><small>基準差枚</small><strong data-expected>—</strong></span><span><small>実績との差</small><strong data-difference>—</strong></span><span class="relation" data-relation>—</span></button>
+            </div>
+            <p id="benchmark-summary" class="benchmark-summary" aria-live="polite">基準はまだ選択されていません。</p>
+          </div>
+          <details class="calculation-detail">
+            <summary>この結果の計算根拠</summary>
+            <div class="formula-mini"><code>想定IN = 総G × 3</code><code>想定OUT = 想定IN + 差枚</code><code>実績出玉率 = 想定OUT ÷ 想定IN × 100</code></div>
+            <p id="sensitivity-copy"></p>
+          </details>
+        </section>
+      </section>
+
+      <section class="section shell" id="details" aria-labelledby="details-title">
+        <div class="section-heading centered"><p class="section-kicker">必要なときだけ</p><h2 id="details-title">さらに詳しく分析</h2><p>クイック結果を確認したあと、目的に合う計算だけを開けます。</p></div>
+        <div class="feature-launchers" role="group" aria-label="詳細分析を選択">
+          <button class="feature-launcher" type="button" data-panel="target-panel" aria-expanded="false"><span class="feature-icon" aria-hidden="true">◎</span><strong>目標から逆算</strong><small>目標総G・率までの必要差枚</small></button>
+          <button class="feature-launcher" type="button" data-panel="segment-panel" aria-expanded="false"><span class="feature-icon" aria-hidden="true">▥</span><strong>区間を比べる</strong><small>押し上げ・押し下げを確認</small></button>
+          <button class="feature-launcher" type="button" data-panel="investment-panel" aria-expanded="false"><span class="feature-icon" aria-hidden="true">¥</span><strong>投資・回収</strong><small>交換単位を含む回収計算</small></button>
+        </div>
+
+        <section class="detail-panel" id="target-panel" hidden aria-labelledby="target-title">
+          <div class="detail-copy"><p class="section-kicker">数学上の到達条件</p><h3 id="target-title" tabindex="-1">目標から逆算</h3><p>未来を予測せず、指定した目標に必要な境界値を計算します。</p></div>
+          <form id="target-form" class="detail-form">
+            <div class="compact-grid">
+              <label for="target-current-games">現在の総G<input id="target-current-games" inputmode="numeric" value="4000" /></label>
+              <label for="target-current-net">現在の差枚<input id="target-current-net" inputmode="numeric" value="+500" /></label>
+              <label for="target-total-games">目標総G<input id="target-total-games" inputmode="numeric" value="5000" /></label>
+              <label for="target-rate">目標出玉率<input id="target-rate" inputmode="decimal" value="100.0" /></label>
+            </div>
+            <button class="button primary" type="submit">必要条件を計算</button><p class="inline-error" id="target-error"></p>
+          </form>
+          <div class="detail-result" id="target-result" hidden><span>残り <strong id="target-remaining">—</strong></span><span>必要差枚 <strong id="target-net-result">—</strong></span><span>必要区間率 <strong id="target-rate-result">—</strong></span><small>数学上の境界値であり、到達や将来結果を保証しません。</small></div>
+        </section>
+
+        <section class="detail-panel" id="segment-panel" hidden aria-labelledby="segment-title">
+          <div class="detail-copy"><p class="section-kicker">区間の寄与</p><h3 id="segment-title" tabindex="-1">区間を比べる</h3><p>区間ごとの差枚、または累積地点のどちらか一方で入力します。</p></div>
+          <div class="segmented-control" role="tablist" aria-label="区間入力方式">
+            <button type="button" role="tab" aria-selected="true" aria-controls="direct-segments" id="direct-tab">区間ごと</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="cumulative-segments" id="cumulative-tab">累積地点</button>
+          </div>
+          <form id="segment-form" class="detail-form">
+            <label class="benchmark-select" for="segment-benchmark">比較基準<select id="segment-benchmark"><option value="100">100%</option><option value="103" selected>103%</option><option value="105">105%</option></select></label>
+            <div id="direct-segments" role="tabpanel" aria-labelledby="direct-tab">
+              <div class="segment-rows">
+                <fieldset class="segment-row"><legend>区間1</legend><label>名前<input value="朝" maxlength="20" /></label><label>ゲーム数<input class="segment-games" inputmode="numeric" value="1000" /></label><label>差枚<input class="segment-net" inputmode="numeric" value="+200" /></label></fieldset>
+                <fieldset class="segment-row"><legend>区間2</legend><label>名前<input value="昼" maxlength="20" /></label><label>ゲーム数<input class="segment-games" inputmode="numeric" value="2000" /></label><label>差枚<input class="segment-net" inputmode="numeric" value="-400" /></label></fieldset>
+              </div>
+            </div>
+            <div id="cumulative-segments" role="tabpanel" aria-labelledby="cumulative-tab" hidden>
+              <div class="point-grid"><label>開始 累積G<input class="point-games" value="0" /></label><label>開始 累積差枚<input class="point-net" value="0" /></label><label>地点1 累積G<input class="point-games" value="1000" /></label><label>地点1 累積差枚<input class="point-net" value="+200" /></label><label>地点2 累積G<input class="point-games" value="3000" /></label><label>地点2 累積差枚<input class="point-net" value="-200" /></label></div>
+            </div>
+            <div class="form-actions compact-actions"><button class="button secondary prototype-only" type="button" title="設計表示のみ">＋ 区間を追加</button><button class="button primary" type="submit">区間を分析</button></div>
+            <p class="inline-error" id="segment-error"></p>
+          </form>
+          <div class="segment-result" id="segment-result" hidden><div class="segment-summary"><span>合計 <strong id="segment-total">—</strong></span><span>基準との差 <strong id="segment-total-diff">—</strong></span></div><div id="segment-breakdown" class="segment-breakdown"></div><div class="drawdown-grid"><span>入力地点間の最大下落 <strong id="max-drawdown">—</strong></span><span>最大回復 <strong id="max-recovery">—</strong></span></div></div>
+        </section>
+
+        <section class="detail-panel" id="investment-panel" hidden aria-labelledby="investment-title">
+          <div class="detail-copy"><p class="section-kicker">交換単位まで確認</p><h3 id="investment-title" tabindex="-1">投資・回収</h3><p>まず4項目だけで計算し、必要な場合だけ詳細を開きます。</p></div>
+          <form id="investment-form" class="detail-form">
+            <div class="compact-grid"><label for="cash-invested">現金投資（円）<input id="cash-invested" inputmode="numeric" value="20000" /></label><label for="current-medals">現在メダル（枚）<input id="current-medals" inputmode="numeric" value="1200" /></label><label for="exchange-rate">交換率（円/枚）<input id="exchange-rate" inputmode="decimal" value="20.0" /></label><label for="exchange-unit">交換単位（枚）<input id="exchange-unit" inputmode="numeric" value="1" /></label></div>
+            <details class="advanced-inputs"><summary>詳細入力（貯メダル・交換済みなど）</summary><p>本プロトタイプでは配置確認のみです。本番ロジックには接続していません。</p><div class="compact-grid"><label>貯メダル<input inputmode="numeric" value="0" /></label><label>交換済み現金<input inputmode="numeric" value="0" /></label></div></details>
+            <button class="button primary" type="submit">回収を計算</button><p class="inline-error" id="investment-error"></p>
+          </form>
+          <div class="detail-result" id="investment-result" hidden><span>交換額 <strong id="exchange-value">—</strong></span><span>現金収支 <strong id="cash-balance">—</strong></span><span>回収率 <strong id="recovery-rate">—</strong></span><small id="remainder-copy"></small></div>
+        </section>
+      </section>
+
+      <section class="section shell slarog-cta" aria-labelledby="slarog-title"><div><p class="section-kicker">計算の次へ</p><h2 id="slarog-title">遊技記録を続けて残すならスラログ</h2><p>単発の計算から、日々の記録へ。入力値の自動転送は行いません。</p></div><a class="button cta-button" href="#slarog-note">スラログについて見る</a><p id="slarog-note" class="visually-hidden">このリンクはプロトタイプ内の導線確認用です。</p></section>
+
+      <aside class="shell ad-placement" aria-label="将来の広告位置"><span>AD DESIGN PLACEHOLDER</span><strong>将来の手動広告位置</strong><small>設計確認のみ。広告コード・通信・空き枠予約はありません。</small></aside>
+
+      <section class="section shell explainer" aria-labelledby="formula-title">
+        <div class="section-heading"><p class="section-kicker">計算を確かめる</p><h2 id="formula-title">計算式と使い方</h2></div>
+        <div class="explain-grid"><article><span class="step-number">1</span><h3>想定INを求める</h3><code>総ゲーム数 × 3枚</code><p>通常の3枚掛けを前提にした想定値です。実測INではありません。</p></article><article><span class="step-number">2</span><h3>想定OUTを求める</h3><code>想定IN + 差枚</code><p>差枚がマイナスなら、想定INから差し引きます。</p></article><article><span class="step-number">3</span><h3>実績出玉率を求める</h3><code>想定OUT ÷ 想定IN × 100</code><p>小数第2位を四捨五入し、小数1桁で表示します。</p></article></div>
+      </section>
+
+      <section class="section shell faq" id="faq" aria-labelledby="faq-title">
+        <div class="section-heading centered"><p class="section-kicker">よくある質問</p><h2 id="faq-title">FAQ</h2></div>
+        <div class="faq-list"><details><summary>実績出玉率は機種の機械割と同じですか？</summary><p>同じではありません。入力したゲーム数と差枚を、3枚/Gの想定INで割った過去実績です。</p></details><details><summary>104.2%なら今後も増えますか？</summary><p>判断できません。このツールは未来、設定、機種性能を予測しません。</p></details><details><summary>入力した内容は保存されますか？</summary><p>保存・送信しません。ページを離れると消えます。</p></details><details><summary>100・103・105%は設定を表しますか？</summary><p>いいえ。差枚の規模を比較するための任意基準で、設定示唆ではありません。</p></details><details><summary>目標逆算は期待値ですか？</summary><p>いいえ。指定した目標に一致する数学上の必要条件です。</p></details></div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><div class="shell footer-inner"><div><strong>NKIS Works</strong><p>非公開設計プロトタイプ</p></div><p>計算結果は参考情報です。遊技結果や利益を保証しません。</p></div></footer>
+  </body>
+</html>
