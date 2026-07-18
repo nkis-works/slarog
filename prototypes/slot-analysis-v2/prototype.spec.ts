@@ -120,6 +120,14 @@ test('目標逆算と区間基準の初期中立を固定', async ({ page }) => 
   await expect(page.locator('#segment-total-diff')).toHaveText('−470枚');
   await expect(page.locator('#segment-breakdown')).toContainText('103%基準：好調区間');
   await expect(page.locator('#segment-breakdown')).toContainText('103%基準：低調区間');
+
+  await page.getByRole('button', { name: '投資・回収' }).click();
+  await expect(page.locator('#investment-form > .compact-grid input')).toHaveCount(3);
+  await expect(page.getByLabel('1,000円分への交換に必要な枚数')).toHaveValue('50');
+  await page.getByRole('button', { name: '回収を計算' }).click();
+  await expect(page.locator('#exchange-value')).toHaveText('24,000円');
+  await expect(page.locator('#cash-balance')).toHaveText('+4,000円');
+  await expect(page.locator('#exchange-condition-copy')).toHaveText('交換条件 1,000円あたり50枚');
 });
 
 test('構造HTMLと外部依存を検査', async ({ page }) => {

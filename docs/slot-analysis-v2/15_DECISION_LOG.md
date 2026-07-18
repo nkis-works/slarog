@@ -178,3 +178,15 @@
 
 - Decision: H1は`スロット出玉分析`、navは`出玉分析`、titleとdescriptionは名称仕様の固定文を使う。`機械割`はSEO/FAQ/補足だけ。
 - Reason: 検索意図へ応えながら、主結果を公称値や設定判別に見せない。
+
+### V2-D030 — Exchange input uses medals per 1,000 yen
+
+- Decision: 投資・回収の主入力は`1,000円分への交換に必要な枚数`とし、`50枚 / 1,000円`、`56枚 / 1,000円`の形式で扱う。`円/枚`はdomain内部で`1000 / 枚数`として有理数換算する。
+- Reason: 一般的なホール表示と入力者の手元情報に合わせ、変換ミスを避ける。
+- Rejected: `円/枚`を主入力にする、両単位を同格で入力させる。
+
+### V2-D031 — Every successful v2 result exposes metadata
+
+- Decision: すべての成功結果は`calculationVersion='2.0.0'`、`formulaIds`、`assumptionCodes`、`roundingCodes`、`warningCodes`を共通metadataとして返す。
+- Reason: UIの「計算条件を見る」をdomainの公開契約から生成し、rendererでの式や前提の再推定を防ぐ。
+- Rejected: 結果型ごとの任意文字列、表示値からのformula判定、domain内の日本語文言。

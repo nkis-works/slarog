@@ -42,6 +42,38 @@ N/1,000G = +125枚
 - IN/OUT、基準差枚: 整数枚。
 - 内部値: 丸め前の分数を保持。
 
+### 公開結果metadata
+
+すべての成功結果は、UIが計算条件を再推定せずに「計算条件を見る」を表示できる共通metadataを持つ。
+
+```ts
+type SlotAnalysisFormulaId =
+  | 'quick_performance_rate'
+  | 'net_medals_per_1000_games'
+  | 'benchmark_expected_net_medals'
+  | 'benchmark_difference'
+  | 'payout_rate_sensitivity'
+  | 'target_total_net_medals'
+  | 'target_required_future_net_medals'
+  | 'target_required_future_payout_rate'
+  | 'cumulative_point_difference'
+  | 'segment_performance_rate'
+  | 'segment_benchmark_contribution'
+  | 'aggregate_performance_rate'
+  | 'maximum_endpoint_drawdown'
+  | 'maximum_recovery_after_drawdown';
+
+type SlotAnalysisResultMetadata = {
+  calculationVersion: '2.0.0';
+  formulaIds: readonly SlotAnalysisFormulaId[];
+  assumptionCodes: readonly SlotAnalysisAssumptionCode[];
+  roundingCodes: readonly SlotAnalysisRoundingCode[];
+  warningCodes: readonly SlotAnalysisWarningCode[];
+};
+```
+
+code値は英語の安定識別子だけとし、日本語文言はUI adapterで解決する。配列は結果ごとに必要な項目だけを含み、結果本体とともに再帰的にimmutableにする。
+
 ## 基準比較
 
 基準 `B` の期待差枚:
@@ -171,15 +203,18 @@ n_i = N_i − N_(i−1)
 ## 投資・回収
 
 ```text
-理論交換額 = 交換対象枚数 × 交換率（円/枚）
+内部換算値（円/枚） = 1,000 ÷ 1,000円分への交換に必要な枚数
+理論交換額 = 交換対象枚数 × 内部換算値
 交換単位適用枚数 = floor(対象枚数 ÷ 単位枚数) × 単位枚数
-交換額 = 単位適用枚数 × 交換率
+交換額 = 単位適用枚数 × 内部換算値
 端数 = 対象枚数 − 単位適用枚数
 収支 = 交換額 + 交換済現金 − 現金投資
 現金回収率 = 現金回収 ÷ 現金投資 × 100
 ```
 
-貯メダル価値を含める「総回収率」と、現金だけの「現金回収率」を分ける。交換率の入力単位を円/枚に固定し、枚/1000円表記は補助変換する。
+基本入力は現金投資、現在メダル、`1,000円分への交換に必要な枚数`の3項目とする。入力例は等価なら`50枚 / 1,000円`、いわゆる5.6枚交換なら`56枚 / 1,000円`。`円/枚`はdomain内部の有理数換算にだけ使い、UIの主入力単位にはしない。
+
+交換単位、貯メダル使用枚数、交換済み円、貸出枚数/1,000円、今回のG/差枚は詳細入力へ置く。貯メダル価値を含める「総回収率」と、現金だけの「現金回収率」を分ける。
 
 ## 用語規約
 
