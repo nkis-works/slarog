@@ -144,7 +144,7 @@ Maximum recovery after decline: 0 medals
 | `npm run test:e2e:dist` | 14 pass                                         |
 | `npm run check`         | pass                                            |
 | `npm run check:all`     | pass                                            |
-| Prototype Playwright    | 11 pass                                         |
+| Prototype Playwright    | 14 pass                                         |
 | axe                     | critical/serious 0                              |
 | Responsive              | 320/390/430/768/1440 no overflow                |
 | Zoom                    | 200% pass                                       |
@@ -164,4 +164,14 @@ The prototype was also operated through the app browser: quick calculation and t
 - Design work complete.
 - Branch pushed and Draft PR created.
 - No main merge, production deploy, Cloudflare/DNS/GitHub Pages change, ad, Analytics, CMP, or production code change.
-- Next work begins only after design review and the gates in `14_IMPLEMENTATION_ROADMAP.md` / `16_OPEN_QUESTIONS.md`.
+- Follow-up work begins only after design review and the gates in `14_IMPLEMENTATION_ROADMAP.md` / `16_OPEN_QUESTIONS.md`.
+
+## K. Design review revision
+
+- Final product/H1, nav label, SEO title, description, and `/tools/slot-analysis/` slug are locked.
+- The former MVP/Next/Future split is replaced by Release Core/Later/Do not build.
+- Release Core contains RC-01〜RC-16 and is an all-or-nothing production gate; implementation PRs may remain stacked and split.
+- Initial results are ordered as actual payout rate, input summary, and per-1,000G. Assumed IN/OUT moved to calculation conditions.
+- Benchmark and segment defaults are neutral, exact-zero/sub-medal wording is locked, and target reverse copy is sign-aware.
+- Segment limits are UI 10, cumulative initial candidate 11 points including the start, and domain 100.
+- This revision remains docs/prototype-only. Production UI, URL, build, deployment, Cloudflare, advertising, and Analytics are unchanged.

@@ -22,7 +22,7 @@
 - 基準比較の初期中立。
 - 最大回復定義。
 - 区間入力2方式。
-- 広告OFFのMVP。
+- Release Core 16項目、初期結果順、目標文言、区間上限、広告OFF。
 
 ## Phase 1 — Domain contract
 
@@ -32,6 +32,7 @@
 - benchmark、sensitivity、target reverse、segment conversion/contribution/drawdown/recoveryを純粋関数で追加。
 - integer/rational、丸め、provenance、validationを再利用。
 - property/boundary testを追加。
+- v1の計算意味とversionは変更せず、v2は `2.0.0` として分離する。
 
 出口:
 
@@ -47,7 +48,7 @@
 
 - 推奨HTML/CSS/JSを本番品質で実装。
 - クイック入力、縦比較、段階開示、CTA、式、FAQ。
-- 目標/区間/投資は承認範囲に応じてMVP/Nextを分割。
+- Release Coreの16項目を積み上げPRで実装。目標/区間/投資を別PRへ分割してもよいが、欠けた状態で本番へ切り替えない。
 - source E2Eを新UIへ追加し、既存UIの回帰を保持。
 
 出口:
@@ -55,6 +56,7 @@
 - 20秒タスク、keyboard、axe、viewport、privacy契約合格。
 - 外部request/console/pageerror/storage/cookie 0。
 - 本番URL/allowlistはまだ変更しないpreview QAが可能。
+- RC-01〜RC-16がすべて揃うまで旧公開UIを維持する。
 
 推奨ブランチ: `feature/slot-analysis-v2-ui`
 

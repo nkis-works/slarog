@@ -65,10 +65,9 @@ J-PlatPatの「商標検索」で2026-07-18に商標(検索用)・部分一致�
 
 - Product name: `スロット出玉分析`
 - H1: `スロット出玉分析`
-- Navigation: `スロット出玉分析`
-- Short label: `出玉分析`
-- Title: `スロット出玉分析｜実績出玉率・差枚・区間計算`
-- Description: `総ゲーム数と差枚から実績出玉率、100・103・105%基準との差、区間、目標条件を計算。無料・登録不要。`
+- Navigation / short label: `出玉分析`
+- Title: `スロット出玉分析｜機械割・実績出玉率・区間差枚を無料計算`
+- Description: `G数と差枚から実績出玉率、100・103・105%基準との差、区間ごとの押し上げ・押し下げ、目標までの必要差枚を計算。無料・登録不要。`
 - Slug: `/tools/slot-analysis/`
 - English internal ID: `slot-analysis`
 

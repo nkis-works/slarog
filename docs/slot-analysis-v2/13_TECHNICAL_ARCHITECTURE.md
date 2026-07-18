@@ -84,7 +84,7 @@ type CalculationResult<T> =
 - 累積Gは厳密増加を一括検証。
 - 区間率/寄与をmap、合計をreduce。
 - 最大下落/回復は1パスO(n)。回復は下落発生後だけ計測。
-- グラフはMVPではHTML/CSSバー。将来SVGを使う場合もcanvas画像だけに意味を閉じない。
+- グラフはRelease CoreではHTML/CSSバー。LaterでSVGを使う場合もcanvas画像だけに意味を閉じない。
 
 ## 公開ビルド
 
@@ -106,7 +106,7 @@ type CalculationResult<T> =
 
 ## セキュリティ
 
-- CSPは広告なしMVPで `connect-src 'none'` を維持。
+- CSPは広告なしRelease Coreで `connect-src 'none'` を維持。
 - inline script/styleを避け、既存nonce不要構成に合わせる。
 - 外部font/image/CDNなし。
 - DOM injectionを避け、区間名はtextContent。

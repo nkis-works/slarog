@@ -40,7 +40,17 @@
     return `${value > 0 ? '+' : '−'}${number.format(Math.abs(value))}${unit}`;
   };
 
-  const relationFor = (value) => (value > 0 ? '上回る' : value < 0 ? '下回る' : '同じ');
+  const roundHalfAwayFromZero = (value) => Math.sign(value) * Math.floor(Math.abs(value) + 0.5);
+
+  const signedRoundedMedals = (value) => signed(roundHalfAwayFromZero(value));
+
+  const benchmarkDifference = (value) => {
+    if (Math.abs(value) < 1e-9) return '0枚';
+    const rounded = roundHalfAwayFromZero(value);
+    return rounded === 0 ? '1枚未満' : signed(rounded);
+  };
+
+  const relationFor = (value) => (value > 0 ? '上回る' : value < 0 ? '下回る' : '基準通り');
 
   const quickForm = $('#quick-form');
   let quickState = null;
@@ -80,6 +90,7 @@
     quickState = { games, net, assumedIn, assumedOut, rate };
 
     $('#result-rate').textContent = `${rate.toFixed(1)}%`;
+    $('#result-input').textContent = `${integer.format(games)}G / ${signed(net)}`;
     $('#result-per-thousand').textContent = signed(perThousand);
     $('#result-flow').textContent =
       `${integer.format(assumedIn)} → ${integer.format(assumedOut)}枚`;
@@ -90,8 +101,8 @@
       const benchmark = Number(row.dataset.rate);
       const expected = assumedIn * ((benchmark - 100) / 100);
       const difference = net - expected;
-      $('[data-expected]', row).textContent = signed(expected);
-      $('[data-difference]', row).textContent = signed(difference);
+      $('[data-expected]', row).textContent = signedRoundedMedals(expected);
+      $('[data-difference]', row).textContent = benchmarkDifference(difference);
       const relation = $('[data-relation]', row);
       relation.textContent = relationFor(difference);
       relation.className =
@@ -145,7 +156,13 @@
     const difference = quickState.net - expected;
     const relation = relationFor(difference);
     const summary = $('#benchmark-summary');
-    summary.textContent = `この入力は${benchmark}%基準の差枚を${number.format(Math.abs(difference))}枚${relation === '同じ' ? 'で同じです' : relation === '上回る' ? '上回ります' : '下回ります'}。`;
+    if (relation === '基準通り') {
+      summary.textContent = `この入力は${benchmark}%基準通りです。`;
+    } else if (roundHalfAwayFromZero(difference) === 0) {
+      summary.textContent = `この入力と${benchmark}%基準の差は1枚未満（${relation}）です。`;
+    } else {
+      summary.textContent = `この入力は${benchmark}%基準の差枚を${integer.format(Math.abs(roundHalfAwayFromZero(difference)))}枚${relation === '上回る' ? '上回ります' : '下回ります'}。`;
+    }
     summary.classList.add('visible');
   });
 
@@ -185,7 +202,8 @@
       currentNet === null ||
       !targetGames ||
       targetGames <= currentGames ||
-      !targetRate ||
+      targetRate === null ||
+      targetRate <= 0 ||
       currentGames * 3 + currentNet < 0
     ) {
       error.textContent = '現在値と目標値を確認してください。目標総Gは現在より大きくします。';
@@ -194,16 +212,24 @@
     }
     const remainingGames = targetGames - currentGames;
     const targetTotalNet = targetGames * 3 * ((targetRate - 100) / 100);
-    const requiredNet = targetTotalNet - currentNet;
-    const requiredRate = ((remainingGames * 3 + requiredNet) / (remainingGames * 3)) * 100;
-    if (remainingGames * 3 + requiredNet < 0) {
-      error.textContent = 'この目標では残区間のOUTが0枚未満になるため成立しません。';
-      $('#target-result').hidden = true;
-      return;
+    const exactRequiredNet = targetTotalNet - currentNet;
+    const integerMinimum = Math.ceil(exactRequiredNet);
+    const executableMinimum = Math.max(integerMinimum, -(remainingGames * 3));
+    const requiredRate = ((remainingGames * 3 + executableMinimum) / (remainingGames * 3)) * 100;
+    const targetRateLabel = `${number.format(targetRate)}%`;
+    let targetMessage;
+    if (integerMinimum < -(remainingGames * 3)) {
+      targetMessage = `残区間のOUTが0枚以上なら${integer.format(targetGames)}G時点で${targetRateLabel}を維持`;
+    } else if (executableMinimum > 0) {
+      targetMessage = `あと${signed(executableMinimum)}必要`;
+    } else if (executableMinimum === 0) {
+      targetMessage = `差枚0枚以上で目標に到達`;
+    } else {
+      targetMessage = `${signed(executableMinimum)}までなら${integer.format(targetGames)}G時点で${targetRateLabel}を維持`;
     }
     error.textContent = '';
     $('#target-remaining').textContent = `${integer.format(remainingGames)}G`;
-    $('#target-net-result').textContent = `${signed(requiredNet)}以上`;
+    $('#target-net-result').textContent = targetMessage;
     $('#target-rate-result').textContent = `${requiredRate.toFixed(1)}%以上`;
     $('#target-result').hidden = false;
   });
@@ -294,23 +320,30 @@
       return;
     }
     error.textContent = '';
-    const benchmark = Number($('#segment-benchmark').value);
+    const benchmarkValue = $('#segment-benchmark').value;
+    const benchmark = benchmarkValue ? Number(benchmarkValue) : null;
     const totalGames = segments.reduce((sum, item) => sum + item.games, 0);
     const totalNet = segments.reduce((sum, item) => sum + item.net, 0);
     const totalRate = ((totalGames * 3 + totalNet) / (totalGames * 3)) * 100;
-    const totalExpected = totalGames * 3 * ((benchmark - 100) / 100);
     $('#segment-total').textContent =
       `${integer.format(totalGames)}G / ${signed(totalNet)} / ${totalRate.toFixed(1)}%`;
-    $('#segment-total-diff').textContent = signed(totalNet - totalExpected);
+    const benchmarkSummary = $('#segment-benchmark-summary');
+    if (benchmark === null) {
+      benchmarkSummary.hidden = true;
+    } else {
+      const totalExpected = totalGames * 3 * ((benchmark - 100) / 100);
+      $('#segment-total-diff').textContent = signedRoundedMedals(totalNet - totalExpected);
+      benchmarkSummary.hidden = false;
+    }
     const breakdown = $('#segment-breakdown');
     breakdown.replaceChildren();
-    const contributions = segments.map(
-      (item) => item.net - item.games * 3 * ((benchmark - 100) / 100),
-    );
-    const maxContribution = Math.max(...contributions.map(Math.abs), 1);
+    const contributions =
+      benchmark === null
+        ? null
+        : segments.map((item) => item.net - item.games * 3 * ((benchmark - 100) / 100));
+    const maxContribution = contributions ? Math.max(...contributions.map(Math.abs), 1) : 1;
     segments.forEach((item, index) => {
       const rate = ((item.games * 3 + item.net) / (item.games * 3)) * 100;
-      const contribution = contributions[index];
       const row = document.createElement('article');
       row.className = 'segment-result-row';
       const label = document.createElement('p');
@@ -319,15 +352,21 @@
       const detail = document.createElement('small');
       detail.textContent = ` ${integer.format(item.games)}G / ${signed(item.net)} / ${rate.toFixed(1)}%`;
       label.append(title, detail);
-      const result = document.createElement('p');
-      result.textContent = `${signed(contribution)} ${contribution >= 0 ? '押し上げ' : '押し下げ'}`;
-      const bar = document.createElement('div');
-      bar.className = 'contribution-bar';
-      const fill = document.createElement('span');
-      if (contribution < 0) fill.className = 'negative';
-      fill.style.width = `${Math.max(6, (Math.abs(contribution) / maxContribution) * 100)}%`;
-      bar.append(fill);
-      row.append(label, result, bar);
+      row.append(label);
+      if (contributions) {
+        const contribution = contributions[index];
+        const result = document.createElement('p');
+        const condition =
+          contribution > 0 ? '好調区間' : contribution < 0 ? '低調区間' : '基準通り';
+        result.textContent = `${benchmark}%基準：${condition} / ${signedRoundedMedals(contribution)} ${contribution >= 0 ? '押し上げ' : '押し下げ'}`;
+        const bar = document.createElement('div');
+        bar.className = 'contribution-bar';
+        const fill = document.createElement('span');
+        if (contribution < 0) fill.className = 'negative';
+        fill.style.width = `${Math.max(6, (Math.abs(contribution) / maxContribution) * 100)}%`;
+        bar.append(fill);
+        row.append(result, bar);
+      }
       breakdown.append(row);
     });
     const range = drawdownRecovery(segments);

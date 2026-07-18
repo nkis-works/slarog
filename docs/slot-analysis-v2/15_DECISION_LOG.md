@@ -24,10 +24,10 @@
 - Reason: 20秒以内に代表価値へ到達する。
 - Rejected: 現行3モードを同格で上部表示。
 
-### V2-D004 — Three initial result blocks
+### V2-D004 — Initial result hierarchy
 
-- Decision: 実績率、/1,000G、想定IN/OUTを初期結果にする。
-- Reason: 重要度と説明可能性。
+- Decision: 実績出玉率、入力した総G/差枚、/1,000Gの順で初期表示する。想定IN/OUTは「計算条件を見る」内へ置く。
+- Reason: 主結果と入力根拠を先に確認でき、想定値を実測結果と誤認しにくい。
 - Rejected: すべての派生指標をカード化。
 
 ### V2-D005 — Neutral benchmark default
@@ -72,10 +72,10 @@
 - Reason: 「回復」という日本語と一致させる。
 - Rejected: 単純な最大run-up。
 
-### V2-D012 — Target reverse is a condition, not forecast
+### V2-D012 — Target reverse uses sign-aware boundary wording
 
-- Decision: 必要差枚と必要残区間率を「数学上の境界」「以上」で表示。
-- Reason: 未来結果の保証に見せない。
+- Decision: 正は`あと+N枚必要`、0は`差枚0枚以上で目標に到達`、負は`−N枚までなら目標を維持`。必要OUTが負なら実行可能境界0%へclampする。
+- Reason: 負の必要差枚を追加獲得の指示に見せず、数学上の境界を自然な日本語で伝える。
 - Rejected: 達成確率、期待値、推奨続行。
 
 ### V2-D013 — Progressive disclosure
@@ -155,3 +155,26 @@
 - Decision: 本PRはdocs/prototype/artifacts/専用テストだけ。
 - Reason: ユーザー指定の安全境界。
 - Rejected: main merge、Cloudflare preview、本番URL更新。
+
+### V2-D026 — Release Core is indivisible at publication
+
+- Decision: RC-01〜RC-16をすべて完成するまで新UIを本番へ切り替えない。開発PRは分割可。
+- Reason: 目標、区間、既存詳細機能の導線を含む製品価値を欠けた状態で公開しない。
+- Rejected: クイック機能だけを先行公開。
+
+### V2-D027 — Segment limits are layered
+
+- Decision: 本番UIは最大10区間、累積地点の初期候補は開始点込み11地点、domainは最大100区間。
+- Reason: 手入力の認知負荷を抑えつつ、domainをUI都合から分離する。
+- Rejected: UI/domainとも20、domain無制限。
+
+### V2-D028 — Benchmark relations remain exact
+
+- Decision: 初期選択なし。厳密差0だけを`基準通り`とし、整数表示0で厳密非0なら`差は1枚未満`と方向を併記する。
+- Reason: 表示丸めで関係を反転・消失させない。
+- Rejected: 103%自動選択、丸め後0をequal扱い。
+
+### V2-D029 — SEO and navigation copy are fixed
+
+- Decision: H1は`スロット出玉分析`、navは`出玉分析`、titleとdescriptionは名称仕様の固定文を使う。`機械割`はSEO/FAQ/補足だけ。
+- Reason: 検索意図へ応えながら、主結果を公称値や設定判別に見せない。

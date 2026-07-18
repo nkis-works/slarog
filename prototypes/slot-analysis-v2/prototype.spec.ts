@@ -35,6 +35,7 @@ test('代表計算、キーボード、プライバシー境界、アクセシ�
   await page.keyboard.press('Enter');
 
   await expect(page.locator('#result-rate')).toHaveText('104.2%');
+  await expect(page.locator('#result-input')).toHaveText('4,000G / +500枚');
   await expect(page.locator('#result-per-thousand')).toHaveText('+125枚');
   await expect(page.locator('#result-flow')).toHaveText('12,000 → 12,500枚');
   await expect(page.locator('[data-rate="100"] [data-difference]')).toHaveText('+500枚');
@@ -71,6 +72,54 @@ test('代表計算、キーボード、プライバシー境界、アクセシ�
   expect(consoleMessages).toEqual([]);
   expect(pageErrors).toEqual([]);
   expect(externalRequests).toEqual([]);
+});
+
+test('390×844の初期表示にH1、一文、2入力、主ボタンが収まる', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/index.html');
+  await page.locator('.prototype-banner').evaluate((element) => {
+    element.hidden = true;
+  });
+  await expect(page.getByRole('heading', { level: 1, name: 'スロット出玉分析' })).toBeVisible();
+  await expect(page.locator('.hero-lead')).toBeVisible();
+  await expect(page.getByLabel('総ゲーム数')).toBeVisible();
+  await expect(page.locator('#quick-net')).toBeVisible();
+  const button = page.getByRole('button', { name: '出玉率を見る' });
+  await expect(button).toBeVisible();
+  const box = await button.boundingBox();
+  expect(box).not.toBeNull();
+  expect((box?.y ?? 0) + (box?.height ?? 0)).toBeLessThanOrEqual(844);
+});
+
+test('厳密差が非0で整数表示0なら1枚未満と方向を示す', async ({ page }) => {
+  await page.goto('/index.html');
+  await page.getByLabel('総ゲーム数').fill('1');
+  await page.locator('#quick-net').fill('0');
+  await page.getByRole('button', { name: '出玉率を見る' }).click();
+  await expect(page.locator('[data-rate="103"] [data-difference]')).toHaveText('1枚未満');
+  await expect(page.locator('[data-rate="103"] [data-relation]')).toHaveText('下回る');
+});
+
+test('目標逆算と区間基準の初期中立を固定', async ({ page }) => {
+  await page.goto('/index.html');
+  await page.getByRole('button', { name: '目標から逆算' }).click();
+  await page.getByRole('button', { name: '必要条件を計算' }).click();
+  await expect(page.locator('#target-remaining')).toHaveText('1,000G');
+  await expect(page.locator('#target-net-result')).toHaveText(
+    '−500枚までなら5,000G時点で100%を維持',
+  );
+  await expect(page.locator('#target-rate-result')).toHaveText('83.3%以上');
+
+  await page.getByRole('button', { name: '区間を比べる' }).click();
+  await expect(page.locator('#segment-benchmark')).toHaveValue('');
+  await page.getByRole('button', { name: '区間を分析' }).click();
+  await expect(page.locator('#segment-benchmark-summary')).toBeHidden();
+  await expect(page.locator('#segment-breakdown')).not.toContainText('好調区間');
+  await page.locator('#segment-benchmark').selectOption('103');
+  await page.getByRole('button', { name: '区間を分析' }).click();
+  await expect(page.locator('#segment-total-diff')).toHaveText('−470枚');
+  await expect(page.locator('#segment-breakdown')).toContainText('103%基準：好調区間');
+  await expect(page.locator('#segment-breakdown')).toContainText('103%基準：低調区間');
 });
 
 test('構造HTMLと外部依存を検査', async ({ page }) => {
@@ -156,7 +205,7 @@ test('390pxの主要状態を視覚成果物に保存', async ({ page }) => {
     .screenshot({ path: resolve(artifactDir, 'segment-result-mobile.png') });
 
   await page.getByRole('button', { name: '投資・回収' }).click();
-  await page.locator('summary', { hasText: '詳細入力' }).click();
+  await page.locator('summary', { hasText: '詳細投資' }).click();
   await page.getByRole('button', { name: '回収を計算' }).click();
   await page
     .locator('#investment-panel')
