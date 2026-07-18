@@ -1,4 +1,4 @@
-import { failure, success, validateNetMedals } from './shared';
+import { domainError, failure, success, validateNetMedals } from './shared';
 import type {
   DrawdownPointInput,
   DrawdownRecoveryValues,
@@ -23,21 +23,21 @@ export function calculateDrawdownRecovery(
   });
   if (errors.length > 0) return failure(errors);
 
-  let peakValue = points[0]?.netMedals ?? 0;
+  let peakValue = BigInt(points[0]?.netMedals ?? 0);
   let peakIndex = 0;
-  let maxDrawdown = 0;
+  let maxDrawdown = 0n;
   let drawdownPeakIndex: number | undefined;
   let drawdownTroughIndex: number | undefined;
 
   let recoveryEligible = false;
-  let recoveryTroughValue = 0;
+  let recoveryTroughValue = 0n;
   let recoveryTroughIndex = 0;
-  let maxRecovery = 0;
+  let maxRecovery = 0n;
   let maxRecoveryTroughIndex: number | undefined;
   let maxRecoveryEndIndex: number | undefined;
 
   for (let index = 1; index < points.length; index += 1) {
-    const value = points[index]?.netMedals ?? 0;
+    const value = BigInt(points[index]?.netMedals ?? 0);
     const drawdown = peakValue - value;
     if (drawdown > maxDrawdown) {
       maxDrawdown = drawdown;
@@ -66,16 +66,23 @@ export function calculateDrawdownRecovery(
     }
   }
 
+  if (
+    maxDrawdown > BigInt(Number.MAX_SAFE_INTEGER) ||
+    maxRecovery > BigInt(Number.MAX_SAFE_INTEGER)
+  ) {
+    return failure([domainError('cumulative_movement_not_safe', 'points')]);
+  }
+
   return success(
     {
       maximumDrawdown: {
-        medals: maxDrawdown,
+        medals: Number(maxDrawdown),
         ...(drawdownPeakIndex === undefined
           ? {}
           : { startIndex: drawdownPeakIndex, endIndex: drawdownTroughIndex }),
       },
       maximumRecoveryAfterDrawdown: {
-        medals: maxRecovery,
+        medals: Number(maxRecovery),
         ...(maxRecoveryTroughIndex === undefined
           ? {}
           : { startIndex: maxRecoveryTroughIndex, endIndex: maxRecoveryEndIndex }),

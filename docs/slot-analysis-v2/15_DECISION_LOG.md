@@ -190,3 +190,15 @@
 - Decision: すべての成功結果は`calculationVersion='2.0.0'`、`formulaIds`、`assumptionCodes`、`roundingCodes`、`warningCodes`を共通metadataとして返す。
 - Reason: UIの「計算条件を見る」をdomainの公開契約から生成し、rendererでの式や前提の再推定を防ぐ。
 - Rejected: 結果型ごとの任意文字列、表示値からのformula判定、domain内の日本語文言。
+
+### V2-D032 — Decimal input is bounded before BigInt conversion
+
+- Decision: v2のdecimal入力はraw 128文字、仮数64桁、小数部32桁、指数絶対値64を上限とし、超過時は`decimal_input_out_of_bounds`を返す。
+- Reason: `1e1000000`や数万桁入力による巨大BigInt生成、CPU/メモリ消費、例外揺れを入力構造の段階で防ぐ。通常の出玉率入力には十分な精度を残す。
+- Rejected: BigInt生成後の検査、無制限decimal、入力種別ごとに異なる上限。
+
+### V2-D033 — Cumulative arithmetic remains exact until safe conversion
+
+- Decision: 累積差枚、終点差枚、最大下落、最大回復はBigIntで中間計算し、すべての累積終点と移動量がsafe integer範囲内だと確認してからNumberへ変換する。
+- Reason: 大きな正負区間で最終合計だけsafeに戻る場合や、個別地点はsafeでも差分がunsafeになる場合を見逃さない。
+- Rejected: 最終合計だけの検査、Number加算後の`Number.isSafeInteger`、unsafe値の丸め継続。

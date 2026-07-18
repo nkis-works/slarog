@@ -87,7 +87,7 @@ export function convertCumulativePoints(
       ]);
     }
     const netMedals = Number(netMedalsBigInt);
-    if (games * 3 + netMedals < 0) {
+    if (BigInt(games) * 3n + netMedalsBigInt < 0n) {
       return failure([
         domainError('segment_assumed_out_negative', `points[${index}].cumulativeNetMedals`, index),
       ]);

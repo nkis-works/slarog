@@ -45,7 +45,7 @@ export function calculateTargetReverse(
   if (
     !currentGamesError &&
     !currentNetError &&
-    input.currentGames * 3 + input.currentNetMedals < 0
+    BigInt(input.currentGames) * 3n + BigInt(input.currentNetMedals) < 0n
   ) {
     errors.push(domainError('assumed_out_negative', 'currentNetMedals'));
   }

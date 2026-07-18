@@ -127,6 +127,7 @@ export function analyzeSegments(
   const errors: SlotAnalysisDomainError[] = [];
   let totalGamesBigInt = 0n;
   let totalNetMedalsBigInt = 0n;
+  let cumulativeNetMedalsBigInt = 0n;
   input.segments.forEach((segment, index) => {
     const gamesError = validateGames(segment.games, `segments[${index}].games`, {
       notPositive: 'segment_games_not_positive',
@@ -139,13 +140,26 @@ export function analyzeSegments(
     if (gamesError) errors.push({ ...gamesError, index });
     if (netError) errors.push({ ...netError, index });
     if (!gamesError && !netError) {
-      if (segment.games * 3 + segment.netMedals < 0) {
+      if (BigInt(segment.games) * 3n + BigInt(segment.netMedals) < 0n) {
         errors.push(
           domainError('segment_assumed_out_negative', `segments[${index}].netMedals`, index),
         );
       }
       totalGamesBigInt += BigInt(segment.games);
       totalNetMedalsBigInt += BigInt(segment.netMedals);
+      cumulativeNetMedalsBigInt += BigInt(segment.netMedals);
+      if (
+        cumulativeNetMedalsBigInt > BigInt(Number.MAX_SAFE_INTEGER) ||
+        cumulativeNetMedalsBigInt < BigInt(Number.MIN_SAFE_INTEGER)
+      ) {
+        errors.push(
+          domainError(
+            'segment_cumulative_net_medals_not_safe',
+            `segments[${index}].netMedals`,
+            index,
+          ),
+        );
+      }
     }
   });
   if (
@@ -217,11 +231,13 @@ export function analyzeSegments(
       cumulativeNetMedals: 0,
     },
   ];
-  let cumulativeGames = 0;
-  let cumulativeNetMedals = 0;
+  let cumulativeGamesBigInt = 0n;
+  cumulativeNetMedalsBigInt = 0n;
   for (const [index, segment] of input.segments.entries()) {
-    cumulativeGames += segment.games;
-    cumulativeNetMedals += segment.netMedals;
+    cumulativeGamesBigInt += BigInt(segment.games);
+    cumulativeNetMedalsBigInt += BigInt(segment.netMedals);
+    const cumulativeGames = Number(cumulativeGamesBigInt);
+    const cumulativeNetMedals = Number(cumulativeNetMedalsBigInt);
     cumulativePoints.push({ netMedals: cumulativeNetMedals });
     cumulativeEndpoints.push({
       pointIndex: index + 1,

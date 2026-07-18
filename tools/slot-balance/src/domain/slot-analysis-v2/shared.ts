@@ -14,6 +14,12 @@ import type {
 } from './types';
 
 export const MAX_THREE_MEDAL_GAMES = Math.floor(Number.MAX_SAFE_INTEGER / 3);
+export const MAX_DECIMAL_INPUT_LENGTH = 128;
+export const MAX_DECIMAL_MANTISSA_DIGITS = 64;
+export const MAX_DECIMAL_FRACTION_DIGITS = 32;
+export const MAX_DECIMAL_EXPONENT_ABS = 64;
+
+const DECIMAL_STRUCTURE = /^([+-]?)(\d+)(?:\.(\d*))?(?:e([+-]?\d+))?$/i;
 
 export function deepFreeze<T>(value: T): Readonly<T> {
   if (value !== null && typeof value === 'object' && !Object.isFrozen(value)) {
@@ -115,8 +121,26 @@ export function parsePositiveDecimal(
   if (typeof value === 'number' && !Number.isFinite(value)) {
     return { error: domainError(codes.notFinite, field) };
   }
+  const raw = typeof value === 'number' ? value.toString() : value;
+  if (raw.length > MAX_DECIMAL_INPUT_LENGTH) {
+    return { error: domainError('decimal_input_out_of_bounds', field) };
+  }
+  const text = raw.trim();
+  const structure = DECIMAL_STRUCTURE.exec(text);
+  if (!structure) return { error: domainError(codes.notFinite, field) };
+  const integerDigits = structure[2] ?? '';
+  const fractionDigits = structure[3] ?? '';
+  const exponentDigits = structure[4] ?? '0';
+  if (
+    integerDigits.length + fractionDigits.length > MAX_DECIMAL_MANTISSA_DIGITS ||
+    fractionDigits.length > MAX_DECIMAL_FRACTION_DIGITS ||
+    BigInt(exponentDigits) > BigInt(MAX_DECIMAL_EXPONENT_ABS) ||
+    BigInt(exponentDigits) < BigInt(-MAX_DECIMAL_EXPONENT_ABS)
+  ) {
+    return { error: domainError('decimal_input_out_of_bounds', field) };
+  }
   try {
-    const parsed = decimal(value);
+    const parsed = decimal(text);
     if (compare(parsed, integer(0)) <= 0) {
       return { error: domainError(codes.notPositive, field) };
     }

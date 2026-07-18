@@ -56,6 +56,7 @@ export type SlotAnalysisDomainErrorCode =
   | 'assumed_out_negative'
   | 'benchmark_rate_not_positive'
   | 'benchmark_rate_not_finite_decimal'
+  | 'decimal_input_out_of_bounds'
   | 'target_games_not_positive'
   | 'target_games_not_safe'
   | 'target_games_not_after_current'
@@ -70,6 +71,7 @@ export type SlotAnalysisDomainErrorCode =
   | 'segment_net_medals_not_safe'
   | 'segment_assumed_out_negative'
   | 'segment_totals_not_safe'
+  | 'segment_cumulative_net_medals_not_safe'
   | 'cumulative_points_required'
   | 'cumulative_points_limit_exceeded'
   | 'cumulative_games_not_integer'
@@ -77,7 +79,8 @@ export type SlotAnalysisDomainErrorCode =
   | 'cumulative_games_negative'
   | 'cumulative_games_not_increasing'
   | 'cumulative_net_medals_not_integer'
-  | 'cumulative_net_medals_not_safe';
+  | 'cumulative_net_medals_not_safe'
+  | 'cumulative_movement_not_safe';
 
 export interface SlotAnalysisDomainError {
   readonly code: SlotAnalysisDomainErrorCode;
