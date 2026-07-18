@@ -4,7 +4,7 @@ import { pathToFileURL } from 'node:url';
 
 import { build } from 'esbuild';
 
-export const SLOT_BALANCE_ENTRY = 'tools/slot-balance/src/ui/app.ts';
+export const SLOT_BALANCE_ENTRY = 'tools/slot-balance/src/ui-v2/app.ts';
 export const SLOT_BALANCE_BUNDLE = 'tools/slot-balance/assets/slot-balance-app.js';
 
 export async function createSlotBalanceBundle() {
