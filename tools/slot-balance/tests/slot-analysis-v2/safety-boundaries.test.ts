@@ -9,6 +9,7 @@ import {
   convertCumulativePoints,
 } from '../../src/domain/slot-analysis-v2/cumulative-points';
 import { calculateDrawdownRecovery } from '../../src/domain/slot-analysis-v2/drawdown';
+import { calculateQuickPerformance } from '../../src/domain/slot-analysis-v2/quick-performance';
 import { analyzeSegments } from '../../src/domain/slot-analysis-v2/segments';
 import { calculatePayoutRateSensitivity } from '../../src/domain/slot-analysis-v2/sensitivity';
 import { calculateTargetReverse } from '../../src/domain/slot-analysis-v2/target-reverse';
@@ -32,6 +33,7 @@ describe('slot analysis v2 public result metadata', () => {
     expectMetadata(calculateBenchmark({ games: 4000, netMedals: 500, benchmarkRate: 103 }));
 
     const results = [
+      calculateQuickPerformance({ games: 4000, netMedals: 500 }),
       calculateStandardBenchmarks({ games: 4000, netMedals: 500 }),
       calculatePayoutRateSensitivity({ games: 4000 }),
       calculateTargetReverse({
@@ -66,6 +68,7 @@ describe('slot analysis v2 public result metadata', () => {
   });
 
   it('reports the exact formula combination for each calculation family', () => {
+    const quick = calculateQuickPerformance({ games: 4000, netMedals: 500 });
     const benchmark = calculateBenchmark({ games: 4000, netMedals: 500, benchmarkRate: 103 });
     const sensitivity = calculatePayoutRateSensitivity({ games: 4000 });
     const target = calculateTargetReverse({
@@ -86,6 +89,10 @@ describe('slot analysis v2 public result metadata', () => {
       ],
     });
 
+    expect(quick.ok && quick.metadata.formulaIds).toEqual([
+      'quick_performance_rate',
+      'net_medals_per_1000_games',
+    ]);
     expect(benchmark.ok && benchmark.metadata.formulaIds).toEqual([
       'benchmark_expected_net_medals',
       'benchmark_difference',
@@ -171,6 +178,18 @@ describe('slot analysis v2 exact display classifications', () => {
 });
 
 describe('slot analysis v2 extreme input safety', () => {
+  it('returns the representative quick result from the v2 public contract', () => {
+    const result = calculateQuickPerformance({ games: 4000, netMedals: 500 });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value).toMatchObject({
+      assumedInMedals: 12_000,
+      assumedOutMedals: 12_500,
+    });
+    expect(result.value.payoutRate.display).toBe(104.2);
+    expect(result.value.netMedalsPer1000Games.display).toBe(125);
+  });
+
   it('rejects a negative assumed OUT and accepts the exact zero-OUT boundary', () => {
     expect(calculateBenchmark({ games: 1000, netMedals: -3001, benchmarkRate: 100 })).toMatchObject(
       {
@@ -180,6 +199,10 @@ describe('slot analysis v2 extreme input safety', () => {
     );
     const boundary = calculateBenchmark({ games: 1000, netMedals: -3000, benchmarkRate: 100 });
     expect(boundary.ok).toBe(true);
+    expect(calculateQuickPerformance({ games: 1000, netMedals: -3001 })).toMatchObject({
+      ok: false,
+      errors: [{ code: 'assumed_out_negative', field: 'netMedals' }],
+    });
   });
 
   it.each([

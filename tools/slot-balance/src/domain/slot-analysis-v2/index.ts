@@ -1,6 +1,7 @@
 export * from './benchmarks';
 export * from './cumulative-points';
 export * from './drawdown';
+export * from './quick-performance';
 export * from './segments';
 export * from './sensitivity';
 export * from './target-reverse';

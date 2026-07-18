@@ -106,6 +106,20 @@ export interface SlotAnalysisCalculatedNumber {
   readonly display: number;
 }
 
+export interface QuickPerformanceInput {
+  readonly games: number;
+  readonly netMedals: number;
+}
+
+export interface QuickPerformanceValues {
+  readonly games: number;
+  readonly netMedals: number;
+  readonly assumedInMedals: number;
+  readonly assumedOutMedals: number;
+  readonly payoutRate: SlotAnalysisCalculatedNumber;
+  readonly netMedalsPer1000Games: SlotAnalysisCalculatedNumber;
+}
+
 export interface BenchmarkInput {
   readonly games: number;
   readonly netMedals: number;

@@ -13,6 +13,7 @@ describe('slot analysis v2 privacy and purity boundary', () => {
       'cumulative-points.ts',
       'drawdown.ts',
       'index.ts',
+      'quick-performance.ts',
       'segments.ts',
       'sensitivity.ts',
       'shared.ts',
