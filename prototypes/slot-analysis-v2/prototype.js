@@ -379,33 +379,28 @@
     event.preventDefault();
     const cash = parseInteger($('#cash-invested').value);
     const medals = parseInteger($('#current-medals').value);
-    const rate = parseDecimal($('#exchange-rate').value);
-    const unit = parseInteger($('#exchange-unit').value);
+    const exchangeMedalsPer1000Yen = parseDecimal($('#exchange-medals-per-1000-yen').value);
     const error = $('#investment-error');
     if (
       cash === null ||
       cash < 0 ||
       medals === null ||
       medals < 0 ||
-      !rate ||
-      rate <= 0 ||
-      !unit ||
-      unit < 1
+      !exchangeMedalsPer1000Yen ||
+      exchangeMedalsPer1000Yen <= 0
     ) {
-      error.textContent = '現金、枚数、交換率、交換単位を確認してください。';
+      error.textContent = '現金、枚数、1,000円分への交換に必要な枚数を確認してください。';
       $('#investment-result').hidden = true;
       return;
     }
     error.textContent = '';
-    const applied = Math.floor(medals / unit) * unit;
-    const remainder = medals - applied;
-    const exchange = applied * rate;
+    const exchange = medals * (1000 / exchangeMedalsPer1000Yen);
     const balance = exchange - cash;
     $('#exchange-value').textContent = `${integer.format(exchange)}円`;
     $('#cash-balance').textContent = signed(balance, '円');
     $('#recovery-rate').textContent = cash === 0 ? '—' : `${((exchange / cash) * 100).toFixed(1)}%`;
-    $('#remainder-copy').textContent =
-      `交換適用 ${integer.format(applied)}枚 / 端数 ${integer.format(remainder)}枚`;
+    $('#exchange-condition-copy').textContent =
+      `交換条件 1,000円あたり${integer.format(exchangeMedalsPer1000Yen)}枚`;
     $('#investment-result').hidden = false;
   });
 })();

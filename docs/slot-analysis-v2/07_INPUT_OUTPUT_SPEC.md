@@ -92,16 +92,34 @@ type BenchmarkRow = {
 
 ### 簡易
 
-| 項目       | 型/単位       | 必須 |
-| ---------- | ------------- | ---- |
-| 現金投資   | 0以上の整数円 | 必須 |
-| 現在メダル | 0以上の整数枚 | 必須 |
-| 交換率     | 正数 円/枚    | 必須 |
-| 交換単位   | 1以上の整数枚 | 必須 |
+| 項目                          | 型/単位         | 必須 | 例      |
+| ----------------------------- | --------------- | ---- | ------- |
+| 現金投資                      | 0以上の整数円   | 必須 | 20000   |
+| 現在メダル                    | 0以上の整数枚   | 必須 | 1200    |
+| 1,000円分への交換に必要な枚数 | 正数 枚/1,000円 | 必須 | 50 / 56 |
 
 ### 詳細（段階開示）
 
-貯メダル、交換済み円、貸出率、今回のG/差枚。初期画面では表示しない。簡易結果は交換額、現金収支、現金回収率、端数。詳細結果は貯メダル価値と総回収率を分離。
+交換単位、貯メダル使用枚数、交換済み円、貸出枚数/1,000円、今回のG/差枚。初期画面では表示しない。簡易結果は交換額見込み、現金収支、現金回収率。詳細結果は端数、貯メダル価値と総回収率を分離する。`円/枚`は`1000 / exchangeMedalsPer1000Yen`としてdomain内部で有理数換算し、主入力や主要ラベルには使わない。
+
+## 成功結果の共通metadata
+
+すべてのv2成功結果は次の共通契約を持つ。
+
+```ts
+type SlotAnalysisResultMetadata = {
+  calculationVersion: '2.0.0';
+  formulaIds: readonly SlotAnalysisFormulaId[];
+  assumptionCodes: readonly SlotAnalysisAssumptionCode[];
+  roundingCodes: readonly SlotAnalysisRoundingCode[];
+  warningCodes: readonly SlotAnalysisWarningCode[];
+};
+```
+
+- `formulaIds`は実行された式だけを列挙する。
+- code配列はUI文言ではなく安定した英語識別子を返す。
+- UIはmetadataをview modelへ変換し、「計算条件を見る」を表示する。表示値から前提や丸めを推測しない。
+- metadataを含む成功結果全体を再帰的にimmutableにする。
 
 ## 表示フォーマット
 

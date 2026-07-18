@@ -165,14 +165,14 @@
         </section>
 
         <section class="detail-panel" id="investment-panel" hidden aria-labelledby="investment-title">
-          <div class="detail-copy"><p class="section-kicker">交換単位まで確認</p><h3 id="investment-title" tabindex="-1">投資・回収</h3><p>まず4項目だけで計算し、必要な場合だけ詳細を開きます。</p></div>
+          <div class="detail-copy"><p class="section-kicker">交換条件まで確認</p><h3 id="investment-title" tabindex="-1">投資・回収</h3><p>まず3項目だけで計算し、必要な場合だけ詳細を開きます。</p></div>
           <form id="investment-form" class="detail-form">
-            <div class="compact-grid"><label for="cash-invested">現金投資（円）<input id="cash-invested" inputmode="numeric" value="20000" /></label><label for="current-medals">現在メダル（枚）<input id="current-medals" inputmode="numeric" value="1200" /></label><label for="exchange-rate">交換率（円/枚）<input id="exchange-rate" inputmode="decimal" value="20.0" /></label><label for="exchange-unit">交換単位（枚）<input id="exchange-unit" inputmode="numeric" value="1" /></label></div>
-            <details class="advanced-inputs"><summary>詳細投資を開く（貯メダル・交換済みなど）</summary><p>本プロトタイプでは配置確認のみです。本番ロジックには接続していません。</p><div class="compact-grid"><label>貯メダル<input inputmode="numeric" value="0" /></label><label>交換済み現金<input inputmode="numeric" value="0" /></label></div></details>
+            <div class="compact-grid"><label for="cash-invested">現金投資（円）<input id="cash-invested" inputmode="numeric" value="20000" /></label><label for="current-medals">現在メダル（枚）<input id="current-medals" inputmode="numeric" value="1200" /></label><label for="exchange-medals-per-1000-yen">1,000円分への交換に必要な枚数<input id="exchange-medals-per-1000-yen" inputmode="decimal" value="50" /><small>例：50枚 / 1,000円、56枚 / 1,000円</small></label></div>
+            <details class="advanced-inputs"><summary>詳細投資を開く（交換単位・貯メダルなど）</summary><p>本プロトタイプでは配置確認のみです。本番ロジックには接続していません。</p><div class="compact-grid"><label>交換単位（枚）<input inputmode="numeric" value="1" /></label><label>貯メダル使用枚数<input inputmode="numeric" value="0" /></label><label>交換済み現金<input inputmode="numeric" value="0" /></label><label>貸出枚数 / 1,000円<input inputmode="decimal" value="50" /></label></div></details>
             <div class="legacy-routes" aria-label="既存の詳細計算"><button class="button text-button prototype-only" type="button">実IN / OUTを開く</button><button class="button text-button prototype-only" type="button">通常コイン持ちを開く</button></div>
             <button class="button primary" type="submit">回収を計算</button><p class="inline-error" id="investment-error"></p>
           </form>
-          <div class="detail-result" id="investment-result" hidden><span>交換額 <strong id="exchange-value">—</strong></span><span>現金収支 <strong id="cash-balance">—</strong></span><span>回収率 <strong id="recovery-rate">—</strong></span><small id="remainder-copy"></small></div>
+          <div class="detail-result" id="investment-result" hidden><span>交換額見込み <strong id="exchange-value">—</strong></span><span>現金収支 <strong id="cash-balance">—</strong></span><span>回収率 <strong id="recovery-rate">—</strong></span><small id="exchange-condition-copy"></small></div>
         </section>
       </section>
 

@@ -175,3 +175,11 @@ The prototype was also operated through the app browser: quick calculation and t
 - Benchmark and segment defaults are neutral, exact-zero/sub-medal wording is locked, and target reverse copy is sign-aware.
 - Segment limits are UI 10, cumulative initial candidate 11 points including the start, and domain 100.
 - This revision remains docs/prototype-only. Production UI, URL, build, deployment, Cloudflare, advertising, and Analytics are unchanged.
+
+## L. Public-contract hardening revision
+
+- Investment/recovery now uses `1,000円分への交換に必要な枚数` as its primary exchange input; `円/枚` is an internal rational conversion only.
+- The basic investment prototype is reduced from four fields to cash invested, current medals, and medals per 1,000 yen.
+- Every successful v2 result is specified to expose immutable metadata with calculation version, formula, assumption, rounding, and warning codes.
+- UI calculation-condition copy must be derived from domain metadata through an adapter; the renderer must not infer formulas or exact relations from rounded display values.
+- Prototype Playwright remains 14 tests and now checks the corrected exchange input and representative result.
