@@ -12,8 +12,8 @@ describe('slot analysis v2 drawdown and recovery', () => {
     ]);
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    expect(result.value.maxDrawdown).toEqual({ medals: 400, startIndex: 1, endIndex: 2 });
-    expect(result.value.maxRecoveryAfterDecline).toEqual({
+    expect(result.value.maximumDrawdown).toEqual({ medals: 400, startIndex: 1, endIndex: 2 });
+    expect(result.value.maximumRecoveryAfterDrawdown).toEqual({
       medals: 300,
       startIndex: 2,
       endIndex: 3,
@@ -29,8 +29,8 @@ describe('slot analysis v2 drawdown and recovery', () => {
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     expect(result.value).toEqual({
-      maxDrawdown: { medals: 0 },
-      maxRecoveryAfterDecline: { medals: 0 },
+      maximumDrawdown: { medals: 0 },
+      maximumRecoveryAfterDrawdown: { medals: 0 },
     });
   });
 
@@ -44,8 +44,8 @@ describe('slot analysis v2 drawdown and recovery', () => {
     ]);
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    expect(result.value.maxDrawdown).toEqual({ medals: 100, startIndex: 0, endIndex: 1 });
-    expect(result.value.maxRecoveryAfterDecline).toEqual({
+    expect(result.value.maximumDrawdown).toEqual({ medals: 100, startIndex: 0, endIndex: 1 });
+    expect(result.value.maximumRecoveryAfterDrawdown).toEqual({
       medals: 100,
       startIndex: 1,
       endIndex: 2,

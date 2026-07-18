@@ -67,13 +67,13 @@ export function calculateDrawdownRecovery(
   }
 
   return success({
-    maxDrawdown: {
+    maximumDrawdown: {
       medals: maxDrawdown,
       ...(drawdownPeakIndex === undefined
         ? {}
         : { startIndex: drawdownPeakIndex, endIndex: drawdownTroughIndex }),
     },
-    maxRecoveryAfterDecline: {
+    maximumRecoveryAfterDrawdown: {
       medals: maxRecovery,
       ...(maxRecoveryTroughIndex === undefined
         ? {}

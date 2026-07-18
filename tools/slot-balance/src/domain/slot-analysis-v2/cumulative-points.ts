@@ -24,27 +24,40 @@ export function convertCumulativePoints(
   const errors: SlotAnalysisDomainError[] = [];
   const points: CumulativePointInput[] = input.points.map((point) => ({
     ...(point.label === undefined ? {} : { label: point.label }),
-    games: point.games,
-    netMedals: point.netMedals,
+    cumulativeGames: point.cumulativeGames,
+    cumulativeNetMedals: point.cumulativeNetMedals,
   }));
   points.forEach((point, index) => {
-    if (!Number.isInteger(point.games)) {
-      errors.push(domainError('cumulative_games_not_integer', `points[${index}].games`, index));
-    } else if (!Number.isSafeInteger(point.games) || point.games > MAX_THREE_MEDAL_GAMES) {
-      errors.push(domainError('cumulative_games_not_safe', `points[${index}].games`, index));
-    } else if (point.games < 0) {
-      errors.push(domainError('cumulative_games_negative', `points[${index}].games`, index));
+    if (!Number.isInteger(point.cumulativeGames)) {
+      errors.push(
+        domainError('cumulative_games_not_integer', `points[${index}].cumulativeGames`, index),
+      );
+    } else if (
+      !Number.isSafeInteger(point.cumulativeGames) ||
+      point.cumulativeGames > MAX_THREE_MEDAL_GAMES
+    ) {
+      errors.push(
+        domainError('cumulative_games_not_safe', `points[${index}].cumulativeGames`, index),
+      );
+    } else if (point.cumulativeGames < 0) {
+      errors.push(
+        domainError('cumulative_games_negative', `points[${index}].cumulativeGames`, index),
+      );
     }
-    const netError = validateNetMedals(point.netMedals, `points[${index}].netMedals`, {
-      notInteger: 'cumulative_net_medals_not_integer',
-      notSafe: 'cumulative_net_medals_not_safe',
-    });
+    const netError = validateNetMedals(
+      point.cumulativeNetMedals,
+      `points[${index}].cumulativeNetMedals`,
+      {
+        notInteger: 'cumulative_net_medals_not_integer',
+        notSafe: 'cumulative_net_medals_not_safe',
+      },
+    );
     if (netError) errors.push({ ...netError, index });
-    if (index > 0 && Number.isSafeInteger(point.games)) {
-      const previousGames = points[index - 1]?.games;
-      if (previousGames !== undefined && point.games <= previousGames) {
+    if (index > 0 && Number.isSafeInteger(point.cumulativeGames)) {
+      const previousGames = points[index - 1]?.cumulativeGames;
+      if (previousGames !== undefined && point.cumulativeGames <= previousGames) {
         errors.push(
-          domainError('cumulative_games_not_increasing', `points[${index}].games`, index),
+          domainError('cumulative_games_not_increasing', `points[${index}].cumulativeGames`, index),
         );
       }
     }
@@ -56,20 +69,20 @@ export function convertCumulativePoints(
     const start = points[index - 1];
     const end = points[index];
     if (!start || !end) continue;
-    const games = end.games - start.games;
-    const netMedalsBigInt = BigInt(end.netMedals) - BigInt(start.netMedals);
+    const games = end.cumulativeGames - start.cumulativeGames;
+    const netMedalsBigInt = BigInt(end.cumulativeNetMedals) - BigInt(start.cumulativeNetMedals);
     if (
       netMedalsBigInt > BigInt(Number.MAX_SAFE_INTEGER) ||
       netMedalsBigInt < BigInt(Number.MIN_SAFE_INTEGER)
     ) {
       return failure([
-        domainError('segment_net_medals_not_safe', `points[${index}].netMedals`, index),
+        domainError('segment_net_medals_not_safe', `points[${index}].cumulativeNetMedals`, index),
       ]);
     }
     const netMedals = Number(netMedalsBigInt);
     if (games * 3 + netMedals < 0) {
       return failure([
-        domainError('segment_assumed_out_negative', `points[${index}].netMedals`, index),
+        domainError('segment_assumed_out_negative', `points[${index}].cumulativeNetMedals`, index),
       ]);
     }
     segments.push({
@@ -99,5 +112,11 @@ export function analyzeCumulativePoints(
     ...(input.benchmarkRate === undefined ? {} : { benchmarkRate: input.benchmarkRate }),
   });
   if (!analysis.ok) return analysis;
-  return success({ points: conversion.value.points, ...analysis.value });
+  const cumulativeEndpoints = conversion.value.points.map((point, index) => ({
+    pointIndex: index,
+    sourceIndex: index,
+    cumulativeGames: point.cumulativeGames,
+    cumulativeNetMedals: point.cumulativeNetMedals,
+  }));
+  return success({ ...analysis.value, points: conversion.value.points, cumulativeEndpoints });
 }

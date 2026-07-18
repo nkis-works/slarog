@@ -16,6 +16,7 @@ import type {
   SegmentAnalysisInput,
   SegmentAnalysisValues,
   SegmentBenchmarkValues,
+  SegmentCumulativeEndpoint,
   SegmentInput,
   SegmentProvenance,
   SegmentValues,
@@ -46,7 +47,7 @@ function mapMovementIndices(
   values: DrawdownRecoveryValues,
   sourceIndices: readonly number[],
 ): DrawdownRecoveryValues {
-  const mapMovement = (movement: DrawdownRecoveryValues['maxDrawdown']) => ({
+  const mapMovement = (movement: DrawdownRecoveryValues['maximumDrawdown']) => ({
     medals: movement.medals,
     ...(movement.startIndex === undefined
       ? {}
@@ -56,8 +57,8 @@ function mapMovementIndices(
         }),
   });
   return {
-    maxDrawdown: mapMovement(values.maxDrawdown),
-    maxRecoveryAfterDecline: mapMovement(values.maxRecoveryAfterDecline),
+    maximumDrawdown: mapMovement(values.maximumDrawdown),
+    maximumRecoveryAfterDrawdown: mapMovement(values.maximumRecoveryAfterDrawdown),
   };
 }
 
@@ -184,17 +185,35 @@ export function analyzeSegments(
     aggregateBenchmark = benchmarkWithoutCondition;
   }
   const aggregate: SegmentAnalysisValues['aggregate'] = {
-    totalGames,
-    totalNetMedals,
-    ...aggregateMetrics,
+    aggregateGames: totalGames,
+    aggregateNetMedals: totalNetMedals,
+    aggregatePayoutRate: aggregateMetrics.payoutRate,
+    aggregateNetMedalsPer1000Games: aggregateMetrics.netMedalsPer1000Games,
     ...(aggregateBenchmark === undefined ? {} : { benchmark: aggregateBenchmark }),
   };
 
+  const sourceIndices = endpointSourceIndices(input.segments);
   const cumulativePoints: Array<{ netMedals: number }> = [{ netMedals: 0 }];
+  const cumulativeEndpoints: SegmentCumulativeEndpoint[] = [
+    {
+      pointIndex: 0,
+      sourceIndex: sourceIndices[0] ?? 0,
+      cumulativeGames: 0,
+      cumulativeNetMedals: 0,
+    },
+  ];
+  let cumulativeGames = 0;
   let cumulativeNetMedals = 0;
-  for (const segment of input.segments) {
+  for (const [index, segment] of input.segments.entries()) {
+    cumulativeGames += segment.games;
     cumulativeNetMedals += segment.netMedals;
     cumulativePoints.push({ netMedals: cumulativeNetMedals });
+    cumulativeEndpoints.push({
+      pointIndex: index + 1,
+      sourceIndex: sourceIndices[index + 1] ?? index + 1,
+      cumulativeGames,
+      cumulativeNetMedals,
+    });
   }
   const drawdownRecovery = calculateDrawdownRecovery(cumulativePoints);
   if (!drawdownRecovery.ok) return drawdownRecovery;
@@ -202,10 +221,8 @@ export function analyzeSegments(
   return success({
     segments,
     aggregate,
-    drawdownRecovery: mapMovementIndices(
-      drawdownRecovery.value,
-      endpointSourceIndices(input.segments),
-    ),
+    cumulativeEndpoints,
+    drawdownRecovery: mapMovementIndices(drawdownRecovery.value, sourceIndices),
   });
 }
 

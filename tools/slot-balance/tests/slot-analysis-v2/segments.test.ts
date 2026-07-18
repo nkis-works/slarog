@@ -19,9 +19,17 @@ describe('slot analysis v2 segment analysis', () => {
     expect(result.value.segments[0]?.benchmark?.contributionNetMedals.display).toBe(110);
     expect(result.value.segments[1]?.payoutRate.display).toBe(93.3);
     expect(result.value.segments[1]?.benchmark?.contributionNetMedals.display).toBe(-580);
-    expect(result.value.aggregate).toMatchObject({ totalGames: 3000, totalNetMedals: -200 });
-    expect(result.value.aggregate.payoutRate.display).toBe(97.8);
+    expect(result.value.aggregate).toMatchObject({
+      aggregateGames: 3000,
+      aggregateNetMedals: -200,
+    });
+    expect(result.value.aggregate.aggregatePayoutRate.display).toBe(97.8);
     expect(result.value.aggregate.benchmark?.differenceNetMedals.display).toBe(-470);
+    expect(result.value.cumulativeEndpoints).toEqual([
+      { pointIndex: 0, sourceIndex: 0, cumulativeGames: 0, cumulativeNetMedals: 0 },
+      { pointIndex: 1, sourceIndex: 1, cumulativeGames: 1000, cumulativeNetMedals: 200 },
+      { pointIndex: 2, sourceIndex: 2, cumulativeGames: 3000, cumulativeNetMedals: -200 },
+    ]);
   });
 
   it('omits relation, condition, and contribution when no benchmark is selected', () => {

@@ -40,9 +40,9 @@ describe('slot analysis v2 exact release cases', () => {
     });
     const cumulative = analyzeCumulativePoints({
       points: [
-        { games: 2000, netMedals: 300 },
-        { games: 3000, netMedals: 500 },
-        { games: 5000, netMedals: 100 },
+        { cumulativeGames: 2000, cumulativeNetMedals: 300 },
+        { cumulativeGames: 3000, cumulativeNetMedals: 500 },
+        { cumulativeGames: 5000, cumulativeNetMedals: 100 },
       ],
       benchmarkRate: 103,
     });
@@ -72,8 +72,8 @@ describe('slot analysis v2 exact release cases', () => {
     const input = {
       currentGames: 1,
       currentNetMedals: 0,
-      targetGames: 2,
-      targetRate: 103,
+      targetTotalGames: 2,
+      targetPayoutRate: 103,
     } as const;
     const result = calculateTargetReverse(input);
     expect(result.ok).toBe(true);
@@ -82,13 +82,15 @@ describe('slot analysis v2 exact release cases', () => {
       numerator: '9',
       denominator: '50',
     });
-    expect(result.value.minimumFutureNetMedals).toBe(1);
+    expect(result.value.minimumIntegerFutureNetMedals).toBe(1);
 
-    const aggregateIn = integer(input.targetGames * 3);
+    const aggregateIn = integer(input.targetTotalGames * 3);
     const achievedRate = divide(
       multiply(
         integer(
-          input.targetGames * 3 + input.currentNetMedals + result.value.minimumFutureNetMedals,
+          input.targetTotalGames * 3 +
+            input.currentNetMedals +
+            result.value.minimumIntegerFutureNetMedals,
         ),
         integer(100),
       ),
@@ -97,13 +99,16 @@ describe('slot analysis v2 exact release cases', () => {
     const failedRate = divide(
       multiply(
         integer(
-          input.targetGames * 3 + input.currentNetMedals + result.value.minimumFutureNetMedals - 1,
+          input.targetTotalGames * 3 +
+            input.currentNetMedals +
+            result.value.minimumIntegerFutureNetMedals -
+            1,
         ),
         integer(100),
       ),
       aggregateIn,
     );
-    const target = integer(input.targetRate);
+    const target = integer(input.targetPayoutRate);
     expect(compare(achievedRate, target)).toBeGreaterThanOrEqual(0);
     expect(compare(failedRate, target)).toBeLessThan(0);
   });

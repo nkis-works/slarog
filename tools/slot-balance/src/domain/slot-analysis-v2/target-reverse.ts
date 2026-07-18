@@ -30,11 +30,11 @@ export function calculateTargetReverse(
     notInteger: 'net_medals_not_integer',
     notSafe: 'net_medals_not_safe',
   });
-  const targetGamesError = validateGames(input.targetGames, 'targetGames', {
+  const targetGamesError = validateGames(input.targetTotalGames, 'targetTotalGames', {
     notPositive: 'target_games_not_positive',
     notSafe: 'target_games_not_safe',
   });
-  const targetRate = parsePositiveDecimal(input.targetRate, 'targetRate', {
+  const targetRate = parsePositiveDecimal(input.targetPayoutRate, 'targetPayoutRate', {
     notPositive: 'target_rate_not_positive',
     notFinite: 'target_rate_not_finite_decimal',
   });
@@ -49,13 +49,13 @@ export function calculateTargetReverse(
   ) {
     errors.push(domainError('assumed_out_negative', 'currentNetMedals'));
   }
-  if (!currentGamesError && !targetGamesError && input.targetGames <= input.currentGames) {
-    errors.push(domainError('target_games_not_after_current', 'targetGames'));
+  if (!currentGamesError && !targetGamesError && input.targetTotalGames <= input.currentGames) {
+    errors.push(domainError('target_games_not_after_current', 'targetTotalGames'));
   }
   if (errors.length > 0 || !targetRate.value) return failure(errors);
 
-  const remainingGames = input.targetGames - input.currentGames;
-  const targetIn = integer(input.targetGames * 3);
+  const remainingGames = input.targetTotalGames - input.currentGames;
+  const targetIn = integer(input.targetTotalGames * 3);
   const exactTargetTotalNetMedals = divide(
     multiply(targetIn, subtract(targetRate.value, integer(100))),
     integer(100),
@@ -84,7 +84,7 @@ export function calculateTargetReverse(
       boundaryFuturePayoutRate,
     )
   ) {
-    return failure([domainError('result_not_finite', 'targetRate')]);
+    return failure([domainError('result_not_finite', 'targetPayoutRate')]);
   }
 
   let status: TargetReverseStatus;
@@ -96,16 +96,18 @@ export function calculateTargetReverse(
   return success({
     currentGames: input.currentGames,
     currentNetMedals: input.currentNetMedals,
-    targetGames: input.targetGames,
-    targetRate: exact(targetRate.value),
+    targetTotalGames: input.targetTotalGames,
+    targetPayoutRate: exact(targetRate.value),
     remainingGames,
     exactTargetTotalNetMedals: metric(exactTargetTotalNetMedals, 0),
     exactRequiredFutureNetMedals: metric(exactRequiredFutureNetMedals, 0),
-    minimumFutureNetMedals,
+    minimumIntegerFutureNetMedals: minimumFutureNetMedals,
     minimumFutureOutMedals,
-    boundaryFuturePayoutRate: metric(boundaryFuturePayoutRate, 1),
+    requiredFuturePayoutRate: metric(boundaryFuturePayoutRate, 1),
     status,
     ...(status === 'can_lose_up_to' ? { allowedLossMedals: Math.abs(minimumFutureNetMedals) } : {}),
     clampedToNonnegativeOut,
+    assumptions: ['three_medals_per_game', 'mathematical_boundary_not_prediction'],
+    warnings: clampedToNonnegativeOut ? ['future_out_clamped_to_zero'] : [],
   });
 }
