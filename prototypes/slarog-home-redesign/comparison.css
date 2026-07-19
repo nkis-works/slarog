@@ -74,6 +74,11 @@ article a,
   font-weight: 750;
   text-underline-offset: 5px;
 }
+.links span {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
 .recommended .letter {
   color: var(--blue);
 }

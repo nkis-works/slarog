@@ -19,6 +19,15 @@ const bannedDecorativeLabels = [
   'Zero Line / Export',
 ];
 
+test('比較ページはA/B/現行だけへリンクし、非配布ファイルへ誘導しない', async ({ page }) => {
+  await page.goto(`${root}/`);
+  const hrefs = await page
+    .locator('a')
+    .evaluateAll((links) => links.map((link) => link.getAttribute('href')));
+  expect(hrefs).toEqual(['a/', 'b/', '../../index.html']);
+  expect(hrefs).not.toContain('README.md');
+});
+
 test('A/Bともブランド、料金、作った理由、実画面を公開契約どおり表示する', async ({ page }) => {
   for (const proposal of proposals) {
     await page.goto(proposal.path);
