@@ -46,17 +46,17 @@ Deterministic complete-dist digests:
 
 ## Automated verification before preview deployment
 
-| Check | Result |
-| --- | --- |
-| Format, lint, typecheck | pass |
-| Unit | 19 files / 136 tests pass |
-| Source E2E | 40 pass |
-| Dist E2E | 14 pass |
-| Dist allowlist | 23 files pass |
-| axe | critical/serious 0 |
-| Responsive | 320–1440px without horizontal overflow |
-| Privacy/runtime | console, pageerror, external request, dynamic transport, storage, Cookie, IndexedDB, query, hash all 0 |
-| Tracked artifacts | 0 |
+| Check                   | Result                                                                                                 |
+| ----------------------- | ------------------------------------------------------------------------------------------------------ |
+| Format, lint, typecheck | pass                                                                                                   |
+| Unit                    | 19 files / 136 tests pass                                                                              |
+| Source E2E              | 40 pass                                                                                                |
+| Dist E2E                | 14 pass                                                                                                |
+| Dist allowlist          | 23 files pass                                                                                          |
+| axe                     | critical/serious 0                                                                                     |
+| Responsive              | 320–1440px without horizontal overflow                                                                 |
+| Privacy/runtime         | console, pageerror, external request, dynamic transport, storage, Cookie, IndexedDB, query, hash all 0 |
+| Tracked artifacts       | 0                                                                                                      |
 
 ## CI
 
