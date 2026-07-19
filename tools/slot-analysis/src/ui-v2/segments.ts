@@ -77,7 +77,7 @@ function inputField(
   const control = create('div', { className: 'control-with-unit' });
   control.append(input);
   if (unit) control.append(create('span', { text: unit }));
-  const error = create('p', { className: 'field-error' });
+  const error = create('div', { className: 'field-error' });
   error.dataset['errorFor'] = name;
   error.id = `${input.id}-error`;
   input.setAttribute('aria-describedby', error.id);

@@ -276,6 +276,29 @@ h3 {
   font-weight: 700;
 }
 
+.field-error-main {
+  display: block;
+}
+
+.field-error-details {
+  margin-top: 6px;
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.65;
+}
+
+.field-error-details summary {
+  width: fit-content;
+  color: var(--negative);
+  font-weight: 800;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.field-error-details p {
+  margin: 6px 0 0;
+}
+
 input[aria-invalid='true'] {
   background: var(--negative-soft);
 }
@@ -743,11 +766,15 @@ input[aria-invalid='true'] {
   display: grid;
   grid-template-columns: minmax(7rem, 1.1fr) minmax(6rem, 1fr) minmax(6rem, 1fr) auto;
   gap: 10px;
-  align-items: end;
+  align-items: start;
   padding: 14px;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: #fff;
+}
+
+.editable-row .remove-row {
+  align-self: end;
 }
 
 .editable-row legend {

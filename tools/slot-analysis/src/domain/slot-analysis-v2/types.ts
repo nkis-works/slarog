@@ -82,10 +82,21 @@ export type SlotAnalysisDomainErrorCode =
   | 'cumulative_net_medals_not_safe'
   | 'cumulative_movement_not_safe';
 
+export interface SegmentAssumedOutNegativeDetails {
+  readonly startPointIndex: number;
+  readonly endPointIndex: number;
+  readonly segmentGames: number;
+  readonly segmentNetMedals: number;
+  readonly minimumSegmentNetMedals: number;
+  readonly minimumEndCumulativeNetMedals: number;
+  readonly excessLossMedals: number;
+}
+
 export interface SlotAnalysisDomainError {
   readonly code: SlotAnalysisDomainErrorCode;
   readonly field: string;
   readonly index?: number;
+  readonly details?: Readonly<SegmentAssumedOutNegativeDetails>;
 }
 
 export type SlotAnalysisDomainResult<T> =

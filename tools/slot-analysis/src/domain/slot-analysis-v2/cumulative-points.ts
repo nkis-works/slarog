@@ -4,6 +4,7 @@ import {
   domainError,
   failure,
   mergeMetadata,
+  segmentAssumedOutNegativeDetails,
   success,
   validateNetMedals,
 } from './shared';
@@ -89,7 +90,18 @@ export function convertCumulativePoints(
     const netMedals = Number(netMedalsBigInt);
     if (BigInt(games) * 3n + netMedalsBigInt < 0n) {
       return failure([
-        domainError('segment_assumed_out_negative', `points[${index}].cumulativeNetMedals`, index),
+        domainError(
+          'segment_assumed_out_negative',
+          `points[${index}].cumulativeNetMedals`,
+          index,
+          segmentAssumedOutNegativeDetails({
+            startPointIndex: index - 1,
+            endPointIndex: index,
+            segmentGames: games,
+            segmentNetMedals: netMedals,
+            startCumulativeNetMedals: BigInt(start.cumulativeNetMedals),
+          }),
+        ),
       ]);
     }
     segments.push({

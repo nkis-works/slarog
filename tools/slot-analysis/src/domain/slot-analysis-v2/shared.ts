@@ -8,6 +8,7 @@ import type {
   SlotAnalysisDomainError,
   SlotAnalysisDomainErrorCode,
   SlotAnalysisDomainResult,
+  SegmentAssumedOutNegativeDetails,
   SlotAnalysisMetadataInput,
   SlotAnalysisRelation,
   SlotAnalysisResultMetadata,
@@ -78,8 +79,48 @@ export function domainError(
   code: SlotAnalysisDomainErrorCode,
   field: string,
   index?: number,
+  details?: Readonly<SegmentAssumedOutNegativeDetails>,
 ): SlotAnalysisDomainError {
-  return index === undefined ? { code, field } : { code, field, index };
+  return {
+    code,
+    field,
+    ...(index === undefined ? {} : { index }),
+    ...(details === undefined ? {} : { details }),
+  };
+}
+
+export function segmentAssumedOutNegativeDetails(input: {
+  readonly startPointIndex: number;
+  readonly endPointIndex: number;
+  readonly segmentGames: number;
+  readonly segmentNetMedals: number;
+  readonly startCumulativeNetMedals: bigint;
+}): Readonly<SegmentAssumedOutNegativeDetails> | undefined {
+  const minimumSegmentNetMedalsBigInt = BigInt(input.segmentGames) * -3n;
+  const minimumEndCumulativeNetMedalsBigInt =
+    input.startCumulativeNetMedals + minimumSegmentNetMedalsBigInt;
+  const excessLossMedalsBigInt = minimumSegmentNetMedalsBigInt - BigInt(input.segmentNetMedals);
+  const values = [
+    minimumSegmentNetMedalsBigInt,
+    minimumEndCumulativeNetMedalsBigInt,
+    excessLossMedalsBigInt,
+  ];
+  if (
+    values.some(
+      (value) => value > BigInt(Number.MAX_SAFE_INTEGER) || value < BigInt(Number.MIN_SAFE_INTEGER),
+    )
+  ) {
+    return undefined;
+  }
+  return {
+    startPointIndex: input.startPointIndex,
+    endPointIndex: input.endPointIndex,
+    segmentGames: input.segmentGames,
+    segmentNetMedals: input.segmentNetMedals,
+    minimumSegmentNetMedals: Number(minimumSegmentNetMedalsBigInt),
+    minimumEndCumulativeNetMedals: Number(minimumEndCumulativeNetMedalsBigInt),
+    excessLossMedals: Number(excessLossMedalsBigInt),
+  };
 }
 
 export function validateGames(

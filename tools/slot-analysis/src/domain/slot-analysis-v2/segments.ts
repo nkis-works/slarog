@@ -7,6 +7,7 @@ import {
   domainError,
   failure,
   metric,
+  segmentAssumedOutNegativeDetails,
   success,
   validateGames,
   validateNetMedals,
@@ -141,8 +142,28 @@ export function analyzeSegments(
     if (netError) errors.push({ ...netError, index });
     if (!gamesError && !netError) {
       if (BigInt(segment.games) * 3n + BigInt(segment.netMedals) < 0n) {
+        const provenance = segmentProvenance(segment, index);
+        const startPointIndex =
+          provenance.source === 'cumulative_points'
+            ? (provenance.sourceStartPointIndex ?? index)
+            : index;
+        const endPointIndex =
+          provenance.source === 'cumulative_points'
+            ? (provenance.sourceEndPointIndex ?? index + 1)
+            : index + 1;
         errors.push(
-          domainError('segment_assumed_out_negative', `segments[${index}].netMedals`, index),
+          domainError(
+            'segment_assumed_out_negative',
+            `segments[${index}].netMedals`,
+            index,
+            segmentAssumedOutNegativeDetails({
+              startPointIndex,
+              endPointIndex,
+              segmentGames: segment.games,
+              segmentNetMedals: segment.netMedals,
+              startCumulativeNetMedals: cumulativeNetMedalsBigInt,
+            }),
+          ),
         );
       }
       totalGamesBigInt += BigInt(segment.games);

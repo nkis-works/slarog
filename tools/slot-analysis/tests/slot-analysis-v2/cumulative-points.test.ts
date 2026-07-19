@@ -72,4 +72,50 @@ describe('slot analysis v2 cumulative points', () => {
     if (result.ok) return;
     expect(result.errors.map((error) => error.code)).toContain('cumulative_games_not_increasing');
   });
+
+  it('allows negative segments through OUT zero and reports the exact cumulative lower bound below it', () => {
+    const points = (endNetMedals: number) => [
+      { cumulativeGames: 0, cumulativeNetMedals: 0 },
+      { cumulativeGames: 1000, cumulativeNetMedals: 600 },
+      { cumulativeGames: 2000, cumulativeNetMedals: 700 },
+      { cumulativeGames: 3000, cumulativeNetMedals: endNetMedals },
+    ];
+
+    expect(analyzeCumulativePoints({ points: points(-1000) }).ok).toBe(true);
+    expect(analyzeCumulativePoints({ points: points(-2300) }).ok).toBe(true);
+
+    expect(analyzeCumulativePoints({ points: points(-2301) })).toMatchObject({
+      ok: false,
+      errors: [
+        {
+          code: 'segment_assumed_out_negative',
+          field: 'points[3].cumulativeNetMedals',
+          index: 3,
+          details: {
+            startPointIndex: 2,
+            endPointIndex: 3,
+            segmentGames: 1000,
+            segmentNetMedals: -3001,
+            minimumSegmentNetMedals: -3000,
+            minimumEndCumulativeNetMedals: -2300,
+            excessLossMedals: 1,
+          },
+        },
+      ],
+    });
+    expect(analyzeCumulativePoints({ points: points(-3000) })).toMatchObject({
+      ok: false,
+      errors: [
+        {
+          code: 'segment_assumed_out_negative',
+          details: {
+            segmentNetMedals: -3700,
+            minimumSegmentNetMedals: -3000,
+            minimumEndCumulativeNetMedals: -2300,
+            excessLossMedals: 700,
+          },
+        },
+      ],
+    });
+  });
 });

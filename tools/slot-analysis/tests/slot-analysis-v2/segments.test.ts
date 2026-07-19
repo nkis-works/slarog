@@ -52,4 +52,28 @@ describe('slot analysis v2 segment analysis', () => {
       errors: [{ code: 'segments_limit_exceeded' }],
     });
   });
+
+  it('allows direct negative segments through OUT zero and rejects one medal below the boundary', () => {
+    expect(analyzeSegments({ segments: [{ games: 1000, netMedals: -1700 }] }).ok).toBe(true);
+    expect(analyzeSegments({ segments: [{ games: 1000, netMedals: -3000 }] }).ok).toBe(true);
+    expect(analyzeSegments({ segments: [{ games: 1000, netMedals: -3001 }] })).toMatchObject({
+      ok: false,
+      errors: [
+        {
+          code: 'segment_assumed_out_negative',
+          field: 'segments[0].netMedals',
+          index: 0,
+          details: {
+            startPointIndex: 0,
+            endPointIndex: 1,
+            segmentGames: 1000,
+            segmentNetMedals: -3001,
+            minimumSegmentNetMedals: -3000,
+            minimumEndCumulativeNetMedals: -3000,
+            excessLossMedals: 1,
+          },
+        },
+      ],
+    });
+  });
 });

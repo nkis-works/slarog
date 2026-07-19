@@ -1060,8 +1060,37 @@
   function failure(errors) {
     return deepFreeze({ ok: false, errors: [...errors] });
   }
-  function domainError(code, field, index) {
-    return index === void 0 ? { code, field } : { code, field, index };
+  function domainError(code, field, index, details) {
+    return {
+      code,
+      field,
+      ...index === void 0 ? {} : { index },
+      ...details === void 0 ? {} : { details }
+    };
+  }
+  function segmentAssumedOutNegativeDetails(input) {
+    const minimumSegmentNetMedalsBigInt = BigInt(input.segmentGames) * -3n;
+    const minimumEndCumulativeNetMedalsBigInt = input.startCumulativeNetMedals + minimumSegmentNetMedalsBigInt;
+    const excessLossMedalsBigInt = minimumSegmentNetMedalsBigInt - BigInt(input.segmentNetMedals);
+    const values = [
+      minimumSegmentNetMedalsBigInt,
+      minimumEndCumulativeNetMedalsBigInt,
+      excessLossMedalsBigInt
+    ];
+    if (values.some(
+      (value) => value > BigInt(Number.MAX_SAFE_INTEGER) || value < BigInt(Number.MIN_SAFE_INTEGER)
+    )) {
+      return void 0;
+    }
+    return {
+      startPointIndex: input.startPointIndex,
+      endPointIndex: input.endPointIndex,
+      segmentGames: input.segmentGames,
+      segmentNetMedals: input.segmentNetMedals,
+      minimumSegmentNetMedals: Number(minimumSegmentNetMedalsBigInt),
+      minimumEndCumulativeNetMedals: Number(minimumEndCumulativeNetMedalsBigInt),
+      excessLossMedals: Number(excessLossMedalsBigInt)
+    };
   }
   function validateGames(value, field, codes) {
     if (!Number.isSafeInteger(value) || value <= 0) {
@@ -1516,8 +1545,22 @@
       if (netError) errors.push({ ...netError, index });
       if (!gamesError && !netError) {
         if (BigInt(segment.games) * 3n + BigInt(segment.netMedals) < 0n) {
+          const provenance = segmentProvenance(segment, index);
+          const startPointIndex = provenance.source === "cumulative_points" ? provenance.sourceStartPointIndex ?? index : index;
+          const endPointIndex = provenance.source === "cumulative_points" ? provenance.sourceEndPointIndex ?? index + 1 : index + 1;
           errors.push(
-            domainError("segment_assumed_out_negative", `segments[${index}].netMedals`, index)
+            domainError(
+              "segment_assumed_out_negative",
+              `segments[${index}].netMedals`,
+              index,
+              segmentAssumedOutNegativeDetails({
+                startPointIndex,
+                endPointIndex,
+                segmentGames: segment.games,
+                segmentNetMedals: segment.netMedals,
+                startCumulativeNetMedals: cumulativeNetMedalsBigInt
+              })
+            )
           );
         }
         totalGamesBigInt += BigInt(segment.games);
@@ -1709,7 +1752,18 @@
       const netMedals = Number(netMedalsBigInt);
       if (BigInt(games) * 3n + netMedalsBigInt < 0n) {
         return failure([
-          domainError("segment_assumed_out_negative", `points[${index}].cumulativeNetMedals`, index)
+          domainError(
+            "segment_assumed_out_negative",
+            `points[${index}].cumulativeNetMedals`,
+            index,
+            segmentAssumedOutNegativeDetails({
+              startPointIndex: index - 1,
+              endPointIndex: index,
+              segmentGames: games,
+              segmentNetMedals: netMedals,
+              startCumulativeNetMedals: BigInt(start.cumulativeNetMedals)
+            })
+          )
         ]);
       }
       segments.push({
@@ -1938,15 +1992,37 @@
     cumulative_net_medals_not_safe: "\u7D2F\u7A4D\u5DEE\u679A\u306E\u6841\u6570\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
     cumulative_movement_not_safe: "\u5730\u70B9\u9593\u306E\u5DEE\u679A\u5909\u5316\u304C\u5B89\u5168\u306B\u8A08\u7B97\u3067\u304D\u308B\u7BC4\u56F2\u3092\u8D85\u3048\u3066\u3044\u307E\u3059\u3002"
   };
+  function segmentBoundaryMessage(error2) {
+    const details = error2.details;
+    if (error2.code !== "segment_assumed_out_negative" || !details) {
+      return { message: domainMessages[error2.code] ?? "\u5165\u529B\u6761\u4EF6\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002" };
+    }
+    const message2 = `\u3053\u306E\u533A\u9593\u306E\u5DEE\u679A\u304C\u3001${formatInteger(details.segmentGames)}G\u3067\u5165\u529B\u3067\u304D\u308B\u4E0B\u9650\u3092${formatInteger(details.excessLossMedals)}\u679A\u4E0B\u56DE\u3063\u3066\u3044\u307E\u3059\u3002`;
+    if (error2.field.startsWith("points[")) {
+      const start = details.startPointIndex === 0 ? "\u958B\u59CB\u5730\u70B9" : `\u5730\u70B9${details.startPointIndex}`;
+      const end = `\u5730\u70B9${details.endPointIndex}`;
+      return {
+        message: message2,
+        detail: `${start}\u304B\u3089${end}\u306F\u3001${formatInteger(details.segmentGames)}G\u3067${formatSigned(details.segmentNetMedals)}\u679A\u306E\u533A\u9593\u3067\u3059\u30023\u679A\u639B\u3051\u63DB\u7B97\u3067\u306F\u6700\u5927${formatSigned(details.minimumSegmentNetMedals)}\u679A\u307E\u3067\u5165\u529B\u3067\u304D\u307E\u3059\u3002${end}\u306E\u7D2F\u7A4D\u5DEE\u679A\u3092${formatSigned(details.minimumEndCumulativeNetMedals)}\u679A\u4EE5\u4E0A\u306B\u3057\u3066\u304F\u3060\u3055\u3044\u3002\u30DE\u30A4\u30CA\u30B9\u533A\u9593\u306F\u5165\u529B\u3067\u304D\u307E\u3059\u3002\u3053\u306E\u533A\u9593\u3067\u306F\u7D2F\u7A4D\u5DEE\u679A${formatSigned(details.minimumEndCumulativeNetMedals)}\u679A\u304C\u4E0B\u9650\u3067\u3059\u3002`
+      };
+    }
+    return {
+      message: message2,
+      detail: `\u533A\u9593${details.endPointIndex}\u306F\u3001${formatInteger(details.segmentGames)}G\u3067${formatSigned(details.segmentNetMedals)}\u679A\u3067\u3059\u30023\u679A\u639B\u3051\u63DB\u7B97\u3067\u306F\u6700\u5927${formatSigned(details.minimumSegmentNetMedals)}\u679A\u307E\u3067\u5165\u529B\u3067\u304D\u307E\u3059\u3002\u30DE\u30A4\u30CA\u30B9\u533A\u9593\u306F\u5165\u529B\u3067\u304D\u307E\u3059\u3002\u3053\u306E\u533A\u9593\u3067\u306F${formatSigned(details.minimumSegmentNetMedals)}\u679A\u304C\u4E0B\u9650\u3067\u3059\u3002`
+    };
+  }
   function domainErrors(errors, mapField = ({ field }) => field) {
-    return errors.map((error2) => ({
-      ...mapField(error2) === void 0 ? {} : { field: mapField(error2) },
-      message: domainMessages[error2.code] ?? "\u5165\u529B\u6761\u4EF6\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
-    }));
+    return errors.map((error2) => {
+      const field = mapField(error2);
+      return {
+        ...field === void 0 ? {} : { field },
+        ...segmentBoundaryMessage(error2)
+      };
+    });
   }
   function clearErrors() {
     document.querySelectorAll("[data-error-for]").forEach((output) => {
-      output.textContent = "";
+      output.replaceChildren();
     });
     document.querySelectorAll('[aria-invalid="true"]').forEach((control) => {
       control.removeAttribute("aria-invalid");
@@ -1960,7 +2036,7 @@
     if (errors.length === 0) return;
     const unique2 = errors.filter(
       (error2, index) => errors.findIndex(
-        (candidate) => candidate.message === error2.message && candidate.field === error2.field
+        (candidate) => candidate.message === error2.message && candidate.detail === error2.detail && candidate.field === error2.field
       ) === index
     );
     const list = byId("error-summary-list");
@@ -1976,7 +2052,19 @@
         `[data-error-for="${CSS.escape(error2.field)}"]`
       );
       input?.setAttribute("aria-invalid", "true");
-      if (output) output.textContent = error2.message;
+      if (output) {
+        output.replaceChildren(
+          create("span", { className: "field-error-main", text: error2.message })
+        );
+        if (error2.detail) {
+          const details = create("details", { className: "field-error-details" });
+          details.append(
+            create("summary", { text: "\u5165\u529B\u3067\u304D\u308B\u4E0B\u9650\u3092\u898B\u308B" }),
+            create("p", { text: error2.detail })
+          );
+          output.append(details);
+        }
+      }
       if (input) {
         const link = create("button", { className: "error-summary-link", text: error2.message });
         link.type = "button";
@@ -2091,7 +2179,7 @@
     const control = create("div", { className: "control-with-unit" });
     control.append(input);
     if (unit) control.append(create("span", { text: unit }));
-    const error2 = create("p", { className: "field-error" });
+    const error2 = create("div", { className: "field-error" });
     error2.dataset["errorFor"] = name;
     error2.id = `${input.id}-error`;
     input.setAttribute("aria-describedby", error2.id);

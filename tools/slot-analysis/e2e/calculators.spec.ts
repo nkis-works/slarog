@@ -221,6 +221,75 @@ test.describe('区間分析', () => {
     await expect(page.locator('#segment-facts')).toContainText('最大回復0枚');
   });
 
+  test('累積地点の有効なマイナス区間とOUT 0境界を通し、下限を具体的に案内する', async ({
+    page,
+  }) => {
+    await selectSegmentMethod(page, 'cumulative');
+    await page.locator('#add-cumulative-point').click();
+    await page.locator('[name="segments.points.1.games"]').fill('1000');
+    await page.locator('[name="segments.points.1.netMedals"]').fill('600');
+    await page.locator('[name="segments.points.2.games"]').fill('2000');
+    await page.locator('[name="segments.points.2.netMedals"]').fill('700');
+    await page.locator('[name="segments.points.3.games"]').fill('3000');
+    const endNet = page.locator('[name="segments.points.3.netMedals"]');
+    const submit = page.locator('#segments-form button[type="submit"]');
+
+    await endNet.fill('-1000');
+    await submit.click();
+    await expect(page.locator('#error-summary')).toBeHidden();
+    await expect(page.locator('#segment-facts')).toContainText('合計差枚−1,000枚');
+
+    await endNet.fill('-2300');
+    await submit.click();
+    await expect(page.locator('#error-summary')).toBeHidden();
+    await expect(page.locator('#segment-facts')).toContainText('合計差枚−2,300枚');
+
+    await endNet.fill('-2301');
+    await submit.click();
+    await expect(page.locator('#error-summary')).toContainText('下限を1枚下回っています');
+    await expect(endNet).toHaveAttribute('aria-invalid', 'true');
+    const fieldError = page.locator('[data-error-for="segments.points.3.netMedals"]');
+    await expect(fieldError.locator('summary')).toHaveText('入力できる下限を見る');
+    await expect(fieldError).toContainText('地点2から地点3');
+    await expect(fieldError).toContainText('1,000Gで−3,001枚');
+    await expect(fieldError).toContainText('最大−3,000枚');
+    await expect(fieldError).toContainText('累積差枚を−2,300枚以上');
+    await expect(fieldError).toContainText('マイナス区間は入力できます');
+    await page.locator('#error-summary-list .error-summary-link').click();
+    await expect(endNet).toBeFocused();
+
+    await endNet.fill('-3000');
+    await submit.click();
+    await expect(page.locator('#error-summary')).toContainText('下限を700枚下回っています');
+    await expect(fieldError).toContainText('1,000Gで−3,700枚');
+    await expect(fieldError).toContainText('累積差枚−2,300枚が下限');
+  });
+
+  test('直接入力は全角マイナスを含む有効値とOUT 0境界を通す', async ({ page }) => {
+    await selectSegmentMethod(page, 'direct');
+    await page.locator('[data-direct-row]').nth(1).locator('[data-remove-direct]').click();
+    await page.locator('[name="segments.direct.0.games"]').fill('1000');
+    const net = page.locator('[name="segments.direct.0.netMedals"]');
+    const submit = page.locator('#segments-form button[type="submit"]');
+
+    await net.fill('－１，７００');
+    await submit.click();
+    await expect(page.locator('#error-summary')).toBeHidden();
+    await expect(page.locator('#segment-facts')).toContainText('合計差枚−1,700枚');
+
+    await net.fill('-3000');
+    await submit.click();
+    await expect(page.locator('#error-summary')).toBeHidden();
+    await expect(page.locator('#segment-facts')).toContainText('0.0%');
+
+    await net.fill('-3001');
+    await submit.click();
+    await expect(page.locator('#error-summary')).toContainText('下限を1枚下回っています');
+    await expect(page.locator('[data-error-for="segments.direct.0.netMedals"]')).toContainText(
+      'マイナス区間は入力できます',
+    );
+  });
+
   test('方式ごとの上限と最小行数を守る', async ({ page }) => {
     await selectSegmentMethod(page, 'direct');
     for (let index = 2; index < 10; index += 1) await page.locator('#add-direct-segment').click();

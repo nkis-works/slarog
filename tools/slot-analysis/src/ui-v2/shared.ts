@@ -8,6 +8,7 @@ import type { ValidationMessage } from '../domain/types';
 export interface UiError {
   readonly field?: string;
   readonly message: string;
+  readonly detail?: string;
 }
 
 const integerFormatter = new Intl.NumberFormat('ja-JP', { maximumFractionDigits: 0 });
@@ -134,19 +135,44 @@ const domainMessages: Readonly<Record<string, string>> = {
   cumulative_movement_not_safe: '地点間の差枚変化が安全に計算できる範囲を超えています。',
 };
 
+function segmentBoundaryMessage(
+  error: SlotAnalysisDomainError,
+): Pick<UiError, 'message' | 'detail'> {
+  const details = error.details;
+  if (error.code !== 'segment_assumed_out_negative' || !details) {
+    return { message: domainMessages[error.code] ?? '入力条件を確認してください。' };
+  }
+  const message = `この区間の差枚が、${formatInteger(details.segmentGames)}Gで入力できる下限を${formatInteger(details.excessLossMedals)}枚下回っています。`;
+  if (error.field.startsWith('points[')) {
+    const start = details.startPointIndex === 0 ? '開始地点' : `地点${details.startPointIndex}`;
+    const end = `地点${details.endPointIndex}`;
+    return {
+      message,
+      detail: `${start}から${end}は、${formatInteger(details.segmentGames)}Gで${formatSigned(details.segmentNetMedals)}枚の区間です。3枚掛け換算では最大${formatSigned(details.minimumSegmentNetMedals)}枚まで入力できます。${end}の累積差枚を${formatSigned(details.minimumEndCumulativeNetMedals)}枚以上にしてください。マイナス区間は入力できます。この区間では累積差枚${formatSigned(details.minimumEndCumulativeNetMedals)}枚が下限です。`,
+    };
+  }
+  return {
+    message,
+    detail: `区間${details.endPointIndex}は、${formatInteger(details.segmentGames)}Gで${formatSigned(details.segmentNetMedals)}枚です。3枚掛け換算では最大${formatSigned(details.minimumSegmentNetMedals)}枚まで入力できます。マイナス区間は入力できます。この区間では${formatSigned(details.minimumSegmentNetMedals)}枚が下限です。`,
+  };
+}
+
 export function domainErrors(
   errors: readonly SlotAnalysisDomainError[],
   mapField: (error: SlotAnalysisDomainError) => string | undefined = ({ field }) => field,
 ): UiError[] {
-  return errors.map((error) => ({
-    ...(mapField(error) === undefined ? {} : { field: mapField(error) }),
-    message: domainMessages[error.code] ?? '入力条件を確認してください。',
-  }));
+  return errors.map((error) => {
+    const field = mapField(error);
+    return {
+      ...(field === undefined ? {} : { field }),
+      ...segmentBoundaryMessage(error),
+    };
+  });
 }
 
 export function clearErrors(): void {
   document.querySelectorAll<HTMLElement>('[data-error-for]').forEach((output) => {
-    output.textContent = '';
+    output.replaceChildren();
   });
   document.querySelectorAll<HTMLElement>('[aria-invalid="true"]').forEach((control) => {
     control.removeAttribute('aria-invalid');
@@ -162,7 +188,10 @@ export function showErrors(errors: readonly UiError[]): void {
   const unique = errors.filter(
     (error, index) =>
       errors.findIndex(
-        (candidate) => candidate.message === error.message && candidate.field === error.field,
+        (candidate) =>
+          candidate.message === error.message &&
+          candidate.detail === error.detail &&
+          candidate.field === error.field,
       ) === index,
   );
   const list = byId<HTMLUListElement>('error-summary-list');
@@ -178,7 +207,19 @@ export function showErrors(errors: readonly UiError[]): void {
       `[data-error-for="${CSS.escape(error.field)}"]`,
     );
     input?.setAttribute('aria-invalid', 'true');
-    if (output) output.textContent = error.message;
+    if (output) {
+      output.replaceChildren(
+        create('span', { className: 'field-error-main', text: error.message }),
+      );
+      if (error.detail) {
+        const details = create('details', { className: 'field-error-details' });
+        details.append(
+          create('summary', { text: '入力できる下限を見る' }),
+          create('p', { text: error.detail }),
+        );
+        output.append(details);
+      }
+    }
     if (input) {
       const link = create('button', { className: 'error-summary-link', text: error.message });
       link.type = 'button';
