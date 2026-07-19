@@ -16,6 +16,14 @@ const requiredFiles = new Set([
   'tools/slot-analysis/assets/styles.css',
   'tools/slot-analysis/assets/slot-analysis-app.js',
 ]);
+const prototypeFiles = new Set([
+  'prototypes/slarog-home-redesign/index.html',
+  'prototypes/slarog-home-redesign/comparison.css',
+  'prototypes/slarog-home-redesign/a/index.html',
+  'prototypes/slarog-home-redesign/a/styles.css',
+  'prototypes/slarog-home-redesign/b/index.html',
+  'prototypes/slarog-home-redesign/b/styles.css',
+]);
 const exactCsp = [
   "default-src 'self'",
   "script-src 'self'",
@@ -30,7 +38,7 @@ const exactCsp = [
 ].join('; ');
 const metaCsp = exactCsp.replace("; frame-ancestors 'none'", '');
 
-export async function validateDist({ expectedMode, expectedOrigin } = {}) {
+export async function validateDist({ expectedMode, expectedOrigin, allowPrototypes = false } = {}) {
   const dist = resolve('dist');
   const files = await listFiles(dist);
   const fileSet = new Set(files);
@@ -38,9 +46,17 @@ export async function validateDist({ expectedMode, expectedOrigin } = {}) {
   for (const required of requiredFiles) {
     assert(fileSet.has(required), `dist に必須ファイルがありません: ${required}`);
   }
+  if (allowPrototypes) {
+    for (const prototype of prototypeFiles) {
+      assert(fileSet.has(prototype), `prototype preview に必須ファイルがありません: ${prototype}`);
+    }
+  }
 
   for (const file of files) {
-    const allowed = requiredFiles.has(file) || file.startsWith('assets/');
+    const allowed =
+      requiredFiles.has(file) ||
+      file.startsWith('assets/') ||
+      (allowPrototypes && prototypeFiles.has(file));
     assert(allowed, `dist の許可リスト外ファイルです: ${file}`);
     assert(
       !/(^|\/)(?:node_modules|docs?|tests?|e2e|artifacts?|src)(?:\/|$)/i.test(file),
@@ -212,6 +228,8 @@ function assert(condition, message) {
 
 const invokedPath = process.argv[1] ? pathToFileURL(resolve(process.argv[1])).href : '';
 if (invokedPath === import.meta.url) {
-  const result = await validateDist();
+  const result = await validateDist({
+    allowPrototypes: process.env['ALLOW_SLAROG_PROTOTYPES'] === '1',
+  });
   console.log(`dist check: ${result.files.length} files`);
 }

@@ -36,8 +36,10 @@ export default tseslint.config(
     files: [
       'playwright.config.ts',
       'playwright.dist.config.ts',
+      'playwright.slarog-prototypes.config.ts',
       'tools/slot-analysis/e2e/**/*.ts',
       'tools/slot-analysis/e2e-dist/**/*.ts',
+      'prototypes/slarog-home-redesign/**/*.ts',
     ],
     languageOptions: {
       globals: globals.node,

@@ -1136,3 +1136,231 @@ code {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Match the approved Slarog product system while preserving the tool controls. */
+:root {
+  --ink: #172236;
+  --muted: #565f5b;
+  --line: #cfc7ba;
+  --soft: #f4f0e8;
+  --blue-soft: #e8eff2;
+  --blue: #245f88;
+  --blue-dark: #174665;
+  --negative: #964028;
+  --negative-soft: #fff2ed;
+  --radius: 8px;
+  --shadow: none;
+}
+
+body {
+  background: #fffdf8;
+}
+h1,
+h2 {
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', YuMincho, serif;
+  font-weight: 600;
+}
+.shell {
+  width: min(100% - 48px, 1180px);
+}
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border: 0;
+  background: rgba(255, 253, 248, 0.96);
+  backdrop-filter: blur(14px);
+}
+.header-inner {
+  min-height: 76px;
+  border-bottom: 1px solid var(--ink);
+}
+.brand {
+  align-items: baseline;
+  gap: 12px;
+}
+.brand strong {
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', YuMincho, serif;
+  font-size: 27px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+.brand > span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+}
+.header-inner nav {
+  gap: 28px;
+}
+.header-inner nav a {
+  min-height: 0;
+  position: relative;
+  padding: 4px 0;
+  color: #3f4c5e;
+  font-size: 12px;
+}
+.header-inner nav a[aria-current='page'] {
+  color: var(--ink);
+  text-decoration: none;
+}
+.header-inner nav a[aria-current='page']::after {
+  content: '';
+  height: 1px;
+  position: absolute;
+  right: 0;
+  bottom: -4px;
+  left: 0;
+  background: #964028;
+}
+.hero {
+  padding-block: 76px 44px;
+}
+.eyebrow,
+.section-kicker {
+  color: #964028;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+.eyebrow::before,
+.section-kicker::before {
+  content: '—';
+  margin-right: 8px;
+}
+h1 {
+  margin-top: 14px;
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  letter-spacing: -0.035em;
+}
+.hero-lead {
+  max-width: 52rem;
+  color: #3f4c5e;
+}
+.quick-form,
+.quick-result,
+.analysis-panel,
+.slarog-cta,
+.content-section,
+.disclaimer,
+.error-summary {
+  border-color: var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: none;
+}
+.quick-form {
+  border-top-color: var(--ink);
+}
+.button {
+  border-radius: 4px;
+}
+.button.primary {
+  background: var(--blue-dark);
+}
+.button.secondary {
+  border-color: var(--ink);
+  background: #fffdf8;
+}
+input {
+  border-radius: 4px;
+}
+.launcher-grid button,
+.preset-group button,
+.analysis-panel,
+.content-grid article {
+  border-radius: 6px;
+}
+.slarog-cta {
+  border-color: var(--ink);
+  background: #f4f0e8;
+}
+.content-section {
+  border: 0;
+  border-top: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+}
+.content-grid article {
+  box-shadow: none;
+}
+.disclaimer {
+  background: #f4f0e8;
+}
+.site-footer {
+  margin-top: 80px;
+  border: 0;
+  background: #101b2b;
+  color: #fff;
+}
+.site-footer .shell {
+  min-height: 0;
+  padding: 48px 0;
+  align-items: flex-start;
+}
+.footer-product > a {
+  display: flex;
+  align-items: baseline;
+  gap: 11px;
+  color: #fff;
+  text-decoration: none;
+}
+.footer-product strong {
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  font-size: 22px;
+}
+.footer-product span,
+.site-footer small {
+  color: #aeb6c0;
+  font-size: 10px;
+}
+.footer-product p {
+  margin: 10px 0 0;
+  color: #aeb6c0;
+  font-size: 12px;
+}
+.site-footer nav {
+  justify-content: flex-end;
+}
+.site-footer nav a {
+  min-height: 0;
+  color: #d5d9df;
+  font-size: 12px;
+}
+.site-footer nav a[aria-current='page'] {
+  color: #fff;
+}
+
+@media (max-width: 640px) {
+  .shell {
+    width: min(100% - 32px, 1180px);
+  }
+  .header-inner {
+    min-height: 68px;
+  }
+  .brand {
+    gap: 8px;
+  }
+  .brand strong {
+    font-size: 22px;
+  }
+  .brand > span {
+    display: none;
+  }
+  .header-inner nav a {
+    display: none;
+  }
+  .header-inner nav a[aria-current='page'] {
+    display: inline-flex;
+  }
+  .hero {
+    padding-block: 48px 28px;
+  }
+  .site-footer .shell {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .site-footer nav {
+    justify-content: flex-start;
+  }
+}

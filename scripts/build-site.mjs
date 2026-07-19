@@ -1,5 +1,5 @@
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 
 import { createSlotAnalysisBundle, SLOT_ANALYSIS_BUNDLE } from './build-slot-analysis.mjs';
 import { validateDist } from './check-dist.mjs';
@@ -14,6 +14,16 @@ const root = resolve('.');
 const dist = resolve('dist');
 const lastModified = '2026-07-20';
 const htmlFiles = ['index.html', 'support.html', 'privacy.html', 'terms.html', '404.html'];
+const prototypeBranch = 'feature/slarog-home-redesign-prototypes';
+const prototypeFiles = [
+  'prototypes/slarog-home-redesign/index.html',
+  'prototypes/slarog-home-redesign/comparison.css',
+  'prototypes/slarog-home-redesign/a/index.html',
+  'prototypes/slarog-home-redesign/a/styles.css',
+  'prototypes/slarog-home-redesign/b/index.html',
+  'prototypes/slarog-home-redesign/b/styles.css',
+];
+const includePrototypes = mode === 'preview' && process.env['CF_PAGES_BRANCH'] === prototypeBranch;
 const csp = [
   "default-src 'self'",
   "script-src 'self'",
@@ -50,6 +60,19 @@ await writeFile(
   prepareHtml(toolSource, 'tools/slot-analysis/'),
 );
 
+if (includePrototypes) {
+  for (const file of prototypeFiles) {
+    const target = resolve(dist, file);
+    await mkdir(dirname(target), { recursive: true });
+    if (file.endsWith('.html')) {
+      const source = await readFile(resolve(root, file), 'utf8');
+      await writeFile(target, prepareHtml(source, file));
+    } else {
+      await cp(resolve(root, file), target);
+    }
+  }
+}
+
 await writeFile(resolve(dist, 'robots.txt'), createRobots());
 await writeFile(resolve(dist, 'sitemap.xml'), createSitemap());
 
@@ -61,7 +84,11 @@ const headers =
 await writeFile(resolve(dist, '_headers'), headers);
 await cp(resolve(root, 'deploy/cloudflare/_redirects'), resolve(dist, '_redirects'));
 
-await validateDist({ expectedMode: mode, expectedOrigin: siteOrigin });
+await validateDist({
+  expectedMode: mode,
+  expectedOrigin: siteOrigin,
+  allowPrototypes: includePrototypes,
+});
 
 function prepareHtml(source, page) {
   let html = source
