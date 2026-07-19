@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'self'">
+  <meta name="theme-color" content="#f7f9fc">
+  <title>スラログ｜実画面・操作フロー中心型</title>
+  <meta name="description" content="ホールで撮ったスランプグラフ画像を、あとから探して見返せる記録にするアプリ、スラログの非公開デザイン案です。">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top"><strong>スラログ</strong><span>by NKIS Works</span></a>
+    <nav class="wide-nav" aria-label="メインナビゲーション">
+      <a href="#workflow">スラログでできること</a>
+      <a href="#pricing">料金</a>
+      <a href="#faq">よくある質問</a>
+      <a href="../../../tools/slot-analysis/">出玉分析</a>
+    </nav>
+    <details class="small-nav">
+      <summary>メニュー</summary>
+      <nav aria-label="モバイルナビゲーション">
+        <a href="#workflow">スラログでできること</a>
+        <a href="#pricing">料金</a>
+        <a href="#faq">よくある質問</a>
+        <a href="../../../tools/slot-analysis/">出玉分析</a>
+      </nav>
+    </details>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="prototype">デザイン案 B・非公開</p>
+        <h1>ホールのスランプグラフを、<br>見返せる記録に。</h1>
+        <p class="lead">ホールで撮ったグラフ画像を、店舗・機種・台番号・日付ごとの記録に。複数日の流れも、あとからひとつのグラフで見返せます。</p>
+        <div class="availability">
+          <p><strong>14日間無料</strong><span>その後 月額380円</span></p>
+          <small>iOS／Android 公開準備中</small>
+        </div>
+        <a class="start-link" href="#workflow">使う順番を見る</a>
+      </div>
+      <div class="screen-stage" aria-label="スラログの実画面">
+        <figure class="screen screen-one"><img src="../../../assets/screenshots/slarog-create-graph.jpg" width="370" height="804" alt="画像からグラフを作成する画面"><figcaption>画像を読み込む</figcaption></figure>
+        <figure class="screen screen-two"><img src="../../../assets/screenshots/slarog-archive-hot-day.jpg" width="370" height="804" alt="日付から保存した記録を探す画面"><figcaption>日付から探す</figcaption></figure>
+        <figure class="screen screen-three"><img src="../../../assets/screenshots/slarog-seven-day-view.jpg" width="370" height="804" alt="長い連結グラフを7日ごとに比較する画面"><figcaption>同じ幅で比べる</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="use-case" aria-labelledby="use-case-title">
+      <p class="kicker">画像のままでは、探せない。</p>
+      <h2 id="use-case-title">店・機種・台番・日付が分からなくなる前に、<br>情報と一緒に記録する。</h2>
+      <div class="use-case-notes">
+        <p>同じ台の過去記録を探すたび、画像フォルダをさかのぼらなくてよくなります。</p>
+        <p>複数日の画像を開き直さず、ひとつの流れとしてつなげて確認できます。</p>
+        <p>長いグラフも同じ表示幅で切り替え、作ったグラフはPNGで残せます。</p>
+      </div>
+    </section>
+
+    <section class="workflow" id="workflow" aria-labelledby="workflow-title">
+      <header class="workflow-title">
+        <p class="kicker">実際の操作</p>
+        <h2 id="workflow-title">画像を読み込んでから、<br>外部保存するまで。</h2>
+        <p>実画面に沿って、使う順番を追えます。</p>
+      </header>
+
+      <ol>
+        <li class="step">
+          <div class="step-copy"><span class="number">01</span><h3>グラフ画像を読み込む</h3><p>ホールで撮った写真やスクリーンショットを選択。画像フォルダに埋もれていた1枚を、探せる記録へ変えていきます。</p><p class="benefit">写真を記憶だけに頼らず残せる</p></div>
+          <figure><img src="../../../assets/screenshots/slarog-create-graph.jpg" width="370" height="804" alt="グラフ画像を選び、作成を始める画面" loading="lazy"><figcaption>画像からグラフを作成</figcaption></figure>
+        </li>
+        <li class="step">
+          <div class="step-copy"><span class="number">02</span><h3>表示範囲と線を合わせる</h3><p>見たい範囲や基準線を合わせます。長くつながった画像は日付の区切りも指定し、日ごとの記録として取り込めます。</p><p class="benefit">バラバラな画像を比較しやすい形に</p></div>
+          <figure><img src="../../../assets/screenshots/slarog-continuous-import.jpg" width="370" height="804" alt="長いグラフ画像の範囲と日付の区切りを調整する画面" loading="lazy"><figcaption>範囲と日付の区切りを調整</figcaption></figure>
+        </li>
+        <li class="step wide-screen-step">
+          <div class="step-copy"><span class="number">03</span><h3>店・機種・台番・日付で保存する</h3><p>画像と情報をひとつの記録として保存します。あとから画像だけを見て、何のグラフか思い出す必要がなくなります。</p><p class="benefit">あとから条件で探せる記録に</p></div>
+          <figure><img src="../../../assets/screenshots/slarog-single-graph.jpg" width="668" height="804" alt="作成した単体グラフを確認する画面" loading="lazy"><figcaption>作ったグラフを情報と一緒に保存</figcaption></figure>
+        </li>
+        <li class="step">
+          <div class="step-copy"><span class="number">04</span><h3>カレンダーや検索から探す</h3><p>日付や保存した条件から、見返したい記録へ。好調日の表示は探すための目印で、設定や将来の結果を示すものではありません。</p><p class="benefit">画像フォルダをさかのぼらず見つかる</p></div>
+          <figure><img src="../../../assets/screenshots/slarog-archive-hot-day.jpg" width="370" height="804" alt="カレンダーから保存した記録を探す画面" loading="lazy"><figcaption>日付から過去の記録へ</figcaption></figure>
+        </li>
+        <li class="step">
+          <div class="step-copy"><span class="number">05</span><h3>同じ台の複数日をつなぐ</h3><p>同じ店舗・機種・台番号の記録を日付順につなぎ、数日間の流れをひとつのグラフで確認できます。</p><p class="benefit">画像を何枚も開かずに流れを追える</p></div>
+          <figure><img src="../../../assets/screenshots/slarog-series-graph.jpg" width="370" height="804" alt="同じ台の複数日の記録をつないだ画面" loading="lazy"><figcaption>複数日の記録をひとつに</figcaption></figure>
+        </li>
+        <li class="step">
+          <div class="step-copy"><span class="number">06</span><h3>7日ごとに同じ幅で比べる</h3><p>長い連結グラフも、7日ずつ切り替えて同じ1,000枚幅で表示できます。期間ごとの動きの違いを比べやすくします。</p><p class="benefit">長期間でも比較の基準がぶれにくい</p></div>
+          <figure><img src="../../../assets/screenshots/slarog-seven-day-view.jpg" width="370" height="804" alt="31日分の連結グラフを7日ごとに表示する画面" loading="lazy"><figcaption>長い記録を7日ずつ比較</figcaption></figure>
+        </li>
+        <li class="step double-step">
+          <div class="step-copy"><span class="number">07</span><h3>PNGとして外部保存する</h3><p>通常の0線と実機表示に合わせた0線を切り替え、作った単体・連結グラフをPNGで保存できます。</p><p class="benefit">アプリの外でも作った記録を見返せる</p></div>
+          <div class="double-screen">
+            <figure><img src="../../../assets/screenshots/slarog-real-zero-line.jpg" width="370" height="804" alt="実機表示に合わせた0線へ切り替える画面" loading="lazy"><figcaption>基準線を切り替える</figcaption></figure>
+            <figure><img src="../../../assets/screenshots/slarog-single-graph.jpg" width="668" height="804" alt="単体グラフをPNGとして保存する画面" loading="lazy"><figcaption>PNGとして保存する</figcaption></figure>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="maker" id="story" aria-labelledby="maker-title">
+      <div class="maker-line" aria-hidden="true"></div>
+      <div>
+        <p class="kicker">作った理由</p>
+        <h2 id="maker-title">グラフ画像を、あとで見返せる記録にしたかった。</h2>
+      </div>
+      <div class="maker-copy">
+        <p>ホールで撮ったグラフ画像が増えていき、あとから見返そうとしても店舗・機種・台番号・日付が分からない。同じ台の数日間の流れも追いにくい。</p>
+        <p>それを、必要な時に探して見返せる記録として残すために、スラログを作りました。</p>
+      </div>
+    </section>
+
+    <section class="privacy-boundary" aria-labelledby="boundary-title">
+      <h2 id="boundary-title">過去の記録を、自分で振り返るために。</h2>
+      <p>保存したデータは端末内で管理されます。スラログは設定判別や勝敗、利益、将来の結果を保証・推奨するものではありません。</p>
+    </section>
+
+    <section class="pricing" id="pricing" aria-labelledby="pricing-title">
+      <header>
+        <p class="kicker">料金</p>
+        <h2 id="pricing-title">14日間、無料で試せます。</h2>
+      </header>
+      <div class="price-readout" aria-label="14日間無料、その後は月額380円">
+        <p><span>無料体験</span><strong>14日間</strong><b>¥0</b></p>
+        <i aria-hidden="true"></i>
+        <p><span>その後</span><strong>月額 ¥380</strong></p>
+      </div>
+      <div class="billing">
+        <p>14日間は料金が発生しません。無料体験終了後は月額380円で自動更新されます。</p>
+        <p>解約はApp Store／Google Playのアカウント管理から行えます。税込表示はストア設定の確認後に確定します。</p>
+        <strong>現在は公開準備中のため、まだ購入できません。</strong>
+      </div>
+    </section>
+
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <header><p class="kicker">確認しておきたいこと</p><h2 id="faq-title">よくある質問</h2></header>
+      <div class="faq-list">
+        <details open><summary>無料体験は何日間ですか？</summary><p>14日間です。無料体験中は料金が発生しません。</p></details>
+        <details><summary>無料体験終了後はいくらですか？</summary><p>月額380円で自動更新されます。</p></details>
+        <details><summary>解約はどこからできますか？</summary><p>App Store／Google Playのアカウント管理から行えます。</p></details>
+        <details><summary>どの端末で使えますか？</summary><p>iOS／Androidに対応予定です。現在は公開準備中です。</p></details>
+      </div>
+    </section>
+
+    <section class="ready">
+      <p>公開準備中</p>
+      <h2>公開後は、まず14日間お試しください。</h2>
+      <a href="../../../support.html">サポートを見る</a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-brand"><strong>スラログ</strong><span>by NKIS Works</span></div>
+    <nav aria-label="フッターリンク"><a href="../../../support.html">サポート</a><a href="../../../privacy.html">プライバシーポリシー</a><a href="../../../terms.html">利用規約</a><a href="../">A／B比較へ戻る</a></nav>
+    <small>© 2026 NKIS Works</small>
+  </footer>
+</body>
+</html>
