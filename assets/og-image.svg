@@ -1,35 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">NKIS Works / Slarog</title>
-  <desc id="desc">ホールのスランプグラフを作成、保存、比較・検証できる記録アプリのリンクプレビュー画像</desc>
-  <defs>
-    <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1">
-      <stop stop-color="#ffffff"/>
-      <stop offset="1" stop-color="#f2f6fb"/>
-    </linearGradient>
-    <linearGradient id="screen" x1="0" x2="0" y1="0" y2="1">
-      <stop stop-color="#fbfcff"/>
-      <stop offset="1" stop-color="#edf3f9"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="630" fill="#f6f8fb"/>
-  <path d="M0 508H1200V630H0Z" fill="#eef3f7"/>
-  <rect x="72" y="68" width="1056" height="494" rx="8" fill="url(#panel)" stroke="#d9e1ec"/>
-  <rect x="112" y="112" width="56" height="56" rx="8" fill="#10151f"/>
-  <path d="M129 153V127h7l17 17v-17h7v26h-7l-17-17v17h-7Z" fill="#ffffff"/>
-  <text x="192" y="139" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="28" font-weight="800" fill="#10151f">NKIS Works</text>
-  <text x="192" y="169" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="18" font-weight="700" fill="#667184">Slarog official site</text>
-  <text x="112" y="282" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="62" font-weight="900" fill="#10151f">ホールのスランプグラフを、</text>
-  <text x="112" y="367" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="70" font-weight="900" fill="#1f5eff">見返せる記録に。</text>
-  <text x="116" y="435" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="27" font-weight="600" fill="#4c586a">過去の推移をつないで比較・検証。</text>
-  <g transform="translate(760 132)">
-    <rect x="0" y="0" width="300" height="92" rx="8" fill="#10151f"/>
-    <text x="28" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="18" font-weight="800" fill="#ffffff">無料で1台を記録</text>
-    <text x="28" y="68" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="18" font-weight="700" fill="#b7c4d8">日数無制限・広告なし</text>
-    <rect x="0" y="116" width="300" height="72" rx="8" fill="#edf4ff" stroke="#d9e1ec"/>
-    <text x="26" y="160" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="22" font-weight="850" fill="#1f5eff">グラフ作成</text>
-    <rect x="0" y="204" width="300" height="72" rx="8" fill="#eefaf6" stroke="#d9e1ec"/>
-    <text x="26" y="248" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="22" font-weight="850" fill="#16865a">カレンダー整理</text>
-    <rect x="0" y="292" width="300" height="72" rx="8" fill="#eef7fb" stroke="#d9e1ec"/>
-    <text x="26" y="336" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="22" font-weight="850" fill="#0e9db0">月額500円で台数無制限</text>
+  <title id="title">スラログ</title>
+  <desc id="desc">ホールのスランプグラフを、見返せる記録にするアプリ</desc>
+  <rect width="1200" height="630" fill="#f4f0e8"/>
+  <path d="M0 76h1200M0 554h1200" stroke="#172236"/>
+  <text x="76" y="146" font-family="'Hiragino Mincho ProN','Yu Mincho',serif" font-size="54" font-weight="700" fill="#172236">スラログ</text>
+  <text x="76" y="183" font-family="-apple-system,'Hiragino Sans',sans-serif" font-size="17" font-weight="700" letter-spacing="3" fill="#565f5b">グラフ記録アプリ</text>
+  <text x="76" y="310" font-family="'Hiragino Mincho ProN','Yu Mincho',serif" font-size="61" font-weight="600" fill="#172236">ホールのスランプグラフを、</text>
+  <text x="76" y="398" font-family="'Hiragino Mincho ProN','Yu Mincho',serif" font-size="71" font-weight="600" fill="#172236">見返せる記録に。</text>
+  <text x="80" y="475" font-family="-apple-system,'Hiragino Sans',sans-serif" font-size="24" fill="#3f4c5e">14日間無料  ·  その後は月額380円</text>
+  <g transform="translate(882 102)">
+    <rect width="226" height="414" rx="28" fill="#fffdf8" stroke="#172236" stroke-width="2"/>
+    <path d="M25 317h176M25 256h176M25 195h176" stroke="#cfc7ba" stroke-width="2"/>
+    <path d="m25 302 32-55 29 24 37-91 33 43 45-77" fill="none" stroke="#245f88" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="201" cy="146" r="8" fill="#964028"/>
+    <text x="25" y="370" font-family="ui-monospace,monospace" font-size="17" font-weight="700" fill="#964028">01 / 記録</text>
   </g>
+  <text x="76" y="595" font-family="-apple-system,'Hiragino Sans',sans-serif" font-size="16" fill="#565f5b">NKIS Works</text>
 </svg>

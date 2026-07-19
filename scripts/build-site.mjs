@@ -1,7 +1,7 @@
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 
-import { createSlotBalanceBundle, SLOT_BALANCE_BUNDLE } from './build-slot-balance.mjs';
+import { createSlotAnalysisBundle, SLOT_ANALYSIS_BUNDLE } from './build-slot-analysis.mjs';
 import { validateDist } from './check-dist.mjs';
 
 const mode = process.argv[2];
@@ -12,7 +12,18 @@ if (!['preview', 'production'].includes(mode)) {
 const siteOrigin = mode === 'production' ? validateSiteOrigin(process.env['SITE_ORIGIN']) : null;
 const root = resolve('.');
 const dist = resolve('dist');
+const lastModified = '2026-07-20';
 const htmlFiles = ['index.html', 'support.html', 'privacy.html', 'terms.html', '404.html'];
+const prototypeBranch = 'feature/slarog-home-redesign-prototypes';
+const prototypeFiles = [
+  'prototypes/slarog-home-redesign/index.html',
+  'prototypes/slarog-home-redesign/comparison.css',
+  'prototypes/slarog-home-redesign/a/index.html',
+  'prototypes/slarog-home-redesign/a/styles.css',
+  'prototypes/slarog-home-redesign/b/index.html',
+  'prototypes/slarog-home-redesign/b/styles.css',
+];
+const includePrototypes = mode === 'preview' && process.env['CF_PAGES_BRANCH'] === prototypeBranch;
 const csp = [
   "default-src 'self'",
   "script-src 'self'",
@@ -26,16 +37,16 @@ const csp = [
 ].join('; ');
 
 await rm(dist, { recursive: true, force: true });
-await mkdir(resolve(dist, 'tools/slot-balance/assets'), { recursive: true });
+await mkdir(resolve(dist, 'tools/slot-analysis/assets'), { recursive: true });
 
-const bundle = await createSlotBalanceBundle();
-await writeFile(resolve(root, SLOT_BALANCE_BUNDLE), bundle);
-await writeFile(resolve(dist, 'tools/slot-balance/assets/slot-balance-app.js'), bundle);
+const bundle = await createSlotAnalysisBundle();
+await writeFile(resolve(root, SLOT_ANALYSIS_BUNDLE), bundle);
+await writeFile(resolve(dist, 'tools/slot-analysis/assets/slot-analysis-app.js'), bundle);
 
 await cp(resolve(root, 'assets'), resolve(dist, 'assets'), { recursive: true });
 await cp(
-  resolve(root, 'tools/slot-balance/assets/styles.css'),
-  resolve(dist, 'tools/slot-balance/assets/styles.css'),
+  resolve(root, 'tools/slot-analysis/assets/styles.css'),
+  resolve(dist, 'tools/slot-analysis/assets/styles.css'),
 );
 
 for (const file of htmlFiles) {
@@ -43,11 +54,24 @@ for (const file of htmlFiles) {
   await writeFile(resolve(dist, file), prepareHtml(source, file));
 }
 
-const toolSource = await readFile(resolve(root, 'tools/slot-balance/index.html'), 'utf8');
+const toolSource = await readFile(resolve(root, 'tools/slot-analysis/index.html'), 'utf8');
 await writeFile(
-  resolve(dist, 'tools/slot-balance/index.html'),
-  prepareHtml(toolSource, 'tools/slot-balance/'),
+  resolve(dist, 'tools/slot-analysis/index.html'),
+  prepareHtml(toolSource, 'tools/slot-analysis/'),
 );
+
+if (includePrototypes) {
+  for (const file of prototypeFiles) {
+    const target = resolve(dist, file);
+    await mkdir(dirname(target), { recursive: true });
+    if (file.endsWith('.html')) {
+      const source = await readFile(resolve(root, file), 'utf8');
+      await writeFile(target, prepareHtml(source, file));
+    } else {
+      await cp(resolve(root, file), target);
+    }
+  }
+}
 
 await writeFile(resolve(dist, 'robots.txt'), createRobots());
 await writeFile(resolve(dist, 'sitemap.xml'), createSitemap());
@@ -60,7 +84,11 @@ const headers =
 await writeFile(resolve(dist, '_headers'), headers);
 await cp(resolve(root, 'deploy/cloudflare/_redirects'), resolve(dist, '_redirects'));
 
-await validateDist({ expectedMode: mode, expectedOrigin: siteOrigin });
+await validateDist({
+  expectedMode: mode,
+  expectedOrigin: siteOrigin,
+  allowPrototypes: includePrototypes,
+});
 
 function prepareHtml(source, page) {
   let html = source
@@ -99,9 +127,9 @@ function createSitemap() {
     return `${opening}\n</urlset>\n`;
   }
 
-  const paths = ['/', '/support.html', '/privacy.html', '/terms.html', '/tools/slot-balance/'];
+  const paths = ['/', '/support.html', '/privacy.html', '/terms.html', '/tools/slot-analysis/'];
   const entries = paths
-    .map((path) => `  <url><loc>${siteOrigin}${path}</loc><lastmod>2026-07-17</lastmod></url>`)
+    .map((path) => `  <url><loc>${siteOrigin}${path}</loc><lastmod>${lastModified}</lastmod></url>`)
     .join('\n');
   return `${opening}\n${entries}\n</urlset>\n`;
 }

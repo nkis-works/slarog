@@ -12,9 +12,17 @@ const requiredFiles = new Set([
   'sitemap.xml',
   '_headers',
   '_redirects',
-  'tools/slot-balance/index.html',
-  'tools/slot-balance/assets/styles.css',
-  'tools/slot-balance/assets/slot-balance-app.js',
+  'tools/slot-analysis/index.html',
+  'tools/slot-analysis/assets/styles.css',
+  'tools/slot-analysis/assets/slot-analysis-app.js',
+]);
+const prototypeFiles = new Set([
+  'prototypes/slarog-home-redesign/index.html',
+  'prototypes/slarog-home-redesign/comparison.css',
+  'prototypes/slarog-home-redesign/a/index.html',
+  'prototypes/slarog-home-redesign/a/styles.css',
+  'prototypes/slarog-home-redesign/b/index.html',
+  'prototypes/slarog-home-redesign/b/styles.css',
 ]);
 const exactCsp = [
   "default-src 'self'",
@@ -30,7 +38,7 @@ const exactCsp = [
 ].join('; ');
 const metaCsp = exactCsp.replace("; frame-ancestors 'none'", '');
 
-export async function validateDist({ expectedMode, expectedOrigin } = {}) {
+export async function validateDist({ expectedMode, expectedOrigin, allowPrototypes = false } = {}) {
   const dist = resolve('dist');
   const files = await listFiles(dist);
   const fileSet = new Set(files);
@@ -38,9 +46,17 @@ export async function validateDist({ expectedMode, expectedOrigin } = {}) {
   for (const required of requiredFiles) {
     assert(fileSet.has(required), `dist に必須ファイルがありません: ${required}`);
   }
+  if (allowPrototypes) {
+    for (const prototype of prototypeFiles) {
+      assert(fileSet.has(prototype), `prototype preview に必須ファイルがありません: ${prototype}`);
+    }
+  }
 
   for (const file of files) {
-    const allowed = requiredFiles.has(file) || file.startsWith('assets/');
+    const allowed =
+      requiredFiles.has(file) ||
+      file.startsWith('assets/') ||
+      (allowPrototypes && prototypeFiles.has(file));
     assert(allowed, `dist の許可リスト外ファイルです: ${file}`);
     assert(
       !/(^|\/)(?:node_modules|docs?|tests?|e2e|artifacts?|src)(?:\/|$)/i.test(file),
@@ -68,9 +84,9 @@ export async function validateDist({ expectedMode, expectedOrigin } = {}) {
     'dist に秘密情報らしき文字列を含められません。',
   );
 
-  const toolHtml = await readFile(resolve(dist, 'tools/slot-balance/index.html'), 'utf8');
+  const toolHtml = await readFile(resolve(dist, 'tools/slot-analysis/index.html'), 'utf8');
   assert(
-    (toolHtml.match(/SLOT_BALANCE_MANUAL_AD_INSERTION_POINT/g) ?? []).length === 1,
+    (toolHtml.match(/SLOT_ANALYSIS_MANUAL_AD_INSERTION_POINT/g) ?? []).length === 1,
     '手動広告の挿入位置は1か所だけ必要です。',
   );
   assert(
@@ -93,8 +109,10 @@ export async function validateDist({ expectedMode, expectedOrigin } = {}) {
     '公開HTMLに制作途中の文言があります。',
   );
 
-  const trackedBundle = await readFile(resolve('tools/slot-balance/assets/slot-balance-app.js'));
-  const distBundle = await readFile(resolve(dist, 'tools/slot-balance/assets/slot-balance-app.js'));
+  const trackedBundle = await readFile(resolve('tools/slot-analysis/assets/slot-analysis-app.js'));
+  const distBundle = await readFile(
+    resolve(dist, 'tools/slot-analysis/assets/slot-analysis-app.js'),
+  );
   assert(trackedBundle.equals(distBundle), '追跡bundleとdist bundleが一致しません。');
 
   const headers = await readFile(resolve(dist, '_headers'), 'utf8');
@@ -118,8 +136,8 @@ export async function validateDist({ expectedMode, expectedOrigin } = {}) {
   const redirects = await readFile(resolve(dist, '_redirects'), 'utf8');
   assert(
     redirects.trim() ===
-      '/tools/slot-balance /tools/slot-balance/ 301\n/tools/slot-balance/index.html /tools/slot-balance/ 301',
-    '_redirects が承認済みの末尾スラッシュ正規化だけになっていません。',
+      '/tools/slot-balance /tools/slot-analysis/ 301\n/tools/slot-balance/ /tools/slot-analysis/ 301\n/tools/slot-balance/index.html /tools/slot-analysis/ 301\n/tools/slot-analysis /tools/slot-analysis/ 301\n/tools/slot-analysis/index.html /tools/slot-analysis/ 301',
+    '_redirects が承認済みの旧URL転送と末尾スラッシュ正規化だけになっていません。',
   );
 
   const htmlEntries = textEntries.filter(([file]) => file.endsWith('.html'));
@@ -173,10 +191,11 @@ export async function validateDist({ expectedMode, expectedOrigin } = {}) {
       );
     }
     assert(
-      (sitemap.match(new RegExp(`${escapeRegExp(origin)}/tools/slot-balance/`, 'g')) ?? [])
+      (sitemap.match(new RegExp(`${escapeRegExp(origin)}/tools/slot-analysis/`, 'g')) ?? [])
         .length === 1,
-      'sitemap.xmlのスロバランスURLは末尾スラッシュ付きで1件だけ必要です。',
+      'sitemap.xmlのスロット出玉分析URLは末尾スラッシュ付きで1件だけ必要です。',
     );
+    assert(!sitemap.includes('/tools/slot-balance'), 'sitemap.xmlに旧URLを含められません。');
   }
 
   return { files };
@@ -209,6 +228,8 @@ function assert(condition, message) {
 
 const invokedPath = process.argv[1] ? pathToFileURL(resolve(process.argv[1])).href : '';
 if (invokedPath === import.meta.url) {
-  const result = await validateDist();
+  const result = await validateDist({
+    allowPrototypes: process.env['ALLOW_SLAROG_PROTOTYPES'] === '1',
+  });
   console.log(`dist check: ${result.files.length} files`);
 }
