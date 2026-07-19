@@ -116,6 +116,26 @@ test('Bの料金は比較表ではなく、試してから続ける流れで伝�
   await expect(pricing.locator('.price-readout')).toHaveCount(0);
 });
 
+test('Bは日本語の編集記事を基調にし、SaaS風の視覚要素へ戻らない', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(`${root}/b/`);
+  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#f4f0e8');
+  await expect(page.locator('.use-case-notes > p')).toHaveCount(3);
+  await expect(page.locator('.section-mark')).toHaveCount(3);
+  await expect(page.locator('.maker-sign')).toContainText('つくり手');
+  await expect(page.locator('.screen-stage')).toContainText('実際のアプリ画面です');
+
+  const headingFamily = await page
+    .locator('h1')
+    .evaluate((heading) => getComputedStyle(heading).fontFamily);
+  expect(headingFamily).toMatch(/Mincho|明朝|YuMincho/i);
+
+  const bodyText = await page.locator('body').innerText();
+  expect(bodyText).not.toContain('ダウンロード数');
+  expect(bodyText).not.toContain('導入実績');
+  expect(bodyText).not.toContain('受賞');
+});
+
 test('BはNKIS Worksを会社ではなく作り手として説明する', async ({ page }) => {
   await page.goto(`${root}/b/`);
   await expect(page.locator('.brand')).toContainText('グラフ記録アプリ');
