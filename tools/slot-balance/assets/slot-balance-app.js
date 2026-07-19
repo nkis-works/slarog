@@ -1,47 +1,5 @@
 "use strict";
 (() => {
-  // tools/slot-balance/src/ui/dom.ts
-  function byId(id) {
-    const element = document.getElementById(id);
-    if (!(element instanceof HTMLElement)) throw new Error(`Missing element: ${id}`);
-    return element;
-  }
-  function replaceChildren(element, ...children) {
-    element.replaceChildren(...children);
-  }
-  function textElement(tagName, text, className) {
-    const element = document.createElement(tagName);
-    element.textContent = text;
-    if (className) element.className = className;
-    return element;
-  }
-  function namedControl(form, name) {
-    const control = form.elements.namedItem(name);
-    return control instanceof HTMLInputElement || control instanceof HTMLSelectElement ? control : void 0;
-  }
-
-  // tools/slot-balance/src/ui/accessibility.ts
-  function announce(message2) {
-    const liveRegion = byId("calculation-announcer");
-    liveRegion.textContent = "";
-    window.setTimeout(() => {
-      liveRegion.textContent = message2;
-    }, 0);
-  }
-  function focusErrorSummary() {
-    const summary = byId("error-summary");
-    summary.focus({ preventScroll: true });
-    summary.scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-  function revealResults() {
-    const region = byId("calculation-results");
-    const top = region.getBoundingClientRect().top;
-    if (top > window.innerHeight * 0.72) {
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      region.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
-    }
-  }
-
   // tools/slot-balance/src/domain/explanations.ts
   var NET_MEDALS_KNOWLEDGE = {
     known: [
@@ -180,25 +138,6 @@
           }
         ],
         assumptions: ["\u4EA4\u63DB\u6761\u4EF6\u3067\u6A5F\u4F1A\u8CBB\u7528\u8A55\u4FA1\u3057\u3001\u4EA4\u63DB\u5358\u4F4D\u306B\u3088\u308B\u5207\u308A\u6368\u3066\u306F\u9069\u7528\u3057\u307E\u305B\u3093\u3002"]
-      }
-    ];
-  }
-  function explainSegments(values) {
-    return [
-      {
-        resultCode: "aggregateRate",
-        title: "\u96C6\u8A08\u5DEE\u679A\u30D9\u30FC\u30B9\u51FA\u7389\u7387",
-        inputs: [
-          { label: "\u5408\u8A08\u30B2\u30FC\u30E0\u6570", value: values.totalGames, unit: "G" },
-          { label: "\u5408\u8A08\u5DEE\u679A", value: values.totalNetMedals, unit: "\u679A" }
-        ],
-        steps: [
-          {
-            expression: "(\u5408\u8A08G \xD7 3 + \u5408\u8A08\u5DEE\u679A) \xF7 (\u5408\u8A08G \xD7 3) \xD7 100",
-            value: values.aggregate.payoutRateEstimate?.display
-          }
-        ],
-        assumptions: ["\u5404\u533A\u9593\u7387\u306E\u5358\u7D14\u5E73\u5747\u306F\u4F7F\u7528\u3057\u307E\u305B\u3093\u3002", "1G\u3042\u305F\u308A3\u679A\u639B\u3051\u306E\u6982\u7B97\u3067\u3059\u3002"]
       }
     ];
   }
@@ -379,8 +318,8 @@
   });
 
   // tools/slot-balance/src/domain/validators.ts
-  function message(severity, code, field2, text, correction) {
-    return { severity, code, field: field2, message: text, correction };
+  function message(severity, code, field, text, correction) {
+    return { severity, code, field, message: text, correction };
   }
   function isPositiveDecimal(value) {
     try {
@@ -389,13 +328,13 @@
       return false;
     }
   }
-  function validateSafeInteger(value, field2, label) {
+  function validateSafeInteger(value, field, label) {
     if (Number.isSafeInteger(value)) return [];
     return [
       message(
         "error",
         "integer_required",
-        field2,
+        field,
         `${label}\u306F\u5B89\u5168\u306B\u6271\u3048\u308B\u6574\u6570\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002`,
         "\u5C0F\u6570\u3084\u6975\u7AEF\u306B\u5927\u304D\u306A\u5024\u3092\u907F\u3051\u3001\u6574\u6570\u3078\u4FEE\u6B63\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
       )
@@ -491,7 +430,7 @@
       [alreadyExchangedYen, "alreadyExchangedYen", "\u4EA4\u63DB\u6E08\u307F\u91D1\u984D"]
     ];
     const messages = integerFields.flatMap(
-      ([value, field2, label]) => validateSafeInteger(value, field2, label)
+      ([value, field, label]) => validateSafeInteger(value, field, label)
     );
     if (messages.some(({ severity }) => severity === "error")) return messages;
     const nonNegativeFields = [
@@ -500,13 +439,13 @@
       [input.currentMedals, "currentMedals", "negative_current_medals", "\u73FE\u5728\u679A\u6570"],
       [alreadyExchangedYen, "alreadyExchangedYen", "negative_exchanged_yen", "\u4EA4\u63DB\u6E08\u307F\u91D1\u984D"]
     ];
-    for (const [value, field2, code, label] of nonNegativeFields) {
+    for (const [value, field, code, label] of nonNegativeFields) {
       if (value < 0) {
         messages.push(
           message(
             "error",
             code,
-            field2,
+            field,
             `${label}\u306F0\u4EE5\u4E0A\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002`,
             "\u7B26\u53F7\u3068\u5165\u529B\u6B04\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
           )
@@ -649,66 +588,6 @@
     }
     return messages;
   }
-  function validateSegments(input) {
-    const messages = [];
-    if (input.segments.length === 0) {
-      return [
-        message(
-          "error",
-          "segments_required",
-          "segments",
-          "\u533A\u9593\u30921\u4EF6\u4EE5\u4E0A\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
-          "\u533A\u9593\u540D\u3001\u30B2\u30FC\u30E0\u6570\u3001\u5DEE\u679A\u3092\u8FFD\u52A0\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
-        )
-      ];
-    }
-    if (input.segments.length > 100) {
-      return [
-        message(
-          "error",
-          "segments_limit_exceeded",
-          "segments",
-          "\u533A\u9593\u306F100\u4EF6\u307E\u3067\u5165\u529B\u3067\u304D\u307E\u3059\u3002",
-          "\u5BFE\u8C61\u3092\u5206\u3051\u308B\u304B\u3001\u4E0D\u8981\u306A\u533A\u9593\u3092\u524A\u9664\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
-        )
-      ];
-    }
-    input.segments.forEach((segment, index) => {
-      for (const item of validateNetMedals({ games: segment.games, netMedals: segment.netMedals })) {
-        messages.push({ ...item, field: `segments.${index}.${item.field ?? "range"}` });
-      }
-      if (segment.startGame !== void 0 && segment.endGame !== void 0 && segment.endGame < segment.startGame) {
-        messages.push(
-          message(
-            "error",
-            "segment_range_reversed",
-            `segments.${index}.endGame`,
-            "\u7D42\u4E86G\u304C\u958B\u59CBG\u3088\u308A\u5C0F\u3055\u304F\u306A\u3063\u3066\u3044\u307E\u3059\u3002",
-            "\u958B\u59CBG\u3068\u7D42\u4E86G\u3092\u5165\u308C\u66FF\u3048\u308B\u304B\u3001\u5BFE\u8C61\u533A\u9593\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
-          )
-        );
-      }
-    });
-    const ranges = input.segments.map((segment, index) => ({ index, start: segment.startGame, end: segment.endGame })).filter(
-      (range) => range.start !== void 0 && range.end !== void 0 && range.end >= range.start
-    ).sort((left, right) => left.start - right.start);
-    for (let index = 1; index < ranges.length; index += 1) {
-      const previous = ranges[index - 1];
-      const current = ranges[index];
-      if (previous && current && current.start < previous.end) {
-        messages.push(
-          message(
-            "error",
-            "segment_range_overlap",
-            `segments.${current.index}.startGame`,
-            "\u5165\u529B\u3057\u305F\u533A\u9593\u304C\u91CD\u8907\u3057\u3066\u3044\u307E\u3059\u3002",
-            "\u5404\u533A\u9593\u304C\u91CD\u306A\u3089\u306A\u3044\u3088\u3046\u306B\u958B\u59CBG\u3068\u7D42\u4E86G\u3092\u4FEE\u6B63\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
-          )
-        );
-      }
-    }
-    return messages;
-  }
   function validateInOut(input) {
     const messages = [];
     if ((input.segments?.length ?? 0) > 100) {
@@ -845,6 +724,92 @@
       info,
       ok: errors.length === 0
     };
+  }
+
+  // tools/slot-balance/src/domain/calculators/coin-hold.ts
+  function calculateCoinHold(input) {
+    const netUsedMedals = input.method === "direct" ? input.netUsedMedals : input.startMedals + input.addedMedals - input.endMedals - input.takenOutMedals;
+    const messages = validateCoinHold(input, netUsedMedals);
+    const prerequisitesMissing = messages.some(
+      ({ code }) => code === "at_bonus_not_excluded" || code === "normal_scope_not_confirmed"
+    );
+    if (messages.some(({ severity }) => severity === "error") || prerequisitesMissing) {
+      return createCalculationResult({
+        mode: "coin_hold",
+        normalizedInputs: input,
+        provenance: {
+          normalGames: "input",
+          netUsedMedals: input.method === "direct" ? "input" : "calculated"
+        },
+        explanations: [],
+        knowledgeBoundary: COIN_HOLD_KNOWLEDGE,
+        messages
+      });
+    }
+    const coinHold = divide(
+      multiply(integer(input.normalGames), integer(50)),
+      integer(netUsedMedals)
+    );
+    const values = {
+      netUsedMedals,
+      coinHoldPer50: calculatedNumber(coinHold, 1)
+    };
+    return createCalculationResult({
+      mode: "coin_hold",
+      normalizedInputs: input,
+      values,
+      provenance: {
+        normalGames: "input",
+        netUsedMedals: input.method === "direct" ? "input" : "calculated",
+        coinHoldPer50: "calculated"
+      },
+      explanations: explainCoinHold(input, values),
+      knowledgeBoundary: COIN_HOLD_KNOWLEDGE,
+      messages
+    });
+  }
+
+  // tools/slot-balance/src/domain/calculators/in-out.ts
+  function calculateInOut(input) {
+    const messages = validateInOut(input);
+    if (messages.some(({ severity }) => severity === "error")) {
+      return createCalculationResult({
+        mode: "in_out",
+        normalizedInputs: input,
+        provenance: { actualIn: "input", actualOut: "input" },
+        explanations: [],
+        knowledgeBoundary: IN_OUT_KNOWLEDGE,
+        messages
+      });
+    }
+    const useSegments = (input.segments?.length ?? 0) > 0;
+    const totalIn = useSegments ? (input.segments ?? []).reduce((sum, segment) => sum + segment.actualIn, 0) : input.actualIn ?? 0;
+    const totalOut = useSegments ? (input.segments ?? []).reduce((sum, segment) => sum + segment.actualOut, 0) : input.actualOut ?? 0;
+    const totalGames = useSegments ? (input.segments ?? []).every((segment) => segment.games !== void 0) ? (input.segments ?? []).reduce((sum, segment) => sum + (segment.games ?? 0), 0) : void 0 : input.games;
+    const payoutRate = divide(multiply(integer(totalOut), integer(100)), integer(totalIn));
+    const values = {
+      totalIn,
+      totalOut,
+      actualNetMedals: totalOut - totalIn,
+      payoutRate: calculatedNumber(payoutRate, 1),
+      totalGames
+    };
+    return createCalculationResult({
+      mode: "in_out",
+      normalizedInputs: input,
+      values,
+      provenance: {
+        actualIn: "input",
+        actualOut: "input",
+        totalIn: "actual",
+        totalOut: "actual",
+        actualNetMedals: "actual",
+        payoutRate: "actual"
+      },
+      explanations: explainInOut(values),
+      knowledgeBoundary: IN_OUT_KNOWLEDGE,
+      messages
+    });
   }
 
   // tools/slot-balance/src/domain/calculators/net-medals.ts
@@ -1045,11 +1010,754 @@
     });
   }
 
+  // tools/slot-balance/src/domain/slot-analysis-v2/version.ts
+  var SLOT_ANALYSIS_CALCULATION_VERSION = "2.0.0";
+
+  // tools/slot-balance/src/domain/slot-analysis-v2/shared.ts
+  var MAX_THREE_MEDAL_GAMES = Math.floor(Number.MAX_SAFE_INTEGER / 3);
+  var MAX_DECIMAL_INPUT_LENGTH = 128;
+  var MAX_DECIMAL_MANTISSA_DIGITS = 64;
+  var MAX_DECIMAL_FRACTION_DIGITS = 32;
+  var MAX_DECIMAL_EXPONENT_ABS = 64;
+  var DECIMAL_STRUCTURE = /^([+-]?)(\d+)(?:\.(\d*))?(?:e([+-]?\d+))?$/i;
+  function deepFreeze(value) {
+    if (value !== null && typeof value === "object" && !Object.isFrozen(value)) {
+      for (const nestedValue of Object.values(value)) {
+        deepFreeze(nestedValue);
+      }
+      Object.freeze(value);
+    }
+    return value;
+  }
+  function unique(values) {
+    return [...new Set(values)];
+  }
+  function createMetadata(input) {
+    return deepFreeze({
+      calculationVersion: SLOT_ANALYSIS_CALCULATION_VERSION,
+      formulaIds: unique(input.formulaIds),
+      assumptionCodes: unique(input.assumptionCodes),
+      roundingCodes: unique(input.roundingCodes),
+      warningCodes: unique(input.warningCodes)
+    });
+  }
+  function mergeMetadata(...items) {
+    return {
+      formulaIds: items.flatMap(({ formulaIds }) => formulaIds),
+      assumptionCodes: items.flatMap(({ assumptionCodes }) => assumptionCodes),
+      roundingCodes: items.flatMap(({ roundingCodes }) => roundingCodes),
+      warningCodes: items.flatMap(({ warningCodes }) => warningCodes)
+    };
+  }
+  function success(value, metadata) {
+    return deepFreeze({
+      ok: true,
+      value: deepFreeze(value),
+      metadata: createMetadata(metadata),
+      errors: []
+    });
+  }
+  function failure(errors) {
+    return deepFreeze({ ok: false, errors: [...errors] });
+  }
+  function domainError(code, field, index) {
+    return index === void 0 ? { code, field } : { code, field, index };
+  }
+  function validateGames(value, field, codes) {
+    if (!Number.isSafeInteger(value) || value <= 0) {
+      return domainError(value <= 0 ? codes.notPositive : codes.notSafe, field);
+    }
+    if (value > MAX_THREE_MEDAL_GAMES) return domainError(codes.notSafe, field);
+    return void 0;
+  }
+  function validateNetMedals2(value, field, codes) {
+    if (!Number.isInteger(value)) return domainError(codes.notInteger, field);
+    if (!Number.isSafeInteger(value)) return domainError(codes.notSafe, field);
+    return void 0;
+  }
+  function parsePositiveDecimal(value, field, codes) {
+    if (typeof value === "number" && !Number.isFinite(value)) {
+      return { error: domainError(codes.notFinite, field) };
+    }
+    const raw = typeof value === "number" ? value.toString() : value;
+    if (raw.length > MAX_DECIMAL_INPUT_LENGTH) {
+      return { error: domainError("decimal_input_out_of_bounds", field) };
+    }
+    const text = raw.trim();
+    const structure = DECIMAL_STRUCTURE.exec(text);
+    if (!structure) return { error: domainError(codes.notFinite, field) };
+    const integerDigits = structure[2] ?? "";
+    const fractionDigits = structure[3] ?? "";
+    const exponentDigits = structure[4] ?? "0";
+    if (integerDigits.length + fractionDigits.length > MAX_DECIMAL_MANTISSA_DIGITS || fractionDigits.length > MAX_DECIMAL_FRACTION_DIGITS || BigInt(exponentDigits) > BigInt(MAX_DECIMAL_EXPONENT_ABS) || BigInt(exponentDigits) < BigInt(-MAX_DECIMAL_EXPONENT_ABS)) {
+      return { error: domainError("decimal_input_out_of_bounds", field) };
+    }
+    try {
+      const parsed = decimal(text);
+      if (compare(parsed, integer(0)) <= 0) {
+        return { error: domainError(codes.notPositive, field) };
+      }
+      return { value: parsed };
+    } catch {
+      return { error: domainError(codes.notFinite, field) };
+    }
+  }
+  function exact(value) {
+    return deepFreeze(serializeRational(value));
+  }
+  function metric(value, decimalPlaces) {
+    const calculated = calculatedNumber(value, decimalPlaces);
+    return deepFreeze({
+      exact: deepFreeze(calculated.exact),
+      approximate: calculated.approximate,
+      display: calculated.display
+    });
+  }
+  function hasFiniteApproximation(...values) {
+    return values.every((value) => Number.isFinite(toNumber(value)));
+  }
+  function classifyBenchmarkDifference(value) {
+    const comparison = compare(value, integer(0));
+    const relation = comparison > 0 ? "above" : comparison < 0 ? "below" : "equal";
+    const roundedDifference = calculatedNumber(value, 0).display;
+    const differenceDisplayCode = comparison === 0 ? "exact_zero" : roundedDifference === 0 ? comparison > 0 ? "less_than_one_above" : "less_than_one_below" : "rounded_value";
+    return { relation, differenceDisplayCode };
+  }
+
+  // tools/slot-balance/src/domain/slot-analysis-v2/benchmarks.ts
+  var STANDARD_BENCHMARK_RATES = Object.freeze(["100", "103", "105"]);
+  function calculateBenchmark(input) {
+    const errors = [];
+    const gamesError = validateGames(input.games, "games", {
+      notPositive: "games_not_positive",
+      notSafe: "games_not_safe"
+    });
+    const netError = validateNetMedals2(input.netMedals, "netMedals", {
+      notInteger: "net_medals_not_integer",
+      notSafe: "net_medals_not_safe"
+    });
+    const benchmarkRate = parsePositiveDecimal(input.benchmarkRate, "benchmarkRate", {
+      notPositive: "benchmark_rate_not_positive",
+      notFinite: "benchmark_rate_not_finite_decimal"
+    });
+    if (gamesError) errors.push(gamesError);
+    if (netError) errors.push(netError);
+    if (benchmarkRate.error) errors.push(benchmarkRate.error);
+    if (!gamesError && !netError && BigInt(input.games) * 3n + BigInt(input.netMedals) < 0n) {
+      errors.push(domainError("assumed_out_negative", "netMedals"));
+    }
+    if (errors.length > 0 || !benchmarkRate.value) return failure(errors);
+    const assumedIn = multiply(integer(input.games), integer(3));
+    const expectedNetMedals = divide(
+      multiply(assumedIn, subtract(benchmarkRate.value, integer(100))),
+      integer(100)
+    );
+    const differenceNetMedals = subtract(integer(input.netMedals), expectedNetMedals);
+    if (!hasFiniteApproximation(expectedNetMedals, differenceNetMedals)) {
+      return failure([domainError("result_not_finite", "benchmarkRate")]);
+    }
+    const { relation, differenceDisplayCode } = classifyBenchmarkDifference(differenceNetMedals);
+    return success(
+      {
+        games: input.games,
+        netMedals: input.netMedals,
+        benchmarkRate: exact(benchmarkRate.value),
+        expectedNetMedals: metric(expectedNetMedals, 0),
+        differenceNetMedals: metric(differenceNetMedals, 0),
+        relation,
+        differenceDisplayCode
+      },
+      {
+        formulaIds: ["benchmark_expected_net_medals", "benchmark_difference"],
+        assumptionCodes: ["three_medals_per_game", "benchmark_is_comparison_not_prediction"],
+        roundingCodes: ["half_away_from_zero_to_integer_medal"],
+        warningCodes: []
+      }
+    );
+  }
+  function calculateStandardBenchmarks(input) {
+    const values = [];
+    for (const benchmarkRate of STANDARD_BENCHMARK_RATES) {
+      const result = calculateBenchmark({ ...input, benchmarkRate });
+      if (!result.ok) return result;
+      values.push(result.value);
+    }
+    return success(values, {
+      formulaIds: ["benchmark_expected_net_medals", "benchmark_difference"],
+      assumptionCodes: ["three_medals_per_game", "benchmark_is_comparison_not_prediction"],
+      roundingCodes: ["half_away_from_zero_to_integer_medal"],
+      warningCodes: []
+    });
+  }
+
+  // tools/slot-balance/src/domain/slot-analysis-v2/quick-performance.ts
+  function calculateQuickPerformance(input) {
+    const errors = [];
+    const gamesError = validateGames(input.games, "games", {
+      notPositive: "games_not_positive",
+      notSafe: "games_not_safe"
+    });
+    const netError = validateNetMedals2(input.netMedals, "netMedals", {
+      notInteger: "net_medals_not_integer",
+      notSafe: "net_medals_not_safe"
+    });
+    if (gamesError) errors.push(gamesError);
+    if (netError) errors.push(netError);
+    if (!gamesError && !netError && BigInt(input.games) * 3n + BigInt(input.netMedals) < 0n) {
+      errors.push(domainError("assumed_out_negative", "netMedals"));
+    }
+    if (errors.length > 0) return failure(errors);
+    const assumedIn = integer(BigInt(input.games) * 3n);
+    const assumedOut = add(assumedIn, integer(input.netMedals));
+    const payoutRate = divide(multiply(assumedOut, integer(100)), assumedIn);
+    const netMedalsPer1000Games = divide(
+      multiply(integer(input.netMedals), integer(1e3)),
+      integer(input.games)
+    );
+    return success(
+      {
+        games: input.games,
+        netMedals: input.netMedals,
+        assumedInMedals: input.games * 3,
+        assumedOutMedals: input.games * 3 + input.netMedals,
+        payoutRate: metric(payoutRate, 1),
+        netMedalsPer1000Games: metric(netMedalsPer1000Games, 1)
+      },
+      {
+        formulaIds: ["quick_performance_rate", "net_medals_per_1000_games"],
+        assumptionCodes: ["three_medals_per_game"],
+        roundingCodes: ["half_away_from_zero_to_one_decimal"],
+        warningCodes: []
+      }
+    );
+  }
+
+  // tools/slot-balance/src/domain/slot-analysis-v2/sensitivity.ts
+  function calculatePayoutRateSensitivity(input) {
+    const gamesError = validateGames(input.games, "games", {
+      notPositive: "games_not_positive",
+      notSafe: "games_not_safe"
+    });
+    if (gamesError) return failure([gamesError]);
+    const sensitivity = divide(integer(1e4), integer(input.games * 3));
+    return success(
+      {
+        games: input.games,
+        payoutRatePointsPer100Medals: metric(sensitivity, 1)
+      },
+      {
+        formulaIds: ["payout_rate_sensitivity"],
+        assumptionCodes: ["three_medals_per_game"],
+        roundingCodes: ["half_away_from_zero_to_one_decimal"],
+        warningCodes: []
+      }
+    );
+  }
+
+  // tools/slot-balance/src/domain/slot-analysis-v2/target-reverse.ts
+  function calculateTargetReverse(input) {
+    const errors = [];
+    const currentGamesError = validateGames(input.currentGames, "currentGames", {
+      notPositive: "games_not_positive",
+      notSafe: "games_not_safe"
+    });
+    const currentNetError = validateNetMedals2(input.currentNetMedals, "currentNetMedals", {
+      notInteger: "net_medals_not_integer",
+      notSafe: "net_medals_not_safe"
+    });
+    const targetGamesError = validateGames(input.targetTotalGames, "targetTotalGames", {
+      notPositive: "target_games_not_positive",
+      notSafe: "target_games_not_safe"
+    });
+    const targetRate = parsePositiveDecimal(input.targetPayoutRate, "targetPayoutRate", {
+      notPositive: "target_rate_not_positive",
+      notFinite: "target_rate_not_finite_decimal"
+    });
+    if (currentGamesError) errors.push(currentGamesError);
+    if (currentNetError) errors.push(currentNetError);
+    if (targetGamesError) errors.push(targetGamesError);
+    if (targetRate.error) errors.push(targetRate.error);
+    if (!currentGamesError && !currentNetError && BigInt(input.currentGames) * 3n + BigInt(input.currentNetMedals) < 0n) {
+      errors.push(domainError("assumed_out_negative", "currentNetMedals"));
+    }
+    if (!currentGamesError && !targetGamesError && input.targetTotalGames <= input.currentGames) {
+      errors.push(domainError("target_games_not_after_current", "targetTotalGames"));
+    }
+    if (errors.length > 0 || !targetRate.value) return failure(errors);
+    const remainingGames = input.targetTotalGames - input.currentGames;
+    const targetIn = integer(input.targetTotalGames * 3);
+    const exactTargetTotalNetMedals = divide(
+      multiply(targetIn, subtract(targetRate.value, integer(100))),
+      integer(100)
+    );
+    const exactRequiredFutureNetMedals = subtract(
+      exactTargetTotalNetMedals,
+      integer(input.currentNetMedals)
+    );
+    const remainingIn = integer(remainingGames * 3);
+    const exactRequiredFutureOut = add(remainingIn, exactRequiredFutureNetMedals);
+    const clampedToNonnegativeOut = compare(exactRequiredFutureOut, integer(0)) < 0;
+    const exactIntegerMinimum = ceil(exactRequiredFutureNetMedals);
+    const lowestExecutableNet = -BigInt(remainingGames * 3);
+    const executableIntegerMinimum = exactIntegerMinimum < lowestExecutableNet ? lowestExecutableNet : exactIntegerMinimum;
+    const minimumFutureNetMedals = Number(executableIntegerMinimum);
+    const minimumFutureOutMedals = remainingGames * 3 + minimumFutureNetMedals;
+    const boundaryFuturePayoutRate = divide(
+      multiply(integer(minimumFutureOutMedals), integer(100)),
+      remainingIn
+    );
+    if (!hasFiniteApproximation(
+      exactTargetTotalNetMedals,
+      exactRequiredFutureNetMedals,
+      boundaryFuturePayoutRate
+    )) {
+      return failure([domainError("result_not_finite", "targetPayoutRate")]);
+    }
+    let status;
+    if (clampedToNonnegativeOut) status = "any_nonnegative_out_suffices";
+    else if (minimumFutureNetMedals > 0) status = "must_gain";
+    else if (minimumFutureNetMedals === 0) status = "no_net_change_required";
+    else status = "can_lose_up_to";
+    return success(
+      {
+        currentGames: input.currentGames,
+        currentNetMedals: input.currentNetMedals,
+        targetTotalGames: input.targetTotalGames,
+        targetPayoutRate: exact(targetRate.value),
+        remainingGames,
+        exactTargetTotalNetMedals: metric(exactTargetTotalNetMedals, 0),
+        exactRequiredFutureNetMedals: metric(exactRequiredFutureNetMedals, 0),
+        minimumIntegerFutureNetMedals: minimumFutureNetMedals,
+        minimumFutureOutMedals,
+        requiredFuturePayoutRate: metric(boundaryFuturePayoutRate, 1),
+        status,
+        ...status === "can_lose_up_to" ? { allowedLossMedals: Math.abs(minimumFutureNetMedals) } : {},
+        clampedToNonnegativeOut,
+        assumptions: ["three_medals_per_game", "mathematical_boundary_not_prediction"],
+        warnings: clampedToNonnegativeOut ? ["future_out_clamped_to_zero"] : []
+      },
+      {
+        formulaIds: [
+          "target_total_net_medals",
+          "target_required_future_net_medals",
+          "target_required_future_payout_rate"
+        ],
+        assumptionCodes: ["three_medals_per_game", "mathematical_boundary_not_prediction"],
+        roundingCodes: [
+          "half_away_from_zero_to_integer_medal",
+          "ceil_to_integer_medal_boundary",
+          "half_away_from_zero_to_one_decimal"
+        ],
+        warningCodes: clampedToNonnegativeOut ? ["future_out_clamped_to_zero"] : []
+      }
+    );
+  }
+
+  // tools/slot-balance/src/domain/slot-analysis-v2/drawdown.ts
+  function calculateDrawdownRecovery(points) {
+    if (points.length < 2) {
+      return failure([{ code: "cumulative_points_required", field: "points" }]);
+    }
+    const errors = [];
+    points.forEach((point, index) => {
+      const error2 = validateNetMedals2(point.netMedals, `points[${index}].netMedals`, {
+        notInteger: "cumulative_net_medals_not_integer",
+        notSafe: "cumulative_net_medals_not_safe"
+      });
+      if (error2) errors.push({ ...error2, index });
+    });
+    if (errors.length > 0) return failure(errors);
+    let peakValue = BigInt(points[0]?.netMedals ?? 0);
+    let peakIndex = 0;
+    let maxDrawdown = 0n;
+    let drawdownPeakIndex;
+    let drawdownTroughIndex;
+    let recoveryEligible = false;
+    let recoveryTroughValue = 0n;
+    let recoveryTroughIndex = 0;
+    let maxRecovery = 0n;
+    let maxRecoveryTroughIndex;
+    let maxRecoveryEndIndex;
+    for (let index = 1; index < points.length; index += 1) {
+      const value = BigInt(points[index]?.netMedals ?? 0);
+      const drawdown = peakValue - value;
+      if (drawdown > maxDrawdown) {
+        maxDrawdown = drawdown;
+        drawdownPeakIndex = peakIndex;
+        drawdownTroughIndex = index;
+      }
+      if (value < peakValue) {
+        if (!recoveryEligible || value < recoveryTroughValue) {
+          recoveryTroughValue = value;
+          recoveryTroughIndex = index;
+        }
+        recoveryEligible = true;
+      }
+      if (recoveryEligible) {
+        const recovery = value - recoveryTroughValue;
+        if (recovery > maxRecovery) {
+          maxRecovery = recovery;
+          maxRecoveryTroughIndex = recoveryTroughIndex;
+          maxRecoveryEndIndex = index;
+        }
+      }
+      if (value > peakValue) {
+        peakValue = value;
+        peakIndex = index;
+      }
+    }
+    if (maxDrawdown > BigInt(Number.MAX_SAFE_INTEGER) || maxRecovery > BigInt(Number.MAX_SAFE_INTEGER)) {
+      return failure([domainError("cumulative_movement_not_safe", "points")]);
+    }
+    return success(
+      {
+        maximumDrawdown: {
+          medals: Number(maxDrawdown),
+          ...drawdownPeakIndex === void 0 ? {} : { startIndex: drawdownPeakIndex, endIndex: drawdownTroughIndex }
+        },
+        maximumRecoveryAfterDrawdown: {
+          medals: Number(maxRecovery),
+          ...maxRecoveryTroughIndex === void 0 ? {} : { startIndex: maxRecoveryTroughIndex, endIndex: maxRecoveryEndIndex }
+        }
+      },
+      {
+        formulaIds: ["maximum_endpoint_drawdown", "maximum_recovery_after_drawdown"],
+        assumptionCodes: ["endpoint_movements_only"],
+        roundingCodes: [],
+        warningCodes: []
+      }
+    );
+  }
+
+  // tools/slot-balance/src/domain/slot-analysis-v2/segments.ts
+  var SLOT_ANALYSIS_MAX_SEGMENTS = 100;
+  function segmentProvenance(segment, index) {
+    return segment.provenance ?? { source: "direct", sourceSegmentIndex: index };
+  }
+  function endpointSourceIndices(segments) {
+    const first = segments[0]?.provenance;
+    const startIndex = first?.source === "cumulative_points" ? first.sourceStartPointIndex ?? 0 : 0;
+    return [
+      startIndex,
+      ...segments.map(
+        (segment, index) => segment.provenance?.source === "cumulative_points" ? segment.provenance.sourceEndPointIndex ?? index + 1 : index + 1
+      )
+    ];
+  }
+  function mapMovementIndices(values, sourceIndices) {
+    const mapMovement = (movement) => ({
+      medals: movement.medals,
+      ...movement.startIndex === void 0 ? {} : {
+        startIndex: sourceIndices[movement.startIndex],
+        endIndex: sourceIndices[movement.endIndex ?? movement.startIndex]
+      }
+    });
+    return {
+      maximumDrawdown: mapMovement(values.maximumDrawdown),
+      maximumRecoveryAfterDrawdown: mapMovement(values.maximumRecoveryAfterDrawdown)
+    };
+  }
+  function segmentMetrics(games, netMedals) {
+    const assumedIn = integer(games * 3);
+    return {
+      payoutRate: metric(
+        divide(multiply(add(assumedIn, integer(netMedals)), integer(100)), assumedIn),
+        1
+      ),
+      netMedalsPer1000Games: metric(
+        divide(multiply(integer(netMedals), integer(1e3)), integer(games)),
+        1
+      )
+    };
+  }
+  function benchmarkValues(games, netMedals, benchmarkRate) {
+    const result = calculateBenchmark({ games, netMedals, benchmarkRate });
+    if (!result.ok) return result;
+    const condition = result.value.relation === "above" ? "above_benchmark_segment" : result.value.relation === "below" ? "below_benchmark_segment" : "on_benchmark";
+    return success(
+      {
+        benchmarkRate: result.value.benchmarkRate,
+        expectedNetMedals: result.value.expectedNetMedals,
+        differenceNetMedals: result.value.differenceNetMedals,
+        contributionNetMedals: result.value.differenceNetMedals,
+        relation: result.value.relation,
+        differenceDisplayCode: result.value.differenceDisplayCode,
+        condition
+      },
+      {
+        formulaIds: [...result.metadata.formulaIds, "segment_benchmark_contribution"],
+        assumptionCodes: result.metadata.assumptionCodes,
+        roundingCodes: result.metadata.roundingCodes,
+        warningCodes: result.metadata.warningCodes
+      }
+    );
+  }
+  function analyzeSegments(input) {
+    if (input.segments.length === 0) {
+      return failure([domainError("segments_required", "segments")]);
+    }
+    if (input.segments.length > SLOT_ANALYSIS_MAX_SEGMENTS) {
+      return failure([domainError("segments_limit_exceeded", "segments")]);
+    }
+    const errors = [];
+    let totalGamesBigInt = 0n;
+    let totalNetMedalsBigInt = 0n;
+    let cumulativeNetMedalsBigInt = 0n;
+    input.segments.forEach((segment, index) => {
+      const gamesError = validateGames(segment.games, `segments[${index}].games`, {
+        notPositive: "segment_games_not_positive",
+        notSafe: "segment_games_not_safe"
+      });
+      const netError = validateNetMedals2(segment.netMedals, `segments[${index}].netMedals`, {
+        notInteger: "segment_net_medals_not_integer",
+        notSafe: "segment_net_medals_not_safe"
+      });
+      if (gamesError) errors.push({ ...gamesError, index });
+      if (netError) errors.push({ ...netError, index });
+      if (!gamesError && !netError) {
+        if (BigInt(segment.games) * 3n + BigInt(segment.netMedals) < 0n) {
+          errors.push(
+            domainError("segment_assumed_out_negative", `segments[${index}].netMedals`, index)
+          );
+        }
+        totalGamesBigInt += BigInt(segment.games);
+        totalNetMedalsBigInt += BigInt(segment.netMedals);
+        cumulativeNetMedalsBigInt += BigInt(segment.netMedals);
+        if (cumulativeNetMedalsBigInt > BigInt(Number.MAX_SAFE_INTEGER) || cumulativeNetMedalsBigInt < BigInt(Number.MIN_SAFE_INTEGER)) {
+          errors.push(
+            domainError(
+              "segment_cumulative_net_medals_not_safe",
+              `segments[${index}].netMedals`,
+              index
+            )
+          );
+        }
+      }
+    });
+    if (totalGamesBigInt > BigInt(MAX_THREE_MEDAL_GAMES) || totalNetMedalsBigInt > BigInt(Number.MAX_SAFE_INTEGER) || totalNetMedalsBigInt < BigInt(Number.MIN_SAFE_INTEGER)) {
+      errors.push(domainError("segment_totals_not_safe", "segments"));
+    }
+    if (errors.length > 0) return failure(errors);
+    const totalGames = Number(totalGamesBigInt);
+    const totalNetMedals = Number(totalNetMedalsBigInt);
+    const segments = [];
+    for (const [index, inputSegment] of input.segments.entries()) {
+      const clonedInput = {
+        ...inputSegment.label === void 0 ? {} : { label: inputSegment.label },
+        games: inputSegment.games,
+        netMedals: inputSegment.netMedals,
+        provenance: segmentProvenance(inputSegment, index)
+      };
+      let segmentBenchmark;
+      if (input.benchmarkRate !== void 0) {
+        const benchmark = benchmarkValues(
+          inputSegment.games,
+          inputSegment.netMedals,
+          input.benchmarkRate
+        );
+        if (!benchmark.ok) return benchmark;
+        segmentBenchmark = benchmark.value;
+      }
+      segments.push({
+        input: clonedInput,
+        provenance: clonedInput.provenance ?? segmentProvenance(inputSegment, index),
+        ...segmentMetrics(inputSegment.games, inputSegment.netMedals),
+        ...segmentBenchmark === void 0 ? {} : { benchmark: segmentBenchmark }
+      });
+    }
+    const aggregateMetrics = segmentMetrics(totalGames, totalNetMedals);
+    let aggregateBenchmark;
+    if (input.benchmarkRate !== void 0) {
+      const benchmark = benchmarkValues(totalGames, totalNetMedals, input.benchmarkRate);
+      if (!benchmark.ok) return benchmark;
+      aggregateBenchmark = {
+        benchmarkRate: benchmark.value.benchmarkRate,
+        expectedNetMedals: benchmark.value.expectedNetMedals,
+        differenceNetMedals: benchmark.value.differenceNetMedals,
+        contributionNetMedals: benchmark.value.contributionNetMedals,
+        relation: benchmark.value.relation,
+        differenceDisplayCode: benchmark.value.differenceDisplayCode
+      };
+    }
+    const aggregate = {
+      aggregateGames: totalGames,
+      aggregateNetMedals: totalNetMedals,
+      aggregatePayoutRate: aggregateMetrics.payoutRate,
+      aggregateNetMedalsPer1000Games: aggregateMetrics.netMedalsPer1000Games,
+      ...aggregateBenchmark === void 0 ? {} : { benchmark: aggregateBenchmark }
+    };
+    const sourceIndices = endpointSourceIndices(input.segments);
+    const cumulativePoints = [{ netMedals: 0 }];
+    const cumulativeEndpoints = [
+      {
+        pointIndex: 0,
+        sourceIndex: sourceIndices[0] ?? 0,
+        cumulativeGames: 0,
+        cumulativeNetMedals: 0
+      }
+    ];
+    let cumulativeGamesBigInt = 0n;
+    cumulativeNetMedalsBigInt = 0n;
+    for (const [index, segment] of input.segments.entries()) {
+      cumulativeGamesBigInt += BigInt(segment.games);
+      cumulativeNetMedalsBigInt += BigInt(segment.netMedals);
+      const cumulativeGames = Number(cumulativeGamesBigInt);
+      const cumulativeNetMedals = Number(cumulativeNetMedalsBigInt);
+      cumulativePoints.push({ netMedals: cumulativeNetMedals });
+      cumulativeEndpoints.push({
+        pointIndex: index + 1,
+        sourceIndex: sourceIndices[index + 1] ?? index + 1,
+        cumulativeGames,
+        cumulativeNetMedals
+      });
+    }
+    const drawdownRecovery = calculateDrawdownRecovery(cumulativePoints);
+    if (!drawdownRecovery.ok) return drawdownRecovery;
+    return success(
+      {
+        segments,
+        aggregate,
+        cumulativeEndpoints,
+        drawdownRecovery: mapMovementIndices(drawdownRecovery.value, sourceIndices)
+      },
+      {
+        formulaIds: [
+          "segment_performance_rate",
+          "net_medals_per_1000_games",
+          "aggregate_performance_rate",
+          ...input.benchmarkRate === void 0 ? [] : [
+            "benchmark_expected_net_medals",
+            "benchmark_difference",
+            "segment_benchmark_contribution"
+          ],
+          "maximum_endpoint_drawdown",
+          "maximum_recovery_after_drawdown"
+        ],
+        assumptionCodes: [
+          "three_medals_per_game",
+          "endpoint_movements_only",
+          ...input.benchmarkRate === void 0 ? [] : ["benchmark_is_comparison_not_prediction"]
+        ],
+        roundingCodes: [
+          "half_away_from_zero_to_one_decimal",
+          ...input.benchmarkRate === void 0 ? [] : ["half_away_from_zero_to_integer_medal"]
+        ],
+        warningCodes: []
+      }
+    );
+  }
+
+  // tools/slot-balance/src/domain/slot-analysis-v2/cumulative-points.ts
+  function convertCumulativePoints(input) {
+    if (input.points.length < 2) {
+      return failure([domainError("cumulative_points_required", "points")]);
+    }
+    if (input.points.length > 101) {
+      return failure([domainError("cumulative_points_limit_exceeded", "points")]);
+    }
+    const errors = [];
+    const points = input.points.map((point) => ({
+      ...point.label === void 0 ? {} : { label: point.label },
+      cumulativeGames: point.cumulativeGames,
+      cumulativeNetMedals: point.cumulativeNetMedals
+    }));
+    points.forEach((point, index) => {
+      if (!Number.isInteger(point.cumulativeGames)) {
+        errors.push(
+          domainError("cumulative_games_not_integer", `points[${index}].cumulativeGames`, index)
+        );
+      } else if (!Number.isSafeInteger(point.cumulativeGames) || point.cumulativeGames > MAX_THREE_MEDAL_GAMES) {
+        errors.push(
+          domainError("cumulative_games_not_safe", `points[${index}].cumulativeGames`, index)
+        );
+      } else if (point.cumulativeGames < 0) {
+        errors.push(
+          domainError("cumulative_games_negative", `points[${index}].cumulativeGames`, index)
+        );
+      }
+      const netError = validateNetMedals2(
+        point.cumulativeNetMedals,
+        `points[${index}].cumulativeNetMedals`,
+        {
+          notInteger: "cumulative_net_medals_not_integer",
+          notSafe: "cumulative_net_medals_not_safe"
+        }
+      );
+      if (netError) errors.push({ ...netError, index });
+      if (index > 0 && Number.isSafeInteger(point.cumulativeGames)) {
+        const previousGames = points[index - 1]?.cumulativeGames;
+        if (previousGames !== void 0 && point.cumulativeGames <= previousGames) {
+          errors.push(
+            domainError("cumulative_games_not_increasing", `points[${index}].cumulativeGames`, index)
+          );
+        }
+      }
+    });
+    if (errors.length > 0) return failure(errors);
+    const segments = [];
+    for (let index = 1; index < points.length; index += 1) {
+      const start = points[index - 1];
+      const end = points[index];
+      if (!start || !end) continue;
+      const games = end.cumulativeGames - start.cumulativeGames;
+      const netMedalsBigInt = BigInt(end.cumulativeNetMedals) - BigInt(start.cumulativeNetMedals);
+      if (netMedalsBigInt > BigInt(Number.MAX_SAFE_INTEGER) || netMedalsBigInt < BigInt(Number.MIN_SAFE_INTEGER)) {
+        return failure([
+          domainError("segment_net_medals_not_safe", `points[${index}].cumulativeNetMedals`, index)
+        ]);
+      }
+      const netMedals = Number(netMedalsBigInt);
+      if (BigInt(games) * 3n + netMedalsBigInt < 0n) {
+        return failure([
+          domainError("segment_assumed_out_negative", `points[${index}].cumulativeNetMedals`, index)
+        ]);
+      }
+      segments.push({
+        ...start.label !== void 0 && end.label !== void 0 ? { label: `${start.label} \u2192 ${end.label}` } : {},
+        games,
+        netMedals,
+        provenance: {
+          source: "cumulative_points",
+          sourceStartPointIndex: index - 1,
+          sourceEndPointIndex: index
+        }
+      });
+    }
+    return success(
+      { points, segments },
+      {
+        formulaIds: ["cumulative_point_difference"],
+        assumptionCodes: ["cumulative_points_are_observations"],
+        roundingCodes: [],
+        warningCodes: []
+      }
+    );
+  }
+  function analyzeCumulativePoints(input) {
+    const conversion = convertCumulativePoints(input);
+    if (!conversion.ok) return conversion;
+    const analysis = analyzeSegments({
+      segments: conversion.value.segments,
+      ...input.benchmarkRate === void 0 ? {} : { benchmarkRate: input.benchmarkRate }
+    });
+    if (!analysis.ok) return analysis;
+    const cumulativeEndpoints = conversion.value.points.map((point, index) => ({
+      pointIndex: index,
+      sourceIndex: index,
+      cumulativeGames: point.cumulativeGames,
+      cumulativeNetMedals: point.cumulativeNetMedals
+    }));
+    return success(
+      { ...analysis.value, points: conversion.value.points, cumulativeEndpoints },
+      mergeMetadata(conversion.metadata, analysis.metadata)
+    );
+  }
+
   // tools/slot-balance/src/domain/normalizers.ts
   var DEFAULT_UNITS = ["\u30B2\u30FC\u30E0", "G", "\u679A", "\u5186"];
-  function error(code, field2, message2, correction) {
+  function error(code, field, message2, correction) {
     return {
-      messages: [{ severity: "error", code, field: field2, message: message2, correction }]
+      messages: [{ severity: "error", code, field, message: message2, correction }]
     };
   }
   function escapeForRegularExpression(value) {
@@ -1132,1372 +1840,1308 @@
       messages: []
     };
   }
-  function normalizeIntegerInput(raw, field2, label) {
-    return normalizeNumericInput(raw, { field: field2, label, allowDecimal: false });
+  function normalizeIntegerInput(raw, field, label) {
+    return normalizeNumericInput(raw, { field, label, allowDecimal: false });
   }
-  function normalizeDecimalInput(raw, field2, label) {
-    return normalizeNumericInput(raw, { field: field2, label, allowDecimal: true });
-  }
-
-  // tools/slot-balance/src/ui/adapters.ts
-  function requiredMessage(field2, label) {
-    return {
-      severity: "error",
-      code: "required_input",
-      field: field2,
-      message: `${label}\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002`,
-      correction: "\u5165\u529B\u4F8B\u3068\u5358\u4F4D\u3092\u78BA\u8A8D\u3057\u3066\u3001\u6570\u5B57\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
-    };
-  }
-  function rawValue(form, field2) {
-    return namedControl(form, field2)?.value ?? "";
-  }
-  function requiredInteger(form, field2, label) {
-    const raw = rawValue(form, field2);
-    if (raw.trim() === "") return { messages: [requiredMessage(field2, label)] };
-    const normalized = normalizeIntegerInput(raw, field2, label);
-    return { value: normalized.value, messages: normalized.messages };
-  }
-  function optionalInteger(form, field2, label) {
-    const raw = rawValue(form, field2);
-    if (raw.trim() === "") return { messages: [] };
-    const normalized = normalizeIntegerInput(raw, field2, label);
-    return { value: normalized.value, messages: normalized.messages };
-  }
-  function optionalDecimal(form, field2, label) {
-    const raw = rawValue(form, field2);
-    if (raw.trim() === "") return { messages: [] };
-    const normalized = normalizeDecimalInput(raw, field2, label);
-    return { value: normalized.value, messages: normalized.messages };
-  }
-  function requiredIntegerFromRaw(raw, field2, label) {
-    if (raw.trim() === "") return { messages: [requiredMessage(field2, label)] };
-    const normalized = normalizeIntegerInput(raw, field2, label);
-    return { value: normalized.value, messages: normalized.messages };
-  }
-  function optionalIntegerFromRaw(raw, field2, label) {
-    if (raw.trim() === "") return { messages: [] };
-    const normalized = normalizeIntegerInput(raw, field2, label);
-    return { value: normalized.value, messages: normalized.messages };
-  }
-  function pairedOptionalMessage(first, second, firstField, secondField, message2) {
-    if (first.value === void 0 === (second.value === void 0)) return [];
-    return [
-      {
-        severity: "error",
-        code: "paired_inputs_required",
-        field: first.value === void 0 ? firstField : secondField,
-        message: message2,
-        correction: "\u4E21\u65B9\u3092\u5165\u529B\u3059\u308B\u304B\u3001\u4E21\u65B9\u3092\u7A7A\u6B04\u306B\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
-      }
-    ];
-  }
-  function combineMessages(...parsed) {
-    return parsed.flatMap(({ messages }) => messages);
+  function normalizeDecimalInput(raw, field, label) {
+    return normalizeNumericInput(raw, { field, label, allowDecimal: true });
   }
 
-  // tools/slot-balance/src/ui/formatters.ts
-  var INTEGER_FORMATTER = new Intl.NumberFormat("ja-JP", { maximumFractionDigits: 0 });
-  var DECIMAL_FORMATTER = new Intl.NumberFormat("ja-JP", {
+  // tools/slot-balance/src/ui-v2/shared.ts
+  var integerFormatter = new Intl.NumberFormat("ja-JP", { maximumFractionDigits: 0 });
+  var oneDecimalFormatter = new Intl.NumberFormat("ja-JP", {
     minimumFractionDigits: 1,
     maximumFractionDigits: 1
   });
-  function formatNumber(value, fractionDigits = 0) {
-    return fractionDigits === 0 ? INTEGER_FORMATTER.format(value) : DECIMAL_FORMATTER.format(value);
+  function byId(id) {
+    const node = document.getElementById(id);
+    if (!(node instanceof HTMLElement)) throw new Error(`Missing UI element: ${id}`);
+    return node;
   }
-  function formatSignedNumber(value, fractionDigits = 0) {
-    if (value === 0) return formatNumber(0, fractionDigits);
-    return `${value > 0 ? "+" : "-"}${formatNumber(Math.abs(value), fractionDigits)}`;
+  function create(tag, options = {}) {
+    const node = document.createElement(tag);
+    if (options.className) node.className = options.className;
+    if (options.text !== void 0) node.textContent = options.text;
+    return node;
   }
-  function formatYen(value, signed = false) {
-    return `${signed ? formatSignedNumber(value) : formatNumber(value)}\u5186`;
+  function formatInteger(value) {
+    return integerFormatter.format(value);
   }
-  function formatMedals(value, signed = false) {
-    return `${signed ? formatSignedNumber(value) : formatNumber(value)}\u679A`;
+  function formatOneDecimal(value) {
+    return oneDecimalFormatter.format(value);
   }
-  function formatSignedMedals(value) {
-    return formatMedals(value, true);
+  function formatSigned(value, fractionDigits = 0) {
+    const formatted = fractionDigits === 1 ? formatOneDecimal(Math.abs(value)) : formatInteger(Math.abs(value));
+    if (value === 0) return fractionDigits === 1 ? formatOneDecimal(0) : "0";
+    return `${value > 0 ? "+" : "\u2212"}${formatted}`;
   }
-  function formatGames(value) {
-    return `${formatNumber(value)}G`;
-  }
-  function formatPercent(value) {
-    return `${formatNumber(value, 1)}%`;
-  }
-  function provenanceLabel(provenance) {
-    const labels = {
-      input: "\u5165\u529B",
-      calculated: "\u8A08\u7B97",
-      estimated: "\u6982\u7B97",
-      reference: "\u53C2\u8003",
-      actual: "\u5B9F\u6E2C"
-    };
-    return labels[provenance];
-  }
-
-  // tools/slot-balance/src/ui/modes/investment-recovery-ui.ts
-  function setupInvestmentRecoveryUi() {
-    const form = byId("investment-form");
+  function requiredInteger(input, field, label) {
+    if (input.value.trim() === "")
+      return { errors: [{ field, message: `${label}\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002` }] };
+    const normalized = normalizeIntegerInput(input.value, field, label);
     return {
-      calculate() {
-        const cash = requiredInteger(form, "investment.cash", "\u73FE\u91D1\u6295\u8CC7\u984D");
-        const current = requiredInteger(form, "investment.currentMedals", "\u73FE\u5728\u624B\u5143\u306B\u3042\u308B\u679A\u6570");
-        const stored = optionalInteger(form, "investment.storedMedals", "\u4F7F\u7528\u3057\u305F\u8CAF\u30E1\u30C0\u30EB");
-        const exchanged = optionalInteger(form, "investment.exchangedYen", "\u3059\u3067\u306B\u4EA4\u63DB\u3057\u305F\u91D1\u984D");
-        const lend = optionalDecimal(form, "investment.lendRate", "\u8CB8\u51FA\u6761\u4EF6");
-        const exchange = optionalDecimal(form, "investment.exchangeRate", "\u4EA4\u63DB\u6761\u4EF6");
-        const unit = optionalInteger(form, "investment.exchangeUnit", "\u4EA4\u63DB\u5358\u4F4D");
-        const games = optionalInteger(form, "investment.games", "G\u6570");
-        const netMedals = optionalInteger(form, "investment.netMedals", "\u5DEE\u679A");
-        const messages = [
-          ...combineMessages(
-            cash,
-            current,
-            stored,
-            exchanged,
-            lend,
-            exchange,
-            unit,
-            games,
-            netMedals
-          ),
-          ...pairedOptionalMessage(
-            games,
-            netMedals,
-            "investment.games",
-            "investment.netMedals",
-            "G\u6570\u3068\u5DEE\u679A\u306F\u540C\u3058\u5BFE\u8C61\u7BC4\u56F2\u3067\u4E21\u65B9\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
-          )
-        ];
-        if (messages.length > 0 || cash.value === void 0 || current.value === void 0) {
-          return { key: "investment", messages };
-        }
-        const result = calculateInvestmentRecovery({
-          cashInvestmentYen: cash.value,
-          currentMedals: current.value,
-          storedMedalsUsed: stored.value,
-          alreadyExchangedYen: exchanged.value,
-          lendMedalsPer1000Yen: lend.value,
-          exchangeMedalsPer1000Yen: exchange.value,
-          exchangeUnitYen: unit.value,
-          requestRecoveryLines: exchange.value !== void 0,
-          games: games.value,
-          netMedals: netMedals.value
-        });
-        if (!result.ok || !result.values) {
-          const fieldNames = {
-            cashInvestmentYen: "investment.cash",
-            currentMedals: "investment.currentMedals",
-            storedMedalsUsed: "investment.storedMedals",
-            alreadyExchangedYen: "investment.exchangedYen",
-            lendMedalsPer1000Yen: "investment.lendRate",
-            exchangeMedalsPer1000Yen: "investment.exchangeRate",
-            exchangeUnitYen: "investment.exchangeUnit",
-            games: "investment.games",
-            netMedals: "investment.netMedals"
-          };
-          return {
-            key: "investment",
-            result,
-            messages: result.errors.map((message2) => ({
-              ...message2,
-              field: message2.field ? fieldNames[message2.field] ?? message2.field : void 0
-            }))
-          };
-        }
-        const values = result.values;
-        const groups = [
-          {
-            items: [
-              {
-                label: "\u4EA4\u63DB\u5358\u4F4D\u53CD\u6620\u5F8C\u306E\u4EA4\u63DB\u898B\u8FBC\u984D",
-                value: formatYen(values.currentExchangeEstimateYen),
-                provenance: result.provenance["currentExchangeEstimateYen"] ?? "estimated",
-                primary: true
-              },
-              {
-                label: "\u7DCF\u56DE\u53CE\u898B\u8FBC",
-                value: formatYen(values.grossReturnEstimateYen),
-                provenance: result.provenance["grossReturnEstimateYen"] ?? "estimated",
-                primary: true
-              },
-              {
-                label: "\u73FE\u91D1\u30D9\u30FC\u30B9\u5DEE\u984D",
-                value: formatYen(values.cashNetEstimateYen, true),
-                provenance: result.provenance["cashNetEstimateYen"] ?? "estimated",
-                primary: true
-              },
-              {
-                label: "\u8CAF\u30E1\u30C0\u30EB\u8FBC\u307F\u4FA1\u5024\u5DEE\u984D",
-                value: formatYen(values.totalValueNetEstimateYen.display, true),
-                provenance: result.provenance["totalValueNetEstimateYen"] ?? "estimated",
-                primary: true
-              }
-            ]
-          },
-          {
-            title: "\u63DB\u7B97\u5185\u8A33",
-            items: [
-              {
-                label: "\u73FE\u5728\u679A\u6570\u306E\u7406\u8AD6\u4EA4\u63DB\u984D",
-                value: formatYen(values.currentTheoreticalExchangeYen.display),
-                provenance: result.provenance["currentTheoreticalExchangeYen"] ?? "estimated"
-              },
-              {
-                label: "\u4F7F\u7528\u8CAF\u30E1\u30C0\u30EB\u306E\u76F8\u5F53\u984D",
-                value: formatYen(values.storedMedalValueYen.display),
-                provenance: result.provenance["storedMedalValueYen"] ?? "estimated"
-              }
-            ]
-          }
-        ];
-        const rateItems = [];
-        if (values.cashRecoveryRate) {
-          rateItems.push({
-            label: "\u73FE\u91D1\u56DE\u53CE\u7387",
-            value: formatPercent(values.cashRecoveryRate.display),
-            provenance: result.provenance["cashRecoveryRate"] ?? "estimated"
-          });
-        }
-        if (values.totalRecoveryRate) {
-          rateItems.push({
-            label: "\u8CAF\u30E1\u30C0\u30EB\u8FBC\u307F\u56DE\u53CE\u7387",
-            value: formatPercent(values.totalRecoveryRate.display),
-            provenance: result.provenance["totalRecoveryRate"] ?? "estimated"
-          });
-        }
-        if (rateItems.length > 0) groups.push({ title: "\u56DE\u53CE\u7387", items: rateItems });
-        const lineItems = [];
-        if (values.cashRecoveryLine) {
-          lineItems.push(
-            {
-              label: "\u73FE\u91D1\u56DE\u53CE\u30E9\u30A4\u30F3",
-              value: formatMedals(values.cashRecoveryLine.requiredMedals),
-              provenance: result.provenance["cashRecoveryLine"] ?? "estimated"
-            },
-            {
-              label: "\u73FE\u91D1\u56DE\u53CE\u30E9\u30A4\u30F3\u3068\u306E\u5DEE\u679A\u6570",
-              value: formatSignedMedals(-values.cashRecoveryLine.gapMedals),
-              provenance: result.provenance["cashRecoveryLine"] ?? "estimated",
-              note: "\u30D7\u30E9\u30B9\u306F\u73FE\u5728\u679A\u6570\u304C\u30E9\u30A4\u30F3\u3092\u4E0A\u56DE\u308B\u72B6\u614B\u3001\u30DE\u30A4\u30CA\u30B9\u306F\u4E0D\u8DB3\u679A\u6570\u3067\u3059\u3002"
-            }
-          );
-        }
-        if (values.showTotalRecoveryLine && values.totalRecoveryLine) {
-          lineItems.push(
-            {
-              label: "\u8CAF\u30E1\u30C0\u30EB\u8FBC\u307F\u56DE\u53CE\u30E9\u30A4\u30F3",
-              value: formatMedals(values.totalRecoveryLine.requiredMedals),
-              provenance: result.provenance["totalRecoveryLine"] ?? "estimated"
-            },
-            {
-              label: "\u8CAF\u30E1\u30C0\u30EB\u8FBC\u307F\u56DE\u53CE\u30E9\u30A4\u30F3\u3068\u306E\u5DEE\u679A\u6570",
-              value: formatSignedMedals(-values.totalRecoveryLine.gapMedals),
-              provenance: result.provenance["totalRecoveryLine"] ?? "estimated"
-            }
-          );
-        }
-        if (lineItems.length > 0) groups.push({ title: "\u56DE\u53CE\u30E9\u30A4\u30F3", items: lineItems });
-        if (values.cashBorrowedMedalsEquivalent) {
-          groups.push({
-            title: "\u8CB8\u51FA\u6761\u4EF6\u306E\u53C2\u8003",
-            items: [
-              {
-                label: "\u73FE\u91D1\u6295\u8CC7\u306E\u8CB8\u51FA\u679A\u6570\u76F8\u5F53",
-                value: formatMedals(values.cashBorrowedMedalsEquivalent.display),
-                provenance: result.provenance["cashBorrowedMedalsEquivalent"] ?? "reference"
-              }
-            ]
-          });
-        }
-        if (values.netMedalsAnalysis) {
-          const netItems = [
-            {
-              label: "1,000G\u3042\u305F\u308A\u5DEE\u679A",
-              value: `${formatSignedMedals(values.netMedalsAnalysis.netMedalsPer1000G.display)}\uFF0F1,000G`,
-              provenance: "calculated"
-            }
-          ];
-          if (values.netMedalsAnalysis.payoutRateEstimate) {
-            netItems.unshift({
-              label: "\u5DEE\u679A\u30D9\u30FC\u30B9\u51FA\u7389\u7387",
-              value: formatPercent(values.netMedalsAnalysis.payoutRateEstimate.display),
-              provenance: "estimated"
-            });
-          }
-          groups.push({ title: "\u8FFD\u52A0\u3057\u305FG\u6570\u30FB\u5DEE\u679A", items: netItems });
-        }
-        return { key: "investment", result, groups, messages: [] };
-      }
+      value: normalized.value,
+      errors: validationErrors(normalized.messages)
     };
   }
-
-  // tools/slot-balance/src/ui/modes/net-medals-ui.ts
-  function setupNetMedalsUi() {
-    const form = byId("net-form");
+  function requiredDecimal(input, field, label) {
+    if (input.value.trim() === "")
+      return { errors: [{ field, message: `${label}\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002` }] };
+    const normalized = normalizeDecimalInput(input.value, field, label);
     return {
-      calculate() {
-        const games = requiredInteger(form, "net.games", "G\u6570");
-        const netMedals = requiredInteger(form, "net.netMedals", "\u5DEE\u679A");
-        const messages = combineMessages(games, netMedals);
-        if (messages.length > 0 || games.value === void 0 || netMedals.value === void 0) {
-          return { key: "net", messages };
-        }
-        const scope = namedControl(form, "net.scope")?.value ?? "personal_session";
-        const result = calculateNetMedals({
-          games: games.value,
-          netMedals: netMedals.value,
-          gamesScope: scope,
-          netMedalsScope: scope
-        });
-        if (!result.ok || !result.values) {
-          const fieldNames = { games: "net.games", netMedals: "net.netMedals" };
-          return {
-            key: "net",
-            result,
-            messages: result.errors.map((message2) => ({
-              ...message2,
-              field: message2.field ? fieldNames[message2.field] ?? message2.field : void 0
-            }))
-          };
-        }
-        const values = result.values;
-        const primaryItems = [];
-        if (values.payoutRateEstimate) {
-          primaryItems.push({
-            label: "\u5DEE\u679A\u30D9\u30FC\u30B9\u51FA\u7389\u7387",
-            value: formatPercent(values.payoutRateEstimate.display),
-            provenance: result.provenance["payoutRateEstimate"] ?? "estimated",
-            primary: true,
-            note: "1G\u3042\u305F\u308A3\u679A\u639B\u3051\u3068\u3057\u3066\u63DB\u7B97\u3057\u305F\u6982\u7B97\u3067\u3059\u3002"
-          });
-        }
-        primaryItems.push({
-          label: "1,000G\u3042\u305F\u308A\u5DEE\u679A",
-          value: `${formatSignedMedals(values.netMedalsPer1000G.display)}\uFF0F1,000G`,
-          provenance: result.provenance["netMedalsPer1000G"] ?? "calculated",
-          primary: true
-        });
-        const groups = [
-          { items: primaryItems },
-          {
-            title: "3\u679A\u639B\u3051\u63DB\u7B97",
-            items: [
-              {
-                label: "IN",
-                value: formatMedals(values.assumedIn),
-                provenance: result.provenance["assumedIn"] ?? "estimated"
-              },
-              {
-                label: "OUT",
-                value: formatMedals(values.assumedOut, true),
-                provenance: result.provenance["assumedOut"] ?? "estimated"
-              },
-              {
-                label: "\u5BFE\u8C61G\u6570",
-                value: formatGames(games.value),
-                provenance: "input"
-              }
-            ]
-          }
-        ];
-        return { key: "net", result, groups, messages: [] };
+      value: normalized.value,
+      errors: validationErrors(normalized.messages)
+    };
+  }
+  function optionalInteger(input, field, label) {
+    if (input.value.trim() === "") return { errors: [] };
+    const normalized = normalizeIntegerInput(input.value, field, label);
+    return { value: normalized.value, errors: validationErrors(normalized.messages) };
+  }
+  function optionalDecimal(input, field, label) {
+    if (input.value.trim() === "") return { errors: [] };
+    const normalized = normalizeDecimalInput(input.value, field, label);
+    return { value: normalized.value, errors: validationErrors(normalized.messages) };
+  }
+  function validationErrors(messages) {
+    return messages.filter(({ severity }) => severity === "error").map(({ field, correction, message: message2 }) => ({
+      ...field === void 0 ? {} : { field },
+      message: correction ?? message2
+    }));
+  }
+  var domainMessages = {
+    games_not_positive: "\u7DCF\u30B2\u30FC\u30E0\u6570\u306F1\u4EE5\u4E0A\u306E\u6574\u6570\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    games_not_safe: "\u7DCF\u30B2\u30FC\u30E0\u6570\u306E\u6841\u6570\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    net_medals_not_integer: "\u5DEE\u679A\u306F\u6574\u6570\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    net_medals_not_safe: "\u5DEE\u679A\u306E\u6841\u6570\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    assumed_out_negative: "\u5DEE\u679A\u304C\u5C0F\u3055\u3059\u304E\u308B\u305F\u3081\u3001\u60F3\u5B9AOUT\u304C0\u679A\u672A\u6E80\u306B\u306A\u308A\u307E\u3059\u3002",
+    benchmark_rate_not_positive: "\u6BD4\u8F03\u57FA\u6E96\u7387\u306F0\u3088\u308A\u5927\u304D\u3044\u6570\u5024\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    benchmark_rate_not_finite_decimal: "\u6BD4\u8F03\u57FA\u6E96\u7387\u3092\u901A\u5E38\u306E\u6570\u5B57\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    decimal_input_out_of_bounds: "\u5165\u529B\u3057\u305F\u7387\u306E\u6841\u6570\u304C\u5927\u304D\u3059\u304E\u307E\u3059\u3002",
+    target_games_not_positive: "\u76EE\u6A19\u7DCF\u30B2\u30FC\u30E0\u6570\u306F1\u4EE5\u4E0A\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    target_games_not_safe: "\u76EE\u6A19\u7DCF\u30B2\u30FC\u30E0\u6570\u306E\u6841\u6570\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    target_games_not_after_current: "\u76EE\u6A19\u7DCF\u30B2\u30FC\u30E0\u6570\u306F\u73FE\u5728\u306E\u7DCF\u30B2\u30FC\u30E0\u6570\u3088\u308A\u5927\u304D\u304F\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    target_rate_not_positive: "\u76EE\u6A19\u51FA\u7389\u7387\u306F0\u3088\u308A\u5927\u304D\u3044\u6570\u5024\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    target_rate_not_finite_decimal: "\u76EE\u6A19\u51FA\u7389\u7387\u3092\u901A\u5E38\u306E\u6570\u5B57\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    segment_games_not_positive: "\u533A\u9593\u30B2\u30FC\u30E0\u6570\u306F1\u4EE5\u4E0A\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    segment_games_not_safe: "\u533A\u9593\u30B2\u30FC\u30E0\u6570\u306E\u6841\u6570\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    segment_net_medals_not_integer: "\u533A\u9593\u5DEE\u679A\u306F\u6574\u6570\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    segment_net_medals_not_safe: "\u533A\u9593\u5DEE\u679A\u306E\u6841\u6570\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    segment_assumed_out_negative: "\u3053\u306E\u533A\u9593\u306F\u60F3\u5B9AOUT\u304C0\u679A\u672A\u6E80\u306B\u306A\u308A\u307E\u3059\u3002",
+    segment_totals_not_safe: "\u533A\u9593\u306E\u5408\u8A08\u304C\u5B89\u5168\u306B\u8A08\u7B97\u3067\u304D\u308B\u7BC4\u56F2\u3092\u8D85\u3048\u3066\u3044\u307E\u3059\u3002",
+    segment_cumulative_net_medals_not_safe: "\u9014\u4E2D\u306E\u7D2F\u7A4D\u5DEE\u679A\u304C\u5B89\u5168\u306B\u8A08\u7B97\u3067\u304D\u308B\u7BC4\u56F2\u3092\u8D85\u3048\u3066\u3044\u307E\u3059\u3002",
+    cumulative_games_not_increasing: "\u7D2F\u7A4D\u30B2\u30FC\u30E0\u6570\u306F\u524D\u306E\u5730\u70B9\u3088\u308A\u5927\u304D\u304F\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    cumulative_games_negative: "\u7D2F\u7A4D\u30B2\u30FC\u30E0\u6570\u306F0\u4EE5\u4E0A\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    cumulative_games_not_integer: "\u7D2F\u7A4D\u30B2\u30FC\u30E0\u6570\u306F\u6574\u6570\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    cumulative_games_not_safe: "\u7D2F\u7A4D\u30B2\u30FC\u30E0\u6570\u306E\u6841\u6570\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    cumulative_net_medals_not_integer: "\u7D2F\u7A4D\u5DEE\u679A\u306F\u6574\u6570\u3067\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    cumulative_net_medals_not_safe: "\u7D2F\u7A4D\u5DEE\u679A\u306E\u6841\u6570\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+    cumulative_movement_not_safe: "\u5730\u70B9\u9593\u306E\u5DEE\u679A\u5909\u5316\u304C\u5B89\u5168\u306B\u8A08\u7B97\u3067\u304D\u308B\u7BC4\u56F2\u3092\u8D85\u3048\u3066\u3044\u307E\u3059\u3002"
+  };
+  function domainErrors(errors, mapField = ({ field }) => field) {
+    return errors.map((error2) => ({
+      ...mapField(error2) === void 0 ? {} : { field: mapField(error2) },
+      message: domainMessages[error2.code] ?? "\u5165\u529B\u6761\u4EF6\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
+    }));
+  }
+  function clearErrors() {
+    document.querySelectorAll("[data-error-for]").forEach((output) => {
+      output.textContent = "";
+    });
+    document.querySelectorAll('[aria-invalid="true"]').forEach((control) => {
+      control.removeAttribute("aria-invalid");
+    });
+    const summary = byId("error-summary");
+    summary.hidden = true;
+    byId("error-summary-list").replaceChildren();
+  }
+  function showErrors(errors) {
+    clearErrors();
+    if (errors.length === 0) return;
+    const unique2 = errors.filter(
+      (error2, index) => errors.findIndex(
+        (candidate) => candidate.message === error2.message && candidate.field === error2.field
+      ) === index
+    );
+    const list = byId("error-summary-list");
+    for (const error2 of unique2) {
+      const item = create("li");
+      if (!error2.field) {
+        item.textContent = error2.message;
+        list.append(item);
+        continue;
       }
-    };
-  }
-
-  // tools/slot-balance/src/domain/calculators/coin-hold.ts
-  function calculateCoinHold(input) {
-    const netUsedMedals = input.method === "direct" ? input.netUsedMedals : input.startMedals + input.addedMedals - input.endMedals - input.takenOutMedals;
-    const messages = validateCoinHold(input, netUsedMedals);
-    const prerequisitesMissing = messages.some(
-      ({ code }) => code === "at_bonus_not_excluded" || code === "normal_scope_not_confirmed"
-    );
-    if (messages.some(({ severity }) => severity === "error") || prerequisitesMissing) {
-      return createCalculationResult({
-        mode: "coin_hold",
-        normalizedInputs: input,
-        provenance: {
-          normalGames: "input",
-          netUsedMedals: input.method === "direct" ? "input" : "calculated"
-        },
-        explanations: [],
-        knowledgeBoundary: COIN_HOLD_KNOWLEDGE,
-        messages
-      });
+      const input = document.querySelector(`[name="${CSS.escape(error2.field)}"]`);
+      const output = document.querySelector(
+        `[data-error-for="${CSS.escape(error2.field)}"]`
+      );
+      input?.setAttribute("aria-invalid", "true");
+      if (output) output.textContent = error2.message;
+      if (input) {
+        const link = create("button", { className: "error-summary-link", text: error2.message });
+        link.type = "button";
+        link.addEventListener("click", () => {
+          let ancestor = input.parentElement;
+          while (ancestor) {
+            if (ancestor instanceof HTMLDetailsElement) ancestor.open = true;
+            ancestor = ancestor.parentElement;
+          }
+          input.focus({ preventScroll: true });
+          input.scrollIntoView({ block: "center" });
+        });
+        item.append(link);
+      } else {
+        item.textContent = error2.message;
+      }
+      list.append(item);
     }
-    const coinHold = divide(
-      multiply(integer(input.normalGames), integer(50)),
-      integer(netUsedMedals)
-    );
-    const values = {
-      netUsedMedals,
-      coinHoldPer50: calculatedNumber(coinHold, 1)
-    };
-    return createCalculationResult({
-      mode: "coin_hold",
-      normalizedInputs: input,
-      values,
-      provenance: {
-        normalGames: "input",
-        netUsedMedals: input.method === "direct" ? "input" : "calculated",
-        coinHoldPer50: "calculated"
-      },
-      explanations: explainCoinHold(input, values),
-      knowledgeBoundary: COIN_HOLD_KNOWLEDGE,
-      messages
-    });
+    const summary = byId("error-summary");
+    summary.hidden = false;
+    summary.focus({ preventScroll: true });
+    summary.scrollIntoView({ block: "center" });
   }
-
-  // tools/slot-balance/src/domain/calculators/in-out.ts
-  function calculateInOut(input) {
-    const messages = validateInOut(input);
-    if (messages.some(({ severity }) => severity === "error")) {
-      return createCalculationResult({
-        mode: "in_out",
-        normalizedInputs: input,
-        provenance: { actualIn: "input", actualOut: "input" },
-        explanations: [],
-        knowledgeBoundary: IN_OUT_KNOWLEDGE,
-        messages
-      });
+  var formulaLabels = {
+    quick_performance_rate: "1G\u3042\u305F\u308A3\u679A\u3068\u3057\u3066\u5B9F\u7E3E\u51FA\u7389\u7387\u3092\u8A08\u7B97",
+    net_medals_per_1000_games: "\u5DEE\u679A\u30921,000G\u3042\u305F\u308A\u3078\u63DB\u7B97",
+    benchmark_expected_net_medals: "\u57FA\u6E96\u7387\u306B\u76F8\u5F53\u3059\u308B\u5DEE\u679A\u3092\u8A08\u7B97",
+    benchmark_difference: "\u5B9F\u7E3E\u3068\u57FA\u6E96\u5DEE\u679A\u306E\u5DEE\u3092\u8A08\u7B97",
+    payout_rate_sensitivity: "100\u679A\u5909\u5316\u6642\u306E\u51FA\u7389\u7387\u30DD\u30A4\u30F3\u30C8\u3092\u8A08\u7B97",
+    target_total_net_medals: "\u76EE\u6A19\u7DCF\u5DEE\u679A\u3092\u8A08\u7B97",
+    target_required_future_net_medals: "\u6B8B\u308A\u533A\u9593\u306E\u5FC5\u8981\u5DEE\u679A\u3092\u8A08\u7B97",
+    target_required_future_payout_rate: "\u6B8B\u308A\u533A\u9593\u306E\u5883\u754C\u51FA\u7389\u7387\u3092\u8A08\u7B97",
+    cumulative_point_difference: "\u96A3\u63A5\u3059\u308B\u7D2F\u7A4D\u5730\u70B9\u3092\u533A\u9593\u3078\u5909\u63DB",
+    segment_performance_rate: "\u5404\u533A\u9593\u306E\u5B9F\u7E3E\u51FA\u7389\u7387\u3092\u8A08\u7B97",
+    segment_benchmark_contribution: "\u5404\u533A\u9593\u306E\u57FA\u6E96\u306B\u5BFE\u3059\u308B\u5BC4\u4E0E\u3092\u8A08\u7B97",
+    aggregate_performance_rate: "\u5168\u533A\u9593\u306E\u5408\u8A08\u304B\u3089\u5B9F\u7E3E\u51FA\u7389\u7387\u3092\u518D\u8A08\u7B97",
+    maximum_endpoint_drawdown: "\u5165\u529B\u5730\u70B9\u9593\u306E\u6700\u5927\u4E0B\u843D\u3092\u8A08\u7B97",
+    maximum_recovery_after_drawdown: "\u4E0B\u843D\u5F8C\u306E\u6700\u5927\u56DE\u5FA9\u3092\u8A08\u7B97"
+  };
+  var assumptionLabels = {
+    three_medals_per_game: "1G\u3042\u305F\u308A3\u679A\u6295\u5165\u306E\u60F3\u5B9A\u5024\u3067\u3059\u3002",
+    benchmark_is_comparison_not_prediction: "\u6BD4\u8F03\u57FA\u6E96\u306F\u8A2D\u5B9A\u3084\u672A\u6765\u306E\u4E88\u6E2C\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3002",
+    mathematical_boundary_not_prediction: "\u6570\u5B66\u4E0A\u306E\u5883\u754C\u3067\u3001\u5230\u9054\u3084\u5C06\u6765\u7D50\u679C\u3092\u4FDD\u8A3C\u3057\u307E\u305B\u3093\u3002",
+    cumulative_points_are_observations: "\u5165\u529B\u3057\u305F\u7D2F\u7A4D\u5730\u70B9\u306E\u5DEE\u5206\u3060\u3051\u3092\u533A\u9593\u3068\u3057\u3066\u6271\u3044\u307E\u3059\u3002",
+    endpoint_movements_only: "\u6700\u5927\u4E0B\u843D\u30FB\u56DE\u5FA9\u306F\u5165\u529B\u5730\u70B9\u306E\u7D42\u70B9\u9593\u3060\u3051\u3067\u8A08\u7B97\u3057\u307E\u3059\u3002"
+  };
+  var roundingLabels = {
+    half_away_from_zero_to_one_decimal: "\u51FA\u7389\u7387\u306F\u5C0F\u6570\u7B2C2\u4F4D\u3092\u56DB\u6368\u4E94\u5165\u3057\u3001\u5C0F\u65701\u6841\u3067\u8868\u793A\u3057\u307E\u3059\u3002",
+    half_away_from_zero_to_integer_medal: "\u5DEE\u679A\u306F\u56DB\u6368\u4E94\u5165\u3057\u3066\u6574\u6570\u679A\u3067\u8868\u793A\u3057\u307E\u3059\u3002",
+    ceil_to_integer_medal_boundary: "\u5FC5\u8981\u5DEE\u679A\u306F\u4E0D\u8DB3\u3057\u306A\u3044\u6574\u6570\u5883\u754C\u3078\u5207\u308A\u4E0A\u3052\u307E\u3059\u3002"
+  };
+  var warningLabels = {
+    future_out_clamped_to_zero: "\u5FC5\u8981OUT\u304C\u8CA0\u306B\u306A\u308B\u305F\u3081\u3001\u5B9F\u884C\u53EF\u80FD\u306A0\u679A\u3078\u5883\u754C\u3092\u8ABF\u6574\u3057\u307E\u3057\u305F\u3002"
+  };
+  function uniqueCodes(metadata, key) {
+    return [...new Set(metadata.flatMap((item) => item[key]))];
+  }
+  function renderMetadata(container, metadata, facts2 = []) {
+    const fragment = document.createDocumentFragment();
+    const groups = [
+      ["\u4F7F\u7528\u3057\u305F\u8A08\u7B97", uniqueCodes(metadata, "formulaIds"), formulaLabels],
+      ["\u524D\u63D0", uniqueCodes(metadata, "assumptionCodes"), assumptionLabels],
+      ["\u4E38\u3081", uniqueCodes(metadata, "roundingCodes"), roundingLabels],
+      ["\u6CE8\u610F", uniqueCodes(metadata, "warningCodes"), warningLabels]
+    ];
+    if (facts2.length > 0) {
+      const heading = create("h4", { text: "\u7B97\u51FA\u3057\u305F\u6761\u4EF6" });
+      const list = create("ul");
+      for (const fact of facts2) list.append(create("li", { text: fact }));
+      fragment.append(heading, list);
     }
-    const useSegments = (input.segments?.length ?? 0) > 0;
-    const totalIn = useSegments ? (input.segments ?? []).reduce((sum, segment) => sum + segment.actualIn, 0) : input.actualIn ?? 0;
-    const totalOut = useSegments ? (input.segments ?? []).reduce((sum, segment) => sum + segment.actualOut, 0) : input.actualOut ?? 0;
-    const totalGames = useSegments ? (input.segments ?? []).every((segment) => segment.games !== void 0) ? (input.segments ?? []).reduce((sum, segment) => sum + (segment.games ?? 0), 0) : void 0 : input.games;
-    const payoutRate = divide(multiply(integer(totalOut), integer(100)), integer(totalIn));
-    const values = {
-      totalIn,
-      totalOut,
-      actualNetMedals: totalOut - totalIn,
-      payoutRate: calculatedNumber(payoutRate, 1),
-      totalGames
-    };
-    return createCalculationResult({
-      mode: "in_out",
-      normalizedInputs: input,
-      values,
-      provenance: {
-        actualIn: "input",
-        actualOut: "input",
-        totalIn: "actual",
-        totalOut: "actual",
-        actualNetMedals: "actual",
-        payoutRate: "actual"
-      },
-      explanations: explainInOut(values),
-      knowledgeBoundary: IN_OUT_KNOWLEDGE,
-      messages
-    });
-  }
-
-  // tools/slot-balance/src/domain/calculators/segments.ts
-  function calculateSegments(input) {
-    const messages = validateSegments(input);
-    if (messages.some(({ severity }) => severity === "error")) {
-      return createCalculationResult({
-        mode: "segments",
-        normalizedInputs: input,
-        provenance: { segments: "input" },
-        explanations: [],
-        knowledgeBoundary: SEGMENTS_KNOWLEDGE,
-        messages
-      });
+    for (const [title, codes, labels] of groups) {
+      const visibleLabels = codes.flatMap((code) => labels[code] ? [labels[code]] : []);
+      if (visibleLabels.length === 0) continue;
+      const heading = create("h4", { text: title });
+      const list = create("ul");
+      for (const label of visibleLabels) list.append(create("li", { text: label }));
+      fragment.append(heading, list);
     }
-    const segments = input.segments.map((segment) => {
-      const result = calculateNetMedals({ games: segment.games, netMedals: segment.netMedals });
-      if (!result.values) throw new Error("Validated segment did not produce values.");
-      return { input: segment, values: result.values };
-    });
-    const totalGames = input.segments.reduce((sum, segment) => sum + segment.games, 0);
-    const totalNetMedals = input.segments.reduce((sum, segment) => sum + segment.netMedals, 0);
-    const aggregateResult = calculateNetMedals({ games: totalGames, netMedals: totalNetMedals });
-    if (!aggregateResult.values) throw new Error("Validated aggregate did not produce values.");
-    const values = {
-      segments,
-      totalGames,
-      totalNetMedals,
-      aggregate: aggregateResult.values
-    };
-    return createCalculationResult({
-      mode: "segments",
-      normalizedInputs: input,
-      values,
-      provenance: {
-        segments: "input",
-        totalGames: "calculated",
-        totalNetMedals: "calculated",
-        aggregate: "estimated"
-      },
-      explanations: explainSegments(values),
-      knowledgeBoundary: SEGMENTS_KNOWLEDGE,
-      messages
-    });
+    container.replaceChildren(fragment);
+  }
+  function announce(message2) {
+    byId("live-region").textContent = message2;
   }
 
-  // tools/slot-balance/src/ui/modes/segments-inout-ui.ts
-  var MAX_SEGMENTS = 100;
-  function field(label, dataName, options = {}) {
-    const wrapper = document.createElement("div");
-    wrapper.className = "field";
-    const labelElement = textElement("label", label);
-    const controlRow = document.createElement("div");
-    controlRow.className = "field-control";
-    const input = document.createElement("input");
+  // tools/slot-balance/src/ui-v2/segments.ts
+  var MAX_DIRECT_ROWS = 10;
+  var MAX_CUMULATIVE_POINTS = 11;
+  var transfer;
+  var directInitialized = false;
+  var cumulativeInitialized = false;
+  var directRemoved;
+  var cumulativeRemoved;
+  var lastAnalysis;
+  var directList = byId("direct-segment-list");
+  var cumulativeList = byId("cumulative-point-list");
+  var form = byId("segments-form");
+  var facts = byId("segment-facts");
+  var benchmarkResult = byId("segment-benchmark-result");
+  var resultContainer = byId("segments-result");
+  function inputField(labelText, name, value, unit, inputMode = "numeric") {
+    const field = create("div", { className: "field" });
+    const label = create("label", { text: labelText });
+    const input = create("input");
     input.type = "text";
+    input.inputMode = inputMode;
     input.autocomplete = "off";
-    input.inputMode = options.inputMode ?? "numeric";
-    input.dataset["dynamicField"] = dataName;
-    if (options.placeholder) input.placeholder = options.placeholder;
-    if (options.maxLength) input.maxLength = options.maxLength;
-    controlRow.append(input);
-    if (options.unit) controlRow.append(textElement("span", options.unit, "field-unit"));
-    const hint = textElement("p", "", "field-error");
-    hint.dataset["fieldErrorFor"] = "";
-    wrapper.append(labelElement, controlRow, hint);
-    return wrapper;
+    input.name = name;
+    input.value = value;
+    input.id = name.replaceAll(".", "-");
+    label.htmlFor = input.id;
+    const control = create("div", { className: "control-with-unit" });
+    control.append(input);
+    if (unit) control.append(create("span", { text: unit }));
+    const error2 = create("p", { className: "field-error" });
+    error2.dataset["errorFor"] = name;
+    error2.id = `${input.id}-error`;
+    input.setAttribute("aria-describedby", error2.id);
+    field.append(label, control, error2);
+    return field;
   }
-  function createNetSegmentRow() {
-    const row = document.createElement("fieldset");
-    row.className = "dynamic-row";
-    row.dataset["segmentRow"] = "net";
-    const legend = textElement("legend", "\u533A\u9593");
-    legend.dataset["rowLegend"] = "";
-    const header = document.createElement("div");
-    header.className = "dynamic-row__header";
-    const remove = textElement("button", "\u3053\u306E\u533A\u9593\u3092\u524A\u9664", "text-button danger-button");
-    remove.type = "button";
-    remove.dataset["removeRow"] = "";
-    header.append(remove);
-    const grid = document.createElement("div");
-    grid.className = "field-grid field-grid--dynamic";
-    grid.append(
-      field("\u533A\u9593\u540D\uFF08\u4EFB\u610F\uFF09", "label", {
-        placeholder: "\u4F8B\uFF1A\u5348\u524D",
-        inputMode: "text",
-        maxLength: 100
-      }),
-      field("G\u6570", "games", { unit: "G", placeholder: "\u4F8B\uFF1A1000" }),
-      field("\u5DEE\u679A", "netMedals", { unit: "\u679A", placeholder: "\u4F8B\uFF1A+200" }),
-      field("\u958B\u59CBG\uFF08\u4EFB\u610F\uFF09", "startGame", { unit: "G" }),
-      field("\u7D42\u4E86G\uFF08\u4EFB\u610F\uFF09", "endGame", { unit: "G" }),
-      field("\u30E1\u30E2\uFF08\u4EFB\u610F\uFF09", "memo", { inputMode: "text", maxLength: 500 })
+  function directRow(index, values) {
+    const row = create("fieldset", { className: "editable-row" });
+    row.dataset["directRow"] = "";
+    row.append(create("legend", { text: `\u533A\u9593 ${index + 1}` }));
+    row.append(
+      inputField("\u533A\u9593\u540D", `segments.direct.${index}.label`, `\u533A\u9593${index + 1}`, "", "text"),
+      inputField(
+        "\u30B2\u30FC\u30E0\u6570",
+        `segments.direct.${index}.games`,
+        values ? String(values.games) : "",
+        "G"
+      ),
+      inputField(
+        "\u5DEE\u679A",
+        `segments.direct.${index}.netMedals`,
+        values ? String(values.netMedals) : "",
+        "\u679A"
+      )
     );
-    row.append(legend, header, grid);
+    const remove = create("button", { className: "remove-row", text: "\u3053\u306E\u533A\u9593\u3092\u524A\u9664" });
+    remove.type = "button";
+    remove.dataset["removeDirect"] = "";
+    row.append(remove);
     return row;
   }
-  function createInOutSegmentRow() {
-    const row = document.createElement("fieldset");
-    row.className = "dynamic-row";
-    row.dataset["segmentRow"] = "inout";
-    const legend = textElement("legend", "IN/OUT\u533A\u9593");
-    legend.dataset["rowLegend"] = "";
-    const header = document.createElement("div");
-    header.className = "dynamic-row__header";
-    const remove = textElement("button", "\u3053\u306E\u533A\u9593\u3092\u524A\u9664", "text-button danger-button");
-    remove.type = "button";
-    remove.dataset["removeRow"] = "";
-    header.append(remove);
-    const grid = document.createElement("div");
-    grid.className = "field-grid field-grid--dynamic";
-    grid.append(
-      field("\u533A\u9593\u540D\uFF08\u4EFB\u610F\uFF09", "label", { inputMode: "text", maxLength: 100 }),
-      field("\u5B9FIN", "actualIn", { unit: "\u679A" }),
-      field("\u5B9FOUT", "actualOut", { unit: "\u679A" }),
-      field("G\u6570\uFF08\u4EFB\u610F\uFF09", "games", { unit: "G" })
+  function cumulativeRow(index, values) {
+    const row = create("fieldset", { className: "editable-row" });
+    row.dataset["cumulativeRow"] = "";
+    row.append(create("legend", { text: index === 0 ? "\u958B\u59CB\u5730\u70B9" : `\u5730\u70B9 ${index}` }));
+    row.append(
+      inputField(
+        "\u5730\u70B9\u540D",
+        `segments.points.${index}.label`,
+        index === 0 ? "\u958B\u59CB" : `\u5730\u70B9${index}`,
+        "",
+        "text"
+      ),
+      inputField(
+        "\u7D2F\u7A4D\u30B2\u30FC\u30E0\u6570",
+        `segments.points.${index}.games`,
+        values ? String(values.games) : "",
+        "G"
+      ),
+      inputField(
+        "\u7D2F\u7A4D\u5DEE\u679A",
+        `segments.points.${index}.netMedals`,
+        values ? String(values.net) : "",
+        "\u679A"
+      )
     );
-    row.append(legend, header, grid);
+    const remove = create("button", { className: "remove-row", text: "\u3053\u306E\u5730\u70B9\u3092\u524A\u9664" });
+    remove.type = "button";
+    remove.dataset["removeCumulative"] = "";
+    row.append(remove);
     return row;
   }
-  function dynamicValue(row, fieldName) {
-    return row.querySelector(`[data-dynamic-field="${fieldName}"]`)?.value ?? "";
-  }
-  function reindex(list) {
-    const rows = Array.from(list.container.querySelectorAll("[data-segment-row]"));
+  function reindexRows(kind) {
+    const list = kind === "direct" ? directList : cumulativeList;
+    const selector = kind === "direct" ? "[data-direct-row]" : "[data-cumulative-row]";
+    const prefix = kind === "direct" ? "segments.direct" : "segments.points";
+    const rows = Array.from(list.querySelectorAll(selector));
     rows.forEach((row, index) => {
-      const legend = row.querySelector("[data-row-legend]");
-      if (legend) legend.textContent = `\u533A\u9593 ${index + 1}`;
-      row.querySelectorAll("[data-dynamic-field]").forEach((input) => {
-        const suffix = input.dataset["dynamicField"] ?? "";
-        const name = `${list.prefix}.${index}.${suffix}`;
-        input.name = name;
-        input.id = name.replaceAll(".", "-");
-        const wrapper = input.closest(".field");
-        const label = wrapper?.querySelector("label");
-        const error2 = wrapper?.querySelector("[data-field-error-for]");
+      const legend = row.querySelector("legend");
+      if (legend)
+        legend.textContent = kind === "direct" ? `\u533A\u9593 ${index + 1}` : index === 0 ? "\u958B\u59CB\u5730\u70B9" : `\u5730\u70B9 ${index}`;
+      row.querySelectorAll("input").forEach((input) => {
+        const key = input.name.split(".").at(-1) ?? "";
+        input.name = `${prefix}.${index}.${key}`;
+        input.id = input.name.replaceAll(".", "-");
+        const field = input.closest(".field");
+        const label = field?.querySelector("label");
+        const error2 = field?.querySelector("[data-error-for]");
         if (label) label.htmlFor = input.id;
         if (error2) {
-          error2.dataset["fieldErrorFor"] = name;
+          error2.dataset["errorFor"] = input.name;
           error2.id = `${input.id}-error`;
           input.setAttribute("aria-describedby", error2.id);
         }
       });
-      const remove = row.querySelector("[data-remove-row]");
-      if (remove) remove.disabled = rows.length === 1;
     });
-    list.addButton.disabled = rows.length >= MAX_SEGMENTS;
+    const minimum = kind === "direct" ? 1 : 2;
+    rows.forEach((row) => {
+      const remove = row.querySelector(".remove-row");
+      if (remove) remove.disabled = rows.length <= minimum;
+    });
+    byId(
+      kind === "direct" ? "add-direct-segment" : "add-cumulative-point"
+    ).disabled = rows.length >= (kind === "direct" ? MAX_DIRECT_ROWS : MAX_CUMULATIVE_POINTS);
+    byId(kind === "direct" ? "direct-limit-note" : "cumulative-limit-note").textContent = `${rows.length} / ${kind === "direct" ? MAX_DIRECT_ROWS : MAX_CUMULATIVE_POINTS}\u4EF6`;
+    updateTransferControls();
   }
-  function setupDynamicList(list, key, options) {
-    list.container.append(list.makeRow());
-    reindex(list);
-    list.addButton.addEventListener("click", () => {
-      const count = list.container.querySelectorAll("[data-segment-row]").length;
-      if (count >= MAX_SEGMENTS) {
-        options.announce("\u533A\u9593\u306F100\u4EF6\u307E\u3067\u3067\u3059\u3002");
-        return;
-      }
-      list.container.append(list.makeRow());
-      list.removed = void 0;
-      list.undoRegion.hidden = true;
-      reindex(list);
-      options.markDirty(key);
-      options.announce(`\u533A\u9593 ${count + 1} \u3092\u8FFD\u52A0\u3057\u307E\u3057\u305F\u3002`);
-    });
-    list.container.addEventListener("click", (event) => {
-      const target = event.target;
-      if (!(target instanceof HTMLElement) || !target.closest("[data-remove-row]")) return;
-      const row = target.closest("[data-segment-row]");
-      if (!row) return;
-      const rows = Array.from(list.container.querySelectorAll("[data-segment-row]"));
-      if (rows.length <= 1) return;
-      const index = rows.indexOf(row);
-      list.removed = { row, index };
-      row.remove();
-      list.undoRegion.hidden = false;
-      reindex(list);
-      options.markDirty(key);
-      options.announce(`\u533A\u9593 ${index + 1} \u3092\u524A\u9664\u3057\u307E\u3057\u305F\u3002\u5143\u306B\u623B\u305B\u307E\u3059\u3002`);
-    });
-    list.undoButton.addEventListener("click", () => {
-      if (!list.removed) return;
-      const before = list.container.children.item(list.removed.index);
-      list.container.insertBefore(list.removed.row, before);
-      const restoredIndex = list.removed.index;
-      list.removed = void 0;
-      list.undoRegion.hidden = true;
-      reindex(list);
-      options.markDirty(key);
-      options.announce(`\u533A\u9593 ${restoredIndex + 1} \u3092\u5143\u306B\u623B\u3057\u307E\u3057\u305F\u3002`);
-    });
+  function initializeDirect() {
+    if (directInitialized) return;
+    directList.append(directRow(0), directRow(1));
+    directInitialized = true;
+    reindexRows("direct");
   }
-  function errorsFromResult(result) {
-    return [...result.errors, ...result.warnings, ...result.info];
+  function initializeCumulative() {
+    if (cumulativeInitialized) return;
+    cumulativeList.append(cumulativeRow(0, { games: 0, net: 0 }), cumulativeRow(1), cumulativeRow(2));
+    cumulativeInitialized = true;
+    reindexRows("cumulative");
   }
-  function setupSegmentsCalculator(options) {
-    const list = {
-      container: byId("net-segment-list"),
-      addButton: byId("add-net-segment"),
-      undoRegion: byId("net-segment-undo"),
-      undoButton: byId("undo-net-segment"),
-      prefix: "segments",
-      makeRow: createNetSegmentRow
-    };
-    setupDynamicList(list, "segments", options);
+  function transferTarget(kind) {
+    const row = kind === "direct" ? directList.querySelector("[data-direct-row]") : cumulativeList.querySelectorAll("[data-cumulative-row]").item(1);
+    if (!row) return void 0;
     return {
-      calculate() {
-        const segments = [];
-        const messages = [];
-        const rows = Array.from(list.container.querySelectorAll("[data-segment-row]"));
-        rows.forEach((row, index) => {
-          const games = requiredIntegerFromRaw(
-            dynamicValue(row, "games"),
-            `segments.${index}.games`,
-            `\u533A\u9593${index + 1}\u306EG\u6570`
-          );
-          const netMedals = requiredIntegerFromRaw(
-            dynamicValue(row, "netMedals"),
-            `segments.${index}.netMedals`,
-            `\u533A\u9593${index + 1}\u306E\u5DEE\u679A`
-          );
-          const start = optionalIntegerFromRaw(
-            dynamicValue(row, "startGame"),
-            `segments.${index}.startGame`,
-            `\u533A\u9593${index + 1}\u306E\u958B\u59CBG`
-          );
-          const end = optionalIntegerFromRaw(
-            dynamicValue(row, "endGame"),
-            `segments.${index}.endGame`,
-            `\u533A\u9593${index + 1}\u306E\u7D42\u4E86G`
-          );
-          messages.push(...combineMessages(games, netMedals, start, end));
-          if (games.value !== void 0 && netMedals.value !== void 0) {
-            const label = dynamicValue(row, "label").trim();
-            const memo = dynamicValue(row, "memo").trim();
-            segments.push({
-              games: games.value,
-              netMedals: netMedals.value,
-              ...label ? { label } : {},
-              ...memo ? { memo } : {},
-              ...start.value !== void 0 ? { startGame: start.value } : {},
-              ...end.value !== void 0 ? { endGame: end.value } : {}
-            });
-          }
-        });
-        if (messages.length > 0 || segments.length !== rows.length) {
-          return { key: "segments", messages };
-        }
-        const result = calculateSegments({ segments });
-        if (!result.ok || !result.values) {
-          return { key: "segments", result, messages: result.errors };
-        }
-        const groups = [
-          {
-            items: [
-              {
-                label: "\u5408\u8A08\u304B\u3089\u518D\u8A08\u7B97\u3057\u305F\u51FA\u7389\u7387",
-                value: result.values.aggregate.payoutRateEstimate ? formatPercent(result.values.aggregate.payoutRateEstimate.display) : "\u7B97\u51FA\u4E0D\u53EF",
-                provenance: "estimated",
-                primary: true,
-                note: "\u5404\u533A\u9593\u7387\u306E\u5358\u7D14\u5E73\u5747\u3067\u306F\u306A\u304F\u3001\u5408\u8A08G\u6570\u30FB\u5408\u8A08\u5DEE\u679A\u304B\u3089\u518D\u8A08\u7B97\u3057\u307E\u3059\u3002"
-              },
-              {
-                label: "\u7DCFG",
-                value: formatGames(result.values.totalGames),
-                provenance: result.provenance["totalGames"] ?? "calculated",
-                primary: true
-              },
-              {
-                label: "\u7DCF\u5DEE\u679A",
-                value: formatSignedMedals(result.values.totalNetMedals),
-                provenance: result.provenance["totalNetMedals"] ?? "calculated",
-                primary: true
-              }
-            ]
-          }
-        ];
-        result.values.segments.forEach((segment, index) => {
-          const label = segment.input.label || `\u533A\u9593 ${index + 1}`;
-          const items = [
-            {
-              label: "G\u6570",
-              value: formatGames(segment.input.games),
-              provenance: "input"
-            },
-            {
-              label: "\u5DEE\u679A",
-              value: formatSignedMedals(segment.input.netMedals),
-              provenance: "input"
-            },
-            {
-              label: "1,000G\u3042\u305F\u308A\u5DEE\u679A",
-              value: `${formatSignedMedals(segment.values.netMedalsPer1000G.display)}\uFF0F1,000G`,
-              provenance: "calculated"
-            }
-          ];
-          if (segment.values.payoutRateEstimate) {
-            items.push({
-              label: "\u5DEE\u679A\u30D9\u30FC\u30B9\u51FA\u7389\u7387",
-              value: formatPercent(segment.values.payoutRateEstimate.display),
-              provenance: "estimated"
-            });
-          }
-          groups.push({ title: label, items });
-        });
-        return { key: "segments", result, groups, messages: [] };
-      }
+      games: rowValue(row, "games"),
+      net: rowValue(row, "netMedals")
     };
   }
-  function setupInOutCalculator(options) {
-    const form = byId("inout-form");
-    const list = {
-      container: byId("inout-segment-list"),
-      addButton: byId("add-inout-segment"),
-      undoRegion: byId("inout-segment-undo"),
-      undoButton: byId("undo-inout-segment"),
-      prefix: "inoutSegments",
-      makeRow: createInOutSegmentRow
-    };
-    setupDynamicList(list, "inout", options);
-    const sourceInputs = Array.from(form.querySelectorAll('[name="inout.source"]'));
-    const updateSource = () => {
-      const source = sourceInputs.find(({ checked }) => checked)?.value ?? "total";
-      byId("inout-total-fields").hidden = source !== "total";
-      byId("inout-segment-fields").hidden = source !== "segments";
-    };
-    sourceInputs.forEach((input) => input.addEventListener("change", updateSource));
-    updateSource();
-    return {
-      calculate() {
-        const source = sourceInputs.find(({ checked }) => checked)?.value ?? "total";
-        const messages = [];
-        let result;
-        if (source === "total") {
-          const actualIn = requiredInteger(form, "inout.actualIn", "\u5B9FIN");
-          const actualOut = requiredInteger(form, "inout.actualOut", "\u5B9FOUT");
-          const games = optionalInteger(form, "inout.games", "G\u6570");
-          messages.push(...combineMessages(actualIn, actualOut, games));
-          if (messages.length > 0 || actualIn.value === void 0 || actualOut.value === void 0) {
-            return { key: "inout", messages };
-          }
-          result = calculateInOut({
-            actualIn: actualIn.value,
-            actualOut: actualOut.value,
-            games: games.value
-          });
-        } else {
-          const segments = [];
-          const rows = Array.from(list.container.querySelectorAll("[data-segment-row]"));
-          rows.forEach((row, index) => {
-            const actualIn = requiredIntegerFromRaw(
-              dynamicValue(row, "actualIn"),
-              `inoutSegments.${index}.actualIn`,
-              `\u533A\u9593${index + 1}\u306E\u5B9FIN`
-            );
-            const actualOut = requiredIntegerFromRaw(
-              dynamicValue(row, "actualOut"),
-              `inoutSegments.${index}.actualOut`,
-              `\u533A\u9593${index + 1}\u306E\u5B9FOUT`
-            );
-            const games = optionalIntegerFromRaw(
-              dynamicValue(row, "games"),
-              `inoutSegments.${index}.games`,
-              `\u533A\u9593${index + 1}\u306EG\u6570`
-            );
-            messages.push(...combineMessages(actualIn, actualOut, games));
-            if (actualIn.value !== void 0 && actualOut.value !== void 0) {
-              const label = dynamicValue(row, "label").trim();
-              segments.push({
-                actualIn: actualIn.value,
-                actualOut: actualOut.value,
-                ...games.value !== void 0 ? { games: games.value } : {},
-                ...label ? { label } : {}
-              });
-            }
-          });
-          if (messages.length > 0 || segments.length !== rows.length) {
-            return { key: "inout", messages };
-          }
-          result = calculateInOut({ segments });
-        }
-        if (!result.ok || !result.values) {
-          return {
-            key: "inout",
-            result,
-            messages: result.errors.map((message2) => ({
-              ...message2,
-              field: message2.field ? message2.field.replace(/^actualIn$/, "inout.actualIn").replace(/^actualOut$/, "inout.actualOut").replace(/^segments\./, "inoutSegments.") : void 0
-            }))
-          };
-        }
-        const groups = [
-          {
-            items: [
-              {
-                label: "\u5B9FIN/OUT\u51FA\u7389\u7387",
-                value: formatPercent(result.values.payoutRate.display),
-                provenance: result.provenance["payoutRate"] ?? "actual",
-                primary: true
-              },
-              {
-                label: "\u5B9F\u5DEE\u679A",
-                value: formatSignedMedals(result.values.actualNetMedals),
-                provenance: result.provenance["actualNetMedals"] ?? "actual",
-                primary: true
-              }
-            ]
-          },
-          {
-            title: "\u5B9F\u6E2C\u5408\u8A08",
-            items: [
-              {
-                label: "\u5408\u8A08IN",
-                value: formatMedals(result.values.totalIn),
-                provenance: result.provenance["totalIn"] ?? "actual"
-              },
-              {
-                label: "\u5408\u8A08OUT",
-                value: formatMedals(result.values.totalOut),
-                provenance: result.provenance["totalOut"] ?? "actual"
-              },
-              ...result.values.totalGames === void 0 ? [] : [
-                {
-                  label: "\u5408\u8A08G",
-                  value: formatGames(result.values.totalGames),
-                  provenance: "calculated"
-                }
-              ]
-            ]
-          }
-        ];
-        return { key: "inout", result, groups, messages: [] };
-      }
-    };
+  function updateTransferControls() {
+    const summary = transfer ? `\u73FE\u5728\u306E\u30AF\u30A4\u30C3\u30AF\u7D50\u679C ${formatInteger(transfer.games)}G / ${formatSigned(transfer.netMedals)}\u679A` : "\u73FE\u5728\u306E\u30AF\u30A4\u30C3\u30AF\u7D50\u679C \u2014";
+    byId("direct-transfer-summary").textContent = summary;
+    byId("cumulative-transfer-summary").textContent = summary;
+    for (const kind of ["direct", "cumulative"]) {
+      const target = transferTarget(kind);
+      const occupied = Boolean(target?.games.value.trim() || target?.net.value.trim());
+      byId(
+        kind === "direct" ? "transfer-to-direct" : "transfer-to-cumulative"
+      ).disabled = !transfer || !target || occupied;
+    }
   }
-  function confirmationMessage(fieldName, message2) {
-    return {
-      severity: "error",
-      code: "confirmation_required",
-      field: fieldName,
-      message: message2,
-      correction: "\u5185\u5BB9\u3092\u78BA\u8A8D\u3057\u3001\u81EA\u5206\u3067\u30C1\u30A7\u30C3\u30AF\u3092\u5165\u308C\u3066\u304F\u3060\u3055\u3044\u3002"
-    };
-  }
-  function isChecked(form, fieldName) {
-    const control = namedControl(form, fieldName);
-    return control instanceof HTMLInputElement && control.checked;
-  }
-  function setupCoinHoldCalculator() {
-    const form = byId("coin-form");
-    const sourceInputs = Array.from(form.querySelectorAll('[name="coin.method"]'));
-    const updateSource = () => {
-      const source = sourceInputs.find(({ checked }) => checked)?.value ?? "direct";
-      byId("coin-direct-fields").hidden = source !== "direct";
-      byId("coin-breakdown-fields").hidden = source !== "breakdown";
-    };
-    sourceInputs.forEach((input) => input.addEventListener("change", updateSource));
-    updateSource();
-    return {
-      calculate() {
-        const method = sourceInputs.find(({ checked }) => checked)?.value ?? "direct";
-        const normalGames = requiredInteger(form, "coin.normalGames", "\u901A\u5E38\u6642G\u6570");
-        const messages = [...normalGames.messages];
-        const atBonusExcluded = isChecked(form, "coin.atBonusExcluded");
-        const scopeConfirmed = isChecked(form, "coin.scopeConfirmed");
-        if (!atBonusExcluded) {
-          messages.push(
-            confirmationMessage(
-              "coin.atBonusExcluded",
-              "AT\u30FB\u30DC\u30FC\u30CA\u30B9\u533A\u9593\u3092\u542B\u307E\u306A\u3044\u3053\u3068\u306E\u78BA\u8A8D\u304C\u5FC5\u8981\u3067\u3059\u3002"
-            )
-          );
-        }
-        if (!scopeConfirmed) {
-          messages.push(
-            confirmationMessage(
-              "coin.scopeConfirmed",
-              "G\u6570\u3068\u679A\u6570\u304C\u540C\u3058\u5BFE\u8C61\u533A\u9593\u3067\u3042\u308B\u3053\u3068\u306E\u78BA\u8A8D\u304C\u5FC5\u8981\u3067\u3059\u3002"
-            )
-          );
-        }
-        let input;
-        if (method === "direct") {
-          const netUsed = requiredInteger(form, "coin.netUsedMedals", "\u6B63\u5473\u4F7F\u7528\u679A\u6570");
-          messages.push(...netUsed.messages);
-          if (normalGames.value !== void 0 && netUsed.value !== void 0) {
-            input = {
-              method: "direct",
-              normalGames: normalGames.value,
-              netUsedMedals: netUsed.value,
-              atBonusExcluded,
-              scopeConfirmed
-            };
-          }
-        } else {
-          const start = requiredInteger(form, "coin.startMedals", "\u958B\u59CB\u6642\u679A\u6570");
-          const added = requiredInteger(form, "coin.addedMedals", "\u8FFD\u52A0\u679A\u6570");
-          const end = requiredInteger(form, "coin.endMedals", "\u7D42\u4E86\u6642\u679A\u6570");
-          const taken = requiredInteger(form, "coin.takenOutMedals", "\u6301\u3061\u51FA\u3057\u679A\u6570");
-          messages.push(...combineMessages(start, added, end, taken));
-          if (normalGames.value !== void 0 && start.value !== void 0 && added.value !== void 0 && end.value !== void 0 && taken.value !== void 0) {
-            input = {
-              method: "breakdown",
-              normalGames: normalGames.value,
-              startMedals: start.value,
-              addedMedals: added.value,
-              endMedals: end.value,
-              takenOutMedals: taken.value,
-              atBonusExcluded,
-              scopeConfirmed
-            };
-          }
-        }
-        if (messages.length > 0 || !input) return { key: "coin", messages };
-        const result = calculateCoinHold(input);
-        if (!result.ok || !result.values) {
-          const fieldNames = {
-            normalGames: "coin.normalGames",
-            netUsedMedals: "coin.netUsedMedals",
-            atBonusExcluded: "coin.atBonusExcluded",
-            scopeConfirmed: "coin.scopeConfirmed",
-            breakdown: "coin.startMedals"
-          };
-          return {
-            key: "coin",
-            result,
-            messages: errorsFromResult(result).map((message2) => ({
-              ...message2,
-              field: message2.field ? fieldNames[message2.field] ?? message2.field : void 0
-            }))
-          };
-        }
-        const groups = [
-          {
-            items: [
-              {
-                label: "50\u679A\u3042\u305F\u308A\u901A\u5E38\u6642G\u6570",
-                value: `${formatNumber(result.values.coinHoldPer50.display, 1)}G\uFF0F50\u679A`,
-                provenance: result.provenance["coinHoldPer50"] ?? "calculated",
-                primary: true
-              },
-              {
-                label: "\u6B63\u5473\u4F7F\u7528\u679A\u6570",
-                value: formatMedals(result.values.netUsedMedals),
-                provenance: result.provenance["netUsedMedals"] ?? "calculated",
-                primary: true
-              }
-            ]
-          },
-          {
-            title: "\u7B97\u51FA\u6761\u4EF6",
-            items: [
-              {
-                label: "\u901A\u5E38\u6642G\u6570",
-                value: formatGames(input.normalGames),
-                provenance: "input"
-              },
-              {
-                label: "\u5BFE\u8C61\u533A\u9593",
-                value: "AT\u30FB\u30DC\u30FC\u30CA\u30B9\u3092\u9664\u5916\u3057\u305F\u540C\u4E00\u533A\u9593",
-                provenance: "input"
-              }
-            ]
-          }
-        ];
-        return { key: "coin", result, groups, messages: [] };
-      }
-    };
-  }
-  function setupSegmentsInOutUi(options) {
-    return {
-      segments: setupSegmentsCalculator(options),
-      inout: setupInOutCalculator(options),
-      coin: setupCoinHoldCalculator()
-    };
-  }
-
-  // tools/slot-balance/src/ui/renderers.ts
-  function output(kind, key) {
-    return byId(`${kind}-${key}`);
-  }
-  function deduplicate(messages) {
-    const seen = /* @__PURE__ */ new Set();
-    return messages.filter(({ code }) => {
-      if (seen.has(code)) return false;
-      seen.add(code);
-      return true;
-    });
-  }
-  function allMessages(result) {
-    return [...result.errors, ...result.warnings, ...result.info];
-  }
-  function setActiveCalculationKey(key) {
-    document.querySelectorAll("[data-output-key]").forEach((element) => {
-      element.hidden = element.dataset["outputKey"] !== key;
-    });
-  }
-  function renderResultGroups(key, groups) {
-    const container = output("result", key);
-    const fragment = document.createDocumentFragment();
-    for (const group of groups) {
-      const section = document.createElement("section");
-      section.className = "result-group";
-      if (group.title) section.append(textElement("h3", group.title, "result-group__title"));
-      const grid = document.createElement("div");
-      grid.className = "metric-grid";
-      for (const item of group.items) {
-        const metric = document.createElement("article");
-        metric.className = `metric${item.primary ? " metric--primary" : ""}`;
-        const meta = document.createElement("div");
-        meta.className = "metric__meta";
-        meta.append(
-          textElement("span", provenanceLabel(item.provenance), "provenance"),
-          textElement("span", item.label, "metric__label")
+  function setupTransfers() {
+    for (const kind of ["direct", "cumulative"]) {
+      const button = byId(
+        kind === "direct" ? "transfer-to-direct" : "transfer-to-cumulative"
+      );
+      button.addEventListener("click", () => {
+        const target = transferTarget(kind);
+        if (!transfer || !target || target.games.value.trim() || target.net.value.trim()) return;
+        target.games.value = String(transfer.games);
+        target.net.value = String(transfer.netMedals);
+        updateTransferControls();
+        announce(
+          kind === "direct" ? "\u73FE\u5728\u306E\u7D50\u679C\u3092\u533A\u95931\u3078\u5165\u529B\u3057\u307E\u3057\u305F\u3002" : "\u73FE\u5728\u306E\u7D50\u679C\u3092\u5730\u70B91\u3078\u5165\u529B\u3057\u307E\u3057\u305F\u3002"
         );
-        metric.append(meta, textElement("p", item.value, "metric__value"));
-        if (item.note) metric.append(textElement("p", item.note, "metric__note"));
-        grid.append(metric);
-      }
-      section.append(grid);
-      fragment.append(section);
+      });
     }
-    replaceChildren(container, fragment);
+    directList.addEventListener("input", updateTransferControls);
+    cumulativeList.addEventListener("input", updateTransferControls);
   }
-  function renderMessages(key, messages) {
-    const container = output("messages", key);
-    const unique = deduplicate(messages);
-    if (unique.length === 0) {
-      replaceChildren(container, textElement("p", "\u8FFD\u52A0\u306E\u8B66\u544A\u30FB\u88DC\u8DB3\u306F\u3042\u308A\u307E\u305B\u3093\u3002", "empty-note"));
-      return;
-    }
-    const fragment = document.createDocumentFragment();
-    const severityLabels = { error: "\u30A8\u30E9\u30FC", warning: "\u78BA\u8A8D", info: "\u88DC\u8DB3" };
-    for (const item of unique) {
-      const article = document.createElement("article");
-      article.className = `validation-message validation-message--${item.severity}`;
-      if (item.severity === "error") article.setAttribute("role", "alert");
-      article.append(
-        textElement("strong", severityLabels[item.severity], "validation-message__label"),
-        textElement("p", item.message)
-      );
-      if (item.correction) article.append(textElement("p", item.correction, "validation-correction"));
-      fragment.append(article);
-    }
-    replaceChildren(container, fragment);
-  }
-  function renderKnowledgeBoundary(key, boundary) {
-    const container = output("boundary", key);
-    const wrapper = document.createElement("div");
-    wrapper.className = "boundary-grid";
-    for (const [title, items, className] of [
-      ["\u5206\u304B\u308B\u3053\u3068", boundary.known, "known"],
-      ["\u5206\u304B\u3089\u306A\u3044\u3053\u3068", boundary.unknown, "unknown"]
-    ]) {
-      const section = document.createElement("section");
-      section.className = `boundary-panel boundary-panel--${className}`;
-      section.append(textElement("h3", title));
-      const list = document.createElement("ul");
-      for (const item of items) list.append(textElement("li", item.label));
-      section.append(list);
-      wrapper.append(section);
-    }
-    replaceChildren(container, wrapper);
-  }
-  function explanationDetails(explanation) {
-    const details = document.createElement("details");
-    details.className = "explanation";
-    details.append(textElement("summary", explanation.title));
-    const inputTitle = textElement("h4", "\u4F7F\u7528\u3057\u305F\u5165\u529B");
-    const inputs = document.createElement("dl");
-    inputs.className = "explanation-list";
-    for (const input of explanation.inputs) {
-      inputs.append(
-        textElement("dt", input.label),
-        textElement("dd", `${String(input.value)}${input.unit ?? ""}`)
-      );
-    }
-    const stepTitle = textElement("h4", "\u8A08\u7B97\u624B\u9806");
-    const steps = document.createElement("ol");
-    steps.className = "formula-list";
-    for (const step of explanation.steps) {
-      steps.append(
-        textElement(
-          "li",
-          step.value === void 0 ? step.expression : `${step.expression} \u2192 ${String(step.value)}`
-        )
-      );
-    }
-    const assumptionTitle = textElement("h4", "\u4EEE\u5B9A\u30FB\u7AEF\u6570\u51E6\u7406");
-    const assumptions = document.createElement("ul");
-    assumptions.className = "assumption-list";
-    for (const assumption of explanation.assumptions)
-      assumptions.append(textElement("li", assumption));
-    details.append(inputTitle, inputs, stepTitle, steps, assumptionTitle, assumptions);
-    return details;
-  }
-  function renderExplanations(key, explanations) {
-    const container = output("explanations", key);
-    if (explanations.length === 0) {
-      replaceChildren(
-        container,
-        textElement("p", "\u5165\u529B\u3092\u4FEE\u6B63\u3059\u308B\u3068\u8A08\u7B97\u6839\u62E0\u3092\u8868\u793A\u3067\u304D\u307E\u3059\u3002", "empty-note")
-      );
-      return;
-    }
-    replaceChildren(container, ...explanations.map(explanationDetails));
-  }
-  function renderSuccessfulCalculation(key, result, groups) {
-    renderResultGroups(key, groups);
-    renderMessages(key, allMessages(result));
-    renderKnowledgeBoundary(key, result.knowledgeBoundary);
-    renderExplanations(key, result.explanations);
-  }
-  function renderFailureMessages(key, messages) {
-    renderMessages(key, messages);
-    renderFieldErrors(messages);
-    renderErrorSummary(messages);
-  }
-  function clearValidationDisplay() {
-    document.querySelectorAll("[data-field-error-for]").forEach((element) => {
-      element.textContent = "";
-    });
-    document.querySelectorAll('[aria-invalid="true"]').forEach((element) => element.removeAttribute("aria-invalid"));
-    const summary = byId("error-summary");
-    summary.hidden = true;
-    replaceChildren(summary);
-  }
-  function renderFieldErrors(messages) {
-    const errors = messages.filter(({ severity }) => severity === "error");
-    const fieldOutputs = Array.from(document.querySelectorAll("[data-field-error-for]"));
-    const controls = Array.from(
-      document.querySelectorAll("[name]")
-    );
-    for (const error2 of errors) {
-      if (!error2.field) continue;
-      const fieldOutput = fieldOutputs.find(
-        (element) => element.dataset["fieldErrorFor"] === error2.field
-      );
-      if (fieldOutput) fieldOutput.textContent = error2.correction ?? error2.message;
-      const control = controls.find((element) => element.name === error2.field);
-      if (control) control.setAttribute("aria-invalid", "true");
-    }
-  }
-  function renderErrorSummary(messages) {
-    const errors = deduplicate(messages.filter(({ severity }) => severity === "error"));
-    if (errors.length === 0) return;
-    const summary = byId("error-summary");
-    summary.hidden = false;
-    const heading = textElement("h2", "\u5165\u529B\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044");
-    const list = document.createElement("ul");
-    for (const error2 of errors) {
-      list.append(
-        textElement("li", error2.correction ? `${error2.message} ${error2.correction}` : error2.message)
-      );
-    }
-    replaceChildren(summary, heading, list);
-  }
-  function setStale(key, stale) {
-    const banner = byId(`stale-${key}`);
-    banner.hidden = !stale;
-    output("result", key).classList.toggle("is-stale", stale);
-  }
-
-  // tools/slot-balance/src/ui/state.ts
-  function createCalculationState() {
-    return { currentInputRevision: 0, hasResult: false, stale: false };
-  }
-  function createUiState() {
-    return {
-      net: createCalculationState(),
-      investment: createCalculationState(),
-      segments: createCalculationState(),
-      inout: createCalculationState(),
-      coin: createCalculationState()
-    };
-  }
-  function markInputChanged(state2, key) {
-    const target = state2[key];
-    target.currentInputRevision += 1;
-    target.stale = target.hasResult && target.calculatedInputRevision !== target.currentInputRevision;
-    return target.stale;
-  }
-  function markCalculationSucceeded(state2, key) {
-    const target = state2[key];
-    target.calculatedInputRevision = target.currentInputRevision;
-    target.hasResult = true;
-    target.stale = false;
-  }
-
-  // tools/slot-balance/src/ui/app.ts
-  var state = createUiState();
-  var mainMode = "net";
-  var segmentsSubmode = "segments";
-  function activeKey() {
-    if (mainMode === "net") return "net";
-    if (mainMode === "investment") return "investment";
-    return segmentsSubmode;
-  }
-  function markDirty(key) {
-    const stale = markInputChanged(state, key);
-    setStale(key, stale);
-  }
-  var dynamicControllers = setupSegmentsInOutUi({ markDirty, announce });
-  var controllers = {
-    net: setupNetMedalsUi(),
-    investment: setupInvestmentRecoveryUi(),
-    ...dynamicControllers
-  };
-  function setPressed(buttons, value, dataKey) {
-    for (const button of buttons) {
-      const selected = button.dataset[dataKey] === value;
-      button.setAttribute("aria-pressed", String(selected));
-      button.tabIndex = selected ? 0 : -1;
-    }
-  }
-  function bindRovingButtons(buttons, select) {
-    buttons.forEach((button) => {
-      button.addEventListener("click", () => select(button));
-      button.addEventListener("keydown", (event) => {
-        const index = buttons.indexOf(button);
-        let targetIndex;
-        if (event.key === "ArrowRight" || event.key === "ArrowDown") {
-          targetIndex = (index + 1) % buttons.length;
-        } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-          targetIndex = (index - 1 + buttons.length) % buttons.length;
-        } else if (event.key === "Home") {
-          targetIndex = 0;
-        } else if (event.key === "End") {
-          targetIndex = buttons.length - 1;
-        }
-        if (targetIndex === void 0) return;
-        event.preventDefault();
-        const target = buttons[targetIndex];
-        if (target) {
-          select(target);
-          target.focus();
-        }
+  function setupMethodChoice() {
+    document.querySelectorAll('[name="segment.method"]').forEach((radio) => {
+      radio.addEventListener("change", () => {
+        const direct = radio.value === "direct" && radio.checked;
+        byId("direct-segment-editor").hidden = !direct;
+        byId("cumulative-segment-editor").hidden = direct;
+        form.hidden = false;
+        if (direct) initializeDirect();
+        else initializeCumulative();
+        resultContainer.hidden = true;
+        announce(direct ? "\u533A\u9593\u3054\u3068\u306E\u5165\u529B\u3092\u958B\u304D\u307E\u3057\u305F\u3002" : "\u30B0\u30E9\u30D5\u306E\u5730\u70B9\u304B\u3089\u306E\u5165\u529B\u3092\u958B\u304D\u307E\u3057\u305F\u3002");
       });
     });
   }
-  var mainButtons = Array.from(document.querySelectorAll("[data-main-mode]"));
-  function selectMainMode(button) {
-    const mode = button.dataset["mainMode"];
-    if (!mode) return;
-    mainMode = mode;
-    setPressed(mainButtons, mode, "mainMode");
-    document.querySelectorAll("[data-main-panel]").forEach((panel) => {
-      panel.hidden = panel.dataset["mainPanel"] !== mode;
+  function setupListActions() {
+    byId("add-direct-segment").addEventListener("click", () => {
+      const count = directList.querySelectorAll("[data-direct-row]").length;
+      if (count >= MAX_DIRECT_ROWS) return;
+      const row = directRow(count);
+      directList.append(row);
+      directRemoved = void 0;
+      byId("direct-undo").hidden = true;
+      reindexRows("direct");
+      row.querySelector("input")?.focus();
+      announce(`\u533A\u9593 ${count + 1} \u3092\u8FFD\u52A0\u3057\u307E\u3057\u305F\u3002`);
     });
-    setActiveCalculationKey(activeKey());
-    clearValidationDisplay();
-    announce(
-      `${button.textContent?.trim() ?? "\u30E2\u30FC\u30C9"}\u3078\u5207\u308A\u66FF\u3048\u307E\u3057\u305F\u3002\u5165\u529B\u5185\u5BB9\u306F\u4FDD\u6301\u3055\u308C\u3066\u3044\u307E\u3059\u3002`
+    byId("add-cumulative-point").addEventListener("click", () => {
+      const count = cumulativeList.querySelectorAll("[data-cumulative-row]").length;
+      if (count >= MAX_CUMULATIVE_POINTS) return;
+      const row = cumulativeRow(count);
+      cumulativeList.append(row);
+      cumulativeRemoved = void 0;
+      byId("cumulative-undo").hidden = true;
+      reindexRows("cumulative");
+      row.querySelector("input")?.focus();
+      announce(`\u5730\u70B9 ${count} \u3092\u8FFD\u52A0\u3057\u307E\u3057\u305F\u3002`);
+    });
+    directList.addEventListener("click", (event) => {
+      const button = event.target instanceof Element ? event.target.closest("[data-remove-direct]") : null;
+      const row = button?.closest("[data-direct-row]");
+      if (!row) return;
+      const rows = Array.from(directList.querySelectorAll("[data-direct-row]"));
+      if (rows.length <= 1) return;
+      directRemoved = { row, index: rows.indexOf(row) };
+      row.remove();
+      byId("direct-undo").hidden = false;
+      reindexRows("direct");
+      (directList.querySelector(".remove-row") ?? byId("add-direct-segment")).focus();
+    });
+    cumulativeList.addEventListener("click", (event) => {
+      const button = event.target instanceof Element ? event.target.closest("[data-remove-cumulative]") : null;
+      const row = button?.closest("[data-cumulative-row]");
+      if (!row) return;
+      const rows = Array.from(cumulativeList.querySelectorAll("[data-cumulative-row]"));
+      if (rows.length <= 2) return;
+      cumulativeRemoved = { row, index: rows.indexOf(row) };
+      row.remove();
+      byId("cumulative-undo").hidden = false;
+      reindexRows("cumulative");
+    });
+    byId("direct-undo").querySelector("button")?.addEventListener("click", () => {
+      if (!directRemoved) return;
+      directList.insertBefore(directRemoved.row, directList.children.item(directRemoved.index));
+      directRemoved.row.querySelector("input")?.focus();
+      directRemoved = void 0;
+      byId("direct-undo").hidden = true;
+      reindexRows("direct");
+    });
+    byId("cumulative-undo").querySelector("button")?.addEventListener("click", () => {
+      if (!cumulativeRemoved) return;
+      cumulativeList.insertBefore(
+        cumulativeRemoved.row,
+        cumulativeList.children.item(cumulativeRemoved.index)
+      );
+      cumulativeRemoved.row.querySelector("input")?.focus();
+      cumulativeRemoved = void 0;
+      byId("cumulative-undo").hidden = true;
+      reindexRows("cumulative");
+    });
+  }
+  function rowValue(row, key) {
+    const input = Array.from(row.querySelectorAll("input")).find(
+      ({ name }) => name.endsWith(`.${key}`)
     );
+    if (!input) throw new Error(`Missing row field: ${key}`);
+    return input;
   }
-  bindRovingButtons(mainButtons, selectMainMode);
-  var submodeButtons = Array.from(
-    document.querySelectorAll("[data-segments-submode]")
-  );
-  function selectSegmentsSubmode(button) {
-    const key = button.dataset["segmentsSubmode"];
-    if (!key || !["segments", "inout", "coin"].includes(key)) return;
-    segmentsSubmode = key;
-    setPressed(submodeButtons, key, "segmentsSubmode");
-    document.querySelectorAll("[data-submode-panel]").forEach((panel) => {
-      panel.hidden = panel.dataset["submodePanel"] !== key;
+  function collectDirect() {
+    const errors = [];
+    const values = [];
+    Array.from(directList.querySelectorAll("[data-direct-row]")).forEach(
+      (row, index) => {
+        const games = requiredInteger(
+          rowValue(row, "games"),
+          `segments.direct.${index}.games`,
+          `\u533A\u9593${index + 1}\u306E\u30B2\u30FC\u30E0\u6570`
+        );
+        const net = requiredInteger(
+          rowValue(row, "netMedals"),
+          `segments.direct.${index}.netMedals`,
+          `\u533A\u9593${index + 1}\u306E\u5DEE\u679A`
+        );
+        errors.push(...games.errors, ...net.errors);
+        if (games.value !== void 0 && net.value !== void 0) {
+          const label = rowValue(row, "label").value.trim();
+          values.push({ games: games.value, netMedals: net.value, ...label ? { label } : {} });
+        }
+      }
+    );
+    return errors.length > 0 ? { errors } : { values, errors };
+  }
+  function collectCumulative() {
+    const errors = [];
+    const values = [];
+    Array.from(cumulativeList.querySelectorAll("[data-cumulative-row]")).forEach(
+      (row, index) => {
+        const games = requiredInteger(
+          rowValue(row, "games"),
+          `segments.points.${index}.games`,
+          `\u5730\u70B9${index}\u306E\u7D2F\u7A4D\u30B2\u30FC\u30E0\u6570`
+        );
+        const net = requiredInteger(
+          rowValue(row, "netMedals"),
+          `segments.points.${index}.netMedals`,
+          `\u5730\u70B9${index}\u306E\u7D2F\u7A4D\u5DEE\u679A`
+        );
+        errors.push(...games.errors, ...net.errors);
+        if (games.value !== void 0 && net.value !== void 0) {
+          const label = rowValue(row, "label").value.trim();
+          values.push({
+            cumulativeGames: games.value,
+            cumulativeNetMedals: net.value,
+            ...label ? { label } : {}
+          });
+        }
+      }
+    );
+    return errors.length > 0 ? { errors } : { values, errors };
+  }
+  function differenceText(value) {
+    if (value.differenceDisplayCode === "exact_zero") return "\u5DEE0\u679A\u30FB\u57FA\u6E96\u901A\u308A";
+    if (value.differenceDisplayCode === "less_than_one_above") return "\u5DEE\u306F1\u679A\u672A\u6E80\u30FB\u4E0A\u56DE\u308B";
+    if (value.differenceDisplayCode === "less_than_one_below") return "\u5DEE\u306F1\u679A\u672A\u6E80\u30FB\u4E0B\u56DE\u308B";
+    return `${formatSigned(value.differenceNetMedals.display)}\u679A\u30FB${value.relation === "above" ? "\u4E0A\u56DE\u308B" : "\u4E0B\u56DE\u308B"}`;
+  }
+  function renderFacts(result, sourceLabel) {
+    if (!result.ok) return;
+    const fragment = document.createDocumentFragment();
+    fragment.append(
+      create("h3", { text: "\u5408\u8A08\u5B9F\u7E3E" }),
+      create("p", {
+        className: "result-lead",
+        text: `${formatOneDecimal(result.value.aggregate.aggregatePayoutRate.display)}%`
+      })
+    );
+    const metrics = create("div", { className: "result-metrics" });
+    for (const [label, value] of [
+      ["\u5408\u8A08G", `${formatInteger(result.value.aggregate.aggregateGames)}G`],
+      ["\u5408\u8A08\u5DEE\u679A", `${formatSigned(result.value.aggregate.aggregateNetMedals)}\u679A`],
+      ["\u5165\u529B\u65B9\u5F0F", sourceLabel]
+    ]) {
+      const item = create("div");
+      item.append(create("span", { text: label }), create("strong", { text: value }));
+      metrics.append(item);
+    }
+    fragment.append(metrics, create("h3", { text: "\u533A\u9593\u3054\u3068\u306E\u5B9F\u7E3E" }));
+    result.value.segments.forEach((segment, index) => {
+      const row = create("article", { className: "segment-row-result" });
+      row.append(
+        create("strong", { text: segment.input.label || `\u533A\u9593${index + 1}` }),
+        create("p", { text: `${formatInteger(segment.input.games)}G` }),
+        create("p", { text: `${formatSigned(segment.input.netMedals)}\u679A` }),
+        create("p", { text: `${formatOneDecimal(segment.payoutRate.display)}%` })
+      );
+      const sensitivity = calculatePayoutRateSensitivity({ games: segment.input.games });
+      if (sensitivity.ok) {
+        row.append(
+          create("small", {
+            text: `100\u679A\u3067\u51FA\u7389\u7387\u304C\u7D04${formatOneDecimal(sensitivity.value.payoutRatePointsPer100Medals.display)}\u30DD\u30A4\u30F3\u30C8\u52D5\u304F`
+          })
+        );
+      }
+      fragment.append(row);
     });
-    if (mainMode === "segments-inout") setActiveCalculationKey(key);
-    clearValidationDisplay();
-    announce(`${button.textContent?.trim() ?? "\u5165\u529B\u65B9\u5F0F"}\u3078\u5207\u308A\u66FF\u3048\u307E\u3057\u305F\u3002`);
+    const movement = create("div", { className: "result-metrics" });
+    for (const [label, value] of [
+      [
+        "\u5165\u529B\u5730\u70B9\u9593\u306E\u6700\u5927\u4E0B\u843D",
+        `${formatInteger(result.value.drawdownRecovery.maximumDrawdown.medals)}\u679A`
+      ],
+      [
+        "\u4E0B\u843D\u5F8C\u306E\u6700\u5927\u56DE\u5FA9",
+        `${formatInteger(result.value.drawdownRecovery.maximumRecoveryAfterDrawdown.medals)}\u679A`
+      ]
+    ]) {
+      const item = create("div");
+      item.append(create("span", { text: label }), create("strong", { text: value }));
+      movement.append(item);
+    }
+    fragment.append(movement);
+    facts.replaceChildren(fragment);
+    renderMetadata(byId("segment-condition-content"), [result.metadata]);
+    resultContainer.hidden = false;
+    benchmarkResult.hidden = true;
+    document.querySelectorAll('[name="segment.benchmark"]').forEach((radio) => {
+      radio.checked = false;
+    });
   }
-  bindRovingButtons(submodeButtons, selectSegmentsSubmode);
-  function handleCalculation(outcome) {
-    clearValidationDisplay();
-    if (!outcome.result || !outcome.result.ok || !outcome.groups) {
-      const messages = outcome.messages.length > 0 ? outcome.messages : outcome.result?.errors ?? [];
-      renderFailureMessages(outcome.key, messages);
-      setActiveCalculationKey(outcome.key);
-      announce("\u5165\u529B\u30A8\u30E9\u30FC\u304C\u3042\u308A\u307E\u3059\u3002\u8A08\u7B97\u7D50\u679C\u306F\u66F4\u65B0\u3055\u308C\u3066\u3044\u307E\u305B\u3093\u3002");
-      if (messages.some(({ severity }) => severity === "error")) focusErrorSummary();
+  function analyze(rate) {
+    if (!lastAnalysis) return void 0;
+    return lastAnalysis.method === "direct" ? analyzeSegments({
+      segments: lastAnalysis.direct ?? [],
+      ...rate === void 0 ? {} : { benchmarkRate: rate }
+    }) : analyzeCumulativePoints({
+      points: lastAnalysis.points ?? [],
+      ...rate === void 0 ? {} : { benchmarkRate: rate }
+    });
+  }
+  function renderBenchmark(rate) {
+    const result = analyze(rate);
+    if (!result) return;
+    if (!result.ok) {
+      showErrors(domainErrors(result.errors));
       return;
     }
-    markCalculationSucceeded(state, outcome.key);
-    renderSuccessfulCalculation(outcome.key, outcome.result, outcome.groups);
-    setStale(outcome.key, false);
-    setActiveCalculationKey(outcome.key);
-    announce("\u8A08\u7B97\u304C\u5B8C\u4E86\u3057\u307E\u3057\u305F\u3002\u7D50\u679C\u3092\u66F4\u65B0\u3057\u307E\u3057\u305F\u3002");
-    revealResults();
+    clearErrors();
+    const aggregate = result.value.aggregate.benchmark;
+    if (!aggregate) return;
+    const fragment = document.createDocumentFragment();
+    fragment.append(
+      create("h3", { text: `${formatOneDecimal(rate)}%\u57FA\u6E96` }),
+      create("p", {
+        className: "result-lead",
+        text: `\u5408\u8A08 ${differenceText({ ...aggregate, condition: "on_benchmark" })}`
+      })
+    );
+    const metrics = create("div", { className: "result-metrics" });
+    const expected = create("div");
+    expected.append(
+      create("span", { text: "\u57FA\u6E96\u5DEE\u679A" }),
+      create("strong", { text: `${formatSigned(aggregate.expectedNetMedals.display)}\u679A` })
+    );
+    const difference = create("div");
+    difference.append(
+      create("span", { text: "\u57FA\u6E96\u3068\u306E\u5DEE" }),
+      create("strong", { text: differenceText({ ...aggregate, condition: "on_benchmark" }) })
+    );
+    metrics.append(expected, difference);
+    fragment.append(metrics, create("h4", { text: "\u533A\u9593\u306E\u5BC4\u4E0E" }));
+    const withBenchmark = result.value.segments.filter(
+      (segment) => segment.benchmark !== void 0
+    );
+    for (const [index, segment] of withBenchmark.entries()) {
+      const positive2 = segment.benchmark.relation === "above";
+      const neutral = segment.benchmark.relation === "equal";
+      const row = create("article", {
+        className: `segment-row-result ${neutral ? "" : positive2 ? "contribution-high" : "contribution-low"}`
+      });
+      row.append(
+        create("strong", { text: segment.input.label || `\u533A\u9593${index + 1}` }),
+        create("p", {
+          text: neutral ? "\u57FA\u6E96\u901A\u308A" : positive2 ? "\u597D\u8ABF\u533A\u9593" : "\u4F4E\u8ABF\u533A\u9593",
+          className: neutral ? "relation-neutral" : positive2 ? "relation-positive" : "relation-negative"
+        }),
+        create("p", { text: differenceText(segment.benchmark) }),
+        create("p", { text: positive2 ? "\u62BC\u3057\u4E0A\u3052" : neutral ? "\u5909\u5316\u306A\u3057" : "\u62BC\u3057\u4E0B\u3052" })
+      );
+      fragment.append(row);
+    }
+    const positive = withBenchmark.filter(({ benchmark }) => benchmark.differenceNetMedals.approximate > 0).sort(
+      (left, right) => right.benchmark.differenceNetMedals.approximate - left.benchmark.differenceNetMedals.approximate
+    )[0];
+    const negative = withBenchmark.filter(({ benchmark }) => benchmark.differenceNetMedals.approximate < 0).sort(
+      (left, right) => left.benchmark.differenceNetMedals.approximate - right.benchmark.differenceNetMedals.approximate
+    )[0];
+    const extremes = create("div", { className: "result-metrics segment-benchmark-detail" });
+    for (const [label, segment] of [
+      ["\u6700\u5927\u306E\u62BC\u3057\u4E0A\u3052", positive],
+      ["\u6700\u5927\u306E\u62BC\u3057\u4E0B\u3052", negative]
+    ]) {
+      const item = create("div");
+      item.append(
+        create("span", { text: label }),
+        create("strong", {
+          text: segment ? `${segment.input.label ?? "\u540D\u79F0\u306A\u3057"} ${formatSigned(segment.benchmark.differenceNetMedals.display)}\u679A` : "\u8A72\u5F53\u306A\u3057"
+        })
+      );
+      extremes.append(item);
+    }
+    fragment.append(extremes);
+    benchmarkResult.replaceChildren(fragment);
+    benchmarkResult.hidden = false;
+    renderMetadata(byId("segment-condition-content"), [result.metadata]);
+    announce(`${formatOneDecimal(rate)}%\u57FA\u6E96\u306E\u533A\u9593\u5BC4\u4E0E\u3092\u8868\u793A\u3057\u307E\u3057\u305F\u3002`);
   }
-  document.querySelectorAll("[data-calculate]").forEach((button) => {
+  function setupBenchmarkChoice() {
+    const custom = byId("custom-benchmark");
+    document.querySelectorAll('[name="segment.benchmark"]').forEach((radio) => {
+      radio.addEventListener("change", () => {
+        custom.hidden = radio.value !== "custom";
+        if (radio.value !== "custom") renderBenchmark(Number(radio.value));
+        else byId("custom-benchmark-rate").focus();
+      });
+    });
+    byId("apply-custom-benchmark").addEventListener("click", () => {
+      const parsed = requiredDecimal(
+        byId("custom-benchmark-rate"),
+        "segment.customBenchmark",
+        "\u4EFB\u610F\u57FA\u6E96\u7387"
+      );
+      if (parsed.errors.length > 0 || parsed.value === void 0) {
+        showErrors(parsed.errors);
+        return;
+      }
+      renderBenchmark(parsed.value);
+    });
+  }
+  function submitAnalysis() {
+    clearErrors();
+    const method = document.querySelector('[name="segment.method"]:checked')?.value;
+    if (method === "direct") {
+      const collected = collectDirect();
+      if (collected.errors.length > 0 || !collected.values) {
+        showErrors(collected.errors);
+        return;
+      }
+      const result = analyzeSegments({ segments: collected.values });
+      if (!result.ok) {
+        showErrors(
+          domainErrors(
+            result.errors,
+            ({ field }) => field.replace(/^segments\[(\d+)]/, "segments.direct.$1")
+          )
+        );
+        return;
+      }
+      lastAnalysis = { method: "direct", direct: collected.values };
+      renderFacts(result, "\u533A\u9593\u3054\u3068");
+    } else if (method === "cumulative") {
+      const collected = collectCumulative();
+      if (collected.errors.length > 0 || !collected.values) {
+        showErrors(collected.errors);
+        return;
+      }
+      const result = analyzeCumulativePoints({ points: collected.values });
+      if (!result.ok) {
+        showErrors(
+          domainErrors(
+            result.errors,
+            ({ field }) => field.replace(/^points\[(\d+)]\.cumulativeGames$/, "segments.points.$1.games").replace(/^points\[(\d+)]\.cumulativeNetMedals$/, "segments.points.$1.netMedals")
+          )
+        );
+        return;
+      }
+      lastAnalysis = { method: "cumulative", points: collected.values };
+      renderFacts(result, "\u30B0\u30E9\u30D5\u306E\u7D2F\u7A4D\u5730\u70B9");
+    } else {
+      showErrors([{ message: "\u300C\u30B0\u30E9\u30D5\u306E\u5730\u70B9\u304B\u3089\u5165\u529B\u300D\u307E\u305F\u306F\u300C\u533A\u9593\u3054\u3068\u306B\u5165\u529B\u300D\u3092\u9078\u3093\u3067\u304F\u3060\u3055\u3044\u3002" }]);
+      return;
+    }
+    byId("segments-result").scrollIntoView({ block: "start" });
+    announce("\u533A\u9593\u5206\u6790\u3092\u66F4\u65B0\u3057\u307E\u3057\u305F\u3002");
+  }
+  function setupSegmentsUi() {
+    setupMethodChoice();
+    setupListActions();
+    setupTransfers();
+    setupBenchmarkChoice();
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      submitAnalysis();
+    });
+    return {
+      open(value) {
+        transfer = value;
+        updateTransferControls();
+      }
+    };
+  }
+
+  // tools/slot-balance/src/ui-v2/app.ts
+  var quickSnapshot;
+  var quickStale = false;
+  var activePanel;
+  var quickForm = byId("quick-form");
+  var quickGames = byId("quick-games");
+  var quickNet = byId("quick-net");
+  var quickResult = byId("quick-result");
+  var launchers = Array.from(document.querySelectorAll("[data-launcher]"));
+  var analysisPanels = Array.from(document.querySelectorAll("[data-analysis-panel]"));
+  var segmentsUi = setupSegmentsUi();
+  function resultMetric(label, value) {
+    const item = create("div");
+    item.append(create("span", { text: label }), create("strong", { text: value }));
+    return item;
+  }
+  function focusResult(container) {
+    const heading = container.querySelector("h2, h3");
+    if (!heading) return;
+    heading.tabIndex = -1;
+    heading.focus({ preventScroll: true });
+    heading.scrollIntoView({ block: "center" });
+  }
+  function benchmarkDifference(value) {
+    if (value.differenceDisplayCode === "exact_zero") {
+      return { text: "\u5DEE0\u679A", relation: "\u57FA\u6E96\u901A\u308A", className: "relation-neutral" };
+    }
+    if (value.differenceDisplayCode === "less_than_one_above") {
+      return { text: "\u5DEE\u306F1\u679A\u672A\u6E80", relation: "\u4E0A\u56DE\u308B", className: "relation-positive" };
+    }
+    if (value.differenceDisplayCode === "less_than_one_below") {
+      return { text: "\u5DEE\u306F1\u679A\u672A\u6E80", relation: "\u4E0B\u56DE\u308B", className: "relation-negative" };
+    }
+    const above = value.relation === "above";
+    return {
+      text: `${formatSigned(value.differenceNetMedals.display)}\u679A`,
+      relation: above ? "\u4E0A\u56DE\u308B" : "\u4E0B\u56DE\u308B",
+      className: above ? "relation-positive" : "relation-negative"
+    };
+  }
+  function renderQuickBenchmarks(values) {
+    const list = byId("quick-benchmark-list");
+    const summary = byId("quick-benchmark-summary");
+    summary.hidden = true;
+    const rows = values.map((value) => {
+      const rate = Number(value.benchmarkRate.numerator) / Number(value.benchmarkRate.denominator);
+      const difference = benchmarkDifference(value);
+      const row = create("button", { className: "benchmark-row" });
+      row.type = "button";
+      row.dataset["quickBenchmark"] = String(rate);
+      row.setAttribute("aria-pressed", "false");
+      row.append(
+        create("strong", { text: `${formatInteger(rate)}%` }),
+        create("span", {
+          text: `\u57FA\u6E96\u5DEE\u679A ${formatSigned(value.expectedNetMedals.display)}\u679A`
+        }),
+        create("span", {
+          className: difference.className,
+          text: value.differenceDisplayCode === "exact_zero" ? "\u5B9F\u7E3E\u306F\u57FA\u6E96\u5DEE\u679A\u3068\u4E00\u81F4" : value.differenceDisplayCode === "less_than_one_above" || value.differenceDisplayCode === "less_than_one_below" ? `\u5B9F\u7E3E\u306F1\u679A\u672A\u6E80${difference.relation}` : `\u5B9F\u7E3E\u306F ${difference.text}${difference.relation}`
+        })
+      );
+      row.addEventListener("click", () => {
+        rows.forEach((button) => button.setAttribute("aria-pressed", String(button === row)));
+        summary.textContent = value.differenceDisplayCode === "exact_zero" ? `\u3053\u306E\u5165\u529B\u306F${formatInteger(rate)}%\u57FA\u6E96\u306E\u5DEE\u679A\u3068\u4E00\u81F4\u3057\u307E\u3059\u3002` : value.differenceDisplayCode === "less_than_one_above" ? `\u3053\u306E\u5165\u529B\u306F${formatInteger(rate)}%\u57FA\u6E96\u306E\u5DEE\u679A\u30921\u679A\u672A\u6E80\u4E0A\u56DE\u308A\u307E\u3059\u3002` : value.differenceDisplayCode === "less_than_one_below" ? `\u3053\u306E\u5165\u529B\u306F${formatInteger(rate)}%\u57FA\u6E96\u306E\u5DEE\u679A\u30921\u679A\u672A\u6E80\u4E0B\u56DE\u308A\u307E\u3059\u3002` : `\u3053\u306E\u5165\u529B\u306F${formatInteger(rate)}%\u57FA\u6E96\u306E\u5DEE\u679A\u3092${formatInteger(Math.abs(value.differenceNetMedals.display))}\u679A${value.relation === "above" ? "\u4E0A\u56DE\u308A\u307E\u3059" : "\u4E0B\u56DE\u308A\u307E\u3059"}\u3002`;
+        summary.hidden = false;
+        announce(`${formatInteger(rate)}%\u57FA\u6E96\u3092\u9078\u629E\u3057\u307E\u3057\u305F\u3002`);
+      });
+      return row;
+    });
+    list.replaceChildren(...rows);
+  }
+  function quickField(errorField) {
+    if (errorField === "games") return "quick.games";
+    if (errorField === "netMedals") return "quick.netMedals";
+    return void 0;
+  }
+  function renderQuick() {
+    const games = requiredInteger(quickGames, "quick.games", "\u7DCF\u30B2\u30FC\u30E0\u6570");
+    const net = requiredInteger(quickNet, "quick.netMedals", "\u5DEE\u679A");
+    const errors = [...games.errors, ...net.errors];
+    if (errors.length > 0 || games.value === void 0 || net.value === void 0) {
+      showErrors(errors);
+      return;
+    }
+    const quick = calculateQuickPerformance({ games: games.value, netMedals: net.value });
+    if (!quick.ok) {
+      showErrors(domainErrors(quick.errors, ({ field }) => quickField(field)));
+      return;
+    }
+    const benchmarks = calculateStandardBenchmarks({ games: games.value, netMedals: net.value });
+    const sensitivity = calculatePayoutRateSensitivity({ games: games.value });
+    if (!benchmarks.ok || !sensitivity.ok) {
+      const failures = [
+        ...benchmarks.ok ? [] : benchmarks.errors,
+        ...sensitivity.ok ? [] : sensitivity.errors
+      ];
+      showErrors(domainErrors(failures, ({ field }) => quickField(field)));
+      return;
+    }
+    clearErrors();
+    closePanels();
+    quickSnapshot = {
+      games: games.value,
+      netMedals: net.value,
+      quick: quick.value,
+      benchmarks: benchmarks.value
+    };
+    quickStale = false;
+    setStale(false);
+    byId("quick-rate").textContent = `${formatOneDecimal(quick.value.payoutRate.display)}%`;
+    byId("quick-input-summary").textContent = `${formatInteger(games.value)}G / ${formatSigned(net.value)}\u679A`;
+    byId("quick-per-1000").textContent = `${formatSigned(quick.value.netMedalsPer1000Games.display)}\u679A / 1,000G`;
+    renderQuickBenchmarks(benchmarks.value);
+    renderMetadata(
+      byId("quick-condition-content"),
+      [quick.metadata, benchmarks.metadata, sensitivity.metadata],
+      [
+        `\u60F3\u5B9AIN ${formatInteger(quick.value.assumedInMedals)}\u679A`,
+        `\u60F3\u5B9AOUT ${formatInteger(quick.value.assumedOutMedals)}\u679A`,
+        `100\u679A\u3067\u51FA\u7389\u7387\u304C\u7D04${formatOneDecimal(sensitivity.value.payoutRatePointsPer100Medals.display)}\u30DD\u30A4\u30F3\u30C8\u52D5\u304F`
+      ]
+    );
+    quickResult.hidden = false;
+    quickResult.classList.remove("is-stale");
+    const resultTitle = byId("quick-result-title");
+    resultTitle.focus({ preventScroll: true });
+    resultTitle.scrollIntoView({ block: "center" });
+    announce("\u8A08\u7B97\u7D50\u679C\u3092\u8868\u793A\u3057\u307E\u3057\u305F\u3002");
+  }
+  function setStale(stale) {
+    quickStale = stale;
+    byId("quick-stale").hidden = !stale;
+    byId("stale-transfer-note").hidden = !stale;
+    quickResult.classList.toggle("is-stale", stale);
+    launchers.forEach((button) => {
+      if (button.dataset["launcher"] === "target" || button.dataset["launcher"] === "segments") {
+        button.disabled = stale;
+      }
+    });
+    if (stale && (activePanel === "target" || activePanel === "segments")) closePanels();
+  }
+  quickForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    renderQuick();
+  });
+  quickForm.addEventListener("input", () => {
+    if (quickSnapshot && !quickStale) setStale(true);
+  });
+  byId("quick-reset").addEventListener("click", () => {
+    quickForm.reset();
+    quickSnapshot = void 0;
+    quickStale = false;
+    quickResult.hidden = true;
+    closePanels();
+    clearErrors();
+    quickGames.focus();
+    announce("\u5165\u529B\u3068\u30AF\u30A4\u30C3\u30AF\u7D50\u679C\u3092\u30EA\u30BB\u30C3\u30C8\u3057\u307E\u3057\u305F\u3002");
+  });
+  byId("edit-quick").addEventListener("click", () => quickGames.focus());
+  function closePanels() {
+    activePanel = void 0;
+    analysisPanels.forEach((panel) => {
+      panel.hidden = true;
+    });
+    launchers.forEach((button) => button.setAttribute("aria-expanded", "false"));
+  }
+  function openPanel(name) {
+    if (!quickSnapshot) return;
+    if (quickStale && (name === "target" || name === "segments")) {
+      announce("\u30AF\u30A4\u30C3\u30AF\u7D50\u679C\u3092\u518D\u8A08\u7B97\u3057\u3066\u304B\u3089\u958B\u3044\u3066\u304F\u3060\u3055\u3044\u3002");
+      return;
+    }
+    activePanel = name;
+    analysisPanels.forEach((panel2) => {
+      panel2.hidden = panel2.dataset["analysisPanel"] !== name;
+    });
+    launchers.forEach((button) => {
+      button.setAttribute("aria-expanded", String(button.dataset["launcher"] === name));
+    });
+    if (name === "target") {
+      byId("target-current-summary").textContent = `\u73FE\u5728 ${formatInteger(quickSnapshot.games)}G / ${formatSigned(quickSnapshot.netMedals)}\u679A`;
+    }
+    if (name === "segments") {
+      segmentsUi.open({ games: quickSnapshot.games, netMedals: quickSnapshot.netMedals });
+    }
+    const panel = analysisPanels.find(({ dataset }) => dataset["analysisPanel"] === name);
+    panel?.querySelector("h2")?.focus({ preventScroll: true });
+    panel?.scrollIntoView({ block: "start" });
+    announce(
+      `${launchers.find(({ dataset }) => dataset["launcher"] === name)?.textContent?.trim() ?? "\u8A73\u7D30"}\u3092\u958B\u304D\u307E\u3057\u305F\u3002`
+    );
+  }
+  launchers.forEach((button) => {
     button.addEventListener("click", () => {
-      const key = button.dataset["calculate"];
-      if (!key) return;
-      handleCalculation(controllers[key].calculate());
+      const name = button.dataset["launcher"];
+      if (name) openPanel(name);
     });
   });
-  document.querySelectorAll("[data-calculation-key]").forEach((form) => {
-    const onChange = () => {
-      const key = form.dataset["calculationKey"];
-      if (key) markDirty(key);
-    };
-    form.addEventListener("input", onChange);
-    form.addEventListener("change", onChange);
-    form.addEventListener("submit", (event) => event.preventDefault());
+  document.querySelectorAll(".close-panel").forEach((button) => {
+    button.addEventListener("click", () => {
+      const previous = activePanel;
+      closePanels();
+      launchers.find(({ dataset }) => dataset["launcher"] === previous)?.focus();
+      announce("\u8A73\u7D30\u6A5F\u80FD\u3092\u9589\u3058\u307E\u3057\u305F\u3002");
+    });
   });
-  byId("skip-to-tool").addEventListener("click", () => {
-    window.setTimeout(() => byId("mode-heading").focus(), 0);
+  function setPreset(button, group) {
+    document.querySelectorAll(group).forEach((item) => {
+      item.setAttribute("aria-pressed", String(item === button));
+    });
+  }
+  document.querySelectorAll("[data-target-games]").forEach((button) => {
+    button.setAttribute("aria-pressed", "false");
+    button.addEventListener("click", () => {
+      if (!quickSnapshot) return;
+      byId("target-games").value = String(
+        quickSnapshot.games + Number(button.dataset["targetGames"])
+      );
+      setPreset(button, "[data-target-games]");
+    });
   });
-  setPressed(mainButtons, mainMode, "mainMode");
-  setPressed(submodeButtons, segmentsSubmode, "segmentsSubmode");
-  setActiveCalculationKey(activeKey());
+  document.querySelectorAll("[data-target-rate]").forEach((button) => {
+    button.setAttribute("aria-pressed", "false");
+    button.addEventListener("click", () => {
+      byId("target-rate").value = button.dataset["targetRate"] ?? "";
+      setPreset(button, "[data-target-rate]");
+    });
+  });
+  byId("target-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!quickSnapshot || quickStale) return;
+    const targetGames = requiredInteger(
+      byId("target-games"),
+      "target.games",
+      "\u76EE\u6A19\u7DCF\u30B2\u30FC\u30E0\u6570"
+    );
+    const targetRate = requiredDecimal(
+      byId("target-rate"),
+      "target.rate",
+      "\u76EE\u6A19\u51FA\u7389\u7387"
+    );
+    const errors = [...targetGames.errors, ...targetRate.errors];
+    if (errors.length > 0 || targetGames.value === void 0 || targetRate.value === void 0) {
+      showErrors(errors);
+      return;
+    }
+    const result = calculateTargetReverse({
+      currentGames: quickSnapshot.games,
+      currentNetMedals: quickSnapshot.netMedals,
+      targetTotalGames: targetGames.value,
+      targetPayoutRate: targetRate.value
+    });
+    if (!result.ok) {
+      showErrors(
+        domainErrors(
+          result.errors,
+          ({ field }) => field === "targetTotalGames" ? "target.games" : field === "targetPayoutRate" ? "target.rate" : void 0
+        )
+      );
+      return;
+    }
+    clearErrors();
+    const values = result.value;
+    const lead = values.status === "must_gain" ? `\u3042\u3068+${formatInteger(values.minimumIntegerFutureNetMedals)}\u679A\u5FC5\u8981` : values.status === "no_net_change_required" ? "\u5DEE\u679A0\u679A\u4EE5\u4E0A\u3067\u76EE\u6A19\u306B\u5230\u9054" : values.status === "can_lose_up_to" ? `\u2212${formatInteger(values.allowedLossMedals ?? 0)}\u679A\u307E\u3067\u306A\u3089\u76EE\u6A19\u3092\u7DAD\u6301` : "\u6B8B\u308A\u533A\u9593\u306EOUT\u304C0\u679A\u4EE5\u4E0A\u306A\u3089\u76EE\u6A19\u3092\u7DAD\u6301";
+    const container = byId("target-result");
+    const heading = create("h3", { text: "\u5FC5\u8981\u6761\u4EF6" });
+    const metrics = create("div", { className: "result-metrics" });
+    metrics.append(
+      resultMetric("\u6B8B\u308A\u30B2\u30FC\u30E0\u6570", `${formatInteger(values.remainingGames)}G`),
+      resultMetric(
+        "\u5883\u754C\u3068\u306A\u308B\u51FA\u7389\u7387",
+        `${formatOneDecimal(values.requiredFuturePayoutRate.display)}%\u4EE5\u4E0A`
+      ),
+      resultMetric("\u76EE\u6A19\u7DCF\u5DEE\u679A", `${formatSigned(values.exactTargetTotalNetMedals.display)}\u679A`)
+    );
+    const conditions = create("details", { className: "conditions" });
+    conditions.append(create("summary", { text: "\u8A08\u7B97\u6761\u4EF6\u3092\u898B\u308B" }));
+    const conditionContent = create("div");
+    renderMetadata(conditionContent, [result.metadata]);
+    conditions.append(conditionContent);
+    container.replaceChildren(
+      heading,
+      create("p", { className: "result-lead", text: lead }),
+      metrics,
+      create("p", { text: "\u6570\u5B66\u4E0A\u306E\u5883\u754C\u3067\u3042\u308A\u3001\u4E88\u6E2C\u30FB\u671F\u5F85\u5024\u30FB\u7D9A\u884C\u5224\u65AD\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3002" }),
+      conditions
+    );
+    container.hidden = false;
+    focusResult(container);
+    announce("\u76EE\u6A19\u306E\u5FC5\u8981\u6761\u4EF6\u3092\u8868\u793A\u3057\u307E\u3057\u305F\u3002");
+  });
+  function mapCalculationErrors(result, fields) {
+    return validationErrors(result.errors).map((error2, index) => {
+      const original = result.errors[index];
+      const field = original?.field ? fields[original.field] : void 0;
+      return { ...error2, ...field ? { field } : {} };
+    });
+  }
+  function messagesList(messages) {
+    const visible = messages.filter(({ severity }) => severity !== "error");
+    if (visible.length === 0) return void 0;
+    const wrapper = create("div", { className: "conditions" });
+    const heading = create("h4", { text: "\u88DC\u8DB3" });
+    const list = create("ul");
+    for (const item of visible) list.append(create("li", { text: item.message }));
+    wrapper.append(heading, list);
+    return wrapper;
+  }
+  byId("investment-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const cash = requiredInteger(byId("investment-cash"), "investment.cash", "\u73FE\u91D1\u6295\u8CC7\u984D");
+    const current = requiredInteger(
+      byId("investment-current"),
+      "investment.current",
+      "\u73FE\u5728\u624B\u5143\u306B\u3042\u308B\u679A\u6570"
+    );
+    const exchange = requiredDecimal(
+      byId("investment-exchange"),
+      "investment.exchange",
+      "1,000\u5186\u5206\u3078\u306E\u4EA4\u63DB\u306B\u5FC5\u8981\u306A\u679A\u6570"
+    );
+    const unit = optionalInteger(byId("investment-unit"), "investment.unit", "\u4EA4\u63DB\u5358\u4F4D");
+    const stored = optionalInteger(byId("investment-stored"), "investment.stored", "\u4F7F\u7528\u8CAF\u30E1\u30C0\u30EB");
+    const exchanged = optionalInteger(
+      byId("investment-exchanged"),
+      "investment.exchanged",
+      "\u4EA4\u63DB\u6E08\u307F\u91D1\u984D"
+    );
+    const lend = optionalDecimal(byId("investment-lend"), "investment.lend", "\u8CB8\u51FA\u679A\u6570");
+    const games = optionalInteger(byId("investment-games"), "investment.games", "\u4ECA\u56DE\u306E\u30B2\u30FC\u30E0\u6570");
+    const net = optionalInteger(byId("investment-net"), "investment.net", "\u4ECA\u56DE\u306E\u5DEE\u679A");
+    const errors = [cash, current, exchange, unit, stored, exchanged, lend, games, net].flatMap(
+      ({ errors: parsedErrors }) => parsedErrors
+    );
+    if (games.value === void 0 !== (net.value === void 0)) {
+      errors.push({
+        field: games.value === void 0 ? "investment.games" : "investment.net",
+        message: "\u4ECA\u56DE\u306E\u30B2\u30FC\u30E0\u6570\u3068\u5DEE\u679A\u306F\u4E21\u65B9\u5165\u529B\u3059\u308B\u304B\u3001\u4E21\u65B9\u7A7A\u6B04\u306B\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
+      });
+    }
+    if (errors.length > 0 || cash.value === void 0 || current.value === void 0 || exchange.value === void 0) {
+      showErrors(errors);
+      return;
+    }
+    const result = calculateInvestmentRecovery({
+      cashInvestmentYen: cash.value,
+      currentMedals: current.value,
+      exchangeMedalsPer1000Yen: exchange.value,
+      storedMedalsUsed: stored.value,
+      alreadyExchangedYen: exchanged.value,
+      lendMedalsPer1000Yen: lend.value,
+      exchangeUnitYen: unit.value,
+      requestRecoveryLines: true,
+      games: games.value,
+      netMedals: net.value
+    });
+    if (!result.ok || !result.values) {
+      showErrors(
+        mapCalculationErrors(result, {
+          cashInvestmentYen: "investment.cash",
+          currentMedals: "investment.current",
+          exchangeMedalsPer1000Yen: "investment.exchange",
+          exchangeUnitYen: "investment.unit",
+          storedMedalsUsed: "investment.stored",
+          alreadyExchangedYen: "investment.exchanged",
+          lendMedalsPer1000Yen: "investment.lend",
+          games: "investment.games",
+          netMedals: "investment.net"
+        })
+      );
+      return;
+    }
+    clearErrors();
+    const values = result.values;
+    const container = byId("investment-result");
+    const metrics = create("div", { className: "result-metrics" });
+    metrics.append(
+      resultMetric("\u4EA4\u63DB\u984D\u898B\u8FBC\u307F", `${formatInteger(values.currentExchangeEstimateYen)}\u5186`),
+      resultMetric("\u73FE\u91D1\u53CE\u652F", `${formatSigned(values.cashNetEstimateYen)}\u5186`),
+      resultMetric(
+        "\u73FE\u91D1\u56DE\u53CE\u7387",
+        values.cashRecoveryRate ? `${formatOneDecimal(values.cashRecoveryRate.display)}%` : "\u2014"
+      )
+    );
+    const details = create("details", { className: "conditions" });
+    details.append(create("summary", { text: "\u5185\u8A33\u3092\u898B\u308B" }));
+    const list = create("dl", { className: "summary-facts" });
+    const detailRows = [
+      ["\u7406\u8AD6\u4EA4\u63DB\u984D", `${formatInteger(values.currentTheoreticalExchangeYen.display)}\u5186`],
+      ["\u7DCF\u56DE\u53CE\u898B\u8FBC\u307F", `${formatInteger(values.grossReturnEstimateYen)}\u5186`],
+      ["\u8CAF\u30E1\u30C0\u30EB\u8FBC\u307F\u4FA1\u5024\u5DEE\u984D", `${formatSigned(values.totalValueNetEstimateYen.display)}\u5186`],
+      ["\u4EA4\u63DB\u5358\u4F4D\u3068\u306E\u5DEE", `${formatInteger(values.exchangeUnitDifferenceYen.display)}\u5186`]
+    ];
+    if (values.totalRecoveryRate) {
+      detailRows.push([
+        "\u8CAF\u30E1\u30C0\u30EB\u8FBC\u307F\u56DE\u53CE\u7387",
+        `${formatOneDecimal(values.totalRecoveryRate.display)}%`
+      ]);
+    }
+    if (values.cashRecoveryLine) {
+      detailRows.push([
+        "\u73FE\u91D1\u56DE\u53CE\u30E9\u30A4\u30F3",
+        `${formatInteger(values.cashRecoveryLine.requiredMedals)}\u679A`
+      ]);
+    }
+    if (values.totalRecoveryLine && values.showTotalRecoveryLine) {
+      detailRows.push([
+        "\u8CAF\u30E1\u30C0\u30EB\u8FBC\u307F\u56DE\u53CE\u30E9\u30A4\u30F3",
+        `${formatInteger(values.totalRecoveryLine.requiredMedals)}\u679A`
+      ]);
+    }
+    if (values.cashBorrowedMedalsEquivalent) {
+      detailRows.push([
+        "\u73FE\u91D1\u6295\u8CC7\u306E\u8CB8\u51FA\u679A\u6570\u76F8\u5F53",
+        `${formatInteger(values.cashBorrowedMedalsEquivalent.display)}\u679A`
+      ]);
+    }
+    for (const [label, value] of detailRows) {
+      const row = create("div");
+      row.append(create("dt", { text: label }), create("dd", { text: value }));
+      list.append(row);
+    }
+    details.append(list);
+    const supplementary = messagesList([...result.warnings, ...result.info]);
+    container.replaceChildren(
+      create("h3", { text: "\u6295\u8CC7\u30FB\u56DE\u53CE\u7D50\u679C" }),
+      metrics,
+      details,
+      ...supplementary ? [supplementary] : []
+    );
+    container.hidden = false;
+    focusResult(container);
+    announce("\u6295\u8CC7\u30FB\u56DE\u53CE\u7D50\u679C\u3092\u8868\u793A\u3057\u307E\u3057\u305F\u3002");
+  });
+  byId("inout-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const actualIn = requiredInteger(byId("actual-in"), "inout.in", "\u5B9FIN");
+    const actualOut = requiredInteger(byId("actual-out"), "inout.out", "\u5B9FOUT");
+    const errors = [...actualIn.errors, ...actualOut.errors];
+    if (errors.length > 0 || actualIn.value === void 0 || actualOut.value === void 0) {
+      showErrors(errors);
+      return;
+    }
+    const result = calculateInOut({ actualIn: actualIn.value, actualOut: actualOut.value });
+    if (!result.ok || !result.values) {
+      showErrors(mapCalculationErrors(result, { actualIn: "inout.in", actualOut: "inout.out" }));
+      return;
+    }
+    clearErrors();
+    const container = byId("inout-result");
+    const metrics = create("div", { className: "result-metrics" });
+    metrics.append(
+      resultMetric("\u5B9FIN / OUT\u51FA\u7389\u7387", `${formatOneDecimal(result.values.payoutRate.display)}%`),
+      resultMetric("\u5B9F\u5DEE\u679A", `${formatSigned(result.values.actualNetMedals)}\u679A`),
+      resultMetric(
+        "\u5B9FIN \u2192 \u5B9FOUT",
+        `${formatInteger(result.values.totalIn)}\u679A \u2192 ${formatInteger(result.values.totalOut)}\u679A`
+      )
+    );
+    container.replaceChildren(
+      create("h3", { text: "\u5B9F\u6E2C\u7D50\u679C" }),
+      metrics,
+      create("p", { text: "\u5DEE\u679A\u30D9\u30FC\u30B9\u5B9F\u7E3E\u51FA\u7389\u7387\u3068\u306F\u5206\u3051\u3066\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044\u3002" })
+    );
+    container.hidden = false;
+    focusResult(container);
+    announce("\u5B9FIN\u30FBOUT\u7D50\u679C\u3092\u8868\u793A\u3057\u307E\u3057\u305F\u3002");
+  });
+  byId("coin-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const games = requiredInteger(byId("coin-games"), "coin.games", "\u901A\u5E38\u6642\u30B2\u30FC\u30E0\u6570");
+    const medals = requiredInteger(byId("coin-medals"), "coin.medals", "\u6B63\u5473\u4F7F\u7528\u679A\u6570");
+    const atBonus = document.querySelector('[name="coin.atBonus"]')?.checked ?? false;
+    const scope = document.querySelector('[name="coin.scope"]')?.checked ?? false;
+    const errors = [...games.errors, ...medals.errors];
+    if (!atBonus)
+      errors.push({
+        field: "coin.atBonus",
+        message: "AT\u30FB\u30DC\u30FC\u30CA\u30B9\u533A\u9593\u3092\u9664\u5916\u3057\u305F\u3053\u3068\u306E\u78BA\u8A8D\u304C\u5FC5\u8981\u3067\u3059\u3002"
+      });
+    if (!scope)
+      errors.push({
+        field: "coin.scope",
+        message: "G\u6570\u3068\u679A\u6570\u304C\u540C\u3058\u5BFE\u8C61\u533A\u9593\u3067\u3042\u308B\u3053\u3068\u306E\u78BA\u8A8D\u304C\u5FC5\u8981\u3067\u3059\u3002"
+      });
+    if (errors.length > 0 || games.value === void 0 || medals.value === void 0) {
+      showErrors(errors);
+      return;
+    }
+    const result = calculateCoinHold({
+      method: "direct",
+      normalGames: games.value,
+      netUsedMedals: medals.value,
+      atBonusExcluded: atBonus,
+      scopeConfirmed: scope
+    });
+    if (!result.ok || !result.values) {
+      showErrors(
+        mapCalculationErrors(result, {
+          normalGames: "coin.games",
+          netUsedMedals: "coin.medals",
+          atBonusExcluded: "coin.atBonus",
+          scopeConfirmed: "coin.scope"
+        })
+      );
+      return;
+    }
+    clearErrors();
+    const container = byId("coin-result");
+    const metrics = create("div", { className: "result-metrics" });
+    metrics.append(
+      resultMetric(
+        "50\u679A\u3042\u305F\u308A\u901A\u5E38\u6642\u30B2\u30FC\u30E0\u6570",
+        `${formatOneDecimal(result.values.coinHoldPer50.display)}G / 50\u679A`
+      ),
+      resultMetric("\u6B63\u5473\u4F7F\u7528\u679A\u6570", `${formatInteger(result.values.netUsedMedals)}\u679A`),
+      resultMetric("\u5BFE\u8C61\u533A\u9593", "AT\u30FB\u30DC\u30FC\u30CA\u30B9\u9664\u5916\u6E08\u307F")
+    );
+    container.replaceChildren(create("h3", { text: "\u901A\u5E38\u30B3\u30A4\u30F3\u6301\u3061\u7D50\u679C" }), metrics);
+    container.hidden = false;
+    focusResult(container);
+    announce("\u901A\u5E38\u30B3\u30A4\u30F3\u6301\u3061\u7D50\u679C\u3092\u8868\u793A\u3057\u307E\u3057\u305F\u3002");
+  });
+  clearErrors();
 })();

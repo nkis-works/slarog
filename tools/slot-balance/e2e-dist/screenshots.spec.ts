@@ -29,30 +29,29 @@ async function settle(page: Page): Promise<void> {
 
 async function prepareNet(page: Page): Promise<void> {
   await gotoDistTool(page);
-  await page.locator('[name="net.games"]').fill('４,０００Ｇ');
-  await page.locator('[name="net.netMedals"]').fill('＋５００枚');
-  await page.locator('[data-calculate="net"]').click();
+  await page.locator('#quick-games').fill('４,０００Ｇ');
+  await page.locator('#quick-net').fill('＋５００枚');
+  await page.locator('#quick-form button[type="submit"]').click();
 }
 
 async function prepareInvestment(page: Page): Promise<void> {
-  await gotoDistTool(page);
-  await page.locator('[data-main-mode="investment"]').click();
-  await page.locator('[name="investment.cash"]').fill('20,000');
-  await page.locator('[name="investment.currentMedals"]').fill('1,200');
-  await page.locator('[name="investment.exchangeRate"]').fill('50');
-  await page.locator('[name="investment.exchangeUnit"]').fill('500');
-  await page.locator('[data-calculate="investment"]').click();
+  await prepareNet(page);
+  await page.locator('[data-launcher="investment"]').click();
+  await page.locator('#investment-cash').fill('20,000');
+  await page.locator('#investment-current').fill('1,200');
+  await page.locator('#investment-exchange').fill('50');
+  await page.locator('#investment-form button[type="submit"]').click();
 }
 
 async function prepareSegments(page: Page): Promise<void> {
-  await gotoDistTool(page);
-  await page.locator('[data-main-mode="segments-inout"]').click();
-  await page.locator('[name="segments.0.games"]').fill('1000');
-  await page.locator('[name="segments.0.netMedals"]').fill('+200');
-  await page.locator('#add-net-segment').click();
-  await page.locator('[name="segments.1.games"]').fill('2000');
-  await page.locator('[name="segments.1.netMedals"]').fill('-400');
-  await page.locator('[data-calculate="segments"]').click();
+  await prepareNet(page);
+  await page.locator('[data-launcher="segments"]').click();
+  await page.locator('[name="segment.method"][value="direct"]').check();
+  await page.locator('[name="segments.direct.0.games"]').fill('1000');
+  await page.locator('[name="segments.direct.0.netMedals"]').fill('+200');
+  await page.locator('[name="segments.direct.1.games"]').fill('2000');
+  await page.locator('[name="segments.direct.1.netMedals"]').fill('-400');
+  await page.locator('#segments-form button[type="submit"]').click();
 }
 
 for (const viewport of [
