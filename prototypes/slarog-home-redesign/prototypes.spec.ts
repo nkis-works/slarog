@@ -5,8 +5,8 @@ import { resolve } from 'node:path';
 
 const root = '/prototypes/slarog-home-redesign';
 const proposals = [
-  { name: 'A', path: `${root}/a/`, desktopNav: '.desktop-nav' },
-  { name: 'B', path: `${root}/b/`, desktopNav: '.wide-nav' },
+  { name: 'A', path: `${root}/a/`, desktopNav: '.desktop-nav', maker: 'by NKIS Works' },
+  { name: 'B', path: `${root}/b/`, desktopNav: '.wide-nav', maker: 'つくり手 NKIS Works' },
 ] as const;
 const bannedDecorativeLabels = [
   'Before / After',
@@ -32,7 +32,7 @@ test('A/Bともブランド、料金、作った理由、実画面を公開契�
   for (const proposal of proposals) {
     await page.goto(proposal.path);
     await expect(page.locator('.brand, .identity').first()).toContainText('スラログ');
-    await expect(page.locator('.brand, .identity').first()).toContainText('by NKIS Works');
+    await expect(page.locator('.brand, .identity').first()).toContainText(proposal.maker);
     await expect(page.locator(`${proposal.desktopNav} > a`)).toHaveCount(4);
     await expect(page.locator('h1')).toContainText('ホールのスランプグラフを');
     await expect(page.locator('body')).toContainText('14日間');
@@ -78,6 +78,33 @@ test('A/Bともユーザーの操作順を7段階で伝える', async ({ page })
   }
 });
 
+test('Bのヒーロー実画面は縦横比を保ち、表示領域内へ収まる', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(`${root}/b/`);
+  const stage = await page.locator('.screen-stage').boundingBox();
+  const images = await page.locator('.screen-stage img').evaluateAll((elements) =>
+    elements.map((element) => {
+      const rect = element.getBoundingClientRect();
+      return { width: rect.width, height: rect.height, bottom: rect.bottom };
+    }),
+  );
+  expect(stage).not.toBeNull();
+  expect(images).toHaveLength(3);
+  for (const image of images) {
+    expect(image.height / image.width).toBeCloseTo(804 / 370, 2);
+    expect(image.bottom).toBeLessThanOrEqual((stage?.y ?? 0) + (stage?.height ?? 0));
+  }
+});
+
+test('Bの料金は比較表ではなく、試してから続ける流れで伝える', async ({ page }) => {
+  await page.goto(`${root}/b/`);
+  const pricing = page.locator('#pricing');
+  await expect(pricing).toContainText('まず14日間、手元のグラフで試してください。');
+  await expect(pricing).toContainText('そのまま使い続ける場合は、月額380円です。');
+  await expect(pricing.locator('.price-note')).toBeVisible();
+  await expect(pricing.locator('.price-readout')).toHaveCount(0);
+});
+
 test('desktopでcritical/seriousのaxe違反がない', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   for (const proposal of proposals) {
@@ -102,7 +129,7 @@ test('mobileで横overflowがなく、メニューと料金が読み取れる', 
     await expect(menu).toBeVisible();
     await menu.locator('summary').click();
     await expect(menu.locator('nav a')).toHaveCount(4);
-    await expect(page.locator('#price, #pricing')).toContainText('月額 ¥380');
+    await expect(page.locator('#price, #pricing')).toContainText('月額380円');
   }
 });
 
