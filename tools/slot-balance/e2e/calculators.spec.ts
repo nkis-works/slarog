@@ -15,7 +15,14 @@ test.describe('クイック実績', () => {
     await page.locator('#quick-conditions').click();
     await expect(page.locator('#quick-condition-content')).toContainText('想定IN 12,000枚');
     await expect(page.locator('#quick-condition-content')).toContainText('想定OUT 12,500枚');
-    await expect(page.locator('#quick-condition-content')).toContainText('計算バージョン 2.0.0');
+    await expect(page.locator('#quick-condition-content')).toContainText(
+      '1Gあたり3枚として実績出玉率を計算',
+    );
+    await expect(page.locator('#quick-condition-content')).toContainText(
+      '出玉率は小数第2位を四捨五入し、小数1桁で表示します。',
+    );
+    await expect(page.locator('#quick-condition-content')).not.toContainText('計算バージョン');
+    await expect(page.locator('#quick-condition-content')).not.toContainText('half-away-from-zero');
   });
 
   test('0Gを拒否し、要約・フィールド・フォーカスを関連付ける', async ({ page }) => {
@@ -27,6 +34,9 @@ test.describe('クイック実績', () => {
     await expect(page.locator('#quick-games')).toHaveAttribute('aria-invalid', 'true');
     await expect(page.locator('#quick-games-error')).not.toBeEmpty();
     await expect(page.locator('#error-summary')).toBeFocused();
+    await page.locator('#error-summary-list .error-summary-link').click();
+    await expect(page.locator('#quick-games')).toBeFocused();
+    expect(page.url()).not.toContain('#');
   });
 
   test('想定OUTが負になる極端値を安全に拒否する', async ({ page }) => {
@@ -42,9 +52,12 @@ test.describe('クイック実績', () => {
     await calculateQuick(page);
 
     await expect(page.locator('[data-quick-benchmark]')).toHaveCount(3);
-    await expect(page.locator('[data-quick-benchmark="100"]')).toContainText('+500枚・上回る');
-    await expect(page.locator('[data-quick-benchmark="103"]')).toContainText('+140枚・上回る');
-    await expect(page.locator('[data-quick-benchmark="105"]')).toContainText('−100枚・下回る');
+    await expect(page.locator('[data-quick-benchmark="100"]')).toContainText('基準差枚 0枚');
+    await expect(page.locator('[data-quick-benchmark="100"]')).toContainText('実績は +500枚上回る');
+    await expect(page.locator('[data-quick-benchmark="103"]')).toContainText('基準差枚 +360枚');
+    await expect(page.locator('[data-quick-benchmark="103"]')).toContainText('実績は +140枚上回る');
+    await expect(page.locator('[data-quick-benchmark="105"]')).toContainText('実績は −100枚下回る');
+    await expect(page.locator('#quick-benchmark-list')).not.toContainText('期待');
     await expect(page.locator('[data-quick-benchmark][aria-pressed="true"]')).toHaveCount(0);
     await expect(page.locator('#quick-benchmark-summary')).toBeHidden();
 
@@ -119,6 +132,8 @@ test.describe('区間分析', () => {
 
     await selectSegmentMethod(page, 'direct');
     await expect(page.locator('[data-direct-row]')).toHaveCount(2);
+    await expect(page.locator('[name="segments.direct.0.games"]')).toHaveValue('');
+    await expect(page.locator('[name="segments.direct.0.netMedals"]')).toHaveValue('');
     await page.locator('[name="segments.direct.0.games"]').fill('1000');
     await page.locator('[name="segments.direct.0.netMedals"]').fill('+200');
     await page.locator('[name="segments.direct.1.games"]').fill('2000');
@@ -136,6 +151,37 @@ test.describe('区間分析', () => {
     await page.locator('#direct-undo button').click();
     await expect(page.locator('[data-direct-row]')).toHaveCount(2);
     await expect(page.locator('[name="segments.direct.1.netMedals"]')).toHaveValue('-400');
+  });
+
+  test('現在結果は明示操作だけで区間1へ入力し、既存値を上書きしない', async ({ page }) => {
+    await selectSegmentMethod(page, 'direct');
+    const games = page.locator('[name="segments.direct.0.games"]');
+    const net = page.locator('[name="segments.direct.0.netMedals"]');
+    await expect(games).toHaveValue('');
+    await expect(net).toHaveValue('');
+    await page.locator('#transfer-to-direct').click();
+    await expect(games).toHaveValue('4000');
+    await expect(net).toHaveValue('500');
+    await expect(page.locator('#transfer-to-direct')).toBeDisabled();
+
+    await games.fill('1234');
+    await expect(page.locator('#transfer-to-direct')).toBeDisabled();
+    await expect(games).toHaveValue('1234');
+    await expect(net).toHaveValue('500');
+  });
+
+  test('累積地点は開始0/0だけを用意し、現在結果を地点1へ明示入力する', async ({ page }) => {
+    await selectSegmentMethod(page, 'cumulative');
+    await expect(page.locator('[name="segments.points.0.games"]')).toHaveValue('0');
+    await expect(page.locator('[name="segments.points.0.netMedals"]')).toHaveValue('0');
+    await expect(page.locator('[name="segments.points.1.games"]')).toHaveValue('');
+    await expect(page.locator('[name="segments.points.1.netMedals"]')).toHaveValue('');
+    await expect(page.locator('[name="segments.points.2.games"]')).toHaveValue('');
+    await expect(page.locator('[name="segments.points.2.netMedals"]')).toHaveValue('');
+    await page.locator('#transfer-to-cumulative').click();
+    await expect(page.locator('[name="segments.points.1.games"]')).toHaveValue('4000');
+    await expect(page.locator('[name="segments.points.1.netMedals"]')).toHaveValue('500');
+    await expect(page.locator('#transfer-to-cumulative')).toBeDisabled();
   });
 
   test('選択基準だけ区間寄与と最大押し上げ・押し下げを表示する', async ({ page }) => {
@@ -205,6 +251,44 @@ test.describe('補助計算', () => {
     await openPanel(page, 'investment');
     await expect(page.locator('#investment-cash')).toHaveValue('12345');
     await expect(page.locator('[data-analysis-panel]:visible')).toHaveCount(1);
+  });
+
+  test('主導線は3つだけ表示し、補助計算はその他を開くまで隠す', async ({ page }) => {
+    await expect(page.locator('.launchers > .launcher-grid > [data-launcher]')).toHaveCount(3);
+    await expect(page.locator('.other-launchers')).not.toHaveAttribute('open');
+    await expect(page.locator('[data-launcher="inout"]')).toBeHidden();
+    await expect(page.locator('[data-launcher="coin"]')).toBeHidden();
+    await page.locator('.other-launchers summary').click();
+    await expect(page.locator('[data-launcher="inout"]')).toBeVisible();
+    await expect(page.locator('[data-launcher="coin"]')).toBeVisible();
+  });
+
+  test('主要・詳細・確認入力に専用の近接エラー領域を関連付ける', async ({ page }) => {
+    const names = [
+      'investment.cash',
+      'investment.current',
+      'investment.exchange',
+      'investment.unit',
+      'investment.stored',
+      'investment.exchanged',
+      'investment.lend',
+      'investment.games',
+      'investment.net',
+      'coin.games',
+      'coin.medals',
+      'coin.atBonus',
+      'coin.scope',
+      'segment.customBenchmark',
+    ];
+    for (const name of names) {
+      const control = page.locator(`[name="${name}"]`);
+      const describedBy = await control.getAttribute('aria-describedby');
+      expect(describedBy, name).toBeTruthy();
+      const output = page.locator(`[data-error-for="${name}"]`);
+      await expect(output, name).toHaveCount(1);
+      const outputId = await output.getAttribute('id');
+      expect(describedBy?.split(/\s+/), name).toContain(outputId);
+    }
   });
 
   test('基本3項目だけで投資・回収を計算する', async ({ page }) => {

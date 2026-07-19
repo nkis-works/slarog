@@ -51,7 +51,9 @@ export async function openPanel(
   page: Page,
   panel: 'target' | 'segments' | 'investment' | 'inout' | 'coin',
 ): Promise<void> {
-  await page.locator(`[data-launcher="${panel}"]`).click();
+  const launcher = page.locator(`[data-launcher="${panel}"]`);
+  if (!(await launcher.isVisible())) await page.locator('.other-launchers summary').click();
+  await launcher.click();
   await expect(page.locator(`#${panel}-panel`)).toBeVisible();
 }
 
