@@ -81,6 +81,107 @@ test('トップ・規約・プライバシーの説明が現行ツール仕様�
   await expect(page.getByText('最終更新日：2026年7月20日')).toBeVisible();
 });
 
+test('スラログの新料金が公開ページで一致し、廃止した料金文言が残らない', async ({ page }) => {
+  const publicPages = ['/index.html', '/support.html', '/privacy.html', '/terms.html'] as const;
+  for (const path of publicPages) {
+    await page.goto(path);
+    const copy = await page.locator('body').innerText();
+    expect(copy, path).not.toMatch(
+      /月額500円|¥500|無料プラン|1台まで|期限なし|複数台を記録するには|台数無制限|自動更新/,
+    );
+  }
+
+  await page.goto('/index.html');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    /14日間.*月額380円/,
+  );
+  await expect(page.locator('meta[property="og:description"]')).toHaveAttribute(
+    'content',
+    /14日間.*月額380円/,
+  );
+  await expect(
+    page.getByRole('heading', { name: 'まず14日間、使い心地を試せます。' }),
+  ).toBeVisible();
+  await expect(page.locator('.price-flow')).toContainText('14日間');
+  await expect(page.locator('.price-flow')).toContainText('¥0');
+  await expect(page.locator('.price-flow')).toContainText('月額');
+  await expect(page.locator('.price-flow')).toContainText('¥380');
+  await expect(page.locator('.billing-notes')).toContainText('各ストアのアカウント管理画面');
+
+  await page.goto('/support.html');
+  await expect(page.getByText('14日間です。無料体験中は料金が発生しません。')).toBeAttached();
+  await expect(page.getByText('引き続き利用する場合は月額380円です。')).toBeAttached();
+  await expect(page.getByText(/App Store／Google Playのアカウント管理画面/)).toBeAttached();
+
+  await page.goto('/terms.html');
+  await expect(page.locator('#billing')).toContainText('14日間の無料体験');
+  await expect(page.locator('#billing')).toContainText('月額380円');
+  await expect(page.locator('#billing')).toContainText('各ストアのアカウント管理画面');
+});
+
+test('トップは困りごと・作った理由・実画面を中心に理解できる', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/index.html');
+
+  await expect(
+    page.getByRole('heading', { name: 'グラフ画像が、見返せないまま増えていませんか。' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'グラフ画像を、あとで見返せる記録にしたかった。' }),
+  ).toBeVisible();
+  for (const scenario of [
+    '店舗・機種・台番号・日付があとから分からない',
+    '同じ台番の過去記録を探すのに時間がかかる',
+    '複数日分の流れを画像だけで追いにくい',
+    '31日分などの長い記録も見やすい',
+    '作成したグラフを画像として残せる',
+  ]) {
+    await expect(page.getByText(scenario, { exact: true })).toBeAttached();
+  }
+  expect(await page.locator('img[src*="slarog-"]').count()).toBeGreaterThanOrEqual(8);
+
+  const order = await page.evaluate(() => {
+    const main = document.querySelector('main');
+    const selectors = [
+      '.hero',
+      '.problem-section',
+      '#review',
+      '#story',
+      '#features',
+      '.trust',
+      '#plans',
+      '#faq',
+      '.final-cta',
+    ];
+    const children = main ? Array.from(main.children) : [];
+    return selectors.map((selector) => {
+      const element = main?.querySelector(selector);
+      return element ? children.indexOf(element) : -1;
+    });
+  });
+  expect(
+    order.every(
+      (position, index) => position >= 0 && (index === 0 || position > order[index - 1]!),
+    ),
+  ).toBe(true);
+
+  const majorLabels = await page.locator('.section-label').allTextContents();
+  expect(majorLabels).toEqual(
+    expect.arrayContaining([
+      'よくある困りごと',
+      '作った理由',
+      '実際の使い方',
+      '料金',
+      '公開準備中',
+    ]),
+  );
+  expect(majorLabels.join(' ')).not.toMatch(
+    /Before|After|Features|Plans|Coming Soon|Record & Review/,
+  );
+  await expectNoHorizontalOverflow(page);
+});
+
 test('表示文言は統一表記を使い、専門的な内部語を見せない', async ({ page }) => {
   for (const path of sharedPages) {
     await page.goto(path);
@@ -139,9 +240,9 @@ test('ナビゲーション・現在ページ・404導線・モバイルメニ�
   await expect(page.locator('[data-nav-links]')).toContainText('スロット出玉分析');
   const navigationLabels = await page.locator('[data-nav-links] a').allTextContents();
   expect(navigationLabels).toEqual([
-    'できること',
-    '振り返り',
-    'プラン',
+    '使い方',
+    '作った理由',
+    '料金',
     'スロット出玉分析',
     'FAQ',
     'サポート',
