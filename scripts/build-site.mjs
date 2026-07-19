@@ -12,7 +12,7 @@ if (!['preview', 'production'].includes(mode)) {
 const siteOrigin = mode === 'production' ? validateSiteOrigin(process.env['SITE_ORIGIN']) : null;
 const root = resolve('.');
 const dist = resolve('dist');
-const lastModified = '2026-07-19';
+const lastModified = '2026-07-20';
 const htmlFiles = ['index.html', 'support.html', 'privacy.html', 'terms.html', '404.html'];
 const csp = [
   "default-src 'self'",
