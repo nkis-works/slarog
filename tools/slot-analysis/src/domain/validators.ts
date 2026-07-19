@@ -400,7 +400,7 @@ export function validateInOut(input: InOutInput): ValidationMessage[] {
         'error',
         'segments_limit_exceeded',
         'segments',
-        'IN/OUT区間は100件まで入力できます。',
+        'IN／OUT区間は100件まで入力できます。',
         '対象を分けるか、不要な区間を削除してください。',
       ),
     ];
@@ -413,7 +413,7 @@ export function validateInOut(input: InOutInput): ValidationMessage[] {
         'error',
         'in_out_values_required',
         undefined,
-        '実INと実OUT、またはIN/OUT区間を入力してください。',
+        '実INと実OUT、またはIN／OUT区間を入力してください。',
         '同じ対象範囲のINとOUTを揃えてください。',
       ),
     ];

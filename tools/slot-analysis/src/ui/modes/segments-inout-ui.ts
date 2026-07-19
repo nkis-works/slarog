@@ -101,7 +101,7 @@ function createInOutSegmentRow(): HTMLElement {
   const row = document.createElement('fieldset');
   row.className = 'dynamic-row';
   row.dataset['segmentRow'] = 'inout';
-  const legend = textElement('legend', 'IN/OUT区間');
+  const legend = textElement('legend', 'IN／OUT区間');
   legend.dataset['rowLegend'] = '';
   const header = document.createElement('div');
   header.className = 'dynamic-row__header';
@@ -416,7 +416,7 @@ function setupInOutCalculator(options: DynamicModeOptions): UiModeController {
         {
           items: [
             {
-              label: '実IN/OUT出玉率',
+              label: '実IN／OUT出玉率',
               value: formatPercent(result.values.payoutRate.display),
               provenance: result.provenance['payoutRate'] ?? 'actual',
               primary: true,
