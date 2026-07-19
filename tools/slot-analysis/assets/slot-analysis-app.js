@@ -8,7 +8,7 @@
       { code: "calculation_games", label: "\u8A08\u7B97\u5BFE\u8C61G\u6570" }
     ],
     unknown: [
-      { code: "exact_in_out", label: "\u6B63\u78BA\u306A\u5B9FIN/OUT" },
+      { code: "exact_in_out", label: "\u5B9F\u6E2C\u3057\u305FIN\uFF0FOUT" },
       { code: "actual_setting", label: "\u5B9F\u969B\u306E\u8A2D\u5B9A" },
       { code: "future_output", label: "\u4ECA\u5F8C\u306E\u51FA\u7389" },
       { code: "exact_coin_hold", label: "\u6B63\u78BA\u306A\u901A\u5E38\u6642\u30B3\u30A4\u30F3\u6301\u3061" },
@@ -34,13 +34,13 @@
   var SEGMENTS_KNOWLEDGE = {
     known: [
       { code: "segment_net_medals", label: "\u5404\u533A\u9593\u3068\u5408\u8A08\u306E\u5DEE\u679A" },
-      { code: "aggregate_estimated_rate", label: "\u7DCFG\u6570\u30FB\u7DCF\u5DEE\u679A\u304B\u3089\u518D\u8A08\u7B97\u3057\u305F\u6982\u7B97\u51FA\u7389\u7387" }
+      { code: "aggregate_estimated_rate", label: "\u7DCF\u30B2\u30FC\u30E0\u6570\u30FB\u7DCF\u5DEE\u679A\u304B\u3089\u518D\u8A08\u7B97\u3057\u305F\u5B9F\u7E3E\u51FA\u7389\u7387" }
     ],
     unknown: NET_MEDALS_KNOWLEDGE.unknown
   };
   var IN_OUT_KNOWLEDGE = {
     known: [
-      { code: "actual_in_out_rate", label: "\u5165\u529B\u3057\u305F\u5B9FIN/OUT\u306B\u57FA\u3065\u304F\u51FA\u7389\u7387" },
+      { code: "actual_in_out_rate", label: "\u5165\u529B\u3057\u305F\u5B9FIN\uFF0FOUT\u306B\u57FA\u3065\u304F\u51FA\u7389\u7387" },
       { code: "actual_net_medals", label: "IN\u3068OUT\u306E\u5DEE" }
     ],
     unknown: [
@@ -89,7 +89,7 @@
             value: values.payoutRateEstimate.display
           }
         ],
-        assumptions: ["1G\u3042\u305F\u308A3\u679A\u639B\u3051\u3068\u3057\u3066\u63DB\u7B97\u3057\u307E\u3059\u3002", "\u5B9FIN/OUT\u305D\u306E\u3082\u306E\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3002"]
+        assumptions: ["1G\u3042\u305F\u308A3\u679A\u639B\u3051\u3068\u3057\u3066\u63DB\u7B97\u3057\u307E\u3059\u3002", "\u5B9FIN\uFF0FOUT\u305D\u306E\u3082\u306E\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3002"]
       });
     }
     return explanations;
@@ -145,7 +145,7 @@
     return [
       {
         resultCode: "payoutRate",
-        title: "\u5B9FIN/OUT\u51FA\u7389\u7387",
+        title: "\u5B9FIN\uFF0FOUT\u51FA\u7389\u7387",
         inputs: [
           { label: "\u5B9FIN", value: values.totalIn, unit: "\u679A" },
           { label: "\u5B9FOUT", value: values.totalOut, unit: "\u679A" }
@@ -157,7 +157,7 @@
           },
           { expression: `${values.totalOut} - ${values.totalIn}`, value: values.actualNetMedals }
         ],
-        assumptions: ["\u5165\u529B\u3055\u308C\u305F\u5B9FIN/OUT\u304B\u3089\u8A08\u7B97\u3057\u307E\u3059\u3002", "\u8907\u6570\u533A\u9593\u306F\u5408\u8A08IN/OUT\u3092\u4F7F\u7528\u3057\u307E\u3059\u3002"]
+        assumptions: ["\u5165\u529B\u3055\u308C\u305F\u5B9FIN\uFF0FOUT\u304B\u3089\u8A08\u7B97\u3057\u307E\u3059\u3002", "\u8907\u6570\u533A\u9593\u306F\u5408\u8A08IN\uFF0FOUT\u3092\u4F7F\u7528\u3057\u307E\u3059\u3002"]
       }
     ];
   }
@@ -165,7 +165,7 @@
     return [
       {
         resultCode: "coinHoldPer50",
-        title: "\u901A\u5E38\u6642\u30B3\u30A4\u30F3\u6301\u3061",
+        title: "\u901A\u5E38\u6642\u306E\u30B3\u30A4\u30F3\u6301\u3061",
         inputs: [
           { label: "\u901A\u5E38\u6642\u30B2\u30FC\u30E0\u6570", value: input.normalGames, unit: "G" },
           { label: "\u6B63\u5473\u4F7F\u7528\u679A\u6570", value: values.netUsedMedals, unit: "\u679A" }
@@ -596,7 +596,7 @@
           "error",
           "segments_limit_exceeded",
           "segments",
-          "IN/OUT\u533A\u9593\u306F100\u4EF6\u307E\u3067\u5165\u529B\u3067\u304D\u307E\u3059\u3002",
+          "IN\uFF0FOUT\u533A\u9593\u306F100\u4EF6\u307E\u3067\u5165\u529B\u3067\u304D\u307E\u3059\u3002",
           "\u5BFE\u8C61\u3092\u5206\u3051\u308B\u304B\u3001\u4E0D\u8981\u306A\u533A\u9593\u3092\u524A\u9664\u3057\u3066\u304F\u3060\u3055\u3044\u3002"
         )
       ];
@@ -609,7 +609,7 @@
           "error",
           "in_out_values_required",
           void 0,
-          "\u5B9FIN\u3068\u5B9FOUT\u3001\u307E\u305F\u306FIN/OUT\u533A\u9593\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
+          "\u5B9FIN\u3068\u5B9FOUT\u3001\u307E\u305F\u306FIN\uFF0FOUT\u533A\u9593\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002",
           "\u540C\u3058\u5BFE\u8C61\u7BC4\u56F2\u306EIN\u3068OUT\u3092\u63C3\u3048\u3066\u304F\u3060\u3055\u3044\u3002"
         )
       ];
@@ -2099,17 +2099,17 @@
     target_required_future_payout_rate: "\u6B8B\u308A\u533A\u9593\u306E\u5883\u754C\u51FA\u7389\u7387\u3092\u8A08\u7B97",
     cumulative_point_difference: "\u96A3\u63A5\u3059\u308B\u7D2F\u7A4D\u5730\u70B9\u3092\u533A\u9593\u3078\u5909\u63DB",
     segment_performance_rate: "\u5404\u533A\u9593\u306E\u5B9F\u7E3E\u51FA\u7389\u7387\u3092\u8A08\u7B97",
-    segment_benchmark_contribution: "\u5404\u533A\u9593\u306E\u57FA\u6E96\u306B\u5BFE\u3059\u308B\u5BC4\u4E0E\u3092\u8A08\u7B97",
+    segment_benchmark_contribution: "\u5404\u533A\u9593\u306E\u57FA\u6E96\u306B\u5BFE\u3059\u308B\u62BC\u3057\u4E0A\u3052\u30FB\u62BC\u3057\u4E0B\u3052\u3092\u8A08\u7B97",
     aggregate_performance_rate: "\u5168\u533A\u9593\u306E\u5408\u8A08\u304B\u3089\u5B9F\u7E3E\u51FA\u7389\u7387\u3092\u518D\u8A08\u7B97",
-    maximum_endpoint_drawdown: "\u5165\u529B\u5730\u70B9\u9593\u306E\u6700\u5927\u4E0B\u843D\u3092\u8A08\u7B97",
+    maximum_endpoint_drawdown: "\u5165\u529B\u3057\u305F\u5730\u70B9\u9593\u306E\u6700\u5927\u4E0B\u843D\u3092\u8A08\u7B97",
     maximum_recovery_after_drawdown: "\u4E0B\u843D\u5F8C\u306E\u6700\u5927\u56DE\u5FA9\u3092\u8A08\u7B97"
   };
   var assumptionLabels = {
     three_medals_per_game: "1G\u3042\u305F\u308A3\u679A\u6295\u5165\u306E\u60F3\u5B9A\u5024\u3067\u3059\u3002",
     benchmark_is_comparison_not_prediction: "\u6BD4\u8F03\u57FA\u6E96\u306F\u8A2D\u5B9A\u3084\u672A\u6765\u306E\u4E88\u6E2C\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3002",
-    mathematical_boundary_not_prediction: "\u6570\u5B66\u4E0A\u306E\u5883\u754C\u3067\u3001\u5230\u9054\u3084\u5C06\u6765\u7D50\u679C\u3092\u4FDD\u8A3C\u3057\u307E\u305B\u3093\u3002",
+    mathematical_boundary_not_prediction: "\u5165\u529B\u3057\u305F\u76EE\u6A19\u306B\u5C4A\u304F\u305F\u3081\u306E\u6761\u4EF6\u3067\u3001\u5230\u9054\u3084\u5C06\u6765\u7D50\u679C\u3092\u4FDD\u8A3C\u3057\u307E\u305B\u3093\u3002",
     cumulative_points_are_observations: "\u5165\u529B\u3057\u305F\u7D2F\u7A4D\u5730\u70B9\u306E\u5DEE\u5206\u3060\u3051\u3092\u533A\u9593\u3068\u3057\u3066\u6271\u3044\u307E\u3059\u3002",
-    endpoint_movements_only: "\u6700\u5927\u4E0B\u843D\u30FB\u56DE\u5FA9\u306F\u5165\u529B\u5730\u70B9\u306E\u7D42\u70B9\u9593\u3060\u3051\u3067\u8A08\u7B97\u3057\u307E\u3059\u3002"
+    endpoint_movements_only: "\u6700\u5927\u4E0B\u843D\u30FB\u56DE\u5FA9\u306F\u5165\u529B\u3057\u305F\u5404\u5730\u70B9\u306E\u9593\u3060\u3051\u3067\u8A08\u7B97\u3057\u307E\u3059\u3002"
   };
   var roundingLabels = {
     half_away_from_zero_to_one_decimal: "\u51FA\u7389\u7387\u306F\u5C0F\u6570\u7B2C2\u4F4D\u3092\u56DB\u6368\u4E94\u5165\u3057\u3001\u5C0F\u65701\u6841\u3067\u8868\u793A\u3057\u307E\u3059\u3002",
@@ -2274,7 +2274,7 @@
     byId(
       kind === "direct" ? "add-direct-segment" : "add-cumulative-point"
     ).disabled = rows.length >= (kind === "direct" ? MAX_DIRECT_ROWS : MAX_CUMULATIVE_POINTS);
-    byId(kind === "direct" ? "direct-limit-note" : "cumulative-limit-note").textContent = `${rows.length} / ${kind === "direct" ? MAX_DIRECT_ROWS : MAX_CUMULATIVE_POINTS}\u4EF6`;
+    byId(kind === "direct" ? "direct-limit-note" : "cumulative-limit-note").textContent = `${rows.length}\u4EF6\uFF08\u6700\u5927${kind === "direct" ? MAX_DIRECT_ROWS : MAX_CUMULATIVE_POINTS}\u4EF6\uFF09`;
     updateTransferControls();
   }
   function initializeDirect() {
@@ -2298,7 +2298,7 @@
     };
   }
   function updateTransferControls() {
-    const summary = transfer ? `\u73FE\u5728\u306E\u30AF\u30A4\u30C3\u30AF\u7D50\u679C ${formatInteger(transfer.games)}G / ${formatSigned(transfer.netMedals)}\u679A` : "\u73FE\u5728\u306E\u30AF\u30A4\u30C3\u30AF\u7D50\u679C \u2014";
+    const summary = transfer ? `\u73FE\u5728\u306E\u8A08\u7B97\u7D50\u679C ${formatInteger(transfer.games)}G\uFF0F${formatSigned(transfer.netMedals)}\u679A` : "\u73FE\u5728\u306E\u8A08\u7B97\u7D50\u679C \u2014";
     byId("direct-transfer-summary").textContent = summary;
     byId("cumulative-transfer-summary").textContent = summary;
     for (const kind of ["direct", "cumulative"]) {
@@ -2515,7 +2515,7 @@
     const movement = create("div", { className: "result-metrics" });
     for (const [label, value] of [
       [
-        "\u5165\u529B\u5730\u70B9\u9593\u306E\u6700\u5927\u4E0B\u843D",
+        "\u5165\u529B\u3057\u305F\u5730\u70B9\u9593\u306E\u6700\u5927\u4E0B\u843D",
         `${formatInteger(result.value.drawdownRecovery.maximumDrawdown.medals)}\u679A`
       ],
       [
@@ -2576,7 +2576,7 @@
       create("strong", { text: differenceText({ ...aggregate, condition: "on_benchmark" }) })
     );
     metrics.append(expected, difference);
-    fragment.append(metrics, create("h4", { text: "\u533A\u9593\u306E\u5BC4\u4E0E" }));
+    fragment.append(metrics, create("h4", { text: "\u533A\u9593\u306E\u62BC\u3057\u4E0A\u3052\u30FB\u62BC\u3057\u4E0B\u3052" }));
     const withBenchmark = result.value.segments.filter(
       (segment) => segment.benchmark !== void 0
     );
@@ -2589,7 +2589,7 @@
       row.append(
         create("strong", { text: segment.input.label || `\u533A\u9593${index + 1}` }),
         create("p", {
-          text: neutral ? "\u57FA\u6E96\u901A\u308A" : positive2 ? "\u597D\u8ABF\u533A\u9593" : "\u4F4E\u8ABF\u533A\u9593",
+          text: neutral ? "\u57FA\u6E96\u901A\u308A" : positive2 ? "\u57FA\u6E96\u3092\u4E0A\u56DE\u308B\u533A\u9593" : "\u57FA\u6E96\u3092\u4E0B\u56DE\u308B\u533A\u9593",
           className: neutral ? "relation-neutral" : positive2 ? "relation-positive" : "relation-negative"
         }),
         create("p", { text: differenceText(segment.benchmark) }),
@@ -2621,7 +2621,7 @@
     benchmarkResult.replaceChildren(fragment);
     benchmarkResult.hidden = false;
     renderMetadata(byId("segment-condition-content"), [result.metadata]);
-    announce(`${formatOneDecimal(rate)}%\u57FA\u6E96\u306E\u533A\u9593\u5BC4\u4E0E\u3092\u8868\u793A\u3057\u307E\u3057\u305F\u3002`);
+    announce(`${formatOneDecimal(rate)}%\u57FA\u6E96\u3067\u5404\u533A\u9593\u306E\u62BC\u3057\u4E0A\u3052\u30FB\u62BC\u3057\u4E0B\u3052\u3092\u8868\u793A\u3057\u307E\u3057\u305F\u3002`);
   }
   function setupBenchmarkChoice() {
     const custom = byId("custom-benchmark");
@@ -2818,8 +2818,8 @@
     quickStale = false;
     setStale(false);
     byId("quick-rate").textContent = `${formatOneDecimal(quick.value.payoutRate.display)}%`;
-    byId("quick-input-summary").textContent = `${formatInteger(games.value)}G / ${formatSigned(net.value)}\u679A`;
-    byId("quick-per-1000").textContent = `${formatSigned(quick.value.netMedalsPer1000Games.display)}\u679A / 1,000G`;
+    byId("quick-input-summary").textContent = `${formatInteger(games.value)}G\uFF0F${formatSigned(net.value)}\u679A`;
+    byId("quick-per-1000").textContent = `${formatSigned(quick.value.netMedalsPer1000Games.display)}\u679A\uFF0F1,000G`;
     renderQuickBenchmarks(benchmarks.value);
     renderMetadata(
       byId("quick-condition-content"),
@@ -2864,7 +2864,7 @@
     closePanels();
     clearErrors();
     quickGames.focus();
-    announce("\u5165\u529B\u3068\u30AF\u30A4\u30C3\u30AF\u7D50\u679C\u3092\u30EA\u30BB\u30C3\u30C8\u3057\u307E\u3057\u305F\u3002");
+    announce("\u5165\u529B\u3068\u8A08\u7B97\u7D50\u679C\u3092\u30EA\u30BB\u30C3\u30C8\u3057\u307E\u3057\u305F\u3002");
   });
   byId("edit-quick").addEventListener("click", () => quickGames.focus());
   function closePanels() {
@@ -2877,7 +2877,7 @@
   function openPanel(name) {
     if (!quickSnapshot) return;
     if (quickStale && (name === "target" || name === "segments")) {
-      announce("\u30AF\u30A4\u30C3\u30AF\u7D50\u679C\u3092\u518D\u8A08\u7B97\u3057\u3066\u304B\u3089\u958B\u3044\u3066\u304F\u3060\u3055\u3044\u3002");
+      announce("\u73FE\u5728\u306E\u5165\u529B\u3067\u518D\u8A08\u7B97\u3057\u3066\u304B\u3089\u958B\u3044\u3066\u304F\u3060\u3055\u3044\u3002");
       return;
     }
     activePanel = name;
@@ -2888,7 +2888,7 @@
       button.setAttribute("aria-expanded", String(button.dataset["launcher"] === name));
     });
     if (name === "target") {
-      byId("target-current-summary").textContent = `\u73FE\u5728 ${formatInteger(quickSnapshot.games)}G / ${formatSigned(quickSnapshot.netMedals)}\u679A`;
+      byId("target-current-summary").textContent = `\u73FE\u5728 ${formatInteger(quickSnapshot.games)}G\uFF0F${formatSigned(quickSnapshot.netMedals)}\u679A`;
     }
     if (name === "segments") {
       segmentsUi.open({ games: quickSnapshot.games, netMedals: quickSnapshot.netMedals });
@@ -2973,12 +2973,12 @@
     const values = result.value;
     const lead = values.status === "must_gain" ? `\u3042\u3068+${formatInteger(values.minimumIntegerFutureNetMedals)}\u679A\u5FC5\u8981` : values.status === "no_net_change_required" ? "\u5DEE\u679A0\u679A\u4EE5\u4E0A\u3067\u76EE\u6A19\u306B\u5230\u9054" : values.status === "can_lose_up_to" ? `\u2212${formatInteger(values.allowedLossMedals ?? 0)}\u679A\u307E\u3067\u306A\u3089\u76EE\u6A19\u3092\u7DAD\u6301` : "\u6B8B\u308A\u533A\u9593\u306EOUT\u304C0\u679A\u4EE5\u4E0A\u306A\u3089\u76EE\u6A19\u3092\u7DAD\u6301";
     const container = byId("target-result");
-    const heading = create("h3", { text: "\u5FC5\u8981\u6761\u4EF6" });
+    const heading = create("h3", { text: "\u76EE\u6A19\u306B\u5C4A\u304F\u305F\u3081\u306E\u6761\u4EF6" });
     const metrics = create("div", { className: "result-metrics" });
     metrics.append(
       resultMetric("\u6B8B\u308A\u30B2\u30FC\u30E0\u6570", `${formatInteger(values.remainingGames)}G`),
       resultMetric(
-        "\u5883\u754C\u3068\u306A\u308B\u51FA\u7389\u7387",
+        "\u6B8B\u308A\u533A\u9593\u3067\u5FC5\u8981\u306A\u51FA\u7389\u7387",
         `${formatOneDecimal(values.requiredFuturePayoutRate.display)}%\u4EE5\u4E0A`
       ),
       resultMetric("\u76EE\u6A19\u7DCF\u5DEE\u679A", `${formatSigned(values.exactTargetTotalNetMedals.display)}\u679A`)
@@ -2992,7 +2992,9 @@
       heading,
       create("p", { className: "result-lead", text: lead }),
       metrics,
-      create("p", { text: "\u6570\u5B66\u4E0A\u306E\u5883\u754C\u3067\u3042\u308A\u3001\u4E88\u6E2C\u30FB\u671F\u5F85\u5024\u30FB\u7D9A\u884C\u5224\u65AD\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3002" }),
+      create("p", {
+        text: "\u5165\u529B\u3057\u305F\u76EE\u6A19\u304B\u3089\u9006\u7B97\u3057\u305F\u6761\u4EF6\u3067\u3059\u3002\u9054\u6210\u78BA\u7387\u3084\u5C06\u6765\u306E\u7D50\u679C\u3092\u793A\u3059\u3082\u306E\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3002"
+      }),
       conditions
     );
     container.hidden = false;
@@ -3160,7 +3162,7 @@
     const container = byId("inout-result");
     const metrics = create("div", { className: "result-metrics" });
     metrics.append(
-      resultMetric("\u5B9FIN / OUT\u51FA\u7389\u7387", `${formatOneDecimal(result.values.payoutRate.display)}%`),
+      resultMetric("\u5B9FIN\uFF0FOUT\u51FA\u7389\u7387", `${formatOneDecimal(result.values.payoutRate.display)}%`),
       resultMetric("\u5B9F\u5DEE\u679A", `${formatSigned(result.values.actualNetMedals)}\u679A`),
       resultMetric(
         "\u5B9FIN \u2192 \u5B9FOUT",
@@ -3221,15 +3223,15 @@
     metrics.append(
       resultMetric(
         "50\u679A\u3042\u305F\u308A\u901A\u5E38\u6642\u30B2\u30FC\u30E0\u6570",
-        `${formatOneDecimal(result.values.coinHoldPer50.display)}G / 50\u679A`
+        `${formatOneDecimal(result.values.coinHoldPer50.display)}G\uFF0F50\u679A`
       ),
       resultMetric("\u6B63\u5473\u4F7F\u7528\u679A\u6570", `${formatInteger(result.values.netUsedMedals)}\u679A`),
       resultMetric("\u5BFE\u8C61\u533A\u9593", "AT\u30FB\u30DC\u30FC\u30CA\u30B9\u9664\u5916\u6E08\u307F")
     );
-    container.replaceChildren(create("h3", { text: "\u901A\u5E38\u30B3\u30A4\u30F3\u6301\u3061\u7D50\u679C" }), metrics);
+    container.replaceChildren(create("h3", { text: "\u901A\u5E38\u6642\u306E\u30B3\u30A4\u30F3\u6301\u3061\u7D50\u679C" }), metrics);
     container.hidden = false;
     focusResult(container);
-    announce("\u901A\u5E38\u30B3\u30A4\u30F3\u6301\u3061\u7D50\u679C\u3092\u8868\u793A\u3057\u307E\u3057\u305F\u3002");
+    announce("\u901A\u5E38\u6642\u306E\u30B3\u30A4\u30F3\u6301\u3061\u7D50\u679C\u3092\u8868\u793A\u3057\u307E\u3057\u305F\u3002");
   });
   clearErrors();
 })();

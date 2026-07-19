@@ -122,6 +122,45 @@ test('public copy, section order, manual ad boundary and navigation are complete
   await expect(page).toHaveURL(`${DIST_ORIGIN}/index.html`);
 });
 
+test('site-wide copy, metadata, active navigation and support information are consistent', async ({
+  page,
+}) => {
+  await page.goto('/support.html');
+  await expect(page.getByRole('heading', { name: 'サポート', level: 1 })).toBeVisible();
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    /スラログ.*スロット出玉分析/,
+  );
+  await expect(
+    page.getByRole('heading', {
+      name: 'お問い合わせの際にお知らせいただきたい情報',
+      level: 2,
+    }),
+  ).toBeVisible();
+  await expect(page.getByText('ブラウザ名・バージョン')).toBeVisible();
+
+  await page.goto('/terms.html');
+  await expect(page.getByText('比較基準との差、区間ごとの実績、目標までの条件')).toBeVisible();
+  await page.goto('/privacy.html');
+  await expect(page.getByText('利用中の端末内だけで計算されます')).toBeVisible();
+
+  for (const path of pagePaths) {
+    await page.goto(path);
+    const copy = await page.locator('body').innerText();
+    expect(copy, path).not.toMatch(/OS \/ 端末名|IN\/OUT|IN \/ OUT|クイック結果|寄与を表示します/);
+  }
+
+  await gotoDistTool(page);
+  await expect(
+    page.locator('[aria-current="page"]').filter({ hasText: 'スロット出玉分析' }),
+  ).not.toHaveCount(0);
+  await expect(
+    page.getByText(
+      'ホールのグラフ画像を見やすい記録にし、店舗・機種・台番号・日付ごとに保存して振り返れます。',
+    ),
+  ).toBeVisible();
+});
+
 test('calculation performs no transport, storage, cookie, URL or console side effects', async ({
   page,
   context,

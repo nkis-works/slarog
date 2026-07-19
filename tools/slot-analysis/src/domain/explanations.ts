@@ -18,7 +18,7 @@ export const NET_MEDALS_KNOWLEDGE: KnowledgeBoundary = {
     { code: 'calculation_games', label: '計算対象G数' },
   ],
   unknown: [
-    { code: 'exact_in_out', label: '正確な実IN/OUT' },
+    { code: 'exact_in_out', label: '実測したIN／OUT' },
     { code: 'actual_setting', label: '実際の設定' },
     { code: 'future_output', label: '今後の出玉' },
     { code: 'exact_coin_hold', label: '正確な通常時コイン持ち' },
@@ -46,14 +46,14 @@ export const INVESTMENT_KNOWLEDGE: KnowledgeBoundary = {
 export const SEGMENTS_KNOWLEDGE: KnowledgeBoundary = {
   known: [
     { code: 'segment_net_medals', label: '各区間と合計の差枚' },
-    { code: 'aggregate_estimated_rate', label: '総G数・総差枚から再計算した概算出玉率' },
+    { code: 'aggregate_estimated_rate', label: '総ゲーム数・総差枚から再計算した実績出玉率' },
   ],
   unknown: NET_MEDALS_KNOWLEDGE.unknown,
 };
 
 export const IN_OUT_KNOWLEDGE: KnowledgeBoundary = {
   known: [
-    { code: 'actual_in_out_rate', label: '入力した実IN/OUTに基づく出玉率' },
+    { code: 'actual_in_out_rate', label: '入力した実IN／OUTに基づく出玉率' },
     { code: 'actual_net_medals', label: 'INとOUTの差' },
   ],
   unknown: [
@@ -107,7 +107,7 @@ export function explainNetMedals(
           value: values.payoutRateEstimate.display,
         },
       ],
-      assumptions: ['1Gあたり3枚掛けとして換算します。', '実IN/OUTそのものではありません。'],
+      assumptions: ['1Gあたり3枚掛けとして換算します。', '実IN／OUTそのものではありません。'],
     });
   }
   return explanations;
@@ -181,7 +181,7 @@ export function explainSegments(values: SegmentsValues): CalculationExplanation[
           value: values.aggregate.payoutRateEstimate?.display,
         },
       ],
-      assumptions: ['各区間率の単純平均は使用しません。', '1Gあたり3枚掛けの概算です。'],
+      assumptions: ['各区間率の単純平均は使用しません。', '1Gあたり3枚投入の想定に基づきます。'],
     },
   ];
 }
@@ -190,7 +190,7 @@ export function explainInOut(values: InOutValues): CalculationExplanation[] {
   return [
     {
       resultCode: 'payoutRate',
-      title: '実IN/OUT出玉率',
+      title: '実IN／OUT出玉率',
       inputs: [
         { label: '実IN', value: values.totalIn, unit: '枚' },
         { label: '実OUT', value: values.totalOut, unit: '枚' },
@@ -202,7 +202,7 @@ export function explainInOut(values: InOutValues): CalculationExplanation[] {
         },
         { expression: `${values.totalOut} - ${values.totalIn}`, value: values.actualNetMedals },
       ],
-      assumptions: ['入力された実IN/OUTから計算します。', '複数区間は合計IN/OUTを使用します。'],
+      assumptions: ['入力された実IN／OUTから計算します。', '複数区間は合計IN／OUTを使用します。'],
     },
   ];
 }
@@ -214,7 +214,7 @@ export function explainCoinHold(
   return [
     {
       resultCode: 'coinHoldPer50',
-      title: '通常時コイン持ち',
+      title: '通常時のコイン持ち',
       inputs: [
         { label: '通常時ゲーム数', value: input.normalGames, unit: 'G' },
         { label: '正味使用枚数', value: values.netUsedMedals, unit: '枚' },

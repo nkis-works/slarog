@@ -169,9 +169,9 @@ function renderQuick(): void {
   setStale(false);
   byId('quick-rate').textContent = `${formatOneDecimal(quick.value.payoutRate.display)}%`;
   byId('quick-input-summary').textContent =
-    `${formatInteger(games.value)}G / ${formatSigned(net.value)}枚`;
+    `${formatInteger(games.value)}G／${formatSigned(net.value)}枚`;
   byId('quick-per-1000').textContent =
-    `${formatSigned(quick.value.netMedalsPer1000Games.display)}枚 / 1,000G`;
+    `${formatSigned(quick.value.netMedalsPer1000Games.display)}枚／1,000G`;
   renderQuickBenchmarks(benchmarks.value);
   renderMetadata(
     byId('quick-condition-content'),
@@ -220,7 +220,7 @@ byId<HTMLButtonElement>('quick-reset').addEventListener('click', () => {
   closePanels();
   clearErrors();
   quickGames.focus();
-  announce('入力とクイック結果をリセットしました。');
+  announce('入力と計算結果をリセットしました。');
 });
 
 byId<HTMLButtonElement>('edit-quick').addEventListener('click', () => quickGames.focus());
@@ -236,7 +236,7 @@ function closePanels(): void {
 function openPanel(name: string): void {
   if (!quickSnapshot) return;
   if (quickStale && (name === 'target' || name === 'segments')) {
-    announce('クイック結果を再計算してから開いてください。');
+    announce('現在の入力で再計算してから開いてください。');
     return;
   }
   activePanel = name;
@@ -248,7 +248,7 @@ function openPanel(name: string): void {
   });
   if (name === 'target') {
     byId('target-current-summary').textContent =
-      `現在 ${formatInteger(quickSnapshot.games)}G / ${formatSigned(quickSnapshot.netMedals)}枚`;
+      `現在 ${formatInteger(quickSnapshot.games)}G／${formatSigned(quickSnapshot.netMedals)}枚`;
   }
   if (name === 'segments') {
     segmentsUi.open({ games: quickSnapshot.games, netMedals: quickSnapshot.netMedals });
@@ -349,12 +349,12 @@ byId<HTMLFormElement>('target-form').addEventListener('submit', (event) => {
           ? `−${formatInteger(values.allowedLossMedals ?? 0)}枚までなら目標を維持`
           : '残り区間のOUTが0枚以上なら目標を維持';
   const container = byId<HTMLElement>('target-result');
-  const heading = create('h3', { text: '必要条件' });
+  const heading = create('h3', { text: '目標に届くための条件' });
   const metrics = create('div', { className: 'result-metrics' });
   metrics.append(
     resultMetric('残りゲーム数', `${formatInteger(values.remainingGames)}G`),
     resultMetric(
-      '境界となる出玉率',
+      '残り区間で必要な出玉率',
       `${formatOneDecimal(values.requiredFuturePayoutRate.display)}%以上`,
     ),
     resultMetric('目標総差枚', `${formatSigned(values.exactTargetTotalNetMedals.display)}枚`),
@@ -368,7 +368,9 @@ byId<HTMLFormElement>('target-form').addEventListener('submit', (event) => {
     heading,
     create('p', { className: 'result-lead', text: lead }),
     metrics,
-    create('p', { text: '数学上の境界であり、予測・期待値・続行判断ではありません。' }),
+    create('p', {
+      text: '入力した目標から逆算した条件です。達成確率や将来の結果を示すものではありません。',
+    }),
     conditions,
   );
   container.hidden = false;
@@ -548,7 +550,7 @@ byId<HTMLFormElement>('inout-form').addEventListener('submit', (event) => {
   const container = byId<HTMLElement>('inout-result');
   const metrics = create('div', { className: 'result-metrics' });
   metrics.append(
-    resultMetric('実IN / OUT出玉率', `${formatOneDecimal(result.values.payoutRate.display)}%`),
+    resultMetric('実IN／OUT出玉率', `${formatOneDecimal(result.values.payoutRate.display)}%`),
     resultMetric('実差枚', `${formatSigned(result.values.actualNetMedals)}枚`),
     resultMetric(
       '実IN → 実OUT',
@@ -611,15 +613,15 @@ byId<HTMLFormElement>('coin-form').addEventListener('submit', (event) => {
   metrics.append(
     resultMetric(
       '50枚あたり通常時ゲーム数',
-      `${formatOneDecimal(result.values.coinHoldPer50.display)}G / 50枚`,
+      `${formatOneDecimal(result.values.coinHoldPer50.display)}G／50枚`,
     ),
     resultMetric('正味使用枚数', `${formatInteger(result.values.netUsedMedals)}枚`),
     resultMetric('対象区間', 'AT・ボーナス除外済み'),
   );
-  container.replaceChildren(create('h3', { text: '通常コイン持ち結果' }), metrics);
+  container.replaceChildren(create('h3', { text: '通常時のコイン持ち結果' }), metrics);
   container.hidden = false;
   focusResult(container);
-  announce('通常コイン持ち結果を表示しました。');
+  announce('通常時のコイン持ち結果を表示しました。');
 });
 
 clearErrors();

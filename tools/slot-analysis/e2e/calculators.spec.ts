@@ -10,8 +10,8 @@ test.describe('クイック実績', () => {
     await calculateQuick(page);
 
     await expect(page.locator('#quick-rate')).toHaveText('104.2%');
-    await expect(page.locator('#quick-per-1000')).toHaveText('+125枚 / 1,000G');
-    await expect(page.locator('#quick-input-summary')).toHaveText('4,000G / +500枚');
+    await expect(page.locator('#quick-per-1000')).toHaveText('+125枚／1,000G');
+    await expect(page.locator('#quick-input-summary')).toHaveText('4,000G／+500枚');
     await page.locator('#quick-conditions').click();
     await expect(page.locator('#quick-condition-content')).toContainText('想定IN 12,000枚');
     await expect(page.locator('#quick-condition-content')).toContainText('想定OUT 12,500枚');
@@ -85,7 +85,7 @@ test.describe('クイック実績', () => {
     await page.locator('#quick-form button[type="submit"]').click();
     await expect(page.locator('#quick-stale')).toBeHidden();
     await expect(page.locator('[data-launcher="target"]')).toBeEnabled();
-    await expect(page.locator('#quick-input-summary')).toHaveText('5,000G / +500枚');
+    await expect(page.locator('#quick-input-summary')).toHaveText('5,000G／+500枚');
   });
 });
 
@@ -101,7 +101,7 @@ test.describe('目標逆算', () => {
     await expect(page.locator('#target-result')).toContainText('あと+300枚必要');
     await expect(page.locator('#target-result')).toContainText('110.0%以上');
     await expect(page.locator('#target-result')).toContainText(
-      '予測・期待値・続行判断ではありません',
+      '達成確率や将来の結果を示すものではありません',
     );
   });
 
@@ -143,7 +143,7 @@ test.describe('区間分析', () => {
     await expect(page.locator('#segment-facts')).toContainText('97.8%');
     await expect(page.locator('#segment-facts')).toContainText('合計G3,000G');
     await expect(page.locator('#segment-facts')).toContainText('合計差枚−200枚');
-    await expect(page.locator('#segment-facts')).toContainText('入力地点間の最大下落400枚');
+    await expect(page.locator('#segment-facts')).toContainText('入力した地点間の最大下落400枚');
     await expect(page.locator('#segment-benchmark-result')).toBeHidden();
 
     await page.locator('[data-direct-row]').nth(1).locator('[data-remove-direct]').click();
@@ -184,7 +184,7 @@ test.describe('区間分析', () => {
     await expect(page.locator('#transfer-to-cumulative')).toBeDisabled();
   });
 
-  test('選択基準だけ区間寄与と最大押し上げ・押し下げを表示する', async ({ page }) => {
+  test('選択基準だけ区間の押し上げ・押し下げを表示する', async ({ page }) => {
     await selectSegmentMethod(page, 'direct');
     await page.locator('[name="segments.direct.0.label"]').fill('A');
     await page.locator('[name="segments.direct.0.games"]').fill('1000');
@@ -295,7 +295,7 @@ test.describe('区間分析', () => {
     for (let index = 2; index < 10; index += 1) await page.locator('#add-direct-segment').click();
     await expect(page.locator('[data-direct-row]')).toHaveCount(10);
     await expect(page.locator('#add-direct-segment')).toBeDisabled();
-    await expect(page.locator('#direct-limit-note')).toHaveText('10 / 10件');
+    await expect(page.locator('#direct-limit-note')).toHaveText('10件（最大10件）');
 
     for (let index = 9; index > 0; index -= 1) {
       await page.locator('[data-direct-row]').nth(index).locator('[data-remove-direct]').click();
@@ -420,7 +420,7 @@ test.describe('補助計算', () => {
     await page.locator('[name="coin.atBonus"]').check();
     await page.locator('[name="coin.scope"]').check();
     await page.locator('#coin-form button[type="submit"]').click();
-    await expect(page.locator('#coin-result')).toContainText('34.0G / 50枚');
+    await expect(page.locator('#coin-result')).toContainText('34.0G／50枚');
     await expect(page.locator('#coin-result')).toContainText('AT・ボーナス除外済み');
   });
 });

@@ -180,7 +180,7 @@ function reindexRows(kind: 'direct' | 'cumulative'): void {
     kind === 'direct' ? 'add-direct-segment' : 'add-cumulative-point',
   ).disabled = rows.length >= (kind === 'direct' ? MAX_DIRECT_ROWS : MAX_CUMULATIVE_POINTS);
   byId(kind === 'direct' ? 'direct-limit-note' : 'cumulative-limit-note').textContent =
-    `${rows.length} / ${kind === 'direct' ? MAX_DIRECT_ROWS : MAX_CUMULATIVE_POINTS}件`;
+    `${rows.length}件（最大${kind === 'direct' ? MAX_DIRECT_ROWS : MAX_CUMULATIVE_POINTS}件）`;
   updateTransferControls();
 }
 
@@ -214,8 +214,8 @@ function transferTarget(
 
 function updateTransferControls(): void {
   const summary = transfer
-    ? `現在のクイック結果 ${formatInteger(transfer.games)}G / ${formatSigned(transfer.netMedals)}枚`
-    : '現在のクイック結果 —';
+    ? `現在の計算結果 ${formatInteger(transfer.games)}G／${formatSigned(transfer.netMedals)}枚`
+    : '現在の計算結果 —';
   byId('direct-transfer-summary').textContent = summary;
   byId('cumulative-transfer-summary').textContent = summary;
   for (const kind of ['direct', 'cumulative'] as const) {
@@ -462,7 +462,7 @@ function renderFacts(
   const movement = create('div', { className: 'result-metrics' });
   for (const [label, value] of [
     [
-      '入力地点間の最大下落',
+      '入力した地点間の最大下落',
       `${formatInteger(result.value.drawdownRecovery.maximumDrawdown.medals)}枚`,
     ],
     [
@@ -529,7 +529,7 @@ function renderBenchmark(rate: number): void {
     create('strong', { text: differenceText({ ...aggregate, condition: 'on_benchmark' }) }),
   );
   metrics.append(expected, difference);
-  fragment.append(metrics, create('h4', { text: '区間の寄与' }));
+  fragment.append(metrics, create('h4', { text: '区間の押し上げ・押し下げ' }));
 
   const withBenchmark = result.value.segments.filter(
     (segment): segment is typeof segment & { benchmark: SegmentBenchmarkValues } =>
@@ -544,7 +544,7 @@ function renderBenchmark(rate: number): void {
     row.append(
       create('strong', { text: segment.input.label || `区間${index + 1}` }),
       create('p', {
-        text: neutral ? '基準通り' : positive ? '好調区間' : '低調区間',
+        text: neutral ? '基準通り' : positive ? '基準を上回る区間' : '基準を下回る区間',
         className: neutral
           ? 'relation-neutral'
           : positive
@@ -591,7 +591,7 @@ function renderBenchmark(rate: number): void {
   benchmarkResult.replaceChildren(fragment);
   benchmarkResult.hidden = false;
   renderMetadata(byId('segment-condition-content'), [result.metadata]);
-  announce(`${formatOneDecimal(rate)}%基準の区間寄与を表示しました。`);
+  announce(`${formatOneDecimal(rate)}%基準で各区間の押し上げ・押し下げを表示しました。`);
 }
 
 function setupBenchmarkChoice(): void {

@@ -8,11 +8,14 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'self'"
     >
-    <title>スロット出玉分析｜機械割・実績出玉率・区間差枚を無料計算</title>
+    <title>スロット出玉分析｜実績出玉率・区間差枚・目標差枚を無料計算</title>
     <meta
       name="description"
-      content="G数と差枚から実績出玉率、100・103・105%基準との差、区間ごとの押し上げ・押し下げ、目標までの必要差枚を計算。無料・登録不要。"
+      content="総ゲーム数と差枚から、実績出玉率、100・103・105%基準との差、区間ごとの変化、目標までに必要な差枚を計算できます。無料・登録不要。"
     >
+    <meta property="og:title" content="スロット出玉分析｜NKIS Works">
+    <meta property="og:description" content="総ゲーム数と差枚から、実績出玉率、基準との差、区間ごとの変化、目標までに必要な差枚を確認できる無料Webツールです。">
+    <meta property="og:image" content="../../assets/og-image.svg">
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="assets/styles.css">
     <script defer src="assets/slot-analysis-app.js"></script>
@@ -24,12 +27,14 @@
       <div class="shell header-inner">
         <a class="brand" href="../../index.html" aria-label="NKIS Works公式サイトへ">
           <span class="brand-mark" aria-hidden="true">N</span>
-          <span>NKIS Works<small>Slarog tools</small></span>
+          <span>NKIS Works<small>NKIS Works Tools</small></span>
         </a>
         <nav aria-label="関連ページ">
+          <a href="./" aria-current="page">スロット出玉分析</a>
           <a href="../../index.html">スラログ</a>
           <a href="../../support.html">サポート</a>
           <a href="../../privacy.html">プライバシー</a>
+          <a href="../../terms.html">利用規約</a>
         </nav>
       </div>
     </header>
@@ -99,7 +104,7 @@
 
       <section class="quick-result shell" id="quick-result" aria-labelledby="quick-result-title" hidden>
         <p class="stale-banner" id="quick-stale" role="status" hidden>
-          入力が変更されています。この結果は古いため、再計算してください。
+          入力内容が変わりました。表示中の結果を更新するには、再計算してください。
         </p>
         <div class="result-heading">
           <div>
@@ -140,23 +145,23 @@
             <p id="stale-transfer-note" hidden>再計算すると、目標・区間へ最新値を引き継げます。</p>
           </div>
           <div class="launcher-grid">
-            <button type="button" data-launcher="target" aria-expanded="false"><strong>目標まで逆算</strong><span>目標G・率に必要な数学上の境界</span></button>
+            <button type="button" data-launcher="target" aria-expanded="false"><strong>目標まで逆算</strong><span>目標までに必要な差枚と出玉率</span></button>
             <button type="button" data-launcher="segments" aria-expanded="false"><strong>区間を比べる</strong><span>区間ごとの実績と押し上げ・押し下げ</span></button>
             <button type="button" data-launcher="investment" aria-expanded="false"><strong>投資・回収を見る</strong><span>交換条件を含む金額の整理</span></button>
           </div>
           <details class="other-launchers">
             <summary>その他の計算</summary>
             <div class="launcher-grid secondary-launcher-grid">
-              <button type="button" data-launcher="inout" aria-expanded="false"><strong>実IN / OUT</strong><span>実測したIN・OUTから計算</span></button>
-              <button type="button" data-launcher="coin" aria-expanded="false"><strong>通常コイン持ち</strong><span>通常時の同一区間だけを計算</span></button>
+              <button type="button" data-launcher="inout" aria-expanded="false"><strong>実IN／OUT</strong><span>実測したIN・OUTから計算</span></button>
+              <button type="button" data-launcher="coin" aria-expanded="false"><strong>通常時のコイン持ち</strong><span>通常時の同一区間だけを計算</span></button>
             </div>
           </details>
         </section>
       </section>
 
       <section class="analysis-panel shell" id="target-panel" data-analysis-panel="target" aria-labelledby="target-title" hidden>
-        <div class="panel-heading"><div><p class="section-kicker">数学上の必要条件</p><h2 id="target-title" tabindex="-1">目標から逆算</h2></div><button class="close-panel" type="button">閉じる</button></div>
-        <p>現在のクイック結果を引き継ぎます。達成確率や続行判断ではありません。</p>
+        <div class="panel-heading"><div><p class="section-kicker">目標に届くための条件</p><h2 id="target-title" tabindex="-1">目標から逆算</h2></div><button class="close-panel" type="button">閉じる</button></div>
+        <p>現在の計算結果を引き継ぎ、指定した目標までに必要な差枚と出玉率を求めます。</p>
         <p class="current-summary" id="target-current-summary">現在 —</p>
         <form id="target-form" autocomplete="off" novalidate>
           <div class="preset-group" aria-label="目標総ゲーム数の候補">
@@ -191,7 +196,7 @@
           <div id="direct-segment-editor" hidden>
             <p>各区間のゲーム数と差枚を入力します。</p>
             <div class="transfer-callout">
-              <p class="current-summary" id="direct-transfer-summary">現在のクイック結果 —</p>
+              <p class="current-summary" id="direct-transfer-summary">現在の計算結果 —</p>
               <button class="button secondary" id="transfer-to-direct" type="button">現在の結果を区間1へ入力</button>
               <p class="hint" id="direct-transfer-note">区間1に値がある場合は上書きしません。両方を空欄にすると再び入力できます。</p>
             </div>
@@ -200,9 +205,9 @@
             <div class="undo-notice" id="direct-undo" role="status" hidden>区間を削除しました。 <button type="button">元に戻す</button></div>
           </div>
           <div id="cumulative-segment-editor" hidden>
-            <p>開始地点と後続地点の累積G・累積差枚を入力します。開始は0/0以外でも構いません。</p>
+            <p>開始地点と後続地点の累積ゲーム数・累積差枚を入力します。開始地点は0G／0枚以外でも構いません。</p>
             <div class="transfer-callout">
-              <p class="current-summary" id="cumulative-transfer-summary">現在のクイック結果 —</p>
+              <p class="current-summary" id="cumulative-transfer-summary">現在の計算結果 —</p>
               <button class="button secondary" id="transfer-to-cumulative" type="button">現在の結果を地点1へ入力</button>
               <p class="hint" id="cumulative-transfer-note">地点1に値がある場合は上書きしません。両方を空欄にすると再び入力できます。</p>
             </div>
@@ -215,7 +220,7 @@
         <div class="panel-result segment-result" id="segments-result" hidden>
           <div id="segment-facts"></div>
           <fieldset class="segment-benchmark-choice">
-            <legend>比較基準を選ぶと寄与を表示します</legend>
+            <legend>比較基準を選ぶと、各区間の押し上げ・押し下げを表示します</legend>
             <label><input type="radio" name="segment.benchmark" value="100">100%</label>
             <label><input type="radio" name="segment.benchmark" value="103">103%</label>
             <label><input type="radio" name="segment.benchmark" value="105">105%</label>
@@ -249,17 +254,17 @@
       </section>
 
       <section class="analysis-panel shell" id="inout-panel" data-analysis-panel="inout" aria-labelledby="inout-title" hidden>
-        <div class="panel-heading"><div><p class="section-kicker">実測値がある場合</p><h2 id="inout-title" tabindex="-1">実IN / OUT</h2></div><button class="close-panel" type="button">閉じる</button></div>
+        <div class="panel-heading"><div><p class="section-kicker">実測値がある場合</p><h2 id="inout-title" tabindex="-1">実IN／OUT</h2></div><button class="close-panel" type="button">閉じる</button></div>
         <p>差枚ベース実績出玉率とは別の計算です。</p>
         <form id="inout-form" autocomplete="off" novalidate><div class="field-grid">
           <div class="field"><label for="actual-in">実IN</label><div class="control-with-unit"><input id="actual-in" name="inout.in" type="text" inputmode="numeric" aria-describedby="actual-in-error"><span>枚</span></div><p class="field-error" id="actual-in-error" data-error-for="inout.in"></p></div>
           <div class="field"><label for="actual-out">実OUT</label><div class="control-with-unit"><input id="actual-out" name="inout.out" type="text" inputmode="numeric" aria-describedby="actual-out-error"><span>枚</span></div><p class="field-error" id="actual-out-error" data-error-for="inout.out"></p></div>
-        </div><button class="button primary" type="submit">実IN / OUTを計算</button></form>
+        </div><button class="button primary" type="submit">実IN／OUTを計算</button></form>
         <div class="panel-result" id="inout-result" hidden></div>
       </section>
 
       <section class="analysis-panel shell" id="coin-panel" data-analysis-panel="coin" aria-labelledby="coin-title" hidden>
-        <div class="panel-heading"><div><p class="section-kicker">通常時の同一区間だけ</p><h2 id="coin-title" tabindex="-1">通常コイン持ち</h2></div><button class="close-panel" type="button">閉じる</button></div>
+        <div class="panel-heading"><div><p class="section-kicker">通常時の同一区間だけ</p><h2 id="coin-title" tabindex="-1">通常時のコイン持ち</h2></div><button class="close-panel" type="button">閉じる</button></div>
         <form id="coin-form" autocomplete="off" novalidate><div class="field-grid">
           <div class="field"><label for="coin-games">通常時ゲーム数</label><div class="control-with-unit"><input id="coin-games" name="coin.games" type="text" inputmode="numeric" aria-describedby="coin-games-error"><span>G</span></div><p class="field-error" id="coin-games-error" data-error-for="coin.games"></p></div>
           <div class="field"><label for="coin-medals">正味使用枚数</label><div class="control-with-unit"><input id="coin-medals" name="coin.medals" type="text" inputmode="numeric" aria-describedby="coin-medals-error"><span>枚</span></div><p class="field-error" id="coin-medals-error" data-error-for="coin.medals"></p></div>
@@ -268,7 +273,7 @@
       </section>
 
       <section class="slarog-cta shell" aria-labelledby="slarog-title">
-        <div><p class="section-kicker">計算の次へ</p><h2 id="slarog-title">遊技記録をグラフで残すなら、スラログ</h2><p>手入力した遊技記録をグラフで見返せます。計算値の自動転送は行いません。</p></div>
+        <div><p class="section-kicker">計算の次へ</p><h2 id="slarog-title">遊技記録をグラフで残すなら、スラログ</h2><p>ホールのグラフ画像を見やすい記録にし、店舗・機種・台番号・日付ごとに保存して振り返れます。</p><p class="hint">このツールの計算結果がスラログへ自動送信されることはありません。</p></div>
         <a class="button primary" href="../../index.html">スラログを見る</a>
       </section>
 
@@ -277,9 +282,9 @@
       <section class="content-section shell" id="formulas" aria-labelledby="formula-title">
         <p class="section-kicker">根拠を確認</p><h2 id="formula-title">計算式</h2>
         <div class="content-grid">
-          <article><h3>実績出玉率</h3><code>（G × 3 + 差枚）÷（G × 3）× 100</code><p>1G=3枚の想定INを使う過去実績です。</p></article>
-          <article><h3>基準との差</h3><code>実績差枚 − G × 3 ×（基準率 − 100）÷ 100</code><p>丸め前の厳密値で上下を判定します。</p></article>
-          <article><h3>区間寄与</h3><code>区間差枚 − 区間の基準差枚</code><p>因果や設定ではなく、選んだ基準との差です。</p></article>
+          <article><h3>実績出玉率</h3><code>（G × 3 + 差枚）÷（G × 3）× 100</code><p>1Gあたり3枚の想定INを使う過去実績です。</p></article>
+          <article><h3>基準との差</h3><code>実績差枚 − G × 3 ×（基準率 − 100）÷ 100</code><p>丸める前の値で、基準を上回るか下回るかを判定します。</p></article>
+          <article><h3>区間の押し上げ・押し下げ</h3><code>区間差枚 − 区間の基準差枚</code><p>選んだ基準との差であり、因果関係や設定を示すものではありません。</p></article>
           <article><h3>目標逆算</h3><code>目標総差枚 − 現在差枚</code><p>整数枚で不足しない境界へ切り上げます。</p></article>
           <article><h3>交換額見込み</h3><code>現在枚数 × 1,000 ÷ 交換に必要な枚数</code><p>詳細入力時は交換単位を反映します。</p></article>
           <article><h3>コイン持ち</h3><code>通常時G ÷ 正味使用枚数 × 50</code><p>AT・ボーナスを除いた同一区間だけを使います。</p></article>
@@ -294,10 +299,10 @@
       <section class="content-section shell" id="faq" aria-labelledby="faq-title">
         <p class="section-kicker">よくある質問</p><h2 id="faq-title">FAQ</h2>
         <div class="faq-list">
-          <details><summary>実績出玉率は機種の機械割と同じですか？</summary><p>同じではありません。入力したG数と差枚を3枚/Gの想定INで割った過去実績です。</p></details>
+          <details><summary>実績出玉率は機種の機械割と同じですか？</summary><p>同じではありません。入力したゲーム数と差枚を、1Gあたり3枚の想定INで計算した過去実績です。</p></details>
           <details><summary>100・103・105%は設定を表しますか？</summary><p>いいえ。差枚の規模を比べる任意基準で、設定示唆ではありません。</p></details>
-          <details><summary>目標逆算は予測ですか？</summary><p>いいえ。指定した目標に一致する数学上の境界で、達成確率や期待値ではありません。</p></details>
-          <details><summary>区間の好調・低調は何を表しますか？</summary><p>選択した基準差枚を上回ったか下回ったかだけを表します。</p></details>
+          <details><summary>目標逆算は予測ですか？</summary><p>いいえ。入力した目標に届くための差枚と出玉率を計算する機能で、達成確率や将来結果を示すものではありません。</p></details>
+          <details><summary>区間の「基準を上回る／下回る」は何を表しますか？</summary><p>選択した基準差枚を上回ったか下回ったかだけを表します。</p></details>
           <details><summary>入力した内容は保存・送信されますか？</summary><p>保存・送信しません。ページを離れると消えます。</p></details>
           <details><summary>結果から続行・ヤメを決められますか？</summary><p>決められません。未来や設定を予測せず、入力した過去実績だけを整理します。</p></details>
         </div>
@@ -305,11 +310,11 @@
 
       <section class="disclaimer shell" aria-labelledby="disclaimer-title">
         <h2 id="disclaimer-title">ご利用前の確認</h2>
-        <p>計算結果は入力値と明示した仮定に基づく参考値です。未来の出玉、設定、勝敗、続行・ヤメ、利益を保証しません。</p>
+        <p>実績出玉率や基準との差は、入力値を表示中の計算式へ当てはめて算出します。3枚掛け換算や交換条件に基づく金額は参考値です。未来の出玉、設定、勝敗、続行・ヤメ、利益を保証しません。</p>
       </section>
     </main>
 
-    <footer class="site-footer"><div class="shell"><a href="../../index.html">NKIS Works</a><nav aria-label="フッターリンク"><a href="../../support.html">サポート</a><a href="../../privacy.html">プライバシー</a><a href="../../terms.html">利用規約</a></nav><small>© 2026 NKIS Works</small></div></footer>
+    <footer class="site-footer"><div class="shell"><a href="../../index.html">NKIS Works</a><nav aria-label="フッターリンク"><a href="./" aria-current="page">スロット出玉分析</a><a href="../../support.html">サポート</a><a href="../../privacy.html">プライバシー</a><a href="../../terms.html">利用規約</a></nav><small>© 2026 NKIS Works</small></div></footer>
     <p class="visually-hidden" id="live-region" aria-live="polite" aria-atomic="true"></p>
   </body>
 </html>

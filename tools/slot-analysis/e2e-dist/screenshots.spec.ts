@@ -2,11 +2,13 @@ import { test, type Page } from '@playwright/test';
 
 import { gotoDistTool } from './release-helpers';
 
-const artifactRoot = 'artifacts/phase2b0';
+const artifactRoot = 'artifacts/site-copy-audit';
 
 async function settle(page: Page): Promise<void> {
   await page.waitForLoadState('networkidle');
   await page.evaluate(async () => {
+    document.documentElement.style.scrollBehavior = 'auto';
+    document.body.style.scrollBehavior = 'auto';
     const images = Array.from(document.images);
     images.forEach((image) => {
       image.loading = 'eager';
@@ -16,11 +18,13 @@ async function settle(page: Page): Promise<void> {
       await new Promise<void>((resolve) => setTimeout(resolve, 80));
     }
     window.scrollTo(0, 0);
+    await new Promise<void>((resolve) => setTimeout(resolve, 80));
     await Promise.race([
       Promise.all(images.map((image) => image.decode().catch(() => undefined))),
       new Promise<void>((resolve) => setTimeout(resolve, 5_000)),
     ]);
     (document.activeElement as HTMLElement | null)?.blur();
+    document.querySelector<HTMLElement>('.skip-link')?.style.setProperty('visibility', 'hidden');
     document.querySelectorAll<HTMLElement>('.reveal').forEach((element) => {
       element.classList.add('is-visible');
     });
@@ -32,6 +36,10 @@ async function prepareNet(page: Page): Promise<void> {
   await page.locator('#quick-games').fill('４,０００Ｇ');
   await page.locator('#quick-net').fill('＋５００枚');
   await page.locator('#quick-form button[type="submit"]').click();
+}
+
+async function prepareInitial(page: Page): Promise<void> {
+  await gotoDistTool(page);
 }
 
 async function prepareInvestment(page: Page): Promise<void> {
@@ -69,7 +77,26 @@ for (const viewport of [
     });
   });
 
+  for (const legalPage of [
+    { name: 'support', path: '/support.html' },
+    { name: 'privacy', path: '/privacy.html' },
+    { name: 'terms', path: '/terms.html' },
+    { name: '404', path: '/404.html' },
+  ]) {
+    test(`captures ${legalPage.name} ${viewport.name}`, async ({ page }) => {
+      await page.setViewportSize(viewport);
+      await page.goto(legalPage.path);
+      await settle(page);
+      await page.screenshot({
+        path: `${artifactRoot}/${legalPage.name}-${viewport.name}.png`,
+        fullPage: true,
+        animations: 'disabled',
+      });
+    });
+  }
+
   for (const scenario of [
+    { name: 'initial', prepare: prepareInitial },
     { name: 'net', prepare: prepareNet },
     { name: 'investment', prepare: prepareInvestment },
     { name: 'segments', prepare: prepareSegments },
@@ -104,3 +131,15 @@ for (const viewport of [
     });
   });
 }
+
+test('captures support mobile menu', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/support.html');
+  await page.getByRole('button', { name: 'メニュー' }).click();
+  await settle(page);
+  await page.screenshot({
+    path: `${artifactRoot}/support-mobile-menu.png`,
+    fullPage: true,
+    animations: 'disabled',
+  });
+});

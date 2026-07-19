@@ -255,18 +255,19 @@ const formulaLabels: Readonly<Record<string, string>> = {
   target_required_future_payout_rate: '残り区間の境界出玉率を計算',
   cumulative_point_difference: '隣接する累積地点を区間へ変換',
   segment_performance_rate: '各区間の実績出玉率を計算',
-  segment_benchmark_contribution: '各区間の基準に対する寄与を計算',
+  segment_benchmark_contribution: '各区間の基準に対する押し上げ・押し下げを計算',
   aggregate_performance_rate: '全区間の合計から実績出玉率を再計算',
-  maximum_endpoint_drawdown: '入力地点間の最大下落を計算',
+  maximum_endpoint_drawdown: '入力した地点間の最大下落を計算',
   maximum_recovery_after_drawdown: '下落後の最大回復を計算',
 };
 
 const assumptionLabels: Readonly<Record<string, string>> = {
   three_medals_per_game: '1Gあたり3枚投入の想定値です。',
   benchmark_is_comparison_not_prediction: '比較基準は設定や未来の予測ではありません。',
-  mathematical_boundary_not_prediction: '数学上の境界で、到達や将来結果を保証しません。',
+  mathematical_boundary_not_prediction:
+    '入力した目標に届くための条件で、到達や将来結果を保証しません。',
   cumulative_points_are_observations: '入力した累積地点の差分だけを区間として扱います。',
-  endpoint_movements_only: '最大下落・回復は入力地点の終点間だけで計算します。',
+  endpoint_movements_only: '最大下落・回復は入力した各地点の間だけで計算します。',
 };
 
 const roundingLabels: Readonly<Record<string, string>> = {
