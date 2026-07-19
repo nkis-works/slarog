@@ -29,6 +29,14 @@ dist/                   Cloudflare公開物（生成物・Git管理対象外）
 
 スロット出玉分析は`tools/slot-analysis/`にあり、公式サイトのナビゲーション、トップページ、サポートから遷移できます。privacyとtermsも現状に合わせて更新済みです。広告とアクセス解析は有効化していません。
 
+## スラログの料金方針
+
+- 無料体験：14日間
+- 無料体験終了後も利用する場合：月額380円
+- 解約場所：App Store／Google Playのアカウント管理画面
+
+課金開始の具体的な条件、更新方法、税込表示は、公開前にストア設定と購入画面で確認します。未確認の条件をサイト文言で断定せず、`docs/site-copy-audit/OPEN_FACT_CHECKS.md`で管理します。
+
 ## ローカル確認
 
 静的サイトだけを確認する場合は、リポジトリ直下で次を実行します。
@@ -79,7 +87,7 @@ SITE_ORIGIN="$CONFIRMED_SITE_ORIGIN" npm run build:production
 
 `CONFIRMED_SITE_ORIGIN`には、確認済みのcustom domainからなるHTTPS originだけを設定してください。`SITE_ORIGIN`なし、HTTP、パス・query・fragment付き、localhost、`pages.dev`、`github.io`は拒否します。リポジトリへ公開ドメインを仮置きしません。
 
-`npm run test:e2e`はsource版22件、`npm run test:e2e:dist`はcurated dist版14件を実行します。dist版は全6ページ、asset、導線、section順、CSP、noindex、外部通信、browser storage、Cookie、IndexedDB、Cache Storage、console全level、レスポンシブ、10画面のVisual QAを確認します。成果物は無視対象の`artifacts/phase2b0/`へ出力します。
+`npm run test:e2e`と`npm run test:e2e:dist`は、source版とcurated dist版の機能・表現・配布契約を検証します。dist版は全6ページ、asset、導線、section順、CSP、noindex、外部通信、browser storage、Cookie、IndexedDB、Cache Storage、console全level、レスポンシブ、Visual QAを確認します。成果物は無視対象の`artifacts/`配下へ出力します。
 
 ## スロット出玉分析の実装済み範囲
 
@@ -105,7 +113,8 @@ SITE_ORIGIN="$CONFIRMED_SITE_ORIGIN" npm run build:production
 
 - `support@nkisworks.com`または掲載中の連絡先が実際に受信できること
 - App Store / Google Play公開後のURLを追加すること
-- 価格、無料期間、サブスクリプション条件をサイト、ストア説明、アプリ内表示で一致させること
+- 14日間無料体験と月額380円をサイト、ストア説明、アプリ内表示で一致させること
+- 課金開始、更新方法、税込表示はストア設定と購入画面で確認し、`docs/site-copy-audit/OPEN_FACT_CHECKS.md`を解消すること
 - `npm run check:all`と`docs/SLOT_BALANCE_PHASE2B0_QA.md`の公開前項目を再確認すること
 - custom domainのapex／www正規URLを決定してから`SITE_ORIGIN`を設定すること
 - previewを確認後、production build、main取り込み、旧GitHub Pages URLの扱いを順番に判断すること

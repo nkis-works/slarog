@@ -77,6 +77,19 @@ for (const viewport of [
     });
   });
 
+  test(`captures Slarog pricing ${viewport.name}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto('/index.html');
+    await settle(page);
+    await page.locator('.site-header').evaluate((header: HTMLElement) => {
+      header.style.visibility = 'hidden';
+    });
+    await page.locator('#plans').screenshot({
+      path: `${artifactRoot}/slarog-pricing-${viewport.name}.png`,
+      animations: 'disabled',
+    });
+  });
+
   for (const legalPage of [
     { name: 'support', path: '/support.html' },
     { name: 'privacy', path: '/privacy.html' },

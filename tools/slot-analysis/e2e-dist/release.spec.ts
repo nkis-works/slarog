@@ -161,6 +161,45 @@ test('site-wide copy, metadata, active navigation and support information are co
   ).toBeVisible();
 });
 
+test('Slarog pricing and user-centered product story survive the curated build', async ({
+  page,
+}) => {
+  const publicPages = ['/index.html', '/support.html', '/privacy.html', '/terms.html'] as const;
+  for (const path of publicPages) {
+    await page.goto(path);
+    const copy = await page.locator('body').innerText();
+    expect(copy, path).not.toMatch(
+      /月額500円|¥500|無料プラン|1台まで|期限なし|複数台を記録するには|台数無制限|自動更新/,
+    );
+  }
+
+  for (const width of [320, 390, 768, 1440]) {
+    await page.setViewportSize({ width, height: width < 600 ? 844 : 1000 });
+    await page.goto('/index.html');
+    await expect(page.locator('.price-flow')).toContainText('14日間');
+    await expect(page.locator('.price-flow')).toContainText('¥0');
+    await expect(page.locator('.price-flow')).toContainText('月額');
+    await expect(page.locator('.price-flow')).toContainText('¥380');
+    await expect(
+      page.getByRole('heading', { name: 'グラフ画像を、あとで見返せる記録にしたかった。' }),
+    ).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+  }
+
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    /14日間.*月額380円/,
+  );
+  expect(await page.locator('img[src*="slarog-"]').count()).toBeGreaterThanOrEqual(8);
+
+  await page.goto('/support.html');
+  await expect(page.getByText('14日間です。無料体験中は料金が発生しません。')).toBeAttached();
+  await expect(page.getByText('引き続き利用する場合は月額380円です。')).toBeAttached();
+  await page.goto('/terms.html');
+  await expect(page.locator('#billing')).toContainText('14日間の無料体験');
+  await expect(page.locator('#billing')).toContainText('月額380円');
+});
+
 test('calculation performs no transport, storage, cookie, URL or console side effects', async ({
   page,
   context,
