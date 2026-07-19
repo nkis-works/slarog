@@ -15,7 +15,7 @@ export default defineConfig({
   webServer: {
     command: 'npm run serve:dist',
     url: 'http://127.0.0.1:4174/tools/slot-analysis/index.html',
-    reuseExistingServer: false,
+    reuseExistingServer: true,
     timeout: 30_000,
   },
 });

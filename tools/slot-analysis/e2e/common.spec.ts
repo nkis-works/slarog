@@ -18,7 +18,7 @@ test('公開文言、相対リンク、ランドマーク、広告境界、ア�
   await expect(page.getByText('無料・登録不要・端末内で計算')).toBeVisible();
   await expect(page.getByText('未来の結果や設定を予測するものではありません。')).toBeVisible();
   await expect(page.getByText('保存・送信しません。ページを離れると消えます。')).toBeAttached();
-  await expect(page.getByRole('link', { name: 'NKIS Works公式サイトへ' })).toHaveAttribute(
+  await expect(page.getByRole('link', { name: 'スラログ公式サイトへ' })).toHaveAttribute(
     'href',
     '../../index.html',
   );
@@ -115,7 +115,7 @@ test('320pxから1440pxまで横overflowせず、デスクトップ幅を制限�
     .evaluateAll((items) =>
       items.map((element) => Math.round(element.getBoundingClientRect().width)),
     );
-  expect(Math.max(...shellWidths)).toBeLessThanOrEqual(1080);
+  expect(Math.max(...shellWidths)).toBeLessThanOrEqual(1180);
 });
 
 test('全機能の入力・計算が保存、送信、Cookie、URL、consoleへ漏れない', async ({

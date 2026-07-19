@@ -118,7 +118,7 @@ test('public copy, section order, manual ad boundary and navigation are complete
     await gotoDistTool(page);
   }
 
-  await page.getByRole('link', { name: 'NKIS Works公式サイトへ' }).click();
+  await page.getByRole('link', { name: 'スラログ公式サイトへ' }).click();
   await expect(page).toHaveURL(`${DIST_ORIGIN}/index.html`);
 });
 
@@ -152,7 +152,7 @@ test('site-wide copy, metadata, active navigation and support information are co
 
   await gotoDistTool(page);
   await expect(
-    page.locator('[aria-current="page"]').filter({ hasText: 'スロット出玉分析' }),
+    page.locator('[aria-current="page"]').filter({ hasText: '出玉分析' }),
   ).not.toHaveCount(0);
   await expect(
     page.getByText(
@@ -176,10 +176,8 @@ test('Slarog pricing and user-centered product story survive the curated build',
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: width < 600 ? 844 : 1000 });
     await page.goto('/index.html');
-    await expect(page.locator('.price-flow')).toContainText('14日間');
-    await expect(page.locator('.price-flow')).toContainText('¥0');
-    await expect(page.locator('.price-flow')).toContainText('月額');
-    await expect(page.locator('.price-flow')).toContainText('¥380');
+    await expect(page.locator('.price-note')).toContainText('14日間は無料');
+    await expect(page.locator('.price-note')).toContainText('月額380円');
     await expect(
       page.getByRole('heading', { name: 'グラフ画像を、あとで見返せる記録にしたかった。' }),
     ).toBeVisible();

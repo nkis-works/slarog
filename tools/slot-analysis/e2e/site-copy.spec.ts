@@ -54,7 +54,7 @@ test('トップ・規約・プライバシーの説明が現行ツール仕様�
   await page.goto('/index.html');
   await expect(
     page.getByText(
-      '総ゲーム数と差枚から、実績出玉率、基準との差、区間ごとの変化、目標までの条件を確認できる無料計算ツールです。',
+      '総ゲーム数と差枚を入力するだけで、実績出玉率や基準との差、区間ごとの変化を端末内で計算できます。登録・保存・外部送信はありません。',
     ),
   ).toBeVisible();
 
@@ -101,13 +101,11 @@ test('スラログの新料金が公開ページで一致し、廃止した料�
     /14日間.*月額380円/,
   );
   await expect(
-    page.getByRole('heading', { name: 'まず14日間、使い心地を試せます。' }),
+    page.getByRole('heading', { name: '試してから、 続けるか決められます。' }),
   ).toBeVisible();
-  await expect(page.locator('.price-flow')).toContainText('14日間');
-  await expect(page.locator('.price-flow')).toContainText('¥0');
-  await expect(page.locator('.price-flow')).toContainText('月額');
-  await expect(page.locator('.price-flow')).toContainText('¥380');
-  await expect(page.locator('.billing-notes')).toContainText('各ストアのアカウント管理画面');
+  await expect(page.locator('.price-note')).toContainText('14日間は無料');
+  await expect(page.locator('.price-note')).toContainText('月額380円');
+  await expect(page.locator('.billing')).toContainText('App Store／Google Playのアカウント管理');
 
   await page.goto('/support.html');
   await expect(page.getByText('14日間です。無料体験中は料金が発生しません。')).toBeAttached();
@@ -125,32 +123,31 @@ test('トップは困りごと・作った理由・実画面を中心に理解�
   await page.goto('/index.html');
 
   await expect(
-    page.getByRole('heading', { name: 'グラフ画像が、見返せないまま増えていませんか。' }),
+    page.getByRole('heading', { name: 'あとで見ると、 何のグラフか分からない。' }),
   ).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'グラフ画像を、あとで見返せる記録にしたかった。' }),
   ).toBeVisible();
+  const scenarioCopy = await page.locator('.use-case-notes p').allTextContents();
   for (const scenario of [
-    '店舗・機種・台番号・日付があとから分からない',
-    '同じ台番の過去記録を探すのに時間がかかる',
-    '複数日分の流れを画像だけで追いにくい',
-    '31日分などの長い記録も見やすい',
-    '作成したグラフを画像として残せる',
+    '画像フォルダの中で、店・機種・台番・日付が混ざっていく。',
+    '同じ台の数日間を見るために、画像を何枚も開かなければならない。',
+    '長いグラフは比較しにくく、作った記録を外へ残すのも手間がかかる。',
   ]) {
-    await expect(page.getByText(scenario, { exact: true })).toBeAttached();
+    expect(scenarioCopy.join('\n')).toContain(scenario);
   }
   expect(await page.locator('img[src*="slarog-"]').count()).toBeGreaterThanOrEqual(8);
 
   const order = await page.evaluate(() => {
     const main = document.querySelector('main');
     const selectors = [
-      '.hero',
+      '.product-hero',
       '.problem-section',
-      '#review',
       '#story',
       '#features',
       '.trust',
       '#plans',
+      '.web-tool',
       '#faq',
       '.final-cta',
     ];
@@ -166,14 +163,14 @@ test('トップは困りごと・作った理由・実画面を中心に理解�
     ),
   ).toBe(true);
 
-  const majorLabels = await page.locator('.section-label').allTextContents();
+  const majorLabels = await page.locator('.kicker').allTextContents();
   expect(majorLabels).toEqual(
     expect.arrayContaining([
-      'よくある困りごと',
+      '撮った時は分かっていたのに。',
       '作った理由',
-      '実際の使い方',
-      '料金',
-      '公開準備中',
+      '使う順番',
+      '料金について',
+      '確認しておきたいこと',
     ]),
   );
   expect(majorLabels.join(' ')).not.toMatch(
@@ -210,11 +207,11 @@ test('表示文言は統一表記を使い、専門的な内部語を見せな�
 
 test('ナビゲーション・現在ページ・404導線・モバイルメニューが整合する', async ({ page }) => {
   const currentPages = [
-    ['/index.html', 'NKIS Works'],
+    ['/index.html', 'スラログ'],
     ['/support.html', 'サポート'],
     ['/privacy.html', 'プライバシーポリシー'],
     ['/terms.html', '利用規約'],
-    ['/tools/slot-analysis/index.html', 'スロット出玉分析'],
+    ['/tools/slot-analysis/index.html', '出玉分析'],
   ] as const;
   for (const [path, name] of currentPages) {
     await page.goto(path);
@@ -237,16 +234,9 @@ test('ナビゲーション・現在ページ・404導線・モバイルメニ�
   const menu = page.getByRole('button', { name: 'メニュー' });
   await menu.click();
   await expect(menu).toHaveAttribute('aria-expanded', 'true');
-  await expect(page.locator('[data-nav-links]')).toContainText('スロット出玉分析');
+  await expect(page.locator('[data-nav-links]')).toContainText('出玉分析');
   const navigationLabels = await page.locator('[data-nav-links] a').allTextContents();
-  expect(navigationLabels).toEqual([
-    '使い方',
-    '作った理由',
-    '料金',
-    'スロット出玉分析',
-    'FAQ',
-    'サポート',
-  ]);
+  expect(navigationLabels).toEqual(['できること', '料金', 'よくある質問', '出玉分析']);
 });
 
 test('titleとH1が一致し、200%文字拡大相当でも操作できる', async ({ page }) => {
