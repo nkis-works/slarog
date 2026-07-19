@@ -367,6 +367,17 @@ input[aria-invalid='true'] {
   margin-bottom: 0;
 }
 
+.error-summary-link {
+  padding: 2px 0;
+  border: 0;
+  color: var(--negative);
+  background: transparent;
+  font-weight: 800;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .quick-result,
 .analysis-panel,
 .slarog-cta,
@@ -576,6 +587,32 @@ input[aria-invalid='true'] {
   display: block;
 }
 
+.other-launchers {
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.other-launchers summary {
+  min-height: 48px;
+  padding: 11px 14px;
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.secondary-launcher-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  padding: 0 14px 14px;
+}
+
+.secondary-launcher-grid button {
+  min-height: 72px;
+  background: #fff;
+}
+
 .launcher-grid span {
   margin-top: 4px;
   color: var(--muted);
@@ -745,6 +782,29 @@ input[aria-invalid='true'] {
 .undo-notice {
   color: var(--muted);
   background: var(--soft);
+}
+
+.transfer-callout {
+  margin: 12px 0;
+  padding: 14px;
+  border: 1px solid #b7ccef;
+  border-radius: 12px;
+  background: var(--blue-soft);
+}
+
+.transfer-callout .current-summary {
+  margin: 0 0 10px;
+  padding: 0;
+  background: transparent;
+}
+
+.confirmation-field {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.confirmation-field .field-error {
+  max-width: 24rem;
 }
 
 .custom-benchmark {

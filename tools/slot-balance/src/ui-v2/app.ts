@@ -96,11 +96,17 @@ function renderQuickBenchmarks(values: readonly Readonly<BenchmarkValues>[]): vo
     row.append(
       create('strong', { text: `${formatInteger(rate)}%` }),
       create('span', {
-        text: `期待 ${formatSigned(value.expectedNetMedals.display)}枚`,
+        text: `基準差枚 ${formatSigned(value.expectedNetMedals.display)}枚`,
       }),
       create('span', {
         className: difference.className,
-        text: `${difference.text}・${difference.relation}`,
+        text:
+          value.differenceDisplayCode === 'exact_zero'
+            ? '実績は基準差枚と一致'
+            : value.differenceDisplayCode === 'less_than_one_above' ||
+                value.differenceDisplayCode === 'less_than_one_below'
+              ? `実績は1枚未満${difference.relation}`
+              : `実績は ${difference.text}${difference.relation}`,
       }),
     );
     row.addEventListener('click', () => {
@@ -394,8 +400,12 @@ function messagesList(messages: readonly ValidationMessage[]): HTMLElement | und
 
 byId<HTMLFormElement>('investment-form').addEventListener('submit', (event) => {
   event.preventDefault();
-  const cash = requiredInteger(byId('investment-cash'), 'investment.cash', '現金投資');
-  const current = requiredInteger(byId('investment-current'), 'investment.current', '現在メダル');
+  const cash = requiredInteger(byId('investment-cash'), 'investment.cash', '現金投資額');
+  const current = requiredInteger(
+    byId('investment-current'),
+    'investment.current',
+    '現在手元にある枚数',
+  );
   const exchange = requiredDecimal(
     byId('investment-exchange'),
     'investment.exchange',
@@ -563,8 +573,16 @@ byId<HTMLFormElement>('coin-form').addEventListener('submit', (event) => {
     document.querySelector<HTMLInputElement>('[name="coin.atBonus"]')?.checked ?? false;
   const scope = document.querySelector<HTMLInputElement>('[name="coin.scope"]')?.checked ?? false;
   const errors = [...games.errors, ...medals.errors];
-  if (!atBonus) errors.push({ message: 'AT・ボーナス区間を除外したことの確認が必要です。' });
-  if (!scope) errors.push({ message: 'G数と枚数が同じ対象区間であることの確認が必要です。' });
+  if (!atBonus)
+    errors.push({
+      field: 'coin.atBonus',
+      message: 'AT・ボーナス区間を除外したことの確認が必要です。',
+    });
+  if (!scope)
+    errors.push({
+      field: 'coin.scope',
+      message: 'G数と枚数が同じ対象区間であることの確認が必要です。',
+    });
   if (errors.length > 0 || games.value === undefined || medals.value === undefined) {
     showErrors(errors);
     return;
@@ -578,7 +596,12 @@ byId<HTMLFormElement>('coin-form').addEventListener('submit', (event) => {
   });
   if (!result.ok || !result.values) {
     showErrors(
-      mapCalculationErrors(result, { normalGames: 'coin.games', netUsedMedals: 'coin.medals' }),
+      mapCalculationErrors(result, {
+        normalGames: 'coin.games',
+        netUsedMedals: 'coin.medals',
+        atBonusExcluded: 'coin.atBonus',
+        scopeConfirmed: 'coin.scope',
+      }),
     );
     return;
   }

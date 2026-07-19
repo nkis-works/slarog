@@ -212,3 +212,26 @@ The prototype was also operated through the app browser: quick calculation and t
 - UI branch remains unmerged and is intended for a Draft PR against `feature/slot-analysis-v2-domain`.
 - No deployment or production setting was changed.
 - Design PR #3 and Domain PR #4 remain stacked review inputs; this report does not authorize merging any of them.
+
+## N. Release usability polish visual QA
+
+All captures below are local ignored files. They are not tracked by Git.
+
+| ファイル名                    | 絶対パス                                                                                                | 画面幅 | 確認内容                                 | 発見した問題                           | 修正内容                                  | Git管理 |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------- | -----: | ---------------------------------------- | -------------------------------------- | ----------------------------------------- | ------- |
+| initial-mobile.png            | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/initial-mobile.png`            |  390px | ヘッダー、H1、説明、2入力、CTAの初期表示 | 問題なし                               | 変更なし                                  | 管理外  |
+| quick-result-mobile.png       | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/quick-result-mobile.png`       |  366px | 基準差枚文言、3主導線、閉じた補助機能    | 問題なし                               | 「期待」を使わない比較行へ変更            | 管理外  |
+| quick-result-desktop.png      | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/quick-result-desktop.png`      | 1080px | デスクトップの結果階層と比較行           | 問題なし                               | 3列の視線順を維持                         | 管理外  |
+| details-collapsed-mobile.png  | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/details-collapsed-mobile.png`  |  324px | 主要3件と閉じた「その他の計算」          | 問題なし                               | 主要3件だけを常時表示                     | 管理外  |
+| details-other-open-mobile.png | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/details-other-open-mobile.png` |  324px | 実IN/OUTと通常コイン持ちの展開           | 補助2件が主要機能と同格だった          | 折りたたみ内へ移し視覚重量を低減          | 管理外  |
+| target-mobile.png             | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/target-mobile.png`             |  366px | 目標逆算の入力、結果、免責               | 問題なし                               | 変更なし                                  | 管理外  |
+| segment-empty-mobile.png      | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/segment-empty-mobile.png`      |  366px | 空の初期2区間と転送操作                  | 以前は区間1へ自動入力していた          | 初期値を空欄化し明示ボタンを追加          | 管理外  |
+| segment-transfer-mobile.png   | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/segment-transfer-mobile.png`   |  366px | 明示転送後の区間1とdisabled状態          | 問題なし                               | 入力済み時の再転送を無効化                | 管理外  |
+| segment-result-mobile.png     | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/segment-result-mobile.png`     |  366px | 区間結果の全階層と操作領域               | 問題なし                               | 変更なし                                  | 管理外  |
+| investment-basic-mobile.png   | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/investment-basic-mobile.png`   |  366px | 新入力名、補足、基本結果                 | 入力名だけでは差枚との違いが曖昧だった | 現在手元枚数と交換条件の補足を追加        | 管理外  |
+| investment-error-mobile.png   | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/investment-error-mobile.png`   |  366px | 主要3入力の近接エラー                    | 問題なし                               | 全入力へ専用エラー領域を追加              | 管理外  |
+| coin-error-mobile.png         | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/coin-error-mobile.png`         |  366px | 数値・checkboxの近接エラー               | checkboxエラーが概要だけだった         | 2確認欄にも近接エラーとaria関連付けを追加 | 管理外  |
+| full-page-mobile.png          | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/full-page-mobile.png`          |  390px | 全体順序、広告空白なし、横overflowなし   | 問題なし                               | 変更なし                                  | 管理外  |
+| full-page-desktop.png         | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-ui-final/full-page-desktop.png`         | 1440px | 最大幅、全体順序、余白                   | 問題なし                               | 変更なし                                  | 管理外  |
+
+Final visual evaluation: pass. The 390×844 initial viewport includes the requested header, title, lead, both fields, and primary CTA. No clipped controls, unintended horizontal overflow, ad placeholder, or empty ad space was found.

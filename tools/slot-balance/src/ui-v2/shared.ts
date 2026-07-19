@@ -148,8 +148,8 @@ export function clearErrors(): void {
   document.querySelectorAll<HTMLElement>('[data-error-for]').forEach((output) => {
     output.textContent = '';
   });
-  document.querySelectorAll<HTMLInputElement>('[aria-invalid="true"]').forEach((input) => {
-    input.removeAttribute('aria-invalid');
+  document.querySelectorAll<HTMLElement>('[aria-invalid="true"]').forEach((control) => {
+    control.removeAttribute('aria-invalid');
   });
   const summary = byId<HTMLElement>('error-summary');
   summary.hidden = true;
@@ -161,18 +161,41 @@ export function showErrors(errors: readonly UiError[]): void {
   if (errors.length === 0) return;
   const unique = errors.filter(
     (error, index) =>
-      errors.findIndex((candidate) => candidate.message === error.message) === index,
+      errors.findIndex(
+        (candidate) => candidate.message === error.message && candidate.field === error.field,
+      ) === index,
   );
   const list = byId<HTMLUListElement>('error-summary-list');
   for (const error of unique) {
-    list.append(create('li', { text: error.message }));
-    if (!error.field) continue;
-    const input = document.querySelector<HTMLInputElement>(`[name="${CSS.escape(error.field)}"]`);
+    const item = create('li');
+    if (!error.field) {
+      item.textContent = error.message;
+      list.append(item);
+      continue;
+    }
+    const input = document.querySelector<HTMLElement>(`[name="${CSS.escape(error.field)}"]`);
     const output = document.querySelector<HTMLElement>(
       `[data-error-for="${CSS.escape(error.field)}"]`,
     );
     input?.setAttribute('aria-invalid', 'true');
     if (output) output.textContent = error.message;
+    if (input) {
+      const link = create('button', { className: 'error-summary-link', text: error.message });
+      link.type = 'button';
+      link.addEventListener('click', () => {
+        let ancestor = input.parentElement;
+        while (ancestor) {
+          if (ancestor instanceof HTMLDetailsElement) ancestor.open = true;
+          ancestor = ancestor.parentElement;
+        }
+        input.focus({ preventScroll: true });
+        input.scrollIntoView({ block: 'center' });
+      });
+      item.append(link);
+    } else {
+      item.textContent = error.message;
+    }
+    list.append(item);
   }
   const summary = byId<HTMLElement>('error-summary');
   summary.hidden = false;
@@ -181,10 +204,10 @@ export function showErrors(errors: readonly UiError[]): void {
 }
 
 const formulaLabels: Readonly<Record<string, string>> = {
-  quick_performance_rate: '想定IN・OUTから実績出玉率を計算',
+  quick_performance_rate: '1Gあたり3枚として実績出玉率を計算',
   net_medals_per_1000_games: '差枚を1,000Gあたりへ換算',
-  benchmark_expected_net_medals: '比較基準率の期待差枚を計算',
-  benchmark_difference: '実績差枚と基準期待差枚の差を計算',
+  benchmark_expected_net_medals: '基準率に相当する差枚を計算',
+  benchmark_difference: '実績と基準差枚の差を計算',
   payout_rate_sensitivity: '100枚変化時の出玉率ポイントを計算',
   target_total_net_medals: '目標総差枚を計算',
   target_required_future_net_medals: '残り区間の必要差枚を計算',
@@ -199,15 +222,15 @@ const formulaLabels: Readonly<Record<string, string>> = {
 
 const assumptionLabels: Readonly<Record<string, string>> = {
   three_medals_per_game: '1Gあたり3枚投入の想定値です。',
-  benchmark_is_comparison_not_prediction: '比較基準は設定・期待・未来予測ではありません。',
+  benchmark_is_comparison_not_prediction: '比較基準は設定や未来の予測ではありません。',
   mathematical_boundary_not_prediction: '数学上の境界で、到達や将来結果を保証しません。',
   cumulative_points_are_observations: '入力した累積地点の差分だけを区間として扱います。',
   endpoint_movements_only: '最大下落・回復は入力地点の終点間だけで計算します。',
 };
 
 const roundingLabels: Readonly<Record<string, string>> = {
-  half_away_from_zero_to_one_decimal: '表示はhalf-away-from-zeroで小数1桁に丸めます。',
-  half_away_from_zero_to_integer_medal: '表示差枚はhalf-away-from-zeroで整数枚に丸めます。',
+  half_away_from_zero_to_one_decimal: '出玉率は小数第2位を四捨五入し、小数1桁で表示します。',
+  half_away_from_zero_to_integer_medal: '差枚は四捨五入して整数枚で表示します。',
   ceil_to_integer_medal_boundary: '必要差枚は不足しない整数境界へ切り上げます。',
 };
 
@@ -228,12 +251,8 @@ export function renderMetadata(
   facts: readonly string[] = [],
 ): void {
   const fragment = document.createDocumentFragment();
-  const version = create('p', {
-    text: `計算バージョン ${metadata[0]?.calculationVersion ?? '2.0.0'}`,
-  });
-  fragment.append(version);
   const groups = [
-    ['使用した式', uniqueCodes(metadata, 'formulaIds'), formulaLabels],
+    ['使用した計算', uniqueCodes(metadata, 'formulaIds'), formulaLabels],
     ['前提', uniqueCodes(metadata, 'assumptionCodes'), assumptionLabels],
     ['丸め', uniqueCodes(metadata, 'roundingCodes'), roundingLabels],
     ['注意', uniqueCodes(metadata, 'warningCodes'), warningLabels],
@@ -245,10 +264,11 @@ export function renderMetadata(
     fragment.append(heading, list);
   }
   for (const [title, codes, labels] of groups) {
-    if (codes.length === 0) continue;
+    const visibleLabels = codes.flatMap((code) => (labels[code] ? [labels[code]] : []));
+    if (visibleLabels.length === 0) continue;
     const heading = create('h4', { text: title });
     const list = create('ul');
-    for (const code of codes) list.append(create('li', { text: labels[code] ?? code }));
+    for (const label of visibleLabels) list.append(create('li', { text: label }));
     fragment.append(heading, list);
   }
   container.replaceChildren(fragment);

@@ -1948,8 +1948,8 @@
     document.querySelectorAll("[data-error-for]").forEach((output) => {
       output.textContent = "";
     });
-    document.querySelectorAll('[aria-invalid="true"]').forEach((input) => {
-      input.removeAttribute("aria-invalid");
+    document.querySelectorAll('[aria-invalid="true"]').forEach((control) => {
+      control.removeAttribute("aria-invalid");
     });
     const summary = byId("error-summary");
     summary.hidden = true;
@@ -1959,18 +1959,41 @@
     clearErrors();
     if (errors.length === 0) return;
     const unique2 = errors.filter(
-      (error2, index) => errors.findIndex((candidate) => candidate.message === error2.message) === index
+      (error2, index) => errors.findIndex(
+        (candidate) => candidate.message === error2.message && candidate.field === error2.field
+      ) === index
     );
     const list = byId("error-summary-list");
     for (const error2 of unique2) {
-      list.append(create("li", { text: error2.message }));
-      if (!error2.field) continue;
+      const item = create("li");
+      if (!error2.field) {
+        item.textContent = error2.message;
+        list.append(item);
+        continue;
+      }
       const input = document.querySelector(`[name="${CSS.escape(error2.field)}"]`);
       const output = document.querySelector(
         `[data-error-for="${CSS.escape(error2.field)}"]`
       );
       input?.setAttribute("aria-invalid", "true");
       if (output) output.textContent = error2.message;
+      if (input) {
+        const link = create("button", { className: "error-summary-link", text: error2.message });
+        link.type = "button";
+        link.addEventListener("click", () => {
+          let ancestor = input.parentElement;
+          while (ancestor) {
+            if (ancestor instanceof HTMLDetailsElement) ancestor.open = true;
+            ancestor = ancestor.parentElement;
+          }
+          input.focus({ preventScroll: true });
+          input.scrollIntoView({ block: "center" });
+        });
+        item.append(link);
+      } else {
+        item.textContent = error2.message;
+      }
+      list.append(item);
     }
     const summary = byId("error-summary");
     summary.hidden = false;
@@ -1978,10 +2001,10 @@
     summary.scrollIntoView({ block: "center" });
   }
   var formulaLabels = {
-    quick_performance_rate: "\u60F3\u5B9AIN\u30FBOUT\u304B\u3089\u5B9F\u7E3E\u51FA\u7389\u7387\u3092\u8A08\u7B97",
+    quick_performance_rate: "1G\u3042\u305F\u308A3\u679A\u3068\u3057\u3066\u5B9F\u7E3E\u51FA\u7389\u7387\u3092\u8A08\u7B97",
     net_medals_per_1000_games: "\u5DEE\u679A\u30921,000G\u3042\u305F\u308A\u3078\u63DB\u7B97",
-    benchmark_expected_net_medals: "\u6BD4\u8F03\u57FA\u6E96\u7387\u306E\u671F\u5F85\u5DEE\u679A\u3092\u8A08\u7B97",
-    benchmark_difference: "\u5B9F\u7E3E\u5DEE\u679A\u3068\u57FA\u6E96\u671F\u5F85\u5DEE\u679A\u306E\u5DEE\u3092\u8A08\u7B97",
+    benchmark_expected_net_medals: "\u57FA\u6E96\u7387\u306B\u76F8\u5F53\u3059\u308B\u5DEE\u679A\u3092\u8A08\u7B97",
+    benchmark_difference: "\u5B9F\u7E3E\u3068\u57FA\u6E96\u5DEE\u679A\u306E\u5DEE\u3092\u8A08\u7B97",
     payout_rate_sensitivity: "100\u679A\u5909\u5316\u6642\u306E\u51FA\u7389\u7387\u30DD\u30A4\u30F3\u30C8\u3092\u8A08\u7B97",
     target_total_net_medals: "\u76EE\u6A19\u7DCF\u5DEE\u679A\u3092\u8A08\u7B97",
     target_required_future_net_medals: "\u6B8B\u308A\u533A\u9593\u306E\u5FC5\u8981\u5DEE\u679A\u3092\u8A08\u7B97",
@@ -1995,14 +2018,14 @@
   };
   var assumptionLabels = {
     three_medals_per_game: "1G\u3042\u305F\u308A3\u679A\u6295\u5165\u306E\u60F3\u5B9A\u5024\u3067\u3059\u3002",
-    benchmark_is_comparison_not_prediction: "\u6BD4\u8F03\u57FA\u6E96\u306F\u8A2D\u5B9A\u30FB\u671F\u5F85\u30FB\u672A\u6765\u4E88\u6E2C\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3002",
+    benchmark_is_comparison_not_prediction: "\u6BD4\u8F03\u57FA\u6E96\u306F\u8A2D\u5B9A\u3084\u672A\u6765\u306E\u4E88\u6E2C\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3002",
     mathematical_boundary_not_prediction: "\u6570\u5B66\u4E0A\u306E\u5883\u754C\u3067\u3001\u5230\u9054\u3084\u5C06\u6765\u7D50\u679C\u3092\u4FDD\u8A3C\u3057\u307E\u305B\u3093\u3002",
     cumulative_points_are_observations: "\u5165\u529B\u3057\u305F\u7D2F\u7A4D\u5730\u70B9\u306E\u5DEE\u5206\u3060\u3051\u3092\u533A\u9593\u3068\u3057\u3066\u6271\u3044\u307E\u3059\u3002",
     endpoint_movements_only: "\u6700\u5927\u4E0B\u843D\u30FB\u56DE\u5FA9\u306F\u5165\u529B\u5730\u70B9\u306E\u7D42\u70B9\u9593\u3060\u3051\u3067\u8A08\u7B97\u3057\u307E\u3059\u3002"
   };
   var roundingLabels = {
-    half_away_from_zero_to_one_decimal: "\u8868\u793A\u306Fhalf-away-from-zero\u3067\u5C0F\u65701\u6841\u306B\u4E38\u3081\u307E\u3059\u3002",
-    half_away_from_zero_to_integer_medal: "\u8868\u793A\u5DEE\u679A\u306Fhalf-away-from-zero\u3067\u6574\u6570\u679A\u306B\u4E38\u3081\u307E\u3059\u3002",
+    half_away_from_zero_to_one_decimal: "\u51FA\u7389\u7387\u306F\u5C0F\u6570\u7B2C2\u4F4D\u3092\u56DB\u6368\u4E94\u5165\u3057\u3001\u5C0F\u65701\u6841\u3067\u8868\u793A\u3057\u307E\u3059\u3002",
+    half_away_from_zero_to_integer_medal: "\u5DEE\u679A\u306F\u56DB\u6368\u4E94\u5165\u3057\u3066\u6574\u6570\u679A\u3067\u8868\u793A\u3057\u307E\u3059\u3002",
     ceil_to_integer_medal_boundary: "\u5FC5\u8981\u5DEE\u679A\u306F\u4E0D\u8DB3\u3057\u306A\u3044\u6574\u6570\u5883\u754C\u3078\u5207\u308A\u4E0A\u3052\u307E\u3059\u3002"
   };
   var warningLabels = {
@@ -2013,12 +2036,8 @@
   }
   function renderMetadata(container, metadata, facts2 = []) {
     const fragment = document.createDocumentFragment();
-    const version = create("p", {
-      text: `\u8A08\u7B97\u30D0\u30FC\u30B8\u30E7\u30F3 ${metadata[0]?.calculationVersion ?? "2.0.0"}`
-    });
-    fragment.append(version);
     const groups = [
-      ["\u4F7F\u7528\u3057\u305F\u5F0F", uniqueCodes(metadata, "formulaIds"), formulaLabels],
+      ["\u4F7F\u7528\u3057\u305F\u8A08\u7B97", uniqueCodes(metadata, "formulaIds"), formulaLabels],
       ["\u524D\u63D0", uniqueCodes(metadata, "assumptionCodes"), assumptionLabels],
       ["\u4E38\u3081", uniqueCodes(metadata, "roundingCodes"), roundingLabels],
       ["\u6CE8\u610F", uniqueCodes(metadata, "warningCodes"), warningLabels]
@@ -2030,10 +2049,11 @@
       fragment.append(heading, list);
     }
     for (const [title, codes, labels] of groups) {
-      if (codes.length === 0) continue;
+      const visibleLabels = codes.flatMap((code) => labels[code] ? [labels[code]] : []);
+      if (visibleLabels.length === 0) continue;
       const heading = create("h4", { text: title });
       const list = create("ul");
-      for (const code of codes) list.append(create("li", { text: labels[code] ?? code }));
+      for (const label of visibleLabels) list.append(create("li", { text: label }));
       fragment.append(heading, list);
     }
     container.replaceChildren(fragment);
@@ -2167,22 +2187,58 @@
       kind === "direct" ? "add-direct-segment" : "add-cumulative-point"
     ).disabled = rows.length >= (kind === "direct" ? MAX_DIRECT_ROWS : MAX_CUMULATIVE_POINTS);
     byId(kind === "direct" ? "direct-limit-note" : "cumulative-limit-note").textContent = `${rows.length} / ${kind === "direct" ? MAX_DIRECT_ROWS : MAX_CUMULATIVE_POINTS}\u4EF6`;
+    updateTransferControls();
   }
   function initializeDirect() {
     if (directInitialized) return;
-    directList.append(directRow(0, transfer), directRow(1));
+    directList.append(directRow(0), directRow(1));
     directInitialized = true;
     reindexRows("direct");
   }
   function initializeCumulative() {
     if (cumulativeInitialized) return;
-    cumulativeList.append(
-      cumulativeRow(0, { games: 0, net: 0 }),
-      cumulativeRow(1, transfer ? { games: transfer.games, net: transfer.netMedals } : void 0),
-      cumulativeRow(2)
-    );
+    cumulativeList.append(cumulativeRow(0, { games: 0, net: 0 }), cumulativeRow(1), cumulativeRow(2));
     cumulativeInitialized = true;
     reindexRows("cumulative");
+  }
+  function transferTarget(kind) {
+    const row = kind === "direct" ? directList.querySelector("[data-direct-row]") : cumulativeList.querySelectorAll("[data-cumulative-row]").item(1);
+    if (!row) return void 0;
+    return {
+      games: rowValue(row, "games"),
+      net: rowValue(row, "netMedals")
+    };
+  }
+  function updateTransferControls() {
+    const summary = transfer ? `\u73FE\u5728\u306E\u30AF\u30A4\u30C3\u30AF\u7D50\u679C ${formatInteger(transfer.games)}G / ${formatSigned(transfer.netMedals)}\u679A` : "\u73FE\u5728\u306E\u30AF\u30A4\u30C3\u30AF\u7D50\u679C \u2014";
+    byId("direct-transfer-summary").textContent = summary;
+    byId("cumulative-transfer-summary").textContent = summary;
+    for (const kind of ["direct", "cumulative"]) {
+      const target = transferTarget(kind);
+      const occupied = Boolean(target?.games.value.trim() || target?.net.value.trim());
+      byId(
+        kind === "direct" ? "transfer-to-direct" : "transfer-to-cumulative"
+      ).disabled = !transfer || !target || occupied;
+    }
+  }
+  function setupTransfers() {
+    for (const kind of ["direct", "cumulative"]) {
+      const button = byId(
+        kind === "direct" ? "transfer-to-direct" : "transfer-to-cumulative"
+      );
+      button.addEventListener("click", () => {
+        const target = transferTarget(kind);
+        if (!transfer || !target || target.games.value.trim() || target.net.value.trim()) return;
+        target.games.value = String(transfer.games);
+        target.net.value = String(transfer.netMedals);
+        updateTransferControls();
+        announce(
+          kind === "direct" ? "\u73FE\u5728\u306E\u7D50\u679C\u3092\u533A\u95931\u3078\u5165\u529B\u3057\u307E\u3057\u305F\u3002" : "\u73FE\u5728\u306E\u7D50\u679C\u3092\u5730\u70B91\u3078\u5165\u529B\u3057\u307E\u3057\u305F\u3002"
+        );
+      });
+    }
+    directList.addEventListener("input", updateTransferControls);
+    cumulativeList.addEventListener("input", updateTransferControls);
   }
   function setupMethodChoice() {
     document.querySelectorAll('[name="segment.method"]').forEach((radio) => {
@@ -2423,7 +2479,7 @@
     const metrics = create("div", { className: "result-metrics" });
     const expected = create("div");
     expected.append(
-      create("span", { text: "\u57FA\u6E96\u671F\u5F85\u5DEE\u679A" }),
+      create("span", { text: "\u57FA\u6E96\u5DEE\u679A" }),
       create("strong", { text: `${formatSigned(aggregate.expectedNetMedals.display)}\u679A` })
     );
     const difference = create("div");
@@ -2550,6 +2606,7 @@
   function setupSegmentsUi() {
     setupMethodChoice();
     setupListActions();
+    setupTransfers();
     setupBenchmarkChoice();
     form.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -2558,6 +2615,7 @@
     return {
       open(value) {
         transfer = value;
+        updateTransferControls();
       }
     };
   }
@@ -2616,11 +2674,11 @@
       row.append(
         create("strong", { text: `${formatInteger(rate)}%` }),
         create("span", {
-          text: `\u671F\u5F85 ${formatSigned(value.expectedNetMedals.display)}\u679A`
+          text: `\u57FA\u6E96\u5DEE\u679A ${formatSigned(value.expectedNetMedals.display)}\u679A`
         }),
         create("span", {
           className: difference.className,
-          text: `${difference.text}\u30FB${difference.relation}`
+          text: value.differenceDisplayCode === "exact_zero" ? "\u5B9F\u7E3E\u306F\u57FA\u6E96\u5DEE\u679A\u3068\u4E00\u81F4" : value.differenceDisplayCode === "less_than_one_above" || value.differenceDisplayCode === "less_than_one_below" ? `\u5B9F\u7E3E\u306F1\u679A\u672A\u6E80${difference.relation}` : `\u5B9F\u7E3E\u306F ${difference.text}${difference.relation}`
         })
       );
       row.addEventListener("click", () => {
@@ -2872,8 +2930,12 @@
   }
   byId("investment-form").addEventListener("submit", (event) => {
     event.preventDefault();
-    const cash = requiredInteger(byId("investment-cash"), "investment.cash", "\u73FE\u91D1\u6295\u8CC7");
-    const current = requiredInteger(byId("investment-current"), "investment.current", "\u73FE\u5728\u30E1\u30C0\u30EB");
+    const cash = requiredInteger(byId("investment-cash"), "investment.cash", "\u73FE\u91D1\u6295\u8CC7\u984D");
+    const current = requiredInteger(
+      byId("investment-current"),
+      "investment.current",
+      "\u73FE\u5728\u624B\u5143\u306B\u3042\u308B\u679A\u6570"
+    );
     const exchange = requiredDecimal(
       byId("investment-exchange"),
       "investment.exchange",
@@ -3033,8 +3095,16 @@
     const atBonus = document.querySelector('[name="coin.atBonus"]')?.checked ?? false;
     const scope = document.querySelector('[name="coin.scope"]')?.checked ?? false;
     const errors = [...games.errors, ...medals.errors];
-    if (!atBonus) errors.push({ message: "AT\u30FB\u30DC\u30FC\u30CA\u30B9\u533A\u9593\u3092\u9664\u5916\u3057\u305F\u3053\u3068\u306E\u78BA\u8A8D\u304C\u5FC5\u8981\u3067\u3059\u3002" });
-    if (!scope) errors.push({ message: "G\u6570\u3068\u679A\u6570\u304C\u540C\u3058\u5BFE\u8C61\u533A\u9593\u3067\u3042\u308B\u3053\u3068\u306E\u78BA\u8A8D\u304C\u5FC5\u8981\u3067\u3059\u3002" });
+    if (!atBonus)
+      errors.push({
+        field: "coin.atBonus",
+        message: "AT\u30FB\u30DC\u30FC\u30CA\u30B9\u533A\u9593\u3092\u9664\u5916\u3057\u305F\u3053\u3068\u306E\u78BA\u8A8D\u304C\u5FC5\u8981\u3067\u3059\u3002"
+      });
+    if (!scope)
+      errors.push({
+        field: "coin.scope",
+        message: "G\u6570\u3068\u679A\u6570\u304C\u540C\u3058\u5BFE\u8C61\u533A\u9593\u3067\u3042\u308B\u3053\u3068\u306E\u78BA\u8A8D\u304C\u5FC5\u8981\u3067\u3059\u3002"
+      });
     if (errors.length > 0 || games.value === void 0 || medals.value === void 0) {
       showErrors(errors);
       return;
@@ -3048,7 +3118,12 @@
     });
     if (!result.ok || !result.values) {
       showErrors(
-        mapCalculationErrors(result, { normalGames: "coin.games", netUsedMedals: "coin.medals" })
+        mapCalculationErrors(result, {
+          normalGames: "coin.games",
+          netUsedMedals: "coin.medals",
+          atBonusExcluded: "coin.atBonus",
+          scopeConfirmed: "coin.scope"
+        })
       );
       return;
     }

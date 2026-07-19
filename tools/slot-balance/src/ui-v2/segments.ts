@@ -181,24 +181,72 @@ function reindexRows(kind: 'direct' | 'cumulative'): void {
   ).disabled = rows.length >= (kind === 'direct' ? MAX_DIRECT_ROWS : MAX_CUMULATIVE_POINTS);
   byId(kind === 'direct' ? 'direct-limit-note' : 'cumulative-limit-note').textContent =
     `${rows.length} / ${kind === 'direct' ? MAX_DIRECT_ROWS : MAX_CUMULATIVE_POINTS}件`;
+  updateTransferControls();
 }
 
 function initializeDirect(): void {
   if (directInitialized) return;
-  directList.append(directRow(0, transfer), directRow(1));
+  directList.append(directRow(0), directRow(1));
   directInitialized = true;
   reindexRows('direct');
 }
 
 function initializeCumulative(): void {
   if (cumulativeInitialized) return;
-  cumulativeList.append(
-    cumulativeRow(0, { games: 0, net: 0 }),
-    cumulativeRow(1, transfer ? { games: transfer.games, net: transfer.netMedals } : undefined),
-    cumulativeRow(2),
-  );
+  cumulativeList.append(cumulativeRow(0, { games: 0, net: 0 }), cumulativeRow(1), cumulativeRow(2));
   cumulativeInitialized = true;
   reindexRows('cumulative');
+}
+
+function transferTarget(
+  kind: 'direct' | 'cumulative',
+): { readonly games: HTMLInputElement; readonly net: HTMLInputElement } | undefined {
+  const row =
+    kind === 'direct'
+      ? directList.querySelector<HTMLElement>('[data-direct-row]')
+      : cumulativeList.querySelectorAll<HTMLElement>('[data-cumulative-row]').item(1);
+  if (!row) return undefined;
+  return {
+    games: rowValue(row, 'games'),
+    net: rowValue(row, 'netMedals'),
+  };
+}
+
+function updateTransferControls(): void {
+  const summary = transfer
+    ? `現在のクイック結果 ${formatInteger(transfer.games)}G / ${formatSigned(transfer.netMedals)}枚`
+    : '現在のクイック結果 —';
+  byId('direct-transfer-summary').textContent = summary;
+  byId('cumulative-transfer-summary').textContent = summary;
+  for (const kind of ['direct', 'cumulative'] as const) {
+    const target = transferTarget(kind);
+    const occupied = Boolean(target?.games.value.trim() || target?.net.value.trim());
+    byId<HTMLButtonElement>(
+      kind === 'direct' ? 'transfer-to-direct' : 'transfer-to-cumulative',
+    ).disabled = !transfer || !target || occupied;
+  }
+}
+
+function setupTransfers(): void {
+  for (const kind of ['direct', 'cumulative'] as const) {
+    const button = byId<HTMLButtonElement>(
+      kind === 'direct' ? 'transfer-to-direct' : 'transfer-to-cumulative',
+    );
+    button.addEventListener('click', () => {
+      const target = transferTarget(kind);
+      if (!transfer || !target || target.games.value.trim() || target.net.value.trim()) return;
+      target.games.value = String(transfer.games);
+      target.net.value = String(transfer.netMedals);
+      updateTransferControls();
+      announce(
+        kind === 'direct'
+          ? '現在の結果を区間1へ入力しました。'
+          : '現在の結果を地点1へ入力しました。',
+      );
+    });
+  }
+  directList.addEventListener('input', updateTransferControls);
+  cumulativeList.addEventListener('input', updateTransferControls);
 }
 
 function setupMethodChoice(): void {
@@ -472,7 +520,7 @@ function renderBenchmark(rate: number): void {
   const metrics = create('div', { className: 'result-metrics' });
   const expected = create('div');
   expected.append(
-    create('span', { text: '基準期待差枚' }),
+    create('span', { text: '基準差枚' }),
     create('strong', { text: `${formatSigned(aggregate.expectedNetMedals.display)}枚` }),
   );
   const difference = create('div');
@@ -619,6 +667,7 @@ function submitAnalysis(): void {
 export function setupSegmentsUi(): { readonly open: (value: QuickTransfer) => void } {
   setupMethodChoice();
   setupListActions();
+  setupTransfers();
   setupBenchmarkChoice();
   form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -627,6 +676,7 @@ export function setupSegmentsUi(): { readonly open: (value: QuickTransfer) => vo
   return {
     open(value: QuickTransfer): void {
       transfer = value;
+      updateTransferControls();
     },
   };
 }
