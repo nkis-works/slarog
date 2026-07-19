@@ -48,23 +48,6 @@ The preview build remained the existing 23-file curated `dist`. It contains no p
 
 `playwright.prototype.config.ts` runs only this prototype on local port 4175 and does not alter existing Playwright configs.
 
-### Visual artifacts
-
-`artifacts/slot-analysis-v2-design/`:
-
-1. quick-input-mobile.png
-2. quick-result-mobile.png
-3. quick-result-desktop.png
-4. result-rail-variant.png
-5. result-list-variant.png
-6. segment-input-mobile.png
-7. segment-result-mobile.png
-8. segment-result-desktop.png
-9. target-reverse-mobile.png
-10. investment-progressive-mobile.png
-11. full-page-mobile.png
-12. full-page-desktop.png
-
 ## D. Research
 
 - Audited current domain/application/UI/test/build/privacy boundaries.
@@ -122,12 +105,20 @@ Maximum recovery after decline: 0 medals
 
 ## G. Visual QA and revisions
 
-- Captured at 390px and 1440px; checked 320, 430, 768, and 200% zoom.
-- Inspected all 12 generated images.
-- Removed sticky behavior that distorted the full-page desktop composition.
-- Fixed skip-link capture artifacts while retaining keyboard focus visibility.
-- Changed maximum recovery from generic run-up to recovery only after a decline.
-- Confirmed the vertical list reveals all three benchmarks; the rail intentionally demonstrates hidden horizontal content.
+| ファイル名                        | 絶対パス                                                                                                  | 画面幅 | 確認内容                     | 発見した問題                 | 修正内容                              | Git管理 |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------- | ------ | ---------------------------- | ---------------------------- | ------------------------------------- | ------- |
+| quick-input-mobile.png            | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-design/quick-input-mobile.png`            | 366px  | 初期入力と主要操作           | 問題なし                     | 変更なし                              | 管理外  |
+| quick-result-mobile.png           | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-design/quick-result-mobile.png`           | 366px  | 結果階層と縦型基準一覧       | 問題なし                     | 変更なし                              | 管理外  |
+| quick-result-desktop.png          | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-design/quick-result-desktop.png`          | 1120px | 結果のデスクトップ配置       | 問題なし                     | 変更なし                              | 管理外  |
+| result-rail-variant.png           | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-design/result-rail-variant.png`           | 366px  | 横レール比較案               | 右側項目の発見性が低い       | 正式案を全件見える縦一覧へ変更        | 管理外  |
+| result-list-variant.png           | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-design/result-list-variant.png`           | 366px  | 縦一覧比較案                 | 問題なし                     | 正式案として採用                      | 管理外  |
+| segment-input-mobile.png          | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-design/segment-input-mobile.png`          | 366px  | 区間入力の読み順と操作領域   | 問題なし                     | 変更なし                              | 管理外  |
+| segment-result-mobile.png         | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-design/segment-result-mobile.png`         | 366px  | 区間合計・寄与・下落回復     | 回復の定義が単純run-upだった | 下落発生後の回復だけへ定義修正        | 管理外  |
+| segment-result-desktop.png        | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-design/segment-result-desktop.png`        | 1120px | 区間結果のデスクトップ配置   | 問題なし                     | 変更なし                              | 管理外  |
+| target-reverse-mobile.png         | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-design/target-reverse-mobile.png`         | 366px  | 正負を区別した目標逆算表示   | 問題なし                     | 変更なし                              | 管理外  |
+| investment-progressive-mobile.png | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-design/investment-progressive-mobile.png` | 366px  | 投資入力の段階表示           | 基本入力が4項目で重かった    | 基本3項目へ削減                       | 管理外  |
+| full-page-mobile.png              | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-design/full-page-mobile.png`              | 390px  | 全体順序・モバイルoverflow   | skip-linkが撮影時に重なった  | 撮影時だけblurし通常のfocus表示は維持 | 管理外  |
+| full-page-desktop.png             | `/Users/nkis/Documents/スラログios版/artifacts/slot-analysis-v2-design/full-page-desktop.png`             | 1440px | 全体順序・デスクトップ最大幅 | sticky要素が全景構成を歪めた | stickyを解除                          | 管理外  |
 
 ## H. Verification results
 
