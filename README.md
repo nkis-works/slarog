@@ -1,6 +1,6 @@
 # NKIS Works / Slarog Website
 
-NKIS Worksが運営するスラログ公式サイトと、無料Webツール「スロバランス」の静的ファイル一式です。現在の公開サイトは [https://nkis-works.github.io/slarog/](https://nkis-works.github.io/slarog/) です。Cloudflare Pagesへの移行候補は実装済みですが、まだ公開・設定変更は行っていません。
+NKIS Worksが運営するスラログ公式サイトと、無料Webツール「スロット出玉分析」の静的ファイル一式です。現在の公開サイトは [https://nkis-works.github.io/slarog/](https://nkis-works.github.io/slarog/) です。Cloudflare Pagesへの移行候補は実装済みですが、まだ公開・設定変更は行っていません。
 
 ## 現在の公開方式と移行候補
 
@@ -20,14 +20,14 @@ robots.txt
 sitemap.xml
 .nojekyll
 assets/                 共通CSS、JavaScript、画像
-tools/slot-balance/     スロバランス（公開候補UI・ドメイン・source E2E）
+tools/slot-analysis/     スロット出玉分析（公開候補UI・ドメイン・source E2E）
 docs/                   仕様・計算・QA資料
 deploy/cloudflare/      Cloudflare Pages用headers／redirects
 scripts/                bundle、curated dist、配布物検査
 dist/                   Cloudflare公開物（生成物・Git管理対象外）
 ```
 
-スロバランスは`tools/slot-balance/`にあり、公式サイトのナビゲーション、トップページ、サポートから遷移できます。privacyとtermsも現状に合わせて更新済みです。広告とアクセス解析は有効化していません。
+スロット出玉分析は`tools/slot-analysis/`にあり、公式サイトのナビゲーション、トップページ、サポートから遷移できます。privacyとtermsも現状に合わせて更新済みです。広告とアクセス解析は有効化していません。
 
 ## ローカル確認
 
@@ -37,7 +37,7 @@ dist/                   Cloudflare公開物（生成物・Git管理対象外）
 python3 -m http.server 4173
 ```
 
-その後、既存サイトは`http://localhost:4173/`、スロバランスは`http://localhost:4173/tools/slot-balance/index.html`を開きます。CSPと相対URLを含めた確認のため、スロバランスは`file://`ではなくHTTP server経由で確認してください。
+その後、既存サイトは`http://localhost:4173/`、スロット出玉分析は`http://localhost:4173/tools/slot-analysis/index.html`を開きます。CSPと相対URLを含めた確認のため、スロット出玉分析は`file://`ではなくHTTP server経由で確認してください。
 
 Cloudflare向けpreview配布物は次で確認します。
 
@@ -48,7 +48,7 @@ npm run serve:dist
 
 `http://localhost:4174/`で`dist/`を確認できます。previewは全ページ`noindex, nofollow`、canonicalなし、空のsitemapで生成されます。
 
-## スロバランス開発
+## スロット出玉分析開発
 
 前提はNode.js 22以上とnpm 10以上です。
 
@@ -67,7 +67,9 @@ npm run test:e2e:dist
 npm run check:all
 ```
 
-`npm run build`は`build:preview`の別名です。`tools/slot-balance/src/ui/app.ts`から同一内容のbrowser向けIIFEを、GitHub Pages移行期間用の追跡bundleと`dist/`のbundleへ生成します。source mapとruntime dependencyは含めません。2回のbuildで全23配布ファイルのSHA-256が一致する決定的出力を維持します。
+`npm run build`は`build:preview`の別名です。`tools/slot-analysis/src/ui-v2/app.ts`から同一内容のbrowser向けIIFEを、GitHub Pages移行期間用の追跡bundleと`dist/`のbundleへ生成します。source mapとruntime dependencyは含めません。2回のbuildで全23配布ファイルのSHA-256が一致する決定的出力を維持します。
+
+Cloudflare配布では旧`/tools/slot-balance/`を新`/tools/slot-analysis/`へ301転送します。GitHub Pagesを停止していない移行期間のsourceには、noindex・scriptなし・入力引き継ぎなしの案内ページだけを残しています。
 
 production buildは公開オリジンを環境変数で明示した場合だけ成功します。
 
@@ -79,7 +81,7 @@ SITE_ORIGIN="$CONFIRMED_SITE_ORIGIN" npm run build:production
 
 `npm run test:e2e`はsource版22件、`npm run test:e2e:dist`はcurated dist版14件を実行します。dist版は全6ページ、asset、導線、section順、CSP、noindex、外部通信、browser storage、Cookie、IndexedDB、Cache Storage、console全level、レスポンシブ、10画面のVisual QAを確認します。成果物は無視対象の`artifacts/phase2b0/`へ出力します。
 
-## スロバランスの実装済み範囲
+## スロット出玉分析の実装済み範囲
 
 - TypeScript strictの計算ドメイン
 - 入力正規化と構造化validation
@@ -112,4 +114,4 @@ SITE_ORIGIN="$CONFIRMED_SITE_ORIGIN" npm run build:production
 
 ## 表現方針
 
-「設定がわかる」「勝てる」「高設定を見抜く」「続行・ヤメを推奨する」などの断定表現は使用しません。スラログは記録・比較、スロバランスは入力値と明示した前提から数字を整理するツールとして扱います。
+「設定がわかる」「勝てる」「高設定を見抜く」「続行・ヤメを推奨する」などの断定表現は使用しません。スラログは記録・比較、スロット出玉分析は入力値と明示した前提から数字を整理するツールとして扱います。

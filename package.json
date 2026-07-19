@@ -14,7 +14,7 @@
     "format:check": "prettier --check . --ignore-unknown",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run tools/slot-balance/tests",
+    "test": "vitest run tools/slot-analysis/tests",
     "build": "npm run build:preview",
     "build:preview": "node scripts/build-site.mjs preview",
     "build:production": "node scripts/build-site.mjs production",

@@ -1,7 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 
 export const DIST_ORIGIN = 'http://127.0.0.1:4174';
-export const DIST_TOOL_PATH = '/tools/slot-balance/index.html';
+export const DIST_TOOL_PATH = '/tools/slot-analysis/index.html';
 
 export interface ReleaseMonitor {
   consoleMessages: string[];

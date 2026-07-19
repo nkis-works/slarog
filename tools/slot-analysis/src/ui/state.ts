@@ -9,13 +9,13 @@ export interface CalculationUiState {
   stale: boolean;
 }
 
-export type SlotBalanceUiState = Record<CalculationKey, CalculationUiState>;
+export type SlotAnalysisUiState = Record<CalculationKey, CalculationUiState>;
 
 function createCalculationState(): CalculationUiState {
   return { currentInputRevision: 0, hasResult: false, stale: false };
 }
 
-export function createUiState(): SlotBalanceUiState {
+export function createUiState(): SlotAnalysisUiState {
   return {
     net: createCalculationState(),
     investment: createCalculationState(),
@@ -25,14 +25,14 @@ export function createUiState(): SlotBalanceUiState {
   };
 }
 
-export function markInputChanged(state: SlotBalanceUiState, key: CalculationKey): boolean {
+export function markInputChanged(state: SlotAnalysisUiState, key: CalculationKey): boolean {
   const target = state[key];
   target.currentInputRevision += 1;
   target.stale = target.hasResult && target.calculatedInputRevision !== target.currentInputRevision;
   return target.stale;
 }
 
-export function markCalculationSucceeded(state: SlotBalanceUiState, key: CalculationKey): void {
+export function markCalculationSucceeded(state: SlotAnalysisUiState, key: CalculationKey): void {
   const target = state[key];
   target.calculatedInputRevision = target.currentInputRevision;
   target.hasResult = true;

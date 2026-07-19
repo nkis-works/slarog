@@ -7,7 +7,7 @@ import { calculateTargetReverse } from '../../src/domain/slot-analysis-v2/target
 
 describe('slot analysis v2 privacy and purity boundary', () => {
   it('contains no DOM, network, storage, clock, or random dependency', () => {
-    const directory = resolve('tools/slot-balance/src/domain/slot-analysis-v2');
+    const directory = resolve('tools/slot-analysis/src/domain/slot-analysis-v2');
     const files = [
       'benchmarks.ts',
       'cumulative-points.ts',

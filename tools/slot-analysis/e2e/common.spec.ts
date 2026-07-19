@@ -48,7 +48,7 @@ test('公開文言、相対リンク、ランドマーク、広告境界、ア�
     const markers = nodes.filter(
       (node) =>
         node.nodeType === Node.COMMENT_NODE &&
-        node.textContent?.includes('SLOT_BALANCE_MANUAL_AD_INSERTION_POINT'),
+        node.textContent?.includes('SLOT_ANALYSIS_MANUAL_AD_INSERTION_POINT'),
     );
     const markerIndex = markers[0] ? nodes.indexOf(markers[0]) : -1;
     const cta = main.querySelector('.slarog-cta');
@@ -200,6 +200,21 @@ test('既存静的ページを壊さず、CSS・JavaScriptが読み込まれる'
   await expect(menu).toHaveAttribute('aria-expanded', 'true');
   await expect(page.locator('[data-nav-links]')).toHaveClass(/is-open/);
   expect(errors).toEqual([]);
+});
+
+test('旧URLのsource案内はnoindexで入力を引き継がず新URLだけを案内する', async ({ page }) => {
+  const response = await page.goto('/tools/slot-balance/index.html?games=4000&net=500');
+  expect(response?.status()).toBe(200);
+  await expect(page).toHaveTitle('スロット出玉分析へ移動しました｜NKIS Works');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow');
+  await expect(page.locator('script')).toHaveCount(0);
+  await expect(page.locator('input')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: '新しいスロット出玉分析を開く' })).toHaveAttribute(
+    'href',
+    '../slot-analysis/',
+  );
+  await expect(page.locator('body')).not.toContainText('4000');
+  await expect(page.locator('body')).not.toContainText('500');
 });
 
 declare global {

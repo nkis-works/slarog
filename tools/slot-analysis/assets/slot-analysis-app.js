@@ -1,6 +1,6 @@
 "use strict";
 (() => {
-  // tools/slot-balance/src/domain/explanations.ts
+  // tools/slot-analysis/src/domain/explanations.ts
   var NET_MEDALS_KNOWLEDGE = {
     known: [
       { code: "estimated_payout_rate", label: "3\u679A\u639B\u3051\u63DB\u7B97\u306E\u5DEE\u679A\u30D9\u30FC\u30B9\u51FA\u7389\u7387" },
@@ -181,7 +181,7 @@
     ];
   }
 
-  // tools/slot-balance/src/domain/rational.ts
+  // tools/slot-analysis/src/domain/rational.ts
   function absolute(value) {
     return value < 0n ? -value : value;
   }
@@ -266,7 +266,7 @@
     };
   }
 
-  // tools/slot-balance/src/domain/rounding.ts
+  // tools/slot-analysis/src/domain/rounding.ts
   function powerOfTen(decimalPlaces) {
     if (!Number.isInteger(decimalPlaces) || decimalPlaces < 0) {
       throw new RangeError("decimalPlaces must be a non-negative integer.");
@@ -309,7 +309,7 @@
     };
   }
 
-  // tools/slot-balance/src/domain/thresholds.ts
+  // tools/slot-analysis/src/domain/thresholds.ts
   var VALIDATION_THRESHOLDS = Object.freeze({
     extremeGames: 1e5,
     extremeNetMedals: 1e6,
@@ -317,7 +317,7 @@
     extremeMedals: 1e6
   });
 
-  // tools/slot-balance/src/domain/validators.ts
+  // tools/slot-analysis/src/domain/validators.ts
   function message(severity, code, field, text, correction) {
     return { severity, code, field, message: text, correction };
   }
@@ -705,10 +705,10 @@
     return messages;
   }
 
-  // tools/slot-balance/src/domain/version.ts
+  // tools/slot-analysis/src/domain/version.ts
   var CALCULATION_VERSION = "1.0.0";
 
-  // tools/slot-balance/src/domain/calculators/shared.ts
+  // tools/slot-analysis/src/domain/calculators/shared.ts
   function createCalculationResult(options) {
     const { errors, warnings, info } = partitionValidationMessages(options.messages);
     return {
@@ -726,7 +726,7 @@
     };
   }
 
-  // tools/slot-balance/src/domain/calculators/coin-hold.ts
+  // tools/slot-analysis/src/domain/calculators/coin-hold.ts
   function calculateCoinHold(input) {
     const netUsedMedals = input.method === "direct" ? input.netUsedMedals : input.startMedals + input.addedMedals - input.endMedals - input.takenOutMedals;
     const messages = validateCoinHold(input, netUsedMedals);
@@ -769,7 +769,7 @@
     });
   }
 
-  // tools/slot-balance/src/domain/calculators/in-out.ts
+  // tools/slot-analysis/src/domain/calculators/in-out.ts
   function calculateInOut(input) {
     const messages = validateInOut(input);
     if (messages.some(({ severity }) => severity === "error")) {
@@ -812,7 +812,7 @@
     });
   }
 
-  // tools/slot-balance/src/domain/calculators/net-medals.ts
+  // tools/slot-analysis/src/domain/calculators/net-medals.ts
   function calculateNetMedals(input) {
     const messages = validateNetMedals(input);
     const hasErrors = messages.some(({ severity }) => severity === "error");
@@ -859,7 +859,7 @@
     });
   }
 
-  // tools/slot-balance/src/domain/calculators/investment-recovery.ts
+  // tools/slot-analysis/src/domain/calculators/investment-recovery.ts
   function recoveryLine(costValue, alreadyExchangedYen, currentMedals, exchangeRate, exchangeUnitYen) {
     const remainingValue = maxZero(subtract(costValue, integer(alreadyExchangedYen)));
     const requiredPayout = exchangeUnitYen ? integer(ceilToUnit(remainingValue, exchangeUnitYen)) : remainingValue;
@@ -1010,10 +1010,10 @@
     });
   }
 
-  // tools/slot-balance/src/domain/slot-analysis-v2/version.ts
+  // tools/slot-analysis/src/domain/slot-analysis-v2/version.ts
   var SLOT_ANALYSIS_CALCULATION_VERSION = "2.0.0";
 
-  // tools/slot-balance/src/domain/slot-analysis-v2/shared.ts
+  // tools/slot-analysis/src/domain/slot-analysis-v2/shared.ts
   var MAX_THREE_MEDAL_GAMES = Math.floor(Number.MAX_SAFE_INTEGER / 3);
   var MAX_DECIMAL_INPUT_LENGTH = 128;
   var MAX_DECIMAL_MANTISSA_DIGITS = 64;
@@ -1124,7 +1124,7 @@
     return { relation, differenceDisplayCode };
   }
 
-  // tools/slot-balance/src/domain/slot-analysis-v2/benchmarks.ts
+  // tools/slot-analysis/src/domain/slot-analysis-v2/benchmarks.ts
   var STANDARD_BENCHMARK_RATES = Object.freeze(["100", "103", "105"]);
   function calculateBenchmark(input) {
     const errors = [];
@@ -1190,7 +1190,7 @@
     });
   }
 
-  // tools/slot-balance/src/domain/slot-analysis-v2/quick-performance.ts
+  // tools/slot-analysis/src/domain/slot-analysis-v2/quick-performance.ts
   function calculateQuickPerformance(input) {
     const errors = [];
     const gamesError = validateGames(input.games, "games", {
@@ -1232,7 +1232,7 @@
     );
   }
 
-  // tools/slot-balance/src/domain/slot-analysis-v2/sensitivity.ts
+  // tools/slot-analysis/src/domain/slot-analysis-v2/sensitivity.ts
   function calculatePayoutRateSensitivity(input) {
     const gamesError = validateGames(input.games, "games", {
       notPositive: "games_not_positive",
@@ -1254,7 +1254,7 @@
     );
   }
 
-  // tools/slot-balance/src/domain/slot-analysis-v2/target-reverse.ts
+  // tools/slot-analysis/src/domain/slot-analysis-v2/target-reverse.ts
   function calculateTargetReverse(input) {
     const errors = [];
     const currentGamesError = validateGames(input.currentGames, "currentGames", {
@@ -1353,7 +1353,7 @@
     );
   }
 
-  // tools/slot-balance/src/domain/slot-analysis-v2/drawdown.ts
+  // tools/slot-analysis/src/domain/slot-analysis-v2/drawdown.ts
   function calculateDrawdownRecovery(points) {
     if (points.length < 2) {
       return failure([{ code: "cumulative_points_required", field: "points" }]);
@@ -1429,7 +1429,7 @@
     );
   }
 
-  // tools/slot-balance/src/domain/slot-analysis-v2/segments.ts
+  // tools/slot-analysis/src/domain/slot-analysis-v2/segments.ts
   var SLOT_ANALYSIS_MAX_SEGMENTS = 100;
   function segmentProvenance(segment, index) {
     return segment.provenance ?? { source: "direct", sourceSegmentIndex: index };
@@ -1647,7 +1647,7 @@
     );
   }
 
-  // tools/slot-balance/src/domain/slot-analysis-v2/cumulative-points.ts
+  // tools/slot-analysis/src/domain/slot-analysis-v2/cumulative-points.ts
   function convertCumulativePoints(input) {
     if (input.points.length < 2) {
       return failure([domainError("cumulative_points_required", "points")]);
@@ -1753,7 +1753,7 @@
     );
   }
 
-  // tools/slot-balance/src/domain/normalizers.ts
+  // tools/slot-analysis/src/domain/normalizers.ts
   var DEFAULT_UNITS = ["\u30B2\u30FC\u30E0", "G", "\u679A", "\u5186"];
   function error(code, field, message2, correction) {
     return {
@@ -1847,7 +1847,7 @@
     return normalizeNumericInput(raw, { field, label, allowDecimal: true });
   }
 
-  // tools/slot-balance/src/ui-v2/shared.ts
+  // tools/slot-analysis/src/ui-v2/shared.ts
   var integerFormatter = new Intl.NumberFormat("ja-JP", { maximumFractionDigits: 0 });
   var oneDecimalFormatter = new Intl.NumberFormat("ja-JP", {
     minimumFractionDigits: 1,
@@ -2062,7 +2062,7 @@
     byId("live-region").textContent = message2;
   }
 
-  // tools/slot-balance/src/ui-v2/segments.ts
+  // tools/slot-analysis/src/ui-v2/segments.ts
   var MAX_DIRECT_ROWS = 10;
   var MAX_CUMULATIVE_POINTS = 11;
   var transfer;
@@ -2620,7 +2620,7 @@
     };
   }
 
-  // tools/slot-balance/src/ui-v2/app.ts
+  // tools/slot-analysis/src/ui-v2/app.ts
   var quickSnapshot;
   var quickStale = false;
   var activePanel;

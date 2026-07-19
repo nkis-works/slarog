@@ -74,12 +74,12 @@ for (const viewport of [
     { name: 'investment', prepare: prepareInvestment },
     { name: 'segments', prepare: prepareSegments },
   ]) {
-    test(`captures slot balance ${viewport.name} ${scenario.name}`, async ({ page }) => {
+    test(`captures slot analysis ${viewport.name} ${scenario.name}`, async ({ page }) => {
       await page.setViewportSize(viewport);
       await scenario.prepare(page);
       await settle(page);
       await page.screenshot({
-        path: `${artifactRoot}/slot-balance-${viewport.name}-${scenario.name}.png`,
+        path: `${artifactRoot}/slot-analysis-${viewport.name}-${scenario.name}.png`,
         fullPage: true,
         animations: 'disabled',
       });
@@ -98,7 +98,7 @@ for (const viewport of [
     await settle(page);
     await page.locator('#formulas').scrollIntoViewIfNeeded();
     await page.screenshot({
-      path: `${artifactRoot}/slot-balance-formulas-faq-${viewport.name}.png`,
+      path: `${artifactRoot}/slot-analysis-formulas-faq-${viewport.name}.png`,
       fullPage: true,
       animations: 'disabled',
     });

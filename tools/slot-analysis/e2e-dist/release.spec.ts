@@ -17,7 +17,7 @@ const pagePaths = [
   '/privacy.html',
   '/terms.html',
   '/404.html',
-  '/tools/slot-balance/index.html',
+  '/tools/slot-analysis/index.html',
 ];
 
 test('curated distribution serves all pages and assets without runtime output or overflow', async ({
@@ -29,8 +29,8 @@ test('curated distribution serves all pages and assets without runtime output or
     ...pagePaths,
     '/assets/styles.css',
     '/assets/app.js',
-    '/tools/slot-balance/assets/styles.css',
-    '/tools/slot-balance/assets/slot-balance-app.js',
+    '/tools/slot-analysis/assets/styles.css',
+    '/tools/slot-analysis/assets/slot-analysis-app.js',
   ]) {
     const response = await request.get(path);
     expect(response.status(), path).toBe(200);
@@ -59,9 +59,9 @@ test('public copy, section order, manual ad boundary and navigation are complete
   await page.goto('/index.html');
   const menu = page.getByRole('button', { name: 'メニュー' });
   await menu.click();
-  await expect(page.getByRole('link', { name: 'スロバランス' }).first()).toBeVisible();
-  await page.getByRole('link', { name: 'スロバランス' }).first().click();
-  await expect(page).toHaveURL(`${DIST_ORIGIN}/tools/slot-balance/`);
+  await expect(page.getByRole('link', { name: '出玉分析' }).first()).toBeVisible();
+  await page.getByRole('link', { name: '出玉分析' }).first().click();
+  await expect(page).toHaveURL(`${DIST_ORIGIN}/tools/slot-analysis/`);
 
   await expect(page.getByText('無料・登録不要・端末内で計算')).toBeVisible();
   await expect(page.getByText('未来の結果や設定を予測するものではありません。')).toBeVisible();
@@ -81,7 +81,7 @@ test('public copy, section order, manual ad boundary and navigation are complete
     const comments = childNodes.filter(
       (node) =>
         node.nodeType === Node.COMMENT_NODE &&
-        node.textContent?.includes('SLOT_BALANCE_MANUAL_AD_INSERTION_POINT'),
+        node.textContent?.includes('SLOT_ANALYSIS_MANUAL_AD_INSERTION_POINT'),
     );
     const marker = comments[0];
     const cta = main.querySelector('.slarog-cta');
@@ -102,6 +102,7 @@ test('public copy, section order, manual ad boundary and navigation are complete
 
   const visibleCopy = await page.locator('body').innerText();
   expect(visibleCopy).not.toMatch(/Phase\s*(?:1|2|2A|2B)|MVP|実装中|開発用|TODO|\bdebug\b/i);
+  expect(visibleCopy).not.toContain('スロバランス');
 
   for (const name of ['サポート', 'プライバシー', '利用規約']) {
     const link = page.getByRole('link', { name, exact: name !== 'プライバシー' }).first();
@@ -147,7 +148,7 @@ test('calculation performs no transport, storage, cookie, URL or console side ef
     transportCalls: [],
   });
   expect(await context.cookies()).toEqual([]);
-  expect(page.url()).toBe(`${DIST_ORIGIN}/tools/slot-balance/index.html`);
+  expect(page.url()).toBe(`${DIST_ORIGIN}/tools/slot-analysis/index.html`);
   expect(monitor.consoleMessages).toEqual([]);
   expect(monitor.pageErrors).toEqual([]);
   expect(monitor.externalRequests).toEqual([]);
@@ -168,9 +169,13 @@ test('headers, meta CSP, redirects and runtime surfaces stay fail-closed', async
   expect(headers).toContain('X-Robots-Tag: noindex, nofollow');
   expect(headers).not.toMatch(/unsafe-inline|unsafe-eval/i);
   expect(redirects.trim().split('\n')).toEqual([
-    '/tools/slot-balance /tools/slot-balance/ 301',
-    '/tools/slot-balance/index.html /tools/slot-balance/ 301',
+    '/tools/slot-balance /tools/slot-analysis/ 301',
+    '/tools/slot-balance/ /tools/slot-analysis/ 301',
+    '/tools/slot-balance/index.html /tools/slot-analysis/ 301',
+    '/tools/slot-analysis /tools/slot-analysis/ 301',
+    '/tools/slot-analysis/index.html /tools/slot-analysis/ 301',
   ]);
+  expect(redirects).not.toMatch(/^\/tools\/slot-analysis\/\s+\/tools\/slot-analysis\/\s+/m);
 
   for (const path of pagePaths) {
     await page.goto(path);

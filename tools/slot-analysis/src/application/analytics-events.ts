@@ -1,5 +1,5 @@
 export type AnalyticsEventName =
-  | 'slot_balance_open'
+  | 'slot_analysis_open'
   | 'mode_selected'
   | 'calculation_started'
   | 'calculation_completed'

@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tools/slot-balance/e2e',
+  testDir: './tools/slot-analysis/e2e',
   outputDir: './artifacts/playwright',
   fullyParallel: true,
   forbidOnly: Boolean(process.env['CI']),
@@ -14,7 +14,7 @@ export default defineConfig({
   },
   webServer: {
     command: 'npm run serve',
-    url: 'http://127.0.0.1:4173/tools/slot-balance/index.html',
+    url: 'http://127.0.0.1:4173/tools/slot-analysis/index.html',
     reuseExistingServer: true,
     timeout: 30_000,
   },

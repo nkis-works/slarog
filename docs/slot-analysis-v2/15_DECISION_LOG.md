@@ -208,3 +208,10 @@
 - Decision: Release Core UIは既存の`/tools/slot-balance/`へ接続し、このPRではURL、canonical、sitemap、redirectを変更しない。
 - Reason: UIと計算契約のレビューを配信・URL移行から分離し、既存公開経路を壊さない。
 - Rejected: UI実装と同時の`/tools/slot-analysis/`移行、旧URL転送、本番公開。
+
+### V2-D035 — Release Candidate migrates the public path with two compatibility layers
+
+- Decision: Release Candidateでは実ソースを`git mv`で`tools/slot-analysis/`へ移し、Cloudflare distは旧3形式と新URLの末尾スラッシュ揺れを301転送する。sourceにはGitHub Pages互換のnoindex案内ページだけを残し、meta refreshやJavaScript転送は使わない。
+- Reason: Cloudflareではサーバー転送を優先しながら、既存GitHub Pagesを停止していない期間も旧URLを404にせず、入力値をURLや別ページへ引き継がない。
+- Compatibility: `nkisworks-slot-balance`は未公開v1 Slarog転送payloadの識別子としてのみ保持する。新しい公開名、URL、bundle、build、test、event IDには使用しない。
+- Rejected: 実装コピー、0秒meta refresh、入力値付きredirect、旧URLのsitemap登録。

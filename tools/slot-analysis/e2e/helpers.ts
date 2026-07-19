@@ -1,6 +1,6 @@
 import { expect, type Page } from '@playwright/test';
 
-export const TOOL_PATH = '/tools/slot-balance/index.html';
+export const TOOL_PATH = '/tools/slot-analysis/index.html';
 export const TOOL_TITLE = 'スロット出玉分析｜機械割・実績出玉率・区間差枚を無料計算';
 
 export interface PageMonitor {

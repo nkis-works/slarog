@@ -5,7 +5,7 @@ artifacts/
 build/
 coverage/
 node_modules/
-tools/slot-balance/assets/slot-balance-app.js
+tools/slot-analysis/assets/slot-analysis-app.js
 *.html
 robots.txt
 sitemap.xml
