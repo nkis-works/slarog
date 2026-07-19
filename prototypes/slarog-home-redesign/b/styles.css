@@ -61,6 +61,7 @@ figure {
 .brand span {
   color: var(--muted);
   font-size: 10px;
+  letter-spacing: 0.04em;
 }
 .wide-nav {
   display: flex;
@@ -392,34 +393,30 @@ figure {
   line-height: 1.95;
 }
 .price-note {
-  margin-top: 56px;
-  padding: 8px 0 8px 28px;
-  border-left: 4px solid var(--blue);
+  max-width: 760px;
+  margin-top: 54px;
+  padding: 30px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
-.trial-note {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-}
-.trial-note span {
+.price-label {
   color: var(--soft);
-  font-size: 15px;
+  font-size: 13px;
 }
-.trial-note strong {
-  color: var(--blue);
-  font-size: clamp(38px, 5vw, 58px);
-  letter-spacing: -0.045em;
+.price-sentence {
+  display: grid;
+  gap: 7px;
+  margin-top: 10px;
 }
-.continue-note {
-  margin-top: 15px;
-  color: var(--soft);
-  font-size: 17px;
-  line-height: 1.8;
-}
-.continue-note strong {
+.price-sentence strong {
   color: var(--ink);
-  font-size: 24px;
-  white-space: nowrap;
+  font-size: clamp(29px, 4vw, 44px);
+  letter-spacing: -0.035em;
+}
+.price-sentence span {
+  color: var(--soft);
+  font-size: 18px;
+  line-height: 1.8;
 }
 .billing {
   max-width: 760px;
@@ -704,16 +701,7 @@ footer nav a {
   }
   .price-note {
     margin-top: 42px;
-    padding-left: 19px;
-  }
-  .trial-note {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .continue-note strong {
-    display: block;
-    margin-top: 4px;
+    padding: 24px 0;
   }
   .faq {
     grid-template-columns: 1fr;
