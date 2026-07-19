@@ -58,7 +58,7 @@ export async function expectNoHorizontalOverflow(page: Page): Promise<void> {
 export async function gotoDistTool(page: Page): Promise<void> {
   const response = await page.goto(DIST_TOOL_PATH);
   expect(response?.status()).toBe(200);
-  await expect(page).toHaveTitle('スロット出玉分析｜機械割・実績出玉率・区間差枚を無料計算');
+  await expect(page).toHaveTitle('スロット出玉分析｜実績出玉率・区間差枚・目標差枚を無料計算');
 }
 
 export async function calculateDistNet(page: Page): Promise<void> {
