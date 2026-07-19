@@ -159,6 +159,12 @@ summary:focus-visible {
   background: currentColor;
   opacity: 0.72;
 }
+.section-label {
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 820;
+  letter-spacing: 0;
+}
 .hero h1,
 .page-hero h1 {
   margin-top: 18px;
@@ -464,6 +470,45 @@ summary:focus-visible {
 }
 .muted-panel li::before { background: #a9b4c4; }
 
+.story {
+  padding-top: 86px;
+  padding-bottom: 70px;
+}
+.story-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(260px, 0.82fr);
+  align-items: center;
+  gap: 72px;
+}
+.story-copy h2 {
+  max-width: 720px;
+  margin-top: 16px;
+  font-size: 44px;
+  line-height: 1.24;
+  letter-spacing: 0;
+}
+.story-copy > p:not(.section-label) {
+  max-width: 680px;
+  margin-top: 22px;
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 2;
+}
+.story-visual {
+  width: min(330px, 100%);
+  justify-self: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 36px;
+  background: #10151f;
+  box-shadow: var(--shadow-soft);
+}
+.story-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .features { padding-top: 92px; }
 .feature-showcase {
   display: grid;
@@ -478,10 +523,9 @@ summary:focus-visible {
     "visual benefits";
   align-items: center;
   gap: 52px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.70);
-  padding: 34px;
+  border-top: 1px solid var(--line);
+  background: transparent;
+  padding: 54px 8px;
 }
 .feature-section.reverse {
   grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
@@ -520,7 +564,6 @@ summary:focus-visible {
 }
 .feature-label {
   color: var(--blue);
-  text-transform: uppercase;
 }
 .feature-copy h3 {
   margin-top: 12px;
@@ -604,6 +647,90 @@ summary:focus-visible {
 }
 
 .plans { padding-top: 82px; }
+.plans .section-heading { max-width: 920px; }
+.price-card {
+  max-width: 900px;
+  margin: 46px auto 0;
+  border: 1px solid rgba(31, 94, 255, 0.28);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, #ffffff 0%, #f3f7ff 100%);
+  padding: 42px;
+  box-shadow: var(--shadow-tight);
+}
+.price-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 24px;
+}
+.price-step {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 188px;
+  border-radius: var(--radius-lg);
+  background: #fff;
+  padding: 28px;
+}
+.price-step.trial-step { background: var(--surface-soft); }
+.price-step-label {
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 820;
+}
+.price-value {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 10px;
+  color: var(--ink);
+}
+.price-value strong {
+  color: var(--blue);
+  font-size: 42px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.price-value span {
+  color: var(--ink-soft);
+  font-size: 18px;
+  font-weight: 780;
+}
+.price-step > p:last-child {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.price-arrow {
+  align-self: center;
+  color: var(--blue);
+  font-size: 28px;
+  font-weight: 800;
+}
+.billing-notes {
+  display: grid;
+  gap: 8px;
+  margin-top: 26px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.8;
+}
+.billing-notes p {
+  position: relative;
+  padding-left: 20px;
+}
+.billing-notes p::before {
+  content: "";
+  position: absolute;
+  top: 0.74em;
+  left: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+}
+.price-actions { margin-top: 22px; }
 .plan-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -992,6 +1119,7 @@ details p {
   .feature-visual { min-height: 0; }
   .feature-copy,
   .feature-benefits { max-width: none; }
+  .story-grid { gap: 42px; }
   .trust-card,
   .support-layout,
   .legal-layout { grid-template-columns: 1fr; }
@@ -1071,6 +1199,16 @@ details p {
   .card-two { left: 10px; bottom: 50px; }
   .compare-grid,
   .plan-grid { grid-template-columns: 1fr; }
+  .story-grid,
+  .price-flow { grid-template-columns: 1fr; }
+  .story-copy h2 { font-size: 31px; }
+  .story-visual { width: min(300px, 100%); }
+  .price-card { padding: 24px; }
+  .price-arrow {
+    justify-self: center;
+    transform: rotate(90deg);
+  }
+  .price-step { min-height: 0; }
   .phone-shot { width: min(300px, 100%); }
   .shot-pair {
     grid-template-columns: 1fr;

@@ -17,19 +17,19 @@
   <rect x="112" y="112" width="56" height="56" rx="8" fill="#10151f"/>
   <path d="M129 153V127h7l17 17v-17h7v26h-7l-17-17v17h-7Z" fill="#ffffff"/>
   <text x="192" y="139" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="28" font-weight="800" fill="#10151f">NKIS Works</text>
-  <text x="192" y="169" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="18" font-weight="700" fill="#667184">Slarog official site</text>
+  <text x="192" y="169" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="18" font-weight="700" fill="#667184">スラログ公式サイト</text>
   <text x="112" y="282" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="62" font-weight="900" fill="#10151f">ホールのスランプグラフを、</text>
   <text x="112" y="367" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="70" font-weight="900" fill="#1f5eff">見返せる記録に。</text>
-  <text x="116" y="435" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="27" font-weight="600" fill="#4c586a">過去の推移をつないで比較・検証。</text>
+  <text x="116" y="435" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="27" font-weight="600" fill="#4c586a">日付や条件から探して、複数日の流れを見返せます。</text>
   <g transform="translate(760 132)">
     <rect x="0" y="0" width="300" height="92" rx="8" fill="#10151f"/>
-    <text x="28" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="18" font-weight="800" fill="#ffffff">無料で1台を記録</text>
-    <text x="28" y="68" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="18" font-weight="700" fill="#b7c4d8">日数無制限・広告なし</text>
+    <text x="28" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="18" font-weight="800" fill="#ffffff">14日間無料体験</text>
+    <text x="28" y="68" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="18" font-weight="700" fill="#b7c4d8">その後は月額380円</text>
     <rect x="0" y="116" width="300" height="72" rx="8" fill="#edf4ff" stroke="#d9e1ec"/>
     <text x="26" y="160" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="22" font-weight="850" fill="#1f5eff">グラフ作成</text>
     <rect x="0" y="204" width="300" height="72" rx="8" fill="#eefaf6" stroke="#d9e1ec"/>
     <text x="26" y="248" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="22" font-weight="850" fill="#16865a">カレンダー整理</text>
     <rect x="0" y="292" width="300" height="72" rx="8" fill="#eef7fb" stroke="#d9e1ec"/>
-    <text x="26" y="336" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="22" font-weight="850" fill="#0e9db0">月額500円で台数無制限</text>
+    <text x="26" y="336" font-family="-apple-system, BlinkMacSystemFont, 'Noto Sans JP', sans-serif" font-size="22" font-weight="850" fill="#0e9db0">複数日の記録を連結</text>
   </g>
 </svg>

@@ -12,9 +12,9 @@ const requiredFiles = new Set([
   'sitemap.xml',
   '_headers',
   '_redirects',
-  'tools/slot-balance/index.html',
-  'tools/slot-balance/assets/styles.css',
-  'tools/slot-balance/assets/slot-balance-app.js',
+  'tools/slot-analysis/index.html',
+  'tools/slot-analysis/assets/styles.css',
+  'tools/slot-analysis/assets/slot-analysis-app.js',
 ]);
 const exactCsp = [
   "default-src 'self'",
@@ -68,9 +68,9 @@ export async function validateDist({ expectedMode, expectedOrigin } = {}) {
     'dist に秘密情報らしき文字列を含められません。',
   );
 
-  const toolHtml = await readFile(resolve(dist, 'tools/slot-balance/index.html'), 'utf8');
+  const toolHtml = await readFile(resolve(dist, 'tools/slot-analysis/index.html'), 'utf8');
   assert(
-    (toolHtml.match(/SLOT_BALANCE_MANUAL_AD_INSERTION_POINT/g) ?? []).length === 1,
+    (toolHtml.match(/SLOT_ANALYSIS_MANUAL_AD_INSERTION_POINT/g) ?? []).length === 1,
     '手動広告の挿入位置は1か所だけ必要です。',
   );
   assert(
@@ -93,8 +93,10 @@ export async function validateDist({ expectedMode, expectedOrigin } = {}) {
     '公開HTMLに制作途中の文言があります。',
   );
 
-  const trackedBundle = await readFile(resolve('tools/slot-balance/assets/slot-balance-app.js'));
-  const distBundle = await readFile(resolve(dist, 'tools/slot-balance/assets/slot-balance-app.js'));
+  const trackedBundle = await readFile(resolve('tools/slot-analysis/assets/slot-analysis-app.js'));
+  const distBundle = await readFile(
+    resolve(dist, 'tools/slot-analysis/assets/slot-analysis-app.js'),
+  );
   assert(trackedBundle.equals(distBundle), '追跡bundleとdist bundleが一致しません。');
 
   const headers = await readFile(resolve(dist, '_headers'), 'utf8');
@@ -118,8 +120,8 @@ export async function validateDist({ expectedMode, expectedOrigin } = {}) {
   const redirects = await readFile(resolve(dist, '_redirects'), 'utf8');
   assert(
     redirects.trim() ===
-      '/tools/slot-balance /tools/slot-balance/ 301\n/tools/slot-balance/index.html /tools/slot-balance/ 301',
-    '_redirects が承認済みの末尾スラッシュ正規化だけになっていません。',
+      '/tools/slot-balance /tools/slot-analysis/ 301\n/tools/slot-balance/ /tools/slot-analysis/ 301\n/tools/slot-balance/index.html /tools/slot-analysis/ 301\n/tools/slot-analysis /tools/slot-analysis/ 301\n/tools/slot-analysis/index.html /tools/slot-analysis/ 301',
+    '_redirects が承認済みの旧URL転送と末尾スラッシュ正規化だけになっていません。',
   );
 
   const htmlEntries = textEntries.filter(([file]) => file.endsWith('.html'));
@@ -173,10 +175,11 @@ export async function validateDist({ expectedMode, expectedOrigin } = {}) {
       );
     }
     assert(
-      (sitemap.match(new RegExp(`${escapeRegExp(origin)}/tools/slot-balance/`, 'g')) ?? [])
+      (sitemap.match(new RegExp(`${escapeRegExp(origin)}/tools/slot-analysis/`, 'g')) ?? [])
         .length === 1,
-      'sitemap.xmlのスロバランスURLは末尾スラッシュ付きで1件だけ必要です。',
+      'sitemap.xmlのスロット出玉分析URLは末尾スラッシュ付きで1件だけ必要です。',
     );
+    assert(!sitemap.includes('/tools/slot-balance'), 'sitemap.xmlに旧URLを含められません。');
   }
 
   return { files };

@@ -11,13 +11,13 @@ export default tseslint.config(
       'coverage/**',
       'dist/**',
       'node_modules/**',
-      'tools/slot-balance/assets/slot-balance-app.js',
+      'tools/slot-analysis/assets/slot-analysis-app.js',
     ],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ['tools/slot-balance/src/**/*.ts', 'tools/slot-balance/tests/**/*.ts'],
+    files: ['tools/slot-analysis/src/**/*.ts', 'tools/slot-analysis/tests/**/*.ts'],
     languageOptions: {
       globals: globals.browser,
     },
@@ -36,8 +36,8 @@ export default tseslint.config(
     files: [
       'playwright.config.ts',
       'playwright.dist.config.ts',
-      'tools/slot-balance/e2e/**/*.ts',
-      'tools/slot-balance/e2e-dist/**/*.ts',
+      'tools/slot-analysis/e2e/**/*.ts',
+      'tools/slot-analysis/e2e-dist/**/*.ts',
     ],
     languageOptions: {
       globals: globals.node,
