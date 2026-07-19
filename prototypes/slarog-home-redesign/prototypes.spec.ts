@@ -122,8 +122,10 @@ test('Bは日本語の編集記事を基調にし、SaaS風の視覚要素へ戻
   await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#f4f0e8');
   await expect(page.locator('.use-case-notes > p')).toHaveCount(3);
   await expect(page.locator('.section-mark')).toHaveCount(3);
-  await expect(page.locator('.maker-sign')).toContainText('つくり手');
+  await expect(page.locator('.maker-sign')).toHaveCount(0);
   await expect(page.locator('.screen-stage')).toContainText('実際のアプリ画面です');
+  await expect(page.locator('.screen-stage figcaption span')).toHaveText(['01', '02', '03']);
+  await expect(page.locator('.use-case-notes > p > span')).toHaveText(['01', '02', '03']);
 
   const headingFamily = await page
     .locator('h1')
@@ -139,7 +141,7 @@ test('Bは日本語の編集記事を基調にし、SaaS風の視覚要素へ戻
 test('BはNKIS Worksを会社ではなく作り手として説明する', async ({ page }) => {
   await page.goto(`${root}/b/`);
   await expect(page.locator('.brand')).toContainText('グラフ記録アプリ');
-  await expect(page.locator('#story')).toContainText('つくり手 NKIS Works');
+  await expect(page.locator('#story')).not.toContainText('つくり手');
   await expect(page.locator('#story')).toContainText(
     'NKIS Worksが作っている個人向けの記録アプリです。',
   );

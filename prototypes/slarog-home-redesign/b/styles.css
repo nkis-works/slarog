@@ -250,14 +250,11 @@ h2 {
 }
 
 .screen figcaption span {
-  width: 22px;
-  height: 22px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--rust);
-  border-radius: 50%;
   color: var(--rust);
-  font-family: 'Yu Mincho', serif;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.06em;
 }
 
 .screen-one {
@@ -329,36 +326,19 @@ h2 {
 
 .use-case-notes p span {
   color: var(--rust);
-  font-family: 'Yu Mincho', serif;
-  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.06em;
 }
 
 .maker {
-  width: min(calc(100% - 48px), 1050px);
+  width: min(calc(100% - 48px), 940px);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 150px 1.05fr 0.95fr;
-  gap: 5vw;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 7vw;
   padding: 150px 0;
-}
-
-.maker-sign {
-  width: 112px;
-  height: 112px;
-  display: grid;
-  align-content: center;
-  gap: 6px;
-  align-self: start;
-  border: 1px solid var(--rust);
-  color: var(--rust);
-  text-align: center;
-  transform: rotate(-3deg);
-}
-
-.maker-sign span {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
 }
 
 .maker h2 {
@@ -827,14 +807,6 @@ footer nav a {
     grid-column: 2;
   }
 
-  .maker {
-    grid-template-columns: 120px 1fr;
-  }
-
-  .maker-copy {
-    grid-column: 2;
-  }
-
   .pricing {
     grid-template-columns: 1fr;
   }
@@ -923,11 +895,6 @@ footer nav a {
     font-size: 9px;
   }
 
-  .screen figcaption span {
-    width: 18px;
-    height: 18px;
-  }
-
   .section-mark {
     width: 43px;
     height: 43px;
@@ -962,13 +929,7 @@ footer nav a {
     padding: 98px 0;
   }
 
-  .maker-sign {
-    width: 90px;
-    height: 90px;
-  }
-
   .maker-copy {
-    grid-column: 1;
     padding-top: 27px;
   }
 
