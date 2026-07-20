@@ -10,6 +10,7 @@ if (!['preview', 'production'].includes(mode)) {
 }
 
 const siteOrigin = mode === 'production' ? validateSiteOrigin(process.env['SITE_ORIGIN']) : null;
+const maintenance = mode === 'production' && process.env['SITE_MAINTENANCE'] === '1';
 const root = resolve('.');
 const dist = resolve('dist');
 const htmlFiles = ['index.html', 'support.html', 'privacy.html', 'terms.html', '404.html'];
@@ -53,24 +54,38 @@ await writeFile(resolve(dist, 'robots.txt'), createRobots());
 await writeFile(resolve(dist, 'sitemap.xml'), createSitemap());
 
 const headersTemplate = await readFile(resolve(root, 'deploy/cloudflare/_headers'), 'utf8');
-const headers =
-  mode === 'preview'
-    ? `${headersTemplate.trimEnd()}\n  X-Robots-Tag: noindex, nofollow\n`
-    : headersTemplate;
+let headers = headersTemplate;
+if (mode === 'preview') {
+  headers = `${headersTemplate.trimEnd()}\n  X-Robots-Tag: noindex, nofollow\n`;
+} else if (maintenance) {
+  headers = `${headersTemplate.trimEnd()}\n  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet\n`;
+}
 await writeFile(resolve(dist, '_headers'), headers);
 await cp(resolve(root, 'deploy/cloudflare/_redirects'), resolve(dist, '_redirects'));
 
-await validateDist({ expectedMode: mode, expectedOrigin: siteOrigin });
+await validateDist({
+  expectedMode: maintenance ? 'maintenance' : mode,
+  expectedOrigin: siteOrigin,
+});
 
 function prepareHtml(source, page) {
   let html = source
     .replace(/\s*<meta\s+http-equiv="Content-Security-Policy"[\s\S]*?>/i, '')
-    .replace(/\s*<meta\s+name="robots"[^>]*>/gi, '')
+    .replace(/\s*<meta\s+name="(?:robots|googlebot|bingbot)"[^>]*>/gi, '')
     .replace(/\s*<link\s+rel="canonical"[^>]*>/gi, '')
     .replace(/\s*<meta\s+property="og:url"[^>]*>/gi, '');
 
   const securityMeta = `\n    <meta http-equiv="Content-Security-Policy" content="${csp}">`;
   html = html.replace(/(<meta\s+name="viewport"[^>]*>)/i, `$1${securityMeta}`);
+
+  if (maintenance) {
+    const searchExclusion = [
+      '<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">',
+      '<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">',
+      '<meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet">',
+    ].join('\n    ');
+    return html.replace(/(<meta\s+name="viewport"[^>]*>)/i, `$1\n    ${searchExclusion}`);
+  }
 
   if (mode === 'preview' || page === '404.html') {
     return html.replace(
@@ -89,13 +104,17 @@ function createRobots() {
     return 'User-agent: *\nDisallow: /\n';
   }
 
+  if (maintenance) {
+    return 'User-agent: *\nAllow: /\n';
+  }
+
   return `User-agent: *\nAllow: /\n\nSitemap: ${siteOrigin}/sitemap.xml\n`;
 }
 
 function createSitemap() {
   const opening =
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-  if (mode === 'preview') {
+  if (mode === 'preview' || maintenance) {
     return `${opening}\n</urlset>\n`;
   }
 

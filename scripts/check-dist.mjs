@@ -130,14 +130,57 @@ export async function validateDist({ expectedMode, expectedOrigin } = {}) {
     assert(cspMatch?.[1] === metaCsp, `${file} のmeta CSPが配布用CSPと一致しません。`);
   }
 
-  const preview = headers.includes('X-Robots-Tag: noindex, nofollow');
+  const maintenanceRobots = 'noindex, nofollow, noarchive, nosnippet';
+  const maintenance = headers.includes(`X-Robots-Tag: ${maintenanceRobots}`);
+  const preview = !maintenance && headers.includes('X-Robots-Tag: noindex, nofollow');
+  const actualMode = maintenance ? 'maintenance' : preview ? 'preview' : 'production';
   if (expectedMode) {
-    assert(preview === (expectedMode === 'preview'), 'dist の公開モードが指定と一致しません。');
+    assert(actualMode === expectedMode, 'dist の公開モードが指定と一致しません。');
   }
 
   const robots = await readFile(resolve(dist, 'robots.txt'), 'utf8');
   const sitemap = await readFile(resolve(dist, 'sitemap.xml'), 'utf8');
-  if (preview) {
+  if (maintenance) {
+    assert(robots === 'User-agent: *\nAllow: /\n', 'maintenanceのrobots.txtが一致しません。');
+    assert(!/<loc>/i.test(sitemap), 'maintenanceのsitemap.xmlに公開URLを含められません。');
+    for (const [file, html] of htmlEntries) {
+      for (const name of ['robots', 'googlebot', 'bingbot']) {
+        assert(
+          new RegExp(`<meta\\s+name="${name}"\\s+content="${maintenanceRobots}"\\s*>`, 'i').test(
+            html,
+          ),
+          `${file} にmaintenance用${name}指定がありません。`,
+        );
+      }
+      assert(
+        !/rel="canonical"|property="og:url"/i.test(html),
+        `${file} にmaintenance用でない公開URLがあります。`,
+      );
+    }
+
+    const indexHtml = await readFile(resolve(dist, 'index.html'), 'utf8');
+    assert(
+      !/月額500円|¥500|500円|無料プラン|実台1台|期限なし|スランプグラフ|差枚グラフ|7日1000枚|\+2000枚|スラログ|Slarog|スロバランス/i.test(
+        indexHtml,
+      ),
+      'maintenanceのトップページに非公開対象の製品情報があります。',
+    );
+    assert(
+      !/<(?:a|img|script)\b/i.test(indexHtml),
+      'maintenanceのトップページにリンク、画像、またはJavaScriptがあります。',
+    );
+    for (const copy of [
+      'NKIS Works',
+      '正式公開に向けて準備中です。',
+      '製品情報は、公開準備が整い次第掲載します。',
+      '© 2026 NKIS Works',
+    ]) {
+      assert(
+        indexHtml.includes(copy),
+        `maintenanceのトップページに必要な文言がありません: ${copy}`,
+      );
+    }
+  } else if (preview) {
     assert(robots === 'User-agent: *\nDisallow: /\n', 'previewのrobots.txtは全面拒否が必要です。');
     assert(!/<loc>/i.test(sitemap), 'previewのsitemap.xmlに公開URLを含められません。');
     for (const [file, html] of htmlEntries) {
