@@ -1,6 +1,6 @@
 # NKIS Works / Slarog Website
 
-スラログ公式サイトの静的ファイル一式です。ビルド不要で、GitHub Pages の `/ (root)` から公開できます。
+スラログ公式サイトの静的ファイル一式です。公開物は `pnpm run build` で `dist/` に生成します。
 
 ## 構成
 
@@ -19,15 +19,24 @@ assets/
   app.js
   favicon.svg
   og-image.svg
+scripts/
+  build.mjs
+  check-links.mjs
+tests/
+  site-content.test.mjs
+package.json
 ```
 
-## ローカル確認
+## ローカル確認・リリース前テスト
 
-ブラウザで `index.html` を開けば確認できます。ローカルサーバーで見る場合は次のコマンドを使います。
+Node.js 20以降とpnpmを使用します。外部パッケージはありません。
 
-```bash
-python3 -m http.server 4173
+```sh
+pnpm run preflight
+python3 -m http.server 4173 --directory dist
 ```
+
+`preflight` は静的ビルド、商用仕様のunit test、内部リンク・画像参照・ページ内アンカーの検査を実行します。モバイル幅・デスクトップ幅のPlaywright Visual QAは、生成後の `dist/` を対象に実施します。
 
 ## GitHub Pages 公開手順
 
@@ -39,14 +48,16 @@ python3 -m http.server 4173
 4. Branch: `main` / Folder: `/(root)`
 5. Save
 
-想定公開URLは `https://nkis-works.github.io/slarog/` です。リポジトリ名や独自ドメインを変える場合は、公開直前に `robots.txt` と `sitemap.xml` のURLを差し替えてください。
+正式公開URLは `https://nkisworks.com/` です。
 
 ## 公開前チェック
 
-- `support@nkisworks.com` が実際に受信できることを確認する
+- `slarog.app@gmail.com` が実際に受信できることを確認する
 - App Store / Google Play 公開後のURLを追加する
 - 価格、無料期間、サブスクリプション条件をサイト、ストア説明、アプリ内表示で一致させる
 - 法人化後の正式名称、所在地、連絡先、特商法表記が必要な場合は追加する
+
+実際のApp Store URLが確定するまでは、偽リンクや推測URLを置かず「準備中」表示を維持します。公開時の差し替え手順は `RELEASE_CHECKLIST.md` を参照してください。
 
 ## 表現方針
 
