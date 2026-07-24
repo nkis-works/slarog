@@ -5,15 +5,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f6f8fb">
+  <link rel="canonical" href="https://nkisworks.com/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="assets/og-image.svg">
+  <meta property="og:site_name" content="NKIS Works">
+  <meta property="og:url" content="https://nkisworks.com/">
+  <meta property="og:image" content="https://nkisworks.com/assets/og-image-v2.png">
+  <meta property="og:image:width" content="1733">
+  <meta property="og:image:height" content="907">
+  <meta property="og:image:alt" content="複数の保存済みグラフを連結して振り返るイメージ">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/styles.css">
 
   <title>NKIS Works｜スラログ公式サイト</title>
-  <meta name="description" content="スラログは、ホールのスランプグラフを画像から作成し、店舗・機種・台番号ごとに整理。複数日の推移をつないで、過去の動きや自分なりの傾向を比較・検証できる記録アプリです。">
+  <meta name="description" content="スラログは、画像からスランプグラフを作成し、日付・店舗・機種・台番号ごとに保存。複数日の記録を連結して、あとから振り返れるiOS・Android対応の記録アプリです。">
   <meta property="og:title" content="NKIS Works｜スラログ公式サイト">
-  <meta property="og:description" content="ホールのスランプグラフを、見返せる記録に。画像から作成し、複数日の推移や自分なりの傾向を比較・検証できます。">
+  <meta property="og:description" content="スランプグラフを、保存してつなぐ。画像から作成し、複数日の記録を連結して、あとから振り返れます。">
+  <meta name="twitter:title" content="NKIS Works｜スラログ公式サイト">
+  <meta name="twitter:description" content="スランプグラフを、保存してつなぐ。">
+  <meta name="twitter:image" content="https://nkisworks.com/assets/og-image-v2.png">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -23,12 +33,12 @@
     "applicationCategory": "UtilityApplication",
     "operatingSystem": "iOS, Android",
     "publisher": {"@type": "Organization", "name": "NKIS Works"},
-    "description": "ホールのスランプグラフを画像から作成し、店舗・機種・台番号ごとに整理。複数日の推移をつないで、過去の動きや自分なりの傾向を比較・検証できる記録アプリです。",
+    "description": "画像からスランプグラフを作成し、日付・店舗・機種・台番号ごとに保存。複数日の記録を連結して、あとから振り返れる記録アプリです。",
     "offers": {
       "@type": "Offer",
       "priceCurrency": "JPY",
       "price": "380",
-      "description": "対象となる新規ユーザーは14日間無料。無料体験終了後は月額380円で自動更新。",
+      "description": "初回の正常なグラフ保存から14日間はアプリ内で全機能を無料利用可能。継続利用には月額380円のプラン登録が必要。",
       "availability": "https://schema.org/PreOrder"
     }
   }
@@ -38,7 +48,7 @@
 
 <header class="site-header" data-header>
   <nav class="nav" aria-label="メインナビゲーション">
-    <a class="brand" href="index.html" aria-label="NKIS Works トップへ">
+    <a class="brand" href="/" aria-label="NKIS Works トップへ">
       <span class="brand-mark" aria-hidden="true">N</span>
       <span class="brand-text">NKIS Works<small>Slarog</small></span>
     </a>
@@ -48,7 +58,7 @@
       <a href="#review">振り返り</a>
       <a href="#plans">プラン</a>
       <a href="#faq">FAQ</a>
-      <a href="support.html">サポート</a>
+      <a href="/support/">サポート</a>
     </div>
   </nav>
 </header>
@@ -58,16 +68,16 @@
       <div class="hero-grid section-pad">
         <div class="hero-copy reveal">
           <p class="eyebrow"><span></span>Slarog by NKIS Works</p>
-          <h1>ホールのスランプグラフを、<br><em>見返せる記録に。</em></h1>
-          <p class="hero-lead">写真やスクリーンショットからグラフを作成し、店舗・機種・台番号ごとに整理。過去の推移をつなげて、単日では見えにくい動きを自分なりに比較・検証できます。</p>
+          <h1>スランプグラフを、<br><em>保存してつなぐ。</em></h1>
+          <p class="hero-lead">画像からスランプグラフを作成し、日付・店舗・機種・台番号ごとに保存。複数日の記録を連結して、あとから振り返れます。</p>
           <div class="hero-actions" aria-label="主要リンク">
             <a class="button primary" href="#features">できることを見る</a>
             <a class="button ghost" href="#plans">料金プラン</a>
           </div>
           <div class="hero-meta" aria-label="主な特徴">
             <span>画像からグラフを作成</span>
-            <span>複数日をつないで比較</span>
-            <span>傾向比較・検証に</span>
+            <span>複数日の記録を連結</span>
+            <span>PNG出力に対応</span>
             <span>カレンダーで振り返る</span>
           </div>
         </div>
@@ -104,10 +114,10 @@
     </section>
 
     <section class="section-pad quiet-strip reveal" id="review">
-      <p class="review-kicker">残すから、比べられる。</p>
-      <h2>過去のグラフを積み上げて、<br>自分なりの傾向を探る。</h2>
-      <p class="review-claim">過去のグラフは、残して初めて比較できる。</p>
-      <p class="review-lead">日付・店舗・機種・台番号ごとにグラフを整理し、同じ台や機種の推移を時系列で比較。単日では分かりにくい動きを、複数日の記録から振り返れます。</p>
+      <p class="review-kicker">作る、保存する、つなぐ。</p>
+      <h2>過去のグラフを積み上げて、<br>あとから振り返る。</h2>
+      <p class="review-claim">画像を、探しやすく見返しやすい記録へ。</p>
+      <p class="review-lead">日付・店舗・機種・台番号ごとにグラフを整理し、同じ台や機種の記録を時系列で連結。保存した記録をカレンダーから振り返れます。</p>
     </section>
 
     <section class="section-pad problem-section">
@@ -279,7 +289,7 @@
         </div>
         <div class="trust-copy">
           <p>スラログは、保存したグラフを見返し、ユーザー自身が過去の推移を確認するための記録・比較の補助ツールです。日付や条件をそろえて残すことで、あとから落ち着いて振り返れます。</p>
-          <p class="trust-note">設定判別や勝敗、利益を保証するものではありません。</p>
+          <p class="trust-note">勝敗、利益、設定や今後の結果を保証するものではありません。</p>
           <div class="policy-tags">
             <span>保存データを見返す</span><span>比較の補助</span><span>記録ベースで確認</span><span>自分で振り返る</span>
           </div>
@@ -290,28 +300,28 @@
     <section class="plans section-pad" id="plans">
       <div class="section-heading centered reveal">
         <p class="eyebrow"><span></span>Plans</p>
-        <h2>まずは14日間、すべての主要機能を無料で。</h2>
-        <p>対象となる新規ユーザーは14日間無料で利用できます。無料体験終了後も継続する場合は、月額380円の自動更新サブスクリプションが必要です。</p>
+        <h2>初回の正常なグラフ保存から14日間、全機能を無料で。</h2>
+        <p>インストールや初回起動では始まりません。無料期間終了後も継続する場合は、月額380円の自動更新プランへご自身で登録してください。未登録のまま自動課金されることはありません。</p>
       </div>
       <div class="plan-grid reveal">
         <article class="plan-card">
-          <p class="plan-kicker">無料体験</p>
+          <p class="plan-kicker">アプリ内無料利用期間</p>
           <h3>14日間無料</h3>
-          <p class="plan-price">¥0<span>対象となる新規ユーザー</span></p>
-          <p>無料体験中は、作成・保存・アーカイブ・連結・PNG共有などの主要機能を利用できます。</p>
+          <p class="plan-price">¥0<span>初回の正常保存完了から</span></p>
+          <p>無料期間中は、作成・保存・アーカイブ・連結・PNG出力などの全機能を利用できます。</p>
           <ul class="plan-list">
             <li>14日間</li>
             <li>広告なし</li>
             <li>アカウント登録・サインイン不要</li>
             <li>主要機能を利用可能</li>
-            <li>対象となる新規ユーザーに提供</li>
+            <li>ストア側の追加無料トライアルなし</li>
           </ul>
         </article>
         <article class="plan-card highlight">
           <p class="plan-kicker">月額プラン</p>
           <h3>記録を継続して振り返る</h3>
           <p class="plan-price">¥380<span>1か月・自動更新</span></p>
-          <p>無料体験終了後も、スラログの主要機能を継続して利用できます。</p>
+          <p>アプリ内無料期間終了後も、スラログの全機能を継続して利用できます。</p>
           <ul class="plan-list">
             <li>1か月ごとに自動更新</li>
             <li>作成・保存・アーカイブ・連結</li>
@@ -321,7 +331,7 @@
           </ul>
         </article>
       </div>
-      <p class="note-text centered">無料体験終了日の24時間前までに解約しない場合、サブスクリプションは自動更新されます。解約はApple IDのサブスクリプション設定から行えます。アプリを削除しただけでは解約されません。</p>
+      <p class="note-text centered">月額プランへ登録した場合のみ、1か月ごとに自動更新されます。解約はApp StoreまたはGoogle Playのサブスクリプション管理から行え、解約後も現在の有効期限までは利用できます。アプリを削除しただけでは解約されません。</p>
     </section>
 
     <section class="faq section-pad" id="faq">
@@ -331,20 +341,24 @@
       </div>
       <div class="faq-list reveal">
         <details open>
-          <summary>無料体験は何日間ですか？</summary>
-          <p>対象となる新規ユーザーは14日間無料で利用できます。無料体験終了後は、解約していなければ月額380円で自動更新されます。</p>
+          <summary>無料期間はいつ始まり、何日間ですか？</summary>
+          <p>初回の正常なグラフ保存が完了した日時から14日間です。インストール、初回起動、画像選択だけでは開始しません。</p>
         </details>
         <details>
           <summary>広告やアカウント登録はありますか？</summary>
           <p>広告は表示されません。アカウント登録やサインインも必要ありません。</p>
         </details>
         <details>
-          <summary>無料体験中に使える機能は何ですか？</summary>
+          <summary>無料期間中に使える機能は何ですか？</summary>
           <p>作成・保存・アーカイブ・連結・連続取り込み・PNG共有などの主要機能を利用できます。</p>
         </details>
         <details>
           <summary>サブスクリプションはどこで解約できますか？</summary>
-          <p>Apple IDのサブスクリプション設定から解約できます。アプリを削除しただけでは解約されません。</p>
+          <p>iOSはApp Store、AndroidはGoogle Playのサブスクリプション管理から解約できます。解約後も現在の有効期限までは利用できます。アプリを削除しただけでは解約されません。</p>
+        </details>
+        <details>
+          <summary>無料期間が終わると自動で課金されますか？</summary>
+          <p>いいえ。継続利用する場合は月額プランへご自身で登録する必要があり、未登録のまま自動的に料金が発生することはありません。</p>
         </details>
         <details>
           <summary>好調日は何を示していますか？</summary>
@@ -370,8 +384,8 @@
           <span>iOS・Android対応予定</span><span>App Store 準備中</span><span>Google Play 準備中</span>
         </div>
         <div class="hero-actions centered">
-          <a class="button primary" href="support.html">サポートを見る</a>
-          <a class="button ghost" href="privacy.html">プライバシーポリシー</a>
+          <a class="button primary" href="/support/">サポートを見る</a>
+          <a class="button ghost" href="/privacy/">プライバシーポリシー</a>
         </div>
       </div>
     </section>
@@ -380,16 +394,17 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <div>
-      <a class="footer-brand" href="index.html">NKIS Works</a>
+      <a class="footer-brand" href="/">NKIS Works</a>
       <p>スラログ公式サイト。遊技記録を整理し、あとから振り返りやすくするためのプロダクトです。</p>
     </div>
     <div class="footer-links" aria-label="フッターリンク">
-      <a href="support.html">サポート</a>
-      <a href="privacy.html">プライバシーポリシー</a>
-      <a href="terms.html">利用規約</a>
+      <a href="/support/">サポート</a>
+      <a href="/privacy/">プライバシーポリシー</a>
+      <a href="/terms/">利用規約</a>
+      <a href="/legal/">販売者情報</a>
     </div>
   </div>
-  <small>© 2026 NKIS Works. All rights reserved.</small>
+  <small>© 2026 NKIS Works. All Rights Reserved.</small>
 </footer>
 
   <script src="assets/app.js"></script>

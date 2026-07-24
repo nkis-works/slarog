@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
+    "build:preview": "node scripts/build.mjs",
+    "build:production": "node scripts/build.mjs --production",
     "test": "node --test tests/site-content.test.mjs",
     "test:links": "node scripts/check-links.mjs dist",
-    "preflight": "pnpm run build && pnpm run test && pnpm run test:links"
+    "preflight": "pnpm run build:preview && pnpm run test && pnpm run test:links"
   }
 }
