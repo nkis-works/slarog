@@ -17,7 +17,7 @@ test('page, relative links, privacy copy, network and accessibility are sound', 
 
   await expect(page.getByRole('heading', { name: 'スロバランス', level: 1 })).toBeVisible();
   await expect(
-    page.getByText('設定判別、勝敗予測、続行・ヤメ判断を行うツールではありません。'),
+    page.getByText('入力した数値を整理し、計算過程を確認するためのツールです。遊技結果や今後の結果を保証するものではありません。'),
   ).toBeVisible();
   await expect(page.getByText('入力した数値は、この端末内で計算されます。')).toBeVisible();
   await expect(
