@@ -12,7 +12,12 @@ const headers = `/*
   Permissions-Policy: accelerometer=(), autoplay=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
   Content-Security-Policy: default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'
 `;
-const redirects = pages.map((page) => `/${page}.html /${page}/ 301`).join("\n") + "\n";
+const redirects = pages
+  .flatMap((page) => [
+    `/${page} /${page}/ 301`,
+    `/${page}.html /${page}/ 301`,
+  ])
+  .join("\n") + "\n";
 
 await rm(dist, { recursive: true, force: true });
 await mkdir(resolve(dist, "assets"), { recursive: true });

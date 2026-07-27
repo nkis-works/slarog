@@ -10,6 +10,7 @@ const pages = Object.fromEntries(
   ])),
 );
 const all = Object.values(pages).join("\n");
+const redirects = await readFile(new URL("../dist/_redirects", import.meta.url), "utf8");
 
 test("all pages are excluded from search before launch", () => {
   for (const page of Object.values(pages)) {
@@ -46,4 +47,11 @@ test("support and operator contacts use their intended roles", () => {
   assert.doesNotMatch(pages.support, /070-2363-5829/);
   assert.match(pages.legal, /nkis\.base@gmail\.com/);
   assert.match(pages.legal, /070-2363-5829/);
+});
+
+test("all legal and support URL variants normalize with an explicit 301", () => {
+  for (const page of ["support", "privacy", "terms", "legal"]) {
+    assert.match(redirects, new RegExp(`^/${page} /${page}/ 301$`, "m"));
+    assert.match(redirects, new RegExp(`^/${page}\\.html /${page}/ 301$`, "m"));
+  }
 });
