@@ -11,11 +11,17 @@ const pages = Object.fromEntries(
 );
 const all = Object.values(pages).join("\n");
 const redirects = await readFile(new URL("../dist/_redirects", import.meta.url), "utf8");
+const robots = await readFile(new URL("../dist/robots.txt", import.meta.url), "utf8");
 
 test("all pages are excluded from search before launch", () => {
   for (const page of Object.values(pages)) {
     assert.match(page, /noindex, nofollow, noarchive, nosnippet/);
   }
+  assert.equal(
+    robots,
+    "User-agent: *\nAllow: /\n",
+    "crawlers must be allowed to revisit pages and observe noindex",
+  );
 });
 
 test("maintenance top contains only the approved prelaunch essentials", () => {

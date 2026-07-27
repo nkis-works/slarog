@@ -33,7 +33,9 @@ for (const asset of ["favicon.svg", "prelaunch.css", "slarog_logo.png"]) {
   await cp(resolve(root, "assets", asset), resolve(dist, "assets", asset));
 }
 
-await writeFile(resolve(dist, "robots.txt"), "User-agent: *\nDisallow: /\n");
+// Google must be able to recrawl the maintenance pages so it can observe the
+// noindex directives above and retire any stale prelaunch search snippets.
+await writeFile(resolve(dist, "robots.txt"), "User-agent: *\nAllow: /\n");
 await writeFile(
   resolve(dist, "sitemap.xml"),
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n</urlset>\n',
