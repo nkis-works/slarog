@@ -12,6 +12,8 @@ const pages = Object.fromEntries(
 const all = Object.values(pages).join("\n");
 const redirects = await readFile(new URL("../dist/_redirects", import.meta.url), "utf8");
 const robots = await readFile(new URL("../dist/robots.txt", import.meta.url), "utf8");
+const prelaunchCss = await readFile(new URL("../assets/prelaunch.css", import.meta.url), "utf8");
+const logo = await readFile(new URL("../assets/slarog_logo.png", import.meta.url));
 
 test("all pages are excluded from search before launch", () => {
   for (const page of Object.values(pages)) {
@@ -37,6 +39,22 @@ test("maintenance top contains only the approved prelaunch essentials", () => {
   for (const forbidden of ["月額", "機能一覧", "pages.dev", "github.io", "nkis.base@gmail.com", "070-2363-5829"]) {
     assert.doesNotMatch(pages.index, new RegExp(forbidden));
   }
+});
+
+test("maintenance logo preserves its source aspect ratio inside the square frame", () => {
+  assert.equal(logo.subarray(1, 4).toString("ascii"), "PNG");
+  assert.equal(logo.readUInt32BE(16), 2508);
+  assert.equal(logo.readUInt32BE(20), 627);
+  assert.match(pages.index, /class="app-logo-frame"/);
+  assert.match(
+    pages.index,
+    /class="app-logo-image"[^>]*width="112" height="28"/,
+  );
+  assert.match(prelaunchCss, /\.app-logo-frame\s*{[^}]*aspect-ratio:\s*1;/s);
+  assert.match(
+    prelaunchCss,
+    /\.app-logo-image\s*{[^}]*width:\s*100%;[^}]*height:\s*auto;/s,
+  );
 });
 
 test("commercial terms match the approved local trial contract", () => {

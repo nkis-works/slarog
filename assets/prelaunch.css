@@ -31,6 +31,23 @@ a { color: #1859d1; overflow-wrap: anywhere; }
   padding: 72px 0 56px;
   text-align: center;
 }
+.app-logo-frame {
+  display: flex;
+  width: 112px;
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 0 auto 18px;
+  border-radius: 26px;
+  background: #fff;
+  box-shadow: 0 20px 48px rgba(24, 50, 88, 0.16);
+}
+.app-logo-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 .app-logo {
   display: block;
   margin: 0 auto 18px;
