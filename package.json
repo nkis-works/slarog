@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build-prelaunch.mjs",
+    "build": "node scripts/build-prelaunch.mjs && node scripts/localize-playlist-toolkit-legal.mjs",
     "build:production": "node scripts/build-prelaunch.mjs",
     "test": "node --test tests/prelaunch-site.test.mjs",
     "preflight": "npm run build:production && npm test"

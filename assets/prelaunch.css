@@ -102,6 +102,34 @@ h1 {
 }
 .contact-box h2 { margin: 0; font-size: .95rem; }
 .contact-box a { display: inline-block; margin-top: 6px; font-weight: 750; }
+.product-spotlight {
+  margin: 18px auto 0;
+  border: 1px solid #bfd0c7;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #f7fff8 0%, #edf7f1 100%);
+  padding: 24px;
+  text-align: left;
+}
+.product-spotlight-label {
+  margin: 0;
+  color: #26705a;
+  font-size: .72rem;
+  font-weight: 850;
+  letter-spacing: .12em;
+}
+.product-spotlight h2 { margin: 5px 0 0; font-size: 1.45rem; }
+.product-spotlight p:not(.product-spotlight-label) { margin: 7px 0 0; color: var(--muted); }
+.product-spotlight a {
+  display: inline-flex;
+  margin-top: 15px;
+  border-radius: 999px;
+  background: #153f35;
+  color: #fff;
+  padding: 8px 15px;
+  font-size: .84rem;
+  font-weight: 800;
+  text-decoration: none;
+}
 footer {
   width: min(100% - 40px, 720px);
   margin: 0 auto;

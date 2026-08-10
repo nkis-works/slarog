@@ -14,6 +14,15 @@ const redirects = await readFile(new URL("../dist/_redirects", import.meta.url),
 const robots = await readFile(new URL("../dist/robots.txt", import.meta.url), "utf8");
 const prelaunchCss = await readFile(new URL("../assets/prelaunch.css", import.meta.url), "utf8");
 const logo = await readFile(new URL("../assets/slarog_logo.png", import.meta.url));
+const toolkitLocales = ["", "ja/", "de/", "es/", "fr/", "it/", "pt-br/"];
+const toolkitPages = Object.fromEntries(
+  await Promise.all(toolkitLocales.flatMap((locale) => ["", "privacy/", "support/", "terms/"].map(async (page) => {
+    const key = `${locale}${page}` || "en";
+    return [key, await readFile(new URL(`../dist/products/playlist-toolkit/${locale}${page}index.html`, import.meta.url), "utf8")];
+  }))),
+);
+const sitemap = await readFile(new URL("../dist/sitemap.xml", import.meta.url), "utf8");
+const headers = await readFile(new URL("../dist/_headers", import.meta.url), "utf8");
 
 test("all pages are excluded from search before launch", () => {
   for (const page of Object.values(pages)) {
@@ -77,5 +86,27 @@ test("all legal and support URL variants normalize with an explicit 301", () => 
   for (const page of ["support", "privacy", "terms", "legal"]) {
     assert.match(redirects, new RegExp(`^/${page} /${page}/ 301$`, "m"));
     assert.match(redirects, new RegExp(`^/${page}\\.html /${page}/ 301$`, "m"));
+  }
+});
+
+test("playlist toolkit publishes seven localized static page sets", () => {
+  assert.equal(Object.keys(toolkitPages).length, 28);
+  for (const html of Object.values(toolkitPages)) {
+    assert.match(html, /Playlist Toolkit/);
+    assert.match(html, /rel="canonical"/);
+    assert.match(html, /hreflang="x-default"/);
+    assert.match(html, /slarog\.app@gmail\.com|products\/playlist-toolkit/);
+    assert.doesNotMatch(html, /Amazon (?:logo|official)|Official Amazon/i);
+  }
+});
+
+test("playlist toolkit is indexable only on the custom domain", () => {
+  assert.match(headers, /https:\/\/nkisworks-site\.pages\.dev\/\*/);
+  assert.match(headers, /X-Robots-Tag: noindex/);
+  assert.doesNotMatch(headers, /^\/\*\n\s+X-Robots-Tag:/m);
+  for (const locale of toolkitLocales) {
+    for (const page of ["", "privacy/", "support/", "terms/"]) {
+      assert.match(sitemap, new RegExp(`https://nkisworks\\.com/products/playlist-toolkit/${locale}${page}`));
+    }
   }
 });
