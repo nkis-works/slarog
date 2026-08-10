@@ -1,22 +1,35 @@
 import { cp, mkdir, readdir, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
+import { buildPlaylistToolkit, playlistToolkitRoutes } from "./build-playlist-toolkit.mjs";
+
 const root = resolve(".");
 const dist = resolve("dist");
 const pages = ["support", "privacy", "terms", "legal"];
-const headers = `/*
+const headers = `https://nkisworks-site.pages.dev/*
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+
+https://:version.nkisworks-site.pages.dev/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+
+/*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
   Permissions-Policy: accelerometer=(), autoplay=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
   Content-Security-Policy: default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'
 `;
-const redirects = pages
+const redirects = [
+  ...pages
   .flatMap((page) => [
     `/${page} /${page}/ 301`,
     `/${page}.html /${page}/ 301`,
-  ])
+  ]),
+  ...playlistToolkitRoutes().flatMap((route) => [
+    `${route.slice(0, -1)} ${route} 301`,
+    `${route}index.html ${route} 301`,
+  ]),
+]
   .join("\n") + "\n";
 
 await rm(dist, { recursive: true, force: true });
@@ -29,16 +42,18 @@ for (const page of pages) {
   await cp(resolve(root, `${page}.html`), resolve(dist, page, "index.html"));
 }
 
-for (const asset of ["favicon.svg", "prelaunch.css", "slarog_logo.png"]) {
+for (const asset of ["favicon.svg", "prelaunch.css", "playlist-toolkit.css", "slarog_logo.png"]) {
   await cp(resolve(root, "assets", asset), resolve(dist, "assets", asset));
 }
+
+await buildPlaylistToolkit(dist);
 
 // Google must be able to recrawl the maintenance pages so it can observe the
 // noindex directives above and retire any stale prelaunch search snippets.
 await writeFile(resolve(dist, "robots.txt"), "User-agent: *\nAllow: /\n");
 await writeFile(
   resolve(dist, "sitemap.xml"),
-  '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n</urlset>\n',
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${playlistToolkitRoutes().map((route) => `  <url><loc>https://nkisworks.com${route}</loc><lastmod>2026-08-10</lastmod></url>`).join("\n")}\n</urlset>\n`,
 );
 await writeFile(resolve(dist, "_headers"), headers);
 await writeFile(resolve(dist, "_redirects"), redirects);
