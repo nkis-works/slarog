@@ -250,6 +250,12 @@ function render(locale, type, doc) {
   const c = common[locale];
   const base = `${productPath}/${locale}`;
   const canonical = `${site}${base}/${type}/`;
+  const alternates = [
+    ["en", `${productPath}/${type}/`],
+    ["ja", `${productPath}/ja/${type}/`],
+    ...Object.entries(common).map(([slug, item]) => [item.lang, `${productPath}/${slug}/${type}/`]),
+    ["x-default", `${productPath}/${type}/`],
+  ].map(([language, path]) => `  <link rel="alternate" hreflang="${language}" href="${site}${path}">`).join("\n");
   const cards = doc.sections.map(([heading, text]) => {
     const email = escapeHtml(supportEmail);
     const body = escapeHtml(text).replaceAll(email, `<a href="mailto:${email}">${email}</a>`);
@@ -264,6 +270,7 @@ function render(locale, type, doc) {
   <meta name="description" content="${escapeHtml(doc.lead)}">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="${canonical}">
+${alternates}
   <link rel="stylesheet" href="/assets/playlist-toolkit-legal.css">
   <title>${escapeHtml(doc.title)} | Playlist Toolkit</title>
 </head>
