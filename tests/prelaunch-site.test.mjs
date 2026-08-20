@@ -23,6 +23,8 @@ const toolkitPages = Object.fromEntries(
 );
 const sitemap = await readFile(new URL("../dist/sitemap.xml", import.meta.url), "utf8");
 const headers = await readFile(new URL("../dist/_headers", import.meta.url), "utf8");
+const englishLanding = await readFile(new URL("../dist/en/index.html", import.meta.url), "utf8");
+const englishLandingCss = await readFile(new URL("../dist/assets/nkisworks.css", import.meta.url), "utf8");
 
 test("all pages are excluded from search before launch", () => {
   for (const page of Object.values(pages)) {
@@ -109,4 +111,16 @@ test("playlist toolkit is indexable only on the custom domain", () => {
       assert.match(sitemap, new RegExp(`https://nkisworks\\.com/products/playlist-toolkit/${locale}${page}`));
     }
   }
+});
+
+test("English NKIS Works landing is published below the unchanged maintenance root", () => {
+  assert.match(englishLanding, /<html lang="en">/);
+  assert.match(englishLanding, /<link rel="canonical" href="https:\/\/nkisworks\.com\/en\/">/);
+  assert.match(englishLanding, /hreflang="en" href="https:\/\/nkisworks\.com\/en\/"/);
+  assert.match(englishLanding, /hreflang="x-default" href="https:\/\/nkisworks\.com\/en\/"/);
+  assert.match(englishLanding, /href="\/products\/playlist-toolkit\/"/);
+  assert.match(englishLanding, /Available in Japan only\. Japanese-language product\./);
+  assert.doesNotMatch(englishLanding, /navigator\.language|Accept-Language|location\.(?:href|replace)/);
+  assert.match(englishLandingCss, /@media \(max-width: 640px\)/);
+  assert.match(sitemap, /https:\/\/nkisworks\.com\/en\//);
 });

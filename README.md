@@ -12,6 +12,7 @@ Cloudflare Pages移行後は、リポジトリ全体ではなく`dist/`だけを
 
 ```text
 index.html              スラログ公式サイト
+en/index.html           NKIS Works英語版案内（準備中トップとは独立）
 support.html            サポート
 privacy.html            プライバシーポリシー
 terms.html              利用規約
@@ -26,6 +27,8 @@ deploy/cloudflare/      Cloudflare Pages用headers／redirects
 scripts/                bundle、curated dist、配布物検査
 dist/                   Cloudflare公開物（生成物・Git管理対象外）
 ```
+
+公開準備中は`/`のスラログ告知を維持し、英語圏向けのNKIS Works案内を`/en/`で独立配信します。`/en/`はPlaylist Toolkitをグローバル製品として案内し、スラログは日本国内向け・日本語提供であることを明示します。ブラウザ言語による強制転送は行いません。
 
 スロバランスは`tools/slot-balance/`にあり、公式サイトのナビゲーション、トップページ、サポートから遷移できます。privacyとtermsも現状に合わせて更新済みです。広告とアクセス解析は有効化していません。
 

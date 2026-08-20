@@ -42,9 +42,12 @@ for (const page of pages) {
   await cp(resolve(root, `${page}.html`), resolve(dist, page, "index.html"));
 }
 
-for (const asset of ["favicon.svg", "prelaunch.css", "playlist-toolkit.css", "slarog_logo.png"]) {
+for (const asset of ["favicon.svg", "nkisworks.css", "prelaunch.css", "playlist-toolkit.css", "slarog_logo.png"]) {
   await cp(resolve(root, "assets", asset), resolve(dist, "assets", asset));
 }
+
+await mkdir(resolve(dist, "en"), { recursive: true });
+await cp(resolve(root, "en/index.html"), resolve(dist, "en/index.html"));
 
 await buildPlaylistToolkit(dist);
 
@@ -53,7 +56,7 @@ await buildPlaylistToolkit(dist);
 await writeFile(resolve(dist, "robots.txt"), "User-agent: *\nAllow: /\n");
 await writeFile(
   resolve(dist, "sitemap.xml"),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${playlistToolkitRoutes().map((route) => `  <url><loc>https://nkisworks.com${route}</loc><lastmod>2026-08-10</lastmod></url>`).join("\n")}\n</urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>https://nkisworks.com/en/</loc><lastmod>2026-08-20</lastmod></url>\n${playlistToolkitRoutes().map((route) => `  <url><loc>https://nkisworks.com${route}</loc><lastmod>2026-08-10</lastmod></url>`).join("\n")}\n</urlset>\n`,
 );
 await writeFile(resolve(dist, "_headers"), headers);
 await writeFile(resolve(dist, "_redirects"), redirects);
