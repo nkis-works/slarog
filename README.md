@@ -5,12 +5,13 @@
 ## 構成
 
 ```text
-index.html
-support.html
-privacy.html
-terms.html
-legal.html
-404.html
+index.html              スラログ公式サイト
+en/index.html           NKIS Works英語版案内
+support.html            サポート
+privacy.html            プライバシーポリシー
+terms.html              利用規約
+legal.html              販売者情報
+404.html                GitHub Pages用404
 robots.txt
 sitemap.xml
 .nojekyll
@@ -28,6 +29,7 @@ tools/slot-balance/
   src/
   tests/
   e2e/
+products/playlist-toolkit/  Playlist Toolkit多言語製品ページ（ビルド時生成）
 scripts/
   build.mjs
   build-slot-balance.mjs
@@ -39,6 +41,10 @@ package.json
 ```
 
 ## ローカル確認・リリース前テスト
+
+`/` は日本国内向けのスラログ公式サイト、`/en/` は英語圏向けのNKIS Works案内として独立配信します。`/products/playlist-toolkit/` 以下ではPlaylist Toolkitの多言語製品・サポート・規約ページを配信します。ブラウザ言語による強制転送は行いません。
+
+スロバランスは`tools/slot-balance/`にあり、公式サイトのナビゲーション、トップページ、サポートから遷移できます。広告とアクセス解析は有効化していません。
 
 Node.js 20以降とpnpmを使用します。初回は `pnpm install` で開発用パッケージを準備します。
 
@@ -53,7 +59,7 @@ python3 -m http.server 4173 --directory dist
 
 ## Cloudflare Pages 公開方針
 
-本物サイトは退避ブランチからCloudflare Pagesのブランチプレビューだけへ配信し、公開ドメインのルートへは切り替えません。ブランチプレビューにはHTMLとHTTPヘッダーの両方で検索除外を設定します。
+ブランチプレビューにはHTMLとHTTPヘッダーの両方で検索除外を設定します。本番ビルドだけを公開ドメインへ配信します。
 
 正式公開URLは `https://nkisworks.com/` です。
 

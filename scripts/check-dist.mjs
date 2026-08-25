@@ -1,6 +1,10 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
+import { playlistToolkitRoutes } from './build-playlist-toolkit.mjs';
+
+const productRoutes = playlistToolkitRoutes();
+
 const requiredFiles = new Set([
   '.nojekyll',
   'index.html',
@@ -16,6 +20,8 @@ const requiredFiles = new Set([
   'tools/slot-balance/index.html',
   'tools/slot-balance/assets/styles.css',
   'tools/slot-balance/assets/slot-balance-app.js',
+  'en/index.html',
+  ...productRoutes.map((route) => `${route.slice(1)}index.html`),
 ]);
 
 const files = await listFiles(resolve('dist'));
@@ -84,6 +90,12 @@ for (const rule of [
   '/legal /legal/ 301',
   '/tools/slot-balance /tools/slot-balance/ 301',
   '/tools/slot-balance/index.html /tools/slot-balance/ 301',
+  '/en /en/ 301',
+  '/en/index.html /en/ 301',
+  ...productRoutes.flatMap((route) => [
+    `${route.slice(0, -1)} ${route} 301`,
+    `${route}index.html ${route} 301`,
+  ]),
 ]) {
   assert(redirects.includes(rule), `_redirects に必須ルールがありません: ${rule}`);
 }
@@ -99,6 +111,12 @@ const sitemap = await readFile(resolve('dist', 'sitemap.xml'), 'utf8');
 if (preview) {
   assert(robots === 'User-agent: *\nDisallow: /\n', 'preview robots.txtが一致しません。');
   assert(!/<loc>/i.test(sitemap), 'preview sitemapに公開URLがあります。');
+  for (const [file, html] of textEntries.filter(([file]) => file.endsWith('.html'))) {
+    assert(
+      html.includes('name="robots" content="noindex, nofollow, noarchive, nosnippet"'),
+      `preview HTMLに検索除外指定がありません: ${file}`,
+    );
+  }
 } else {
   assert(
     robots.includes('Sitemap: https://nkisworks.com/sitemap.xml'),
@@ -108,6 +126,11 @@ if (preview) {
     (sitemap.match(/https:\/\/nkisworks\.com\/tools\/slot-balance\//g) ?? []).length === 1,
     'ツールURLはsitemapに1件だけ必要です。',
   );
+  for (const path of ['en/', ...productRoutes.map((route) => route.slice(1))]) {
+    const url = `https://nkisworks.com/${path}`;
+    const location = `<loc>${url}</loc>`;
+    assert(sitemap.split(location).length - 1 === 1, `sitemapにURLが1件必要です: ${url}`);
+  }
 }
 
 const sourceBundle = await readFile(

@@ -2,11 +2,13 @@ import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import { createSlotBalanceBundle, SLOT_BALANCE_BUNDLE } from './build-slot-balance.mjs';
+import { buildPlaylistToolkit, playlistToolkitRoutes } from './build-playlist-toolkit.mjs';
 
 const root = resolve('.');
 const dist = resolve('dist');
 const mode = process.argv.includes('--production') ? 'production' : 'preview';
 const pages = ['support', 'privacy', 'terms', 'legal'];
+const productRoutes = playlistToolkitRoutes();
 const routeFiles = [
   ['index.html', 'index.html'],
   ['404.html', '404.html'],
@@ -28,6 +30,12 @@ const redirects =
     ...pages.flatMap((page) => [`/${page} /${page}/ 301`, `/${page}.html /${page}/ 301`]),
     '/tools/slot-balance /tools/slot-balance/ 301',
     '/tools/slot-balance/index.html /tools/slot-balance/ 301',
+    '/en /en/ 301',
+    '/en/index.html /en/ 301',
+    ...productRoutes.flatMap((route) => [
+      `${route.slice(0, -1)} ${route} 301`,
+      `${route}index.html ${route} 301`,
+    ]),
   ].join('\n') + '\n';
 
 function render(html) {
@@ -57,6 +65,17 @@ for (const page of pages) {
   await writeFile(resolve(dist, page, 'index.html'), render(html));
 }
 
+await mkdir(resolve(dist, 'en'), { recursive: true });
+const englishHome = await readFile(resolve(root, 'en', 'index.html'), 'utf8');
+await writeFile(resolve(dist, 'en', 'index.html'), render(englishHome));
+
+await buildPlaylistToolkit(dist);
+for (const route of productRoutes) {
+  const productPage = resolve(dist, route.slice(1), 'index.html');
+  const html = await readFile(productPage, 'utf8');
+  await writeFile(productPage, render(html));
+}
+
 const toolHtml = await readFile(resolve(root, 'tools', 'slot-balance', 'index.html'), 'utf8');
 await writeFile(resolve(dist, 'tools', 'slot-balance', 'index.html'), render(toolHtml));
 await cp(
@@ -80,7 +99,13 @@ if (mode === 'preview') {
     resolve(dist, 'robots.txt'),
     'User-agent: *\nAllow: /\nSitemap: https://nkisworks.com/sitemap.xml\n',
   );
-  const urls = ['', ...pages.map((page) => `${page}/`), 'tools/slot-balance/']
+  const urls = [
+    '',
+    ...pages.map((page) => `${page}/`),
+    'tools/slot-balance/',
+    'en/',
+    ...productRoutes.map((route) => route.slice(1)),
+  ]
     .map((path) => `  <url><loc>https://nkisworks.com/${path}</loc></url>`)
     .join('\n');
   await writeFile(
