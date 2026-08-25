@@ -66,7 +66,7 @@ python3 -m http.server 4173 --directory dist
 ## 公開前チェック
 
 - `slarog.app@gmail.com` が実際に受信できることを確認する
-- App Store（`https://apps.apple.com/app/id6792632919`）とGoogle Play（`https://play.google.com/store/apps/details?id=jp.yuya.slumparchive`）を一般ユーザーとして開けることを確認する
+- App Store（`https://apps.apple.com/jp/app/スラログ/id6792632919`）とGoogle Play（`https://play.google.com/store/apps/details?id=jp.yuya.slumparchive`）を一般ユーザーとして開けることを確認する
 - 価格、無料期間、サブスクリプション条件をサイト、ストア説明、アプリ内表示で一致させる
 - ストア登録情報と照合済みの正式住所を販売者情報へ記載する
 

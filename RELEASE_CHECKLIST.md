@@ -4,7 +4,7 @@
 
 ## 公開時に最終確認する項目
 
-- App Store URL: `https://apps.apple.com/app/id6792632919`
+- App Store URL: `https://apps.apple.com/jp/app/スラログ/id6792632919`
 - Google Play URL: `https://play.google.com/store/apps/details?id=jp.yuya.slumparchive`
 - 無料計算ツールURL: `https://nkisworks.com/tools/slot-balance/`
 - ストア登録情報と販売者正式住所の一致

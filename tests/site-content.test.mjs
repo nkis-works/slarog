@@ -110,7 +110,7 @@ test('support and operator contacts use their intended roles', () => {
 });
 
 test('release page uses the confirmed store destinations', () => {
-  assert.match(pages.index, /https:\/\/apps\.apple\.com\/app\/id6792632919/);
+  assert.match(pages.index, /https:\/\/apps\.apple\.com\/jp\/app\/スラログ\/id6792632919/);
   assert.match(
     pages.index,
     /https:\/\/play\.google\.com\/store\/apps\/details\?id=jp\.yuya\.slumparchive/,
