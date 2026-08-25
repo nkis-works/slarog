@@ -1,0 +1,12 @@
+assets/screenshots/
+assets/app.js
+assets/styles.css
+artifacts/
+build/
+coverage/
+node_modules/
+pnpm-lock.yaml
+tools/slot-balance/assets/slot-balance-app.js
+*.html
+robots.txt
+sitemap.xml

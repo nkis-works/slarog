@@ -34,13 +34,26 @@
     "operatingSystem": "iOS, Android",
     "publisher": {"@type": "Organization", "name": "NKIS Works"},
     "description": "画像からスランプグラフを作成し、日付・店舗・機種・台番号ごとに保存。複数日の記録を連結して、あとから振り返れる記録アプリです。",
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "JPY",
-      "price": "380",
-      "description": "初回の正常なグラフ保存から14日間はアプリ内で全機能を無料利用可能。継続利用には月額380円のプラン登録が必要。",
-      "availability": "https://schema.org/PreOrder"
-    }
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Android版 スラログ 継続利用プラン",
+        "url": "https://play.google.com/store/apps/details?id=jp.yuya.slumparchive",
+        "priceCurrency": "JPY",
+        "price": "380",
+        "description": "Android版は初回の正常なグラフ保存から14日間、登録せずに全機能を利用可能。その後の継続利用は月額380円。",
+        "availability": "https://schema.org/InStock"
+      },
+      {
+        "@type": "Offer",
+        "name": "iOS版 スラログ 継続利用プラン",
+        "url": "https://apps.apple.com/app/id6792632919",
+        "priceCurrency": "JPY",
+        "price": "380",
+        "description": "App Storeが対象と判定した新規登録者には2週間の無料トライアルを提供。その後は月額380円で自動更新。",
+        "availability": "https://schema.org/InStock"
+      }
+    ]
   }
   </script>
 </head>
@@ -56,6 +69,7 @@
     <div class="nav-links" id="nav-links" data-nav-links>
       <a href="#features">できること</a>
       <a href="#review">振り返り</a>
+      <a href="#free-tool">無料ツール</a>
       <a href="#plans">プラン</a>
       <a href="#faq">FAQ</a>
       <a href="/support/">サポート</a>
@@ -72,7 +86,7 @@
           <p class="hero-lead">画像からスランプグラフを作成し、日付・店舗・機種・台番号ごとに保存。複数日の記録を連結して、あとから振り返れます。</p>
           <div class="hero-actions" aria-label="主要リンク">
             <a class="button primary" href="#features">できることを見る</a>
-            <a class="button ghost" href="#plans">料金プラン</a>
+            <a class="button ghost" href="/tools/slot-balance/">無料計算ツール</a>
           </div>
           <div class="hero-meta" aria-label="主な特徴">
             <span>画像からグラフを作成</span>
@@ -86,7 +100,7 @@
           <div class="visual-shell">
             <div class="visual-toolbar">
               <span></span><span></span><span></span>
-              <b>Slarog record view</b>
+              <b>スラログ 記録ビュー</b>
             </div>
             <div class="visual-content real-visual-content">
               <figure class="device-frame hero-device">
@@ -103,7 +117,7 @@
                 <p>31日分の連結も、7日ずつ見やすく比較できます。</p>
               </div>
               <div class="insight-card card-two">
-                <small>Archive</small>
+                <small>アーカイブ</small>
                 <b>記録を日付でたどる</b>
                 <p>店舗・機種・台番号ごとの過去グラフを探しやすく残せます。</p>
               </div>
@@ -117,17 +131,17 @@
       <p class="review-kicker">作る、保存する、つなぐ。</p>
       <h2>過去のグラフを積み上げて、<br>あとから振り返る。</h2>
       <p class="review-claim">画像を、探しやすく見返しやすい記録へ。</p>
-      <p class="review-lead">日付・店舗・機種・台番号ごとにグラフを整理し、同じ台や機種の記録を時系列で連結。保存した記録をカレンダーから振り返れます。</p>
+      <p class="review-lead">日付・店舗・機種・台番号ごとにグラフを整理し、同じ店舗・機種・台番号の記録を時系列で連結。保存した記録をカレンダーから振り返れます。</p>
     </section>
 
     <section class="section-pad problem-section">
       <div class="section-heading reveal">
-        <p class="eyebrow"><span></span>Before / After</p>
+        <p class="eyebrow"><span></span>整理前 / 整理後</p>
         <h2>バラバラの画像を、比較しやすい記録へ。</h2>
       </div>
       <div class="compare-grid reveal">
         <article class="compare-panel muted-panel">
-          <p class="panel-label">Before</p>
+          <p class="panel-label">整理前</p>
           <h3>画像フォルダに埋もれる</h3>
           <ul>
             <li>日付・店舗・機種があとから分からない</li>
@@ -136,7 +150,7 @@
           </ul>
         </article>
         <article class="compare-panel accent-panel">
-          <p class="panel-label">After</p>
+          <p class="panel-label">整理後</p>
           <h3>条件付きのデータとして残す</h3>
           <ul>
             <li>店舗・機種・台番号・日付をそろえて保存</li>
@@ -297,31 +311,46 @@
       </div>
     </section>
 
+    <section class="tool-promo section-pad" id="free-tool">
+      <div class="tool-promo-panel reveal">
+        <div class="tool-promo-copy">
+          <p class="eyebrow"><span></span>Free Tool</p>
+          <h2>差枚・投資・IN/OUTを、すぐ計算。</h2>
+          <p>無料計算ツール「スロバランス」は、登録不要でブラウザから利用できます。入力した数値は端末内で計算し、サーバーへの送信や自動保存は行いません。</p>
+          <a class="button primary" href="/tools/slot-balance/">スロバランスを使う</a>
+        </div>
+        <ul class="tool-promo-list" aria-label="スロバランスで確認できる内容">
+          <li><b>差枚から見る</b><span>G数と差枚から概算出玉率や1,000Gあたり差枚を整理</span></li>
+          <li><b>投資・回収を見る</b><span>現金、持ちメダル、交換条件を分けて回収見込みを確認</span></li>
+          <li><b>区間・IN/OUT</b><span>区間差枚、実IN/OUT、通常時コイン持ちを条件別に計算</span></li>
+        </ul>
+      </div>
+    </section>
+
     <section class="plans section-pad" id="plans">
       <div class="section-heading centered reveal">
         <p class="eyebrow"><span></span>Plans</p>
-        <h2>初回の正常なグラフ保存から14日間、全機能を無料で。</h2>
-        <p>インストールや初回起動では始まりません。無料期間終了後も継続する場合は、月額380円の自動更新プランへご自身で登録してください。未登録のまま自動課金されることはありません。</p>
+        <h2>月額380円。無料期間はOSごとに異なります。</h2>
+        <p>Android版はアプリ独自の14日間無料、iOS版はApp Storeが対象と判定した方に2週間の無料トライアルを提供します。</p>
       </div>
       <div class="plan-grid reveal">
         <article class="plan-card">
-          <p class="plan-kicker">アプリ内無料利用期間</p>
-          <h3>14日間無料</h3>
-          <p class="plan-price">¥0<span>初回の正常保存完了から</span></p>
-          <p>無料期間中は、作成・保存・アーカイブ・連結・PNG出力などの全機能を利用できます。</p>
-          <ul class="plan-list">
-            <li>14日間</li>
-            <li>広告なし</li>
-            <li>アカウント登録・サインイン不要</li>
-            <li>主要機能を利用可能</li>
-            <li>ストア側の追加無料トライアルなし</li>
-          </ul>
+          <p class="plan-kicker">OS別の無料期間</p>
+          <h3>Android 14日間 / iOS 2週間</h3>
+          <div class="plan-platform">
+            <h4>Android版</h4>
+            <p>初回の正常なグラフ保存から14日間、登録せずに全機能を利用できます。Google Playの無料トライアルではなく、未登録のまま料金が発生することはありません。</p>
+          </div>
+          <div class="plan-platform">
+            <h4>iOS版</h4>
+            <p>App Storeが対象と判定した新規登録者には、購入画面に2週間無料と表示されます。適用可否はApp Storeの購入画面で確認できます。</p>
+          </div>
         </article>
         <article class="plan-card highlight">
           <p class="plan-kicker">月額プラン</p>
           <h3>記録を継続して振り返る</h3>
           <p class="plan-price">¥380<span>1か月・自動更新</span></p>
-          <p>アプリ内無料期間終了後も、スラログの全機能を継続して利用できます。</p>
+          <p>月額プランの有効期間中は、スラログの全機能を継続して利用できます。</p>
           <ul class="plan-list">
             <li>1か月ごとに自動更新</li>
             <li>作成・保存・アーカイブ・連結</li>
@@ -331,7 +360,7 @@
           </ul>
         </article>
       </div>
-      <p class="note-text centered">月額プランへ登録した場合のみ、1か月ごとに自動更新されます。解約はApp StoreまたはGoogle Playのサブスクリプション管理から行え、解約後も現在の有効期限までは利用できます。アプリを削除しただけでは解約されません。</p>
+      <p class="note-text centered">Android版は月額プランへ登録した場合のみ課金が始まります。iOS版で無料トライアルを開始した場合は、期間終了の24時間以上前に解約しない限り月額380円で自動更新されます。解約はApp StoreまたはGoogle Playのサブスクリプション管理から行え、解約後も現在の有効期限までは利用できます。アプリを削除しただけでは解約されません。</p>
     </section>
 
     <section class="faq section-pad" id="faq">
@@ -342,7 +371,7 @@
       <div class="faq-list reveal">
         <details open>
           <summary>無料期間はいつ始まり、何日間ですか？</summary>
-          <p>初回の正常なグラフ保存が完了した日時から14日間です。インストール、初回起動、画像選択だけでは開始しません。</p>
+          <p>Android版は、初回の正常なグラフ保存が完了した日時から14日間です。iOS版は、App Storeが対象と判定した方が購入画面から登録すると2週間の無料トライアルが始まります。適用可否はApp Storeの購入画面で確認できます。</p>
         </details>
         <details>
           <summary>広告やアカウント登録はありますか？</summary>
@@ -358,7 +387,7 @@
         </details>
         <details>
           <summary>無料期間が終わると自動で課金されますか？</summary>
-          <p>いいえ。継続利用する場合は月額プランへご自身で登録する必要があり、未登録のまま自動的に料金が発生することはありません。</p>
+          <p>Android版は、月額プランへ登録しない限り料金は発生しません。iOS版は、App Storeの無料トライアルへ登録した場合、期間終了の24時間以上前に解約しない限り月額380円で自動更新されます。</p>
         </details>
         <details>
           <summary>好調日は何を示していますか？</summary>
@@ -366,7 +395,7 @@
         </details>
         <details>
           <summary>AndroidとiPhoneの両方で使えますか？</summary>
-          <p>iOS版とAndroid版を提供予定です。</p>
+          <p>はい。iOS版とAndroid版を提供しています。</p>
         </details>
         <details>
           <summary>設定や今後の結果を保証しますか？</summary>
@@ -377,15 +406,15 @@
 
     <section class="final-cta section-pad reveal">
       <div class="cta-panel">
-        <p class="eyebrow"><span></span>Coming Soon</p>
-        <h2>スラログ、公開準備中。</h2>
-        <p>公開後、App Store / Google Playへのリンクを掲載します。先にサポート、プライバシーポリシー、利用規約を確認できます。</p>
+        <p class="eyebrow"><span></span>Download</p>
+        <h2>スラログを入手</h2>
+        <p>お使いの端末に合わせて、App StoreまたはGoogle Playからダウンロードできます。</p>
         <div class="hero-meta compact centered">
-          <span>iOS・Android対応予定</span><span>App Store 準備中</span><span>Google Play 準備中</span>
+          <span>iOS対応</span><span>Android対応</span><span>月額380円</span>
         </div>
         <div class="hero-actions centered">
-          <a class="button primary" href="/support/">サポートを見る</a>
-          <a class="button ghost" href="/privacy/">プライバシーポリシー</a>
+          <a class="button primary" href="https://apps.apple.com/app/id6792632919" aria-label="App Storeでスラログを表示">App Store</a>
+          <a class="button ghost" href="https://play.google.com/store/apps/details?id=jp.yuya.slumparchive" aria-label="Google Playでスラログを表示">Google Play</a>
         </div>
       </div>
     </section>
@@ -399,6 +428,7 @@
     </div>
     <div class="footer-links" aria-label="フッターリンク">
       <a href="/support/">サポート</a>
+      <a href="/tools/slot-balance/">無料計算ツール</a>
       <a href="/privacy/">プライバシーポリシー</a>
       <a href="/terms/">利用規約</a>
       <a href="/legal/">販売者情報</a>

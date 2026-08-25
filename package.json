@@ -4,11 +4,36 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "serve": "python3 -m http.server 4173",
+    "serve:dist": "python3 -m http.server 4174 --directory dist",
+    "format": "prettier --write . --ignore-unknown",
+    "format:check": "prettier --check . --ignore-unknown",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "build": "node scripts/build.mjs",
     "build:preview": "node scripts/build.mjs",
     "build:production": "node scripts/build.mjs --production",
-    "test": "node --test tests/site-content.test.mjs",
+    "test": "pnpm run test:site && pnpm run test:tool",
+    "test:site": "node --test tests/site-content.test.mjs",
+    "test:tool": "vitest run tools/slot-balance/tests",
     "test:links": "node scripts/check-links.mjs dist",
-    "preflight": "pnpm run build:preview && pnpm run test && pnpm run test:links"
+    "check:dist": "node scripts/check-dist.mjs",
+    "test:e2e": "playwright test",
+    "test:e2e:dist": "playwright test --config playwright.dist.config.ts",
+    "preflight": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build:preview && pnpm run check:dist && pnpm run test:links",
+    "check:all": "pnpm run preflight && pnpm run test:e2e && pnpm run test:e2e:dist"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.1",
+    "esbuild": "^0.28.1",
+    "eslint": "^10.7.0",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.5",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.64.0",
+    "vitest": "^4.1.10"
   }
 }

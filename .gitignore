@@ -6,3 +6,5 @@ __MACOSX/
 node_modules/
 dist/
 build/
+artifacts/
+tools/slot-balance/assets/slot-balance-app.js
