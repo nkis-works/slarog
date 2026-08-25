@@ -105,7 +105,7 @@ for (const copy of ['スロバランス', '無料・登録不要', '端末内で
   assert(toolHtml.includes(copy), `ツールに必須文言がありません: ${copy}`);
 }
 
-const preview = headers.includes('X-Robots-Tag: noindex');
+const preview = headers.startsWith('/*\n  X-Robots-Tag: noindex');
 const robots = await readFile(resolve('dist', 'robots.txt'), 'utf8');
 const sitemap = await readFile(resolve('dist', 'sitemap.xml'), 'utf8');
 if (preview) {
@@ -126,11 +126,29 @@ if (preview) {
     (sitemap.match(/https:\/\/nkisworks\.com\/tools\/slot-balance\//g) ?? []).length === 1,
     'ツールURLはsitemapに1件だけ必要です。',
   );
-  for (const path of ['en/', ...productRoutes.map((route) => route.slice(1))]) {
+  for (const path of ['en/']) {
     const url = `https://nkisworks.com/${path}`;
     const location = `<loc>${url}</loc>`;
     assert(sitemap.split(location).length - 1 === 1, `sitemapにURLが1件必要です: ${url}`);
   }
+  assert(
+    !sitemap.includes('/products/playlist-toolkit/'),
+    '非公開製品URLがsitemapに含まれています。',
+  );
+  for (const route of productRoutes) {
+    const file = `${route.slice(1)}index.html`;
+    const html = await readFile(resolve('dist', file), 'utf8');
+    assert(
+      html.includes('name="robots" content="noindex, nofollow, noarchive, nosnippet"'),
+      `非公開製品ページに検索除外指定がありません: ${file}`,
+    );
+  }
+  assert(
+    headers.includes(
+      '/products/playlist-toolkit/*\n  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet',
+    ),
+    '非公開製品ページのX-Robots-Tagがありません。',
+  );
 }
 
 const sourceBundle = await readFile(

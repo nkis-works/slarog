@@ -122,6 +122,11 @@ test('release page uses the confirmed store destinations', () => {
   assert.match(pages.index, /schema\.org\/InStock/);
 });
 
+test('unreleased products are not linked from the Slarog website', () => {
+  assert.doesNotMatch(pages.index, /Playlist Toolkit/);
+  assert.doesNotMatch(pages.index, /\/products\/playlist-toolkit\//);
+});
+
 test('structured application offers are valid for both stores', () => {
   const match = pages.index.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   assert.ok(match, 'application JSON-LD is missing');

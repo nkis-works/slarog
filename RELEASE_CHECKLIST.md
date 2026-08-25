@@ -21,4 +21,5 @@
 6. production buildからnoindexが除かれ、preview buildではnoindexが維持されることを確認する。
 7. 承認されたCloudflare Pages公開手順に従い、本物サイトを公開ドメインのトップへ切り替える。
 8. 公開後、旧maintenance本文へ到達できないこと、トップ・4文書・無料計算ツール・404、slash 301、robots、sitemapを確認する。
-9. 無料計算ツールで3モードの計算、入力非保存・非送信、横はみ出し0、console error 0を再確認する。
+9. Playlist Toolkitの正式リリースまでは、スラログ公式サイトからのリンク0件、sitemap掲載0件、meta robotsとX-Robots-Tagの検索除外を確認する。
+10. 無料計算ツールで3モードの計算、入力非保存・非送信、横はみ出し0、console error 0を再確認する。

@@ -21,6 +21,9 @@ const baseHeaders = `/*
   X-Frame-Options: DENY
   Permissions-Policy: accelerometer=(), autoplay=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'
+
+/products/playlist-toolkit/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
 `;
 const previewHeaders = `/*
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
@@ -99,13 +102,7 @@ if (mode === 'preview') {
     resolve(dist, 'robots.txt'),
     'User-agent: *\nAllow: /\nSitemap: https://nkisworks.com/sitemap.xml\n',
   );
-  const urls = [
-    '',
-    ...pages.map((page) => `${page}/`),
-    'tools/slot-balance/',
-    'en/',
-    ...productRoutes.map((route) => route.slice(1)),
-  ]
+  const urls = ['', ...pages.map((page) => `${page}/`), 'tools/slot-balance/', 'en/']
     .map((path) => `  <url><loc>https://nkisworks.com/${path}</loc></url>`)
     .join('\n');
   await writeFile(
