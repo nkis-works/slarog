@@ -9,6 +9,7 @@ const dist = resolve('dist');
 const mode = process.argv.includes('--production') ? 'production' : 'preview';
 const pages = ['support', 'privacy', 'terms', 'legal'];
 const productRoutes = playlistToolkitRoutes();
+const sitemapLastModified = '2026-08-25';
 const routeFiles = [
   ['index.html', 'index.html'],
   ['404.html', '404.html'],
@@ -103,7 +104,10 @@ if (mode === 'preview') {
     'User-agent: *\nAllow: /\nSitemap: https://nkisworks.com/sitemap.xml\n',
   );
   const urls = ['', ...pages.map((page) => `${page}/`), 'tools/slot-balance/', 'en/']
-    .map((path) => `  <url><loc>https://nkisworks.com/${path}</loc></url>`)
+    .map(
+      (path) =>
+        `  <url><loc>https://nkisworks.com/${path}</loc><lastmod>${sitemapLastModified}</lastmod></url>`,
+    )
     .join('\n');
   await writeFile(
     resolve(dist, 'sitemap.xml'),

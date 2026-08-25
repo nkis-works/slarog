@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://nkisworks.com/</loc><lastmod>2026-07-24</lastmod></url>
-  <url><loc>https://nkisworks.com/support.html</loc><lastmod>2026-07-24</lastmod></url>
-  <url><loc>https://nkisworks.com/privacy.html</loc><lastmod>2026-07-24</lastmod></url>
-  <url><loc>https://nkisworks.com/terms.html</loc><lastmod>2026-07-24</lastmod></url>
+  <url><loc>https://nkisworks.com/</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://nkisworks.com/support/</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://nkisworks.com/privacy/</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://nkisworks.com/terms/</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://nkisworks.com/legal/</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://nkisworks.com/tools/slot-balance/</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://nkisworks.com/en/</loc><lastmod>2026-08-25</lastmod></url>
 </urlset>

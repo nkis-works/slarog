@@ -16,7 +16,9 @@ const og = await readFile(new URL('../assets/og-image.svg', import.meta.url), 'u
 const publicCopy = `${Object.values(pages).join('\n')}\n${og}`;
 
 test('main message and feature priorities match the approved product', () => {
-  assert.match(pages.index, /スランプグラフを、[\s\S]*保存してつなぐ/);
+  assert.match(pages.index, /スラログで、[\s\S]*スランプグラフを保存・連結/);
+  assert.match(pages.index, /スラログの主な機能/);
+  assert.doesNotMatch(pages.index, /できること|どんな時に便利/);
   for (const text of ['作成', '保存', 'アーカイブ', '連結', 'カレンダー', 'PNG']) {
     assert.match(pages.index, new RegExp(text));
   }
@@ -131,13 +133,21 @@ test('structured application offers are valid for both stores', () => {
   const match = pages.index.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   assert.ok(match, 'application JSON-LD is missing');
   const data = JSON.parse(match[1]);
-  assert.equal(data.name, 'スラログ');
-  assert.equal(data.offers.length, 2);
+  const application = data['@graph'].find((entry) => entry['@type'] === 'SoftwareApplication');
+  const website = data['@graph'].find((entry) => entry['@type'] === 'WebSite');
+  const organization = data['@graph'].find((entry) => entry['@type'] === 'Organization');
+  assert.equal(application.name, 'スラログ');
+  assert.equal(website.name, 'スラログ公式サイト');
+  assert.equal(organization.name, 'NKIS Works');
+  assert.equal(application.offers.length, 2);
   assert.deepEqual(
-    data.offers.map((offer) => offer.price),
+    application.offers.map((offer) => offer.price),
     ['380', '380'],
   );
-  assert.ok(data.offers.every((offer) => offer.availability === 'https://schema.org/InStock'));
+  assert.ok(
+    application.offers.every((offer) => offer.availability === 'https://schema.org/InStock'),
+  );
+  assert.deepEqual(application.publisher, { '@id': 'https://nkisworks.com/#organization' });
 });
 
 test('document pages expose social metadata and current-page navigation', () => {

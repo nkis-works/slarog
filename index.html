@@ -17,24 +17,50 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/styles.css">
 
-  <title>NKIS Works｜スラログ公式サイト</title>
+  <title>スラログ公式サイト｜スランプグラフを保存・連結｜NKIS Works</title>
   <meta name="description" content="スラログは、画像からスランプグラフを作成し、日付・店舗・機種・台番号ごとに保存。複数日の記録を連結して、あとから振り返れるiOS・Android対応の記録アプリです。">
-  <meta property="og:title" content="NKIS Works｜スラログ公式サイト">
+  <meta property="og:title" content="スラログ公式サイト｜スランプグラフを保存・連結">
   <meta property="og:description" content="スランプグラフを、保存してつなぐ。画像から作成し、複数日の記録を連結して、あとから振り返れます。">
-  <meta name="twitter:title" content="NKIS Works｜スラログ公式サイト">
+  <meta name="twitter:title" content="スラログ公式サイト｜スランプグラフを保存・連結">
   <meta name="twitter:description" content="スランプグラフを、保存してつなぐ。">
   <meta name="twitter:image" content="https://nkisworks.com/assets/og-image-v2.png">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "スラログ",
-    "alternateName": "Slarog",
-    "applicationCategory": "UtilityApplication",
-    "operatingSystem": "iOS, Android",
-    "publisher": {"@type": "Organization", "name": "NKIS Works"},
-    "description": "画像からスランプグラフを作成し、日付・店舗・機種・台番号ごとに保存。複数日の記録を連結して、あとから振り返れる記録アプリです。",
-    "offers": [
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://nkisworks.com/#organization",
+        "name": "NKIS Works",
+        "url": "https://nkisworks.com/",
+        "logo": "https://nkisworks.com/assets/slarog_logo.png"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://nkisworks.com/#website",
+        "url": "https://nkisworks.com/",
+        "name": "スラログ公式サイト",
+        "alternateName": "Slarog by NKIS Works",
+        "inLanguage": "ja-JP",
+        "publisher": {"@id": "https://nkisworks.com/#organization"}
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://nkisworks.com/#slarog",
+        "name": "スラログ",
+        "alternateName": "Slarog",
+        "url": "https://nkisworks.com/",
+        "mainEntityOfPage": {"@id": "https://nkisworks.com/#website"},
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "iOS, Android",
+        "inLanguage": "ja-JP",
+        "publisher": {"@id": "https://nkisworks.com/#organization"},
+        "description": "画像からスランプグラフを作成し、日付・店舗・機種・台番号ごとに保存。複数日の記録を連結して、あとから振り返れる記録アプリです。",
+        "sameAs": [
+          "https://apps.apple.com/jp/app/スラログ/id6792632919",
+          "https://play.google.com/store/apps/details?id=jp.yuya.slumparchive"
+        ],
+        "offers": [
       {
         "@type": "Offer",
         "name": "Android版 スラログ 継続利用プラン",
@@ -53,6 +79,8 @@
         "description": "App Storeが対象と判定した新規登録者には2週間の無料トライアルを提供。その後は月額380円で自動更新。",
         "availability": "https://schema.org/InStock"
       }
+        ]
+      }
     ]
   }
   </script>
@@ -67,10 +95,10 @@
     </a>
     <button class="menu-button" type="button" data-menu-button aria-expanded="false" aria-controls="nav-links">メニュー</button>
     <div class="nav-links" id="nav-links" data-nav-links>
-      <a href="#features">できること</a>
-      <a href="#review">振り返り</a>
+      <a href="#features">主な機能</a>
+      <a href="#review">製品概要</a>
       <a href="#free-tool">無料ツール</a>
-      <a href="#plans">プラン</a>
+      <a href="#plans">料金プラン</a>
       <a href="#faq">FAQ</a>
       <a href="/support/">サポート</a>
     </div>
@@ -82,17 +110,17 @@
       <div class="hero-grid section-pad">
         <div class="hero-copy reveal">
           <p class="eyebrow"><span></span>Slarog by NKIS Works</p>
-          <h1>スランプグラフを、<br><em>保存してつなぐ。</em></h1>
+          <h1>スラログで、<br><em>スランプグラフを保存・連結。</em></h1>
           <p class="hero-lead">画像からスランプグラフを作成し、日付・店舗・機種・台番号ごとに保存。複数日の記録を連結して、あとから振り返れます。</p>
           <div class="hero-actions" aria-label="主要リンク">
-            <a class="button primary" href="#features">できることを見る</a>
+            <a class="button primary" href="#features">主な機能を確認</a>
             <a class="button ghost" href="/tools/slot-balance/">無料計算ツール</a>
           </div>
           <div class="hero-meta" aria-label="主な特徴">
             <span>画像からグラフを作成</span>
             <span>複数日の記録を連結</span>
             <span>PNG出力に対応</span>
-            <span>カレンダーで振り返る</span>
+            <span>カレンダーから記録を確認</span>
           </div>
         </div>
 
@@ -128,21 +156,21 @@
     </section>
 
     <section class="section-pad quiet-strip reveal" id="review">
-      <p class="review-kicker">作る、保存する、つなぐ。</p>
-      <h2>過去のグラフを積み上げて、<br>あとから振り返る。</h2>
-      <p class="review-claim">画像を、探しやすく見返しやすい記録へ。</p>
-      <p class="review-lead">日付・店舗・機種・台番号ごとにグラフを整理し、同じ店舗・機種・台番号の記録を時系列で連結。保存した記録をカレンダーから振り返れます。</p>
+      <p class="review-kicker">作成・保存・連結</p>
+      <h2>スランプグラフを整理し、<br>時系列で比較する。</h2>
+      <p class="review-claim">画像を、検索・比較できる記録へ。</p>
+      <p class="review-lead">日付・店舗・機種・台番号ごとにグラフを整理し、同じ条件の記録を時系列で連結。保存した記録はカレンダーから確認できます。</p>
     </section>
 
     <section class="section-pad problem-section">
       <div class="section-heading reveal">
-        <p class="eyebrow"><span></span>整理前 / 整理後</p>
-        <h2>バラバラの画像を、比較しやすい記録へ。</h2>
+        <p class="eyebrow"><span></span>Record Management</p>
+        <h2>画像を、条件付きの記録として管理。</h2>
       </div>
       <div class="compare-grid reveal">
         <article class="compare-panel muted-panel">
-          <p class="panel-label">整理前</p>
-          <h3>画像フォルダに埋もれる</h3>
+          <p class="panel-label">画像のみで管理</p>
+          <h3>必要な記録を探しにくい</h3>
           <ul>
             <li>日付・店舗・機種があとから分からない</li>
             <li>同じ台番の過去記録を探すのに時間がかかる</li>
@@ -150,12 +178,12 @@
           </ul>
         </article>
         <article class="compare-panel accent-panel">
-          <p class="panel-label">整理後</p>
-          <h3>条件付きのデータとして残す</h3>
+          <p class="panel-label">スラログで管理</p>
+          <h3>検索・比較できる記録として保存</h3>
           <ul>
             <li>店舗・機種・台番号・日付をそろえて保存</li>
-            <li>カレンダーから記録へすぐ移動</li>
-            <li>同じ台の複数日をつないで振り返る</li>
+            <li>カレンダーから対象記録へ直接移動</li>
+            <li>同一台の複数日データを連結して比較</li>
           </ul>
         </article>
       </div>
@@ -164,8 +192,8 @@
     <section class="features section-pad" id="features">
       <div class="section-heading centered reveal">
         <p class="eyebrow"><span></span>Features</p>
-        <h2>何ができて、どんな時に便利なのか。</h2>
-        <p>作成、保存、検索、連結、出力まで、スランプグラフをあとから使える記録にするための機能をそろえています。</p>
+        <h2>スラログの主な機能</h2>
+        <p>画像の読み込みから保存、検索、連結、PNG出力まで、スランプグラフの記録管理に必要な機能を提供します。</p>
       </div>
 
       <div class="feature-showcase">
@@ -177,14 +205,14 @@
           </div>
           <div class="feature-copy">
             <p class="feature-label">Create</p>
-            <h3>画像を読み込み、見やすいグラフへ</h3>
+            <h3>画像から、比較しやすいグラフを作成</h3>
             <p>ホールで撮影したスランプグラフやスクリーンショットを読み込み、表示範囲と基準線を合わせて記録できます。元画像のまま残すのではなく、あとから比較しやすい統一されたグラフとして整理できます。</p>
           </div>
           <div class="feature-benefits">
             <ul class="benefit-list">
-              <li>写真やスクリーンショットを記録に変えられる</li>
-              <li>バラバラな画像を同じ見た目で整理できる</li>
-              <li>後日見返しても状況を把握しやすい</li>
+              <li>写真やスクリーンショットからグラフを作成</li>
+              <li>異なる画像を統一した形式で整理</li>
+              <li>保存後も条件と推移を確認可能</li>
             </ul>
           </div>
         </article>
@@ -197,14 +225,14 @@
           </div>
           <div class="feature-copy">
             <p class="feature-label">Continuous Import</p>
-            <h3>複数日分の画像も、まとめて整理</h3>
+            <h3>複数日分の画像を、日付単位で整理</h3>
             <p>複数日がつながったグラフ画像は、日付ごとの区切りを指定して取り込めます。1日ずつ同じ作業を繰り返さず、連続した記録をアーカイブへ追加できます。</p>
           </div>
           <div class="feature-benefits">
             <ul class="benefit-list">
-              <li>長いグラフ画像も日付ごとに分けられる</li>
-              <li>過去分をまとめて登録したい時に便利</li>
-              <li>日ごとの記録としてあとから検索できる</li>
+              <li>長いグラフ画像を日付単位で分割</li>
+              <li>過去分をまとめて登録する作業を短縮</li>
+              <li>日ごとの記録として検索可能</li>
             </ul>
           </div>
         </article>
@@ -217,13 +245,13 @@
           </div>
           <div class="feature-copy">
             <p class="feature-label">Archive</p>
-            <h3>記録した日を、カレンダーから振り返る</h3>
+            <h3>保存日を、カレンダーから確認</h3>
             <p>保存したグラフは、店舗・機種・台番号・日付ごとにアーカイブされます。最大差枚が+2000枚以上に到達した日はカレンダーで分かりやすく表示されるため、過去の動きを探す手がかりになります。</p>
           </div>
           <div class="feature-benefits">
             <ul class="benefit-list">
-              <li>日付から記録へすぐ移動できる</li>
-              <li>好調だった日を見つけやすい</li>
+              <li>日付から対象記録へ直接移動</li>
+              <li>+2000枚以上に到達した記録日を識別</li>
               <li>店舗や機種ごとの記録を振り返りやすい</li>
             </ul>
             <p class="note-text">好調日は、保存された単体グラフで最大差枚が+2000枚以上に到達した日を示す目印です。設定や今後の結果を保証するものではありません。</p>
@@ -238,7 +266,7 @@
           </div>
           <div class="feature-copy">
             <p class="feature-label">Series</p>
-            <h3>複数日の流れを、ひとつのグラフで</h3>
+            <h3>複数日の推移を、ひとつのグラフで確認</h3>
             <p>同じ店舗・機種・台番号の記録を日付順につなぎ、複数日の動きをひとつのグラフで確認できます。1日だけでは気づきにくい上昇・下降の流れを、長い期間で振り返れます。</p>
           </div>
           <div class="feature-benefits">
@@ -258,7 +286,7 @@
           </div>
           <div class="feature-copy">
             <p class="feature-label">7 Days / 1000</p>
-            <h3>長い記録も、7日ずつ見やすく比較</h3>
+            <h3>長期間の記録を、7日単位で比較</h3>
             <p>8日以上の連結グラフでも、新しく連結を作り直すことなく、表示する7日間を切り替えられます。期間ごとのグラフを同じ1000枚幅で表示できるため、日による動きの違いを比較しやすくなります。</p>
           </div>
           <div class="feature-benefits">
@@ -281,7 +309,7 @@
           </div>
           <div class="feature-copy">
             <p class="feature-label">Zero Line / Export</p>
-            <h3>見たい基準で確認し、そのまま保存</h3>
+            <h3>基準を切り替え、PNGで出力</h3>
             <p>通常の0線に加え、実機の表示に合わせた0線でもグラフを確認できます。作成した単体グラフや連結グラフはPNGとして保存でき、端末内での保管や見返しにも利用できます。</p>
           </div>
           <div class="feature-benefits">
@@ -299,13 +327,13 @@
       <div class="trust-card">
         <div>
           <p class="eyebrow"><span></span>Record &amp; Review</p>
-          <h2>比較は、記録の補助として。</h2>
+          <h2>用途は、記録と比較の補助に限定。</h2>
         </div>
         <div class="trust-copy">
           <p>スラログは、保存したグラフを見返し、ユーザー自身が過去の推移を確認するための記録・比較の補助ツールです。日付や条件をそろえて残すことで、あとから落ち着いて振り返れます。</p>
           <p class="trust-note">勝敗、利益、設定や今後の結果を保証するものではありません。</p>
           <div class="policy-tags">
-            <span>保存データを見返す</span><span>比較の補助</span><span>記録ベースで確認</span><span>自分で振り返る</span>
+            <span>保存記録の確認</span><span>時系列で比較</span><span>記録に基づく確認</span><span>ユーザー自身で判断</span>
           </div>
         </div>
       </div>
@@ -315,7 +343,7 @@
       <div class="tool-promo-panel reveal">
         <div class="tool-promo-copy">
           <p class="eyebrow"><span></span>Free Tool</p>
-          <h2>差枚・投資・IN/OUTを、すぐ計算。</h2>
+          <h2>差枚・投資・IN/OUTを、登録不要で計算。</h2>
           <p>無料計算ツール「スロバランス」は、登録不要でブラウザから利用できます。入力した数値は端末内で計算し、サーバーへの送信や自動保存は行いません。</p>
           <a class="button primary" href="/tools/slot-balance/">スロバランスを使う</a>
         </div>
@@ -330,7 +358,7 @@
     <section class="plans section-pad" id="plans">
       <div class="section-heading centered reveal">
         <p class="eyebrow"><span></span>Plans</p>
-        <h2>月額380円。無料期間はOSごとに異なります。</h2>
+        <h2>OS別の無料期間と月額プラン</h2>
         <p>Android版はアプリ独自の14日間無料、iOS版はApp Storeが対象と判定した方に2週間の無料トライアルを提供します。</p>
       </div>
       <div class="plan-grid reveal">
@@ -348,7 +376,7 @@
         </article>
         <article class="plan-card highlight">
           <p class="plan-kicker">月額プラン</p>
-          <h3>記録を継続して振り返る</h3>
+          <h3>継続的な記録・比較</h3>
           <p class="plan-price">¥380<span>1か月・自動更新</span></p>
           <p>月額プランの有効期間中は、スラログの全機能を継続して利用できます。</p>
           <ul class="plan-list">
