@@ -222,8 +222,8 @@ export function validateInvestmentRecovery(input: InvestmentRecoveryInput): Vali
         'error',
         'recovery_exchange_rate_required',
         'exchangeMedalsPer1000Yen',
-        '回収ラインを枚数で求めるには交換条件が必要です。',
-        '交換条件を入力するか、回収ライン計算を無効にしてください。',
+        '回収に必要な枚数を求めるには交換条件が必要です。',
+        '交換条件を入力するか、必要枚数の計算を無効にしてください。',
       ),
     );
   }
@@ -249,7 +249,7 @@ export function validateInvestmentRecovery(input: InvestmentRecoveryInput): Vali
         'warning',
         'cash_and_stored_medals',
         undefined,
-        '現金と貯メダルを併用しています。2種類の回収ラインを分けて表示します。',
+        '現金と貯メダルを併用しているため、2種類の回収必要枚数を分けて表示します。',
       ),
     );
   }
@@ -276,7 +276,7 @@ export function validateInvestmentRecovery(input: InvestmentRecoveryInput): Vali
         'info',
         'already_exchanged',
         'alreadyExchangedYen',
-        '交換済み金額を総回収見込と残り回収ラインへ反映します。',
+        '交換済み金額を合計回収見込額と、残りの回収必要枚数へ反映します。',
       ),
     );
   }
@@ -400,7 +400,7 @@ export function validateInOut(input: InOutInput): ValidationMessage[] {
         'error',
         'segments_limit_exceeded',
         'segments',
-        'IN/OUT区間は100件まで入力できます。',
+        '実測区間は100件まで入力できます。',
         '対象を分けるか、不要な区間を削除してください。',
       ),
     ];
@@ -413,7 +413,7 @@ export function validateInOut(input: InOutInput): ValidationMessage[] {
         'error',
         'in_out_values_required',
         undefined,
-        '実INと実OUT、またはIN/OUT区間を入力してください。',
+        '実IN（投入枚数）と実OUT（払出枚数）、または実測区間を入力してください。',
         '同じ対象範囲のINとOUTを揃えてください。',
       ),
     ];
@@ -447,8 +447,8 @@ export function validateInOut(input: InOutInput): ValidationMessage[] {
           'error',
           'actual_in_not_positive',
           value.prefix ? `${value.prefix}.actualIn` : 'actualIn',
-          '実INは1枚以上の整数で入力してください。',
-          '同じ対象範囲の実INを確認してください。',
+          '実IN（投入枚数）は1枚以上の整数で入力してください。',
+          '同じ対象範囲の投入枚数を確認してください。',
         ),
       );
     }
@@ -462,8 +462,8 @@ export function validateInOut(input: InOutInput): ValidationMessage[] {
           'error',
           'actual_out_negative',
           value.prefix ? `${value.prefix}.actualOut` : 'actualOut',
-          '実OUTは0枚以上の整数で入力してください。',
-          '同じ対象範囲の実OUTを確認してください。',
+          '実OUT（払出枚数）は0枚以上の整数で入力してください。',
+          '同じ対象範囲の払出枚数を確認してください。',
         ),
       );
     }
@@ -490,7 +490,7 @@ export function validateCoinHold(input: CoinHoldInput, netUsedMedals: number): V
         'error',
         'net_used_medals_not_positive',
         input.method === 'direct' ? 'netUsedMedals' : 'breakdown',
-        '通常時区間の正味使用枚数は1枚以上にしてください。',
+        '通常時区間の消費枚数は1枚以上にしてください。',
         '開始、追加、終了、持ち出し枚数の入力を確認してください。',
       ),
     );

@@ -21,7 +21,7 @@ export function monitorPage(page: Page): PageMonitor {
 
 export async function gotoTool(page: Page): Promise<void> {
   await page.goto(TOOL_PATH);
-  await expect(page).toHaveTitle('スロバランス｜差枚・投資・IN/OUT無料計算ツール');
+  await expect(page).toHaveTitle('スロバランス｜差枚・出玉率・投資回収の無料計算ツール');
 }
 
 export async function selectMainMode(

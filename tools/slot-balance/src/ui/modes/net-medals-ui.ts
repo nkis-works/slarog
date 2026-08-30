@@ -40,7 +40,7 @@ export function setupNetMedalsUi(): UiModeController {
       const primaryItems: ResultGroup['items'] = [];
       if (values.payoutRateEstimate) {
         primaryItems.push({
-          label: '差枚ベース出玉率',
+          label: '差枚から概算した出玉率',
           value: formatPercent(values.payoutRateEstimate.display),
           provenance: result.provenance['payoutRateEstimate'] ?? 'estimated',
           primary: true,
@@ -56,15 +56,15 @@ export function setupNetMedalsUi(): UiModeController {
       const groups: ResultGroup[] = [
         { items: primaryItems },
         {
-          title: '3枚掛け換算',
+          title: '3枚掛けによる概算内訳',
           items: [
             {
-              label: 'IN',
+              label: '想定IN（投入枚数）',
               value: formatMedals(values.assumedIn),
               provenance: result.provenance['assumedIn'] ?? 'estimated',
             },
             {
-              label: 'OUT',
+              label: '想定OUT（払出枚数）',
               value: formatMedals(values.assumedOut, true),
               provenance: result.provenance['assumedOut'] ?? 'estimated',
             },

@@ -898,6 +898,39 @@ summary:focus-visible,
   margin-top: 18px;
 }
 
+.capability-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.capability-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  padding: 15px 14px;
+}
+
+.capability-card h3,
+.calculation-exclusions h3 {
+  font-size: 0.92rem;
+}
+
+.capability-card p,
+.calculation-exclusions p {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+
+.calculation-exclusions {
+  margin-top: 12px;
+  border-left: 4px solid var(--muted);
+  background: var(--surface-soft);
+  padding: 13px 14px;
+}
+
 .tool-faq details {
   overflow: hidden;
   border: 1px solid var(--line);
@@ -1087,6 +1120,10 @@ summary:focus-visible,
   }
 
   .formula-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .capability-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 

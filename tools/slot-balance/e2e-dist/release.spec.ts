@@ -71,7 +71,7 @@ test('public copy, section order and navigation are complete', async ({ page }) 
     page.getByText('計算内容をサーバーへ送信したり、自動保存したりしません。'),
   ).toBeVisible();
   await expect(page.locator('#formulas .formula-card')).toHaveCount(9);
-  await expect(page.locator('#faq details')).toHaveCount(10);
+  await expect(page.locator('#faq details')).toHaveCount(13);
   await expect(page.getByText('広告', { exact: true })).toHaveCount(0);
 
   const structure = await page.evaluate(() => {

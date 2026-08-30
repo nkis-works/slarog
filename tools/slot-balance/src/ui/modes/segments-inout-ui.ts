@@ -101,7 +101,7 @@ function createInOutSegmentRow(): HTMLElement {
   const row = document.createElement('fieldset');
   row.className = 'dynamic-row';
   row.dataset['segmentRow'] = 'inout';
-  const legend = textElement('legend', 'IN/OUT区間');
+  const legend = textElement('legend', '実測区間');
   legend.dataset['rowLegend'] = '';
   const header = document.createElement('div');
   header.className = 'dynamic-row__header';
@@ -113,8 +113,8 @@ function createInOutSegmentRow(): HTMLElement {
   grid.className = 'field-grid field-grid--dynamic';
   grid.append(
     field('区間名（任意）', 'label', { inputMode: 'text', maxLength: 100 }),
-    field('実IN', 'actualIn', { unit: '枚' }),
-    field('実OUT', 'actualOut', { unit: '枚' }),
+    field('実IN（投入枚数）', 'actualIn', { unit: '枚' }),
+    field('実OUT（払出枚数）', 'actualOut', { unit: '枚' }),
     field('G数（任意）', 'games', { unit: 'G' }),
   );
   row.append(legend, header, grid);
@@ -268,7 +268,7 @@ function setupSegmentsCalculator(options: DynamicModeOptions): UiModeController 
         {
           items: [
             {
-              label: '合計から再計算した出玉率',
+              label: '全区間の概算出玉率',
               value: result.values.aggregate.payoutRateEstimate
                 ? formatPercent(result.values.aggregate.payoutRateEstimate.display)
                 : '算出不可',
@@ -277,13 +277,13 @@ function setupSegmentsCalculator(options: DynamicModeOptions): UiModeController 
               note: '各区間率の単純平均ではなく、合計G数・合計差枚から再計算します。',
             },
             {
-              label: '総G',
+              label: '合計G数',
               value: formatGames(result.values.totalGames),
               provenance: result.provenance['totalGames'] ?? 'calculated',
               primary: true,
             },
             {
-              label: '総差枚',
+              label: '合計差枚',
               value: formatSignedMedals(result.values.totalNetMedals),
               provenance: result.provenance['totalNetMedals'] ?? 'calculated',
               primary: true,
@@ -312,7 +312,7 @@ function setupSegmentsCalculator(options: DynamicModeOptions): UiModeController 
         ];
         if (segment.values.payoutRateEstimate) {
           items.push({
-            label: '差枚ベース出玉率',
+            label: '差枚から概算した出玉率',
             value: formatPercent(segment.values.payoutRateEstimate.display),
             provenance: 'estimated',
           });
@@ -350,8 +350,8 @@ function setupInOutCalculator(options: DynamicModeOptions): UiModeController {
       const messages: ValidationMessage[] = [];
       let result;
       if (source === 'total') {
-        const actualIn = requiredInteger(form, 'inout.actualIn', '実IN');
-        const actualOut = requiredInteger(form, 'inout.actualOut', '実OUT');
+        const actualIn = requiredInteger(form, 'inout.actualIn', '実IN（投入枚数）');
+        const actualOut = requiredInteger(form, 'inout.actualOut', '実OUT（払出枚数）');
         const games = optionalInteger(form, 'inout.games', 'G数');
         messages.push(...combineMessages(actualIn, actualOut, games));
         if (messages.length > 0 || actualIn.value === undefined || actualOut.value === undefined) {
@@ -369,12 +369,12 @@ function setupInOutCalculator(options: DynamicModeOptions): UiModeController {
           const actualIn = requiredIntegerFromRaw(
             dynamicValue(row, 'actualIn'),
             `inoutSegments.${index}.actualIn`,
-            `区間${index + 1}の実IN`,
+            `区間${index + 1}の実IN（投入枚数）`,
           );
           const actualOut = requiredIntegerFromRaw(
             dynamicValue(row, 'actualOut'),
             `inoutSegments.${index}.actualOut`,
-            `区間${index + 1}の実OUT`,
+            `区間${index + 1}の実OUT（払出枚数）`,
           );
           const games = optionalIntegerFromRaw(
             dynamicValue(row, 'games'),
@@ -416,13 +416,13 @@ function setupInOutCalculator(options: DynamicModeOptions): UiModeController {
         {
           items: [
             {
-              label: '実IN/OUT出玉率',
+              label: '実測出玉率',
               value: formatPercent(result.values.payoutRate.display),
               provenance: result.provenance['payoutRate'] ?? 'actual',
               primary: true,
             },
             {
-              label: '実差枚',
+              label: '実測差枚',
               value: formatSignedMedals(result.values.actualNetMedals),
               provenance: result.provenance['actualNetMedals'] ?? 'actual',
               primary: true,
@@ -433,12 +433,12 @@ function setupInOutCalculator(options: DynamicModeOptions): UiModeController {
           title: '実測合計',
           items: [
             {
-              label: '合計IN',
+              label: '合計IN（投入枚数）',
               value: formatMedals(result.values.totalIn),
               provenance: result.provenance['totalIn'] ?? 'actual',
             },
             {
-              label: '合計OUT',
+              label: '合計OUT（払出枚数）',
               value: formatMedals(result.values.totalOut),
               provenance: result.provenance['totalOut'] ?? 'actual',
             },
@@ -446,7 +446,7 @@ function setupInOutCalculator(options: DynamicModeOptions): UiModeController {
               ? []
               : [
                   {
-                    label: '合計G',
+                    label: '合計G数',
                     value: formatGames(result.values.totalGames),
                     provenance: 'calculated' as const,
                   },
@@ -509,7 +509,7 @@ function setupCoinHoldCalculator(): UiModeController {
       }
       let input: CoinHoldInput | undefined;
       if (method === 'direct') {
-        const netUsed = requiredInteger(form, 'coin.netUsedMedals', '正味使用枚数');
+        const netUsed = requiredInteger(form, 'coin.netUsedMedals', '通常時の消費枚数');
         messages.push(...netUsed.messages);
         if (normalGames.value !== undefined && netUsed.value !== undefined) {
           input = {
@@ -574,7 +574,7 @@ function setupCoinHoldCalculator(): UiModeController {
               primary: true,
             },
             {
-              label: '正味使用枚数',
+              label: '通常時の消費枚数',
               value: formatMedals(result.values.netUsedMedals),
               provenance: result.provenance['netUsedMedals'] ?? 'calculated',
               primary: true,

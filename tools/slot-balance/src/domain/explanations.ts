@@ -13,25 +13,25 @@ import type {
 
 export const NET_MEDALS_KNOWLEDGE: KnowledgeBoundary = {
   known: [
-    { code: 'estimated_payout_rate', label: '3枚掛け換算の差枚ベース出玉率' },
+    { code: 'estimated_payout_rate', label: '差枚から概算した出玉率' },
     { code: 'net_per_1000_games', label: '1,000Gあたり差枚' },
     { code: 'calculation_games', label: '計算対象G数' },
   ],
   unknown: [
-    { code: 'exact_in_out', label: '正確な実IN/OUT' },
+    { code: 'exact_in_out', label: '実測IN（投入枚数）・実測OUT（払出枚数）' },
     { code: 'actual_setting', label: '実際の設定' },
     { code: 'future_output', label: '今後の出玉' },
     { code: 'exact_coin_hold', label: '正確な通常時コイン持ち' },
     { code: 'cash_recovery', label: '現金投資の回収状況' },
-    { code: 'continue_or_stop', label: '続行／ヤメの正解' },
+    { code: 'continue_or_stop', label: '続行・終了の判断' },
   ],
 };
 
 export const INVESTMENT_KNOWLEDGE: KnowledgeBoundary = {
   known: [
     { code: 'exchange_estimate', label: '入力した交換条件での交換見込額' },
-    { code: 'cash_recovery_line', label: '現金投資回収ライン' },
-    { code: 'total_recovery_line', label: '貯メダル込み回収ライン' },
+    { code: 'cash_recovery_line', label: '現金投資額の回収に必要な枚数' },
+    { code: 'total_recovery_line', label: '現金・使用貯メダル分の回収に必要な枚数' },
     { code: 'recovery_rates', label: '入力条件に基づく回収率' },
   ],
   unknown: [
@@ -39,27 +39,27 @@ export const INVESTMENT_KNOWLEDGE: KnowledgeBoundary = {
     { code: 'venue_rounding', label: '店舗固有の端数処理' },
     { code: 'actual_setting', label: '実際の設定' },
     { code: 'future_output', label: '今後の出玉' },
-    { code: 'continue_or_stop', label: '続行／ヤメの正解' },
+    { code: 'continue_or_stop', label: '続行・終了の判断' },
   ],
 };
 
 export const SEGMENTS_KNOWLEDGE: KnowledgeBoundary = {
   known: [
     { code: 'segment_net_medals', label: '各区間と合計の差枚' },
-    { code: 'aggregate_estimated_rate', label: '総G数・総差枚から再計算した概算出玉率' },
+    { code: 'aggregate_estimated_rate', label: '合計G数・合計差枚から再計算した概算出玉率' },
   ],
   unknown: NET_MEDALS_KNOWLEDGE.unknown,
 };
 
 export const IN_OUT_KNOWLEDGE: KnowledgeBoundary = {
   known: [
-    { code: 'actual_in_out_rate', label: '入力した実IN/OUTに基づく出玉率' },
-    { code: 'actual_net_medals', label: 'INとOUTの差' },
+    { code: 'actual_in_out_rate', label: '実測IN/OUTに基づく出玉率' },
+    { code: 'actual_net_medals', label: '払出枚数と投入枚数の差' },
   ],
   unknown: [
     { code: 'actual_setting', label: '実際の設定' },
     { code: 'future_output', label: '今後の出玉' },
-    { code: 'continue_or_stop', label: '続行／ヤメの正解' },
+    { code: 'continue_or_stop', label: '続行・終了の判断' },
   ],
 };
 
@@ -94,7 +94,7 @@ export function explainNetMedals(
   if (values.payoutRateEstimate) {
     explanations.unshift({
       resultCode: 'payoutRateEstimate',
-      title: '差枚ベース出玉率',
+      title: '差枚から概算した出玉率',
       inputs: [
         { label: 'ゲーム数', value: input.games, unit: 'G' },
         { label: '差枚', value: input.netMedals, unit: '枚' },
@@ -107,7 +107,7 @@ export function explainNetMedals(
           value: values.payoutRateEstimate.display,
         },
       ],
-      assumptions: ['1Gあたり3枚掛けとして換算します。', '実IN/OUTそのものではありません。'],
+      assumptions: ['1Gあたり3枚掛けとして換算します。', '実測IN/OUTによる出玉率ではありません。'],
     });
   }
   return explanations;
@@ -140,14 +140,14 @@ export function explainInvestmentRecovery(
     },
     {
       resultCode: 'cashNetEstimateYen',
-      title: '現金ベース交換見込差額',
+      title: '現金投資との差額',
       inputs: [
         { label: '現金投資額', value: input.cashInvestmentYen, unit: '円' },
         { label: '交換済み金額', value: input.alreadyExchangedYen, unit: '円' },
       ],
       steps: [
         { expression: '交換済み金額 + 現在交換見込', value: values.grossReturnEstimateYen },
-        { expression: '総回収見込 - 現金投資', value: values.cashNetEstimateYen },
+        { expression: '合計回収見込額 - 現金投資額', value: values.cashNetEstimateYen },
       ],
       assumptions: ['未交換の現在枚数を含むため、確定した現金収支ではありません。'],
     },
@@ -170,7 +170,7 @@ export function explainSegments(values: SegmentsValues): CalculationExplanation[
   return [
     {
       resultCode: 'aggregateRate',
-      title: '集計差枚ベース出玉率',
+      title: '全区間の概算出玉率',
       inputs: [
         { label: '合計ゲーム数', value: values.totalGames, unit: 'G' },
         { label: '合計差枚', value: values.totalNetMedals, unit: '枚' },
@@ -190,10 +190,10 @@ export function explainInOut(values: InOutValues): CalculationExplanation[] {
   return [
     {
       resultCode: 'payoutRate',
-      title: '実IN/OUT出玉率',
+      title: '実測IN/OUTによる出玉率',
       inputs: [
-        { label: '実IN', value: values.totalIn, unit: '枚' },
-        { label: '実OUT', value: values.totalOut, unit: '枚' },
+        { label: '実IN（投入枚数）', value: values.totalIn, unit: '枚' },
+        { label: '実OUT（払出枚数）', value: values.totalOut, unit: '枚' },
       ],
       steps: [
         {
@@ -202,7 +202,10 @@ export function explainInOut(values: InOutValues): CalculationExplanation[] {
         },
         { expression: `${values.totalOut} - ${values.totalIn}`, value: values.actualNetMedals },
       ],
-      assumptions: ['入力された実IN/OUTから計算します。', '複数区間は合計IN/OUTを使用します。'],
+      assumptions: [
+        '入力された実測IN/OUTから計算します。',
+        '複数区間はINとOUTをそれぞれ合計して使用します。',
+      ],
     },
   ];
 }
@@ -217,7 +220,7 @@ export function explainCoinHold(
       title: '通常時コイン持ち',
       inputs: [
         { label: '通常時ゲーム数', value: input.normalGames, unit: 'G' },
-        { label: '正味使用枚数', value: values.netUsedMedals, unit: '枚' },
+        { label: '通常時の消費枚数', value: values.netUsedMedals, unit: '枚' },
       ],
       steps: [
         {

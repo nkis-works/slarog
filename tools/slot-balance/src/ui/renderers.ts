@@ -79,7 +79,7 @@ export function renderMessages(key: CalculationKey, messages: ValidationMessage[
   const container = output('messages', key);
   const unique = deduplicate(messages);
   if (unique.length === 0) {
-    replaceChildren(container, textElement('p', '追加の警告・補足はありません。', 'empty-note'));
+    replaceChildren(container, textElement('p', '追加の確認事項はありません。', 'empty-note'));
     return;
   }
   const fragment = document.createDocumentFragment();
@@ -103,8 +103,8 @@ export function renderKnowledgeBoundary(key: CalculationKey, boundary: Knowledge
   const wrapper = document.createElement('div');
   wrapper.className = 'boundary-grid';
   for (const [title, items, className] of [
-    ['分かること', boundary.known, 'known'],
-    ['分からないこと', boundary.unknown, 'unknown'],
+    ['算出できる項目', boundary.known, 'known'],
+    ['算出対象外', boundary.unknown, 'unknown'],
   ] as const) {
     const section = document.createElement('section');
     section.className = `boundary-panel boundary-panel--${className}`;

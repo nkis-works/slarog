@@ -18,7 +18,7 @@ test.describe('差枚', () => {
     await expect(page.locator('#result-net')).toContainText('+125枚／1,000G');
     await expect(page.locator('#result-net')).toContainText('12,000枚');
     await expect(page.locator('#result-net')).toContainText('+12,500枚');
-    await expect(page.locator('#explanations-net')).toContainText('差枚ベース出玉率');
+    await expect(page.locator('#explanations-net')).toContainText('差枚から概算した出玉率');
     await page.locator('[name="net.netMedals"]').fill('＋５０１枚');
     await expect(page.locator('#stale-net')).toBeVisible();
     await expect(page.locator('#stale-net')).toContainText('再計算してください');
@@ -36,7 +36,7 @@ test.describe('差枚', () => {
   test('omits payout rate when three-medal assumed OUT would be negative', async ({ page }) => {
     await gotoTool(page);
     await calculateNet(page, '1000G', '-3001枚');
-    await expect(page.locator('#result-net')).not.toContainText('差枚ベース出玉率');
+    await expect(page.locator('#result-net')).not.toContainText('差枚から概算した出玉率');
     await expect(page.locator('#messages-net')).toContainText('3枚掛け換算OUTが0枚未満');
   });
 });
@@ -58,17 +58,19 @@ test.describe('投資・回収', () => {
 
   test('cash plus stored medals keeps two recovery lines separate', async ({ page }) => {
     await fillInvestmentBase(page, { cash: '20000', current: '1200', exchange: '50' });
-    await page.getByText('詳しく入力する', { exact: true }).click();
+    await page.getByText('追加条件を入力', { exact: true }).click();
     await page.locator('[name="investment.storedMedals"]').fill('500');
     await page.locator('[data-calculate="investment"]').click();
     await expect(page.locator('#result-investment')).toContainText('-6,000円');
-    await expect(page.locator('#result-investment')).toContainText('貯メダル込み回収ライン');
+    await expect(page.locator('#result-investment')).toContainText(
+      '現金・使用貯メダル分の回収に必要な枚数',
+    );
     await expect(page.locator('#result-investment')).toContainText('1,500枚');
   });
 
   test('non-equivalent exchange and exchange unit are explicit', async ({ page }) => {
     await fillInvestmentBase(page, { cash: '20000', current: '1000', exchange: '56', unit: '500' });
-    await page.getByText('詳しく入力する', { exact: true }).click();
+    await page.getByText('追加条件を入力', { exact: true }).click();
     await page.locator('[name="investment.lendRate"]').fill('46');
     await page.locator('[data-calculate="investment"]').click();
     await expect(page.locator('#result-investment')).toContainText('17,500円');
@@ -77,7 +79,7 @@ test.describe('投資・回収', () => {
 
   test('already-exchanged money is included', async ({ page }) => {
     await fillInvestmentBase(page, { cash: '10000', current: '400', exchange: '50', unit: '500' });
-    await page.getByText('詳しく入力する', { exact: true }).click();
+    await page.getByText('追加条件を入力', { exact: true }).click();
     await page.locator('[name="investment.exchangedYen"]').fill('5000');
     await page.locator('[data-calculate="investment"]').click();
     await expect(page.locator('#result-investment')).toContainText('13,000円');
@@ -86,7 +88,7 @@ test.describe('投資・回収', () => {
 
   test('cash zero omits cash recovery rate', async ({ page }) => {
     await fillInvestmentBase(page, { cash: '0', current: '600', exchange: '50' });
-    await page.getByText('詳しく入力する', { exact: true }).click();
+    await page.getByText('追加条件を入力', { exact: true }).click();
     await page.locator('[name="investment.storedMedals"]').fill('500');
     await page.locator('[data-calculate="investment"]').click();
     await expect(page.locator('#result-investment')).not.toContainText('現金回収率');
@@ -133,7 +135,7 @@ test.describe('区間・IN/OUT', () => {
 
     await page.locator('[name="inout.actualIn"]').fill('0');
     await page.locator('[data-calculate="inout"]').click();
-    await expect(page.locator('#error-summary')).toContainText('実INは1枚以上');
+    await expect(page.locator('#error-summary')).toContainText('実IN（投入枚数）は1枚以上');
   });
 
   test('coin hold requires confirmations and works for direct and breakdown input', async ({

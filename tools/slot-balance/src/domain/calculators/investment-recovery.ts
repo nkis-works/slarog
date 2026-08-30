@@ -159,7 +159,7 @@ export function calculateInvestmentRecovery(
       severity: 'info',
       code: 'gross_return_zero',
       field: 'currentMedals',
-      message: '総回収見込0円として計算します。',
+      message: '合計回収見込額0円として計算します。',
     });
   }
 

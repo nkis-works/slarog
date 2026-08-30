@@ -8,17 +8,17 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'self'"
     >
-    <title>スロバランス｜差枚・投資・IN/OUT無料計算ツール</title>
+    <title>スロバランス｜差枚・出玉率・投資回収の無料計算ツール</title>
     <meta
       name="description"
-      content="差枚・投資・IN/OUTを条件ごとに整理できる、無料・登録不要のスロット計算ツールです。入力は端末内で計算し、保存・外部送信を行いません。"
+      content="G数・差枚からの概算出玉率、1,000Gあたり差枚、投資回収、実測IN/OUT、通常時コイン持ちを算出できる無料・登録不要のスロット計算ツールです。"
     >
     <link rel="canonical" href="https://nkisworks.com/tools/slot-balance/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="NKIS Works">
     <meta property="og:url" content="https://nkisworks.com/tools/slot-balance/">
-    <meta property="og:title" content="スロバランス｜無料計算ツール">
-    <meta property="og:description" content="差枚・投資・IN/OUTを、無料・登録不要で整理できる計算ツールです。">
+    <meta property="og:title" content="スロバランス｜差枚・出玉率・投資回収の無料計算ツール">
+    <meta property="og:description" content="差枚・出玉率・投資回収・実測IN/OUT・通常時コイン持ちを、無料・登録不要で算出できます。">
     <meta property="og:image" content="https://nkisworks.com/assets/og-image-v2.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -47,7 +47,7 @@
       <section class="intro shell" aria-labelledby="page-title">
         <p class="eyebrow">Slarog tools by NKIS Works</p>
         <h1 id="page-title">スロバランス</h1>
-        <p class="intro-lead">差枚・投資・IN/OUTを、条件を分けて整理する無料計算ツール。</p>
+        <p class="intro-lead">差枚・出玉率・投資回収・実測IN/OUT・通常時コイン持ちを、入力条件に基づいて算出する無料計算ツールです。</p>
         <div class="intro-notes">
           <p><strong>無料・登録不要</strong>で、スマートフォンからそのまま使えます。</p>
           <p>入力した数値は、この端末内で計算されます。</p>
@@ -56,24 +56,59 @@
         <p class="important-note">入力した数値を整理し、計算過程を確認するためのツールです。遊技結果や今後の結果を保証するものではありません。</p>
       </section>
 
+      <section class="guide capability-overview shell" aria-labelledby="capability-heading">
+        <div class="section-heading compact-heading">
+          <div>
+            <h2 id="capability-heading">算出できる項目</h2>
+            <p>目的に合う計算方法と、必要な入力値を確認できます。</p>
+          </div>
+        </div>
+        <div class="capability-grid">
+          <article class="capability-card">
+            <h3>差枚・出玉率の概算</h3>
+            <p>同じ対象範囲のG数と差枚から、1,000Gあたり差枚と、1Gあたり3枚掛けを前提とした概算出玉率を算出します。</p>
+          </article>
+          <article class="capability-card">
+            <h3>投資・回収の試算</h3>
+            <p>現金投資額、現在枚数、交換条件から、交換見込額、回収見込額、投資との差額、回収率、回収に必要な枚数を算出します。</p>
+          </article>
+          <article class="capability-card">
+            <h3>複数区間の集計</h3>
+            <p>区間ごとのG数と差枚を合計し、全区間の概算出玉率を合計値から再計算します。区間ごとの出玉率を単純平均しません。</p>
+          </article>
+          <article class="capability-card">
+            <h3>実測IN/OUT</h3>
+            <p>実IN（投入枚数）と実OUT（払出枚数）から、実測出玉率と実測差枚を算出します。複数区間の合計にも対応します。</p>
+          </article>
+          <article class="capability-card">
+            <h3>通常時コイン持ち</h3>
+            <p>AT・ボーナスを除いた通常時のG数と消費枚数から、50枚あたりの通常時G数を算出します。</p>
+          </article>
+        </div>
+        <div class="calculation-exclusions">
+          <h3>算出対象外</h3>
+          <p>設定判別、期待値、今後の出玉、続行・終了の判断は行いません。店舗固有の交換方法や端数処理を入力していない場合、実際の交換額とは異なることがあります。</p>
+        </div>
+      </section>
+
       <section class="tool shell" id="tool" aria-labelledby="mode-heading">
         <div class="section-heading">
           <p class="section-number">01</p>
           <div>
             <h2 id="mode-heading" tabindex="-1">計算したい内容を選ぶ</h2>
-            <p>モードを切り替えても、入力途中の内容はページを閉じるまで保持されます。</p>
+            <p>目的に合うモードを選び、同じ対象範囲の数値を入力してください。</p>
           </div>
         </div>
 
         <nav class="mode-switcher" aria-label="計算モード">
           <button type="button" data-main-mode="net" aria-pressed="true">
-            <span>差枚から見る</span><small>G数と差枚</small>
+            <span>差枚・出玉率</span><small>G数と差枚から概算</small>
           </button>
           <button type="button" data-main-mode="investment" aria-pressed="false">
-            <span>投資・回収を見る</span><small>金額と交換条件</small>
+            <span>投資・回収</span><small>金額・枚数・交換条件</small>
           </button>
           <button type="button" data-main-mode="segments-inout" aria-pressed="false">
-            <span>区間・IN/OUT</span><small>区間別・実測・コイン持ち</small>
+            <span>区間・実測</span><small>複数区間・実測IN/OUT・コイン持ち</small>
           </button>
         </nav>
 
@@ -89,8 +124,8 @@
         <div class="mode-panel" data-main-panel="net">
           <div class="panel-heading">
             <div>
-              <p class="panel-kicker">差枚から見る</p>
-              <h2>同じ対象範囲のG数と差枚を入力</h2>
+              <p class="panel-kicker">差枚・出玉率</p>
+              <h2>同じ対象範囲のG数と差枚を入力する</h2>
             </div>
             <p class="example">例：4,000G／+500枚</p>
           </div>
@@ -147,8 +182,8 @@
         <div class="mode-panel" data-main-panel="investment" hidden>
           <div class="panel-heading">
             <div>
-              <p class="panel-kicker">投資・回収を見る</p>
-              <h2>金額・枚数・交換条件を分けて入力</h2>
+              <p class="panel-kicker">投資・回収</p>
+              <h2>金額・枚数・交換条件を入力する</h2>
             </div>
             <p class="example">例：20,000円／1,200枚／50枚</p>
           </div>
@@ -193,8 +228,8 @@
             </div>
 
             <details class="advanced-inputs">
-              <summary>詳しく入力する</summary>
-              <p>貯メダル、交換済み金額、貸出条件、差枚ベースの参考値を追加できます。</p>
+              <summary>追加条件を入力</summary>
+              <p>使用した貯メダル、交換済み金額、貸出条件、G数・差枚を追加すると、対応する換算値を算出します。</p>
               <div class="field-grid">
                 <div class="field">
                   <label for="investment-stored">使用した貯メダル</label>
@@ -246,13 +281,13 @@
         <div class="mode-panel" data-main-panel="segments-inout" hidden>
           <div class="panel-heading">
             <div>
-              <p class="panel-kicker">区間・IN/OUT</p>
-              <h2>入力できる記録の種類を選ぶ</h2>
+              <p class="panel-kicker">区間・実測</p>
+              <h2>計算する記録の種類を選ぶ</h2>
             </div>
           </div>
-          <nav class="submode-switcher" aria-label="区間・IN/OUTの入力方式">
+          <nav class="submode-switcher" aria-label="区間・実測の入力方式">
             <button type="button" data-segments-submode="segments" aria-pressed="true">区間差枚</button>
-            <button type="button" data-segments-submode="inout" aria-pressed="false">実IN/OUT</button>
+            <button type="button" data-segments-submode="inout" aria-pressed="false">実測IN/OUT</button>
             <button type="button" data-segments-submode="coin" aria-pressed="false">通常時コイン持ち</button>
           </nav>
 
@@ -276,8 +311,8 @@
 
           <div data-submode-panel="inout" hidden>
             <div class="subpanel-heading">
-              <h3>実IN/OUT</h3>
-              <p>同じ対象範囲の実INと実OUTを入力します。差枚からの3枚掛け換算ではありません。</p>
+              <h3>実測IN/OUT</h3>
+              <p>同じ対象範囲の実IN（投入枚数）と実OUT（払出枚数）を入力します。G数・差枚からの概算ではありません。</p>
             </div>
             <form id="inout-form" data-calculation-key="inout" autocomplete="off" novalidate>
               <fieldset class="choice-fieldset">
@@ -289,7 +324,7 @@
               </fieldset>
               <div id="inout-total-fields" class="field-grid">
                 <div class="field">
-                  <label for="inout-actual-in">実IN</label>
+                  <label for="inout-actual-in">実IN（投入枚数）</label>
                   <div class="field-control">
                     <input id="inout-actual-in" name="inout.actualIn" type="text" inputmode="numeric" autocomplete="off" placeholder="例：12,000" aria-describedby="inout-actual-in-error">
                     <span class="field-unit">枚</span>
@@ -297,7 +332,7 @@
                   <p class="field-error" id="inout-actual-in-error" data-field-error-for="inout.actualIn"></p>
                 </div>
                 <div class="field">
-                  <label for="inout-actual-out">実OUT</label>
+                  <label for="inout-actual-out">実OUT（払出枚数）</label>
                   <div class="field-control">
                     <input id="inout-actual-out" name="inout.actualOut" type="text" inputmode="numeric" autocomplete="off" placeholder="例：12,500" aria-describedby="inout-actual-out-error">
                     <span class="field-unit">枚</span>
@@ -316,27 +351,27 @@
               <div id="inout-segment-fields" hidden>
                 <div class="dynamic-list" id="inout-segment-list"></div>
                 <div class="dynamic-actions">
-                  <button class="secondary-button" type="button" id="add-inout-segment">IN/OUT区間を追加</button>
+                  <button class="secondary-button" type="button" id="add-inout-segment">実測区間を追加</button>
                   <div class="undo-notice" id="inout-segment-undo" role="status" hidden>
                     区間を削除しました。
                     <button type="button" id="undo-inout-segment">元に戻す</button>
                   </div>
                 </div>
               </div>
-              <button class="calculate-button" type="button" data-calculate="inout">実IN/OUTを計算する</button>
+              <button class="calculate-button" type="button" data-calculate="inout">実測IN/OUTを計算する</button>
             </form>
           </div>
 
           <div data-submode-panel="coin" hidden>
             <div class="subpanel-heading">
               <h3>通常時コイン持ち</h3>
-              <p>AT・ボーナスを除いた同じ通常時区間のG数と正味使用枚数から計算します。</p>
+              <p>AT・ボーナスを除いた同じ通常時区間のG数と、消費した枚数から計算します。</p>
             </div>
             <form id="coin-form" data-calculation-key="coin" autocomplete="off" novalidate>
               <fieldset class="choice-fieldset">
                 <legend>入力方式</legend>
                 <div class="choice-row">
-                  <label><input type="radio" name="coin.method" value="direct" checked> 正味使用枚数を直接入力</label>
+                  <label><input type="radio" name="coin.method" value="direct" checked> 消費枚数を直接入力</label>
                   <label><input type="radio" name="coin.method" value="breakdown"> 内訳から入力</label>
                 </div>
               </fieldset>
@@ -352,11 +387,12 @@
               </div>
               <div id="coin-direct-fields" class="field-grid">
                 <div class="field">
-                  <label for="coin-net-used">正味使用枚数</label>
+                  <label for="coin-net-used">通常時の消費枚数</label>
                   <div class="field-control">
-                    <input id="coin-net-used" name="coin.netUsedMedals" type="text" inputmode="numeric" autocomplete="off" placeholder="例：1,000" aria-describedby="coin-net-used-error">
+                    <input id="coin-net-used" name="coin.netUsedMedals" type="text" inputmode="numeric" autocomplete="off" placeholder="例：1,000" aria-describedby="coin-net-used-hint coin-net-used-error">
                     <span class="field-unit">枚</span>
                   </div>
+                  <p class="field-hint" id="coin-net-used-hint">開始時枚数＋追加枚数−終了時枚数−持ち出し枚数</p>
                   <p class="field-error" id="coin-net-used-error" data-field-error-for="coin.netUsedMedals"></p>
                 </div>
               </div>
@@ -420,7 +456,7 @@
         </div>
         <div class="output-surface" data-output-key="inout" hidden>
           <p class="stale-banner" id="stale-inout" hidden>入力が変更されています。この結果は古いため、再計算してください。</p>
-          <div id="result-inout"><p class="empty-note">実INと実OUTを入力して計算してください。</p></div>
+          <div id="result-inout"><p class="empty-note">実IN（投入枚数）と実OUT（払出枚数）を入力して計算してください。</p></div>
         </div>
         <div class="output-surface" data-output-key="coin" hidden>
           <p class="stale-banner" id="stale-coin" hidden>入力が変更されています。この結果は古いため、再計算してください。</p>
@@ -429,7 +465,7 @@
       </section>
 
       <section class="output-section shell" aria-labelledby="messages-heading">
-        <div class="section-heading compact-heading"><p class="section-number">03</p><div><h2 id="messages-heading">警告・補足</h2><p>計算を止めるエラーと、結果を確認できる注意を分けます。</p></div></div>
+        <div class="section-heading compact-heading"><p class="section-number">03</p><div><h2 id="messages-heading">入力内容の確認</h2><p>修正が必要な入力と、結果を確認する際の注意事項を表示します。</p></div></div>
         <div data-output-key="net"><div id="messages-net"><p class="empty-note">計算後に表示します。</p></div></div>
         <div data-output-key="investment" hidden><div id="messages-investment"><p class="empty-note">計算後に表示します。</p></div></div>
         <div data-output-key="segments" hidden><div id="messages-segments"><p class="empty-note">計算後に表示します。</p></div></div>
@@ -438,7 +474,7 @@
       </section>
 
       <section class="output-section shell" aria-labelledby="boundary-heading">
-        <div class="section-heading compact-heading"><p class="section-number">04</p><div><h2 id="boundary-heading">計算できる範囲と制約</h2><p>入力値から計算できる内容と、このツールでは判断できない事項を示します。</p></div></div>
+        <div class="section-heading compact-heading"><p class="section-number">04</p><div><h2 id="boundary-heading">算出範囲</h2><p>入力値から算出できる項目と、算出対象外の項目を表示します。</p></div></div>
         <div data-output-key="net"><div id="boundary-net"><p class="empty-note">計算後に表示します。</p></div></div>
         <div data-output-key="investment" hidden><div id="boundary-investment"><p class="empty-note">計算後に表示します。</p></div></div>
         <div data-output-key="segments" hidden><div id="boundary-segments"><p class="empty-note">計算後に表示します。</p></div></div>
@@ -474,7 +510,7 @@
         </div>
         <div class="formula-grid">
           <article class="formula-card">
-            <h3>差枚ベースの概算出玉率</h3>
+            <h3>差枚から概算した出玉率</h3>
             <p class="formula-expression">想定IN ＝ G数 × 3枚</p>
             <p class="formula-expression">想定OUT ＝ 想定IN ＋ 差枚</p>
             <p class="formula-expression">概算出玉率 ＝ 想定OUT ÷ 想定IN × 100</p>
@@ -486,7 +522,7 @@
             <p>入力した範囲の差枚を1,000Gあたりへ換算します。</p>
           </article>
           <article class="formula-card">
-            <h3>実IN・実OUTの出玉率</h3>
+            <h3>実測IN/OUTによる出玉率</h3>
             <p class="formula-expression">実OUT ÷ 実IN × 100</p>
             <p>複数区間では、各区間のINとOUTを合計してから計算します。</p>
           </article>
@@ -502,22 +538,22 @@
           </article>
           <article class="formula-card">
             <h3>現金投資に対する回収率</h3>
-            <p class="formula-expression">総回収見込額 ÷ 現金投資額 × 100</p>
-            <p>総回収見込額は、交換済み金額と現在枚数の交換見込額の合計です。</p>
+            <p class="formula-expression">合計回収見込額 ÷ 現金投資額 × 100</p>
+            <p>合計回収見込額は、交換済み金額と現在枚数の交換見込額の合計です。</p>
           </article>
           <article class="formula-card">
             <h3>貯メダル価値を含む回収率</h3>
-            <p class="formula-expression">総回収見込額 ÷（現金投資額 ＋ 使用貯メダルの理論価値）× 100</p>
+            <p class="formula-expression">合計回収見込額 ÷（現金投資額 ＋ 使用貯メダルの理論価値）× 100</p>
             <p>使用貯メダルの理論価値は、使用枚数と交換条件から別に換算します。</p>
           </article>
           <article class="formula-card">
-            <h3>通常時の正味使用枚数</h3>
+            <h3>通常時の消費枚数</h3>
             <p class="formula-expression">開始時枚数 ＋ 追加枚数 − 終了時枚数 − 持ち出し枚数</p>
             <p>内訳入力を選んだ場合だけ使用します。</p>
           </article>
           <article class="formula-card">
             <h3>50枚あたりの通常時コイン持ち</h3>
-            <p class="formula-expression">通常時G数 ÷ 正味使用枚数 × 50</p>
+            <p class="formula-expression">通常時G数 ÷ 消費枚数 × 50</p>
             <p>AT・ボーナスを除いた同じ通常時区間の数値を使います。</p>
           </article>
         </div>
@@ -525,11 +561,11 @@
       </section>
 
       <section class="guide shell" aria-labelledby="guide-heading">
-        <div class="section-heading compact-heading"><p class="section-number">07</p><div><h2 id="guide-heading">使い方</h2><p>自動計算ではなく、入力を確認してから計算します。</p></div></div>
+        <div class="section-heading compact-heading"><p class="section-number">07</p><div><h2 id="guide-heading">入力手順</h2><p>計算の目的、対象範囲、入力条件を確認してから算出します。</p></div></div>
         <ol class="steps">
-          <li><span>1</span><div><h3>目的を選ぶ</h3><p>差枚、投資・回収、区間・IN/OUTから選びます。</p></div></li>
-          <li><span>2</span><div><h3>同じ範囲の数値を入力</h3><p>全角数字、カンマ、G・枚・円を含む入力にも対応します。</p></div></li>
-          <li><span>3</span><div><h3>結果と根拠を確認</h3><p>入力を変えた場合は、古い結果を使わず再計算してください。</p></div></li>
+          <li><span>1</span><div><h3>計算項目を選択</h3><p>差枚・出玉率、投資・回収、区間差枚、実測IN/OUT、通常時コイン持ちから選択します。</p></div></li>
+          <li><span>2</span><div><h3>対象範囲を統一して入力</h3><p>G数・差枚・IN・OUTは、同じ実戦、同じ台の当日、同じ任意区間など、対象範囲を揃えて入力します。</p></div></li>
+          <li><span>3</span><div><h3>結果・注意事項・計算根拠を確認</h3><p>概算・実測・参考値の区分と計算式を確認してください。入力を変更した場合は再計算が必要です。</p></div></li>
         </ol>
       </section>
 
@@ -540,8 +576,8 @@
         </div>
         <div class="faq-list">
           <details>
-            <summary>どのような用途のツールですか？</summary>
-            <p>入力した数値から差枚・投資・IN/OUTなどを整理し、計算過程を確認するためのツールです。</p>
+            <summary>何を算出できますか？</summary>
+            <p>1,000Gあたり差枚、差枚から概算した出玉率、交換見込額、回収見込額、投資との差額、回収率、回収に必要な枚数、実測IN/OUTによる出玉率、通常時コイン持ちを算出できます。</p>
           </details>
           <details>
             <summary>差枚と現在手元にある枚数は同じですか？</summary>
@@ -549,7 +585,11 @@
           </details>
           <details>
             <summary>概算出玉率と実測出玉率の違いは何ですか？</summary>
-            <p>概算はG数から1Gあたり3枚のINを置きます。実測は入力した実INと実OUTから計算します。</p>
+            <p>概算はG数に1Gあたり3枚を掛けて想定INを置きます。実測は実IN（投入枚数）と実OUT（払出枚数）を入力し、その値から計算します。</p>
+          </details>
+          <details>
+            <summary>INとOUTは何を指しますか？</summary>
+            <p>INは対象区間で投入された枚数、OUTは同じ区間で払い出された枚数です。実測出玉率を算出する場合は、同じ対象範囲の実INと実OUTを入力してください。</p>
           </details>
           <details>
             <summary>非等価交換にも対応していますか？</summary>
@@ -558,6 +598,10 @@
           <details>
             <summary>交換単位とは何ですか？</summary>
             <p>交換できる金額の刻みです。入力すると、その単位に満たない金額を切り捨てて見込額を表示します。</p>
+          </details>
+          <details>
+            <summary>回収に必要な枚数は何を表しますか？</summary>
+            <p>入力した交換条件で、現金投資額または現金投資額と使用貯メダルの価値を回収するために必要な現在枚数です。店舗固有の端数処理などにより実際の交換結果と異なる場合があります。</p>
           </details>
           <details>
             <summary>使用した貯メダルを現金投資と分けるのはなぜですか？</summary>
@@ -573,19 +617,23 @@
           </details>
           <details>
             <summary>通常時コイン持ちにAT・ボーナスを含めてもよいですか？</summary>
-            <p>含めないでください。AT・ボーナスを除いた同じ通常時区間のG数と正味使用枚数が必要です。</p>
+            <p>含めないでください。AT・ボーナスを除いた同じ通常時区間のG数と、消費した枚数が必要です。</p>
+          </details>
+          <details>
+            <summary>通常時の消費枚数はどのように求めますか？</summary>
+            <p>消費枚数を直接入力するか、「開始時枚数＋追加枚数−終了時枚数−持ち出し枚数」で内訳から算出できます。すべて同じ通常時区間の数値を入力してください。</p>
           </details>
           <details>
             <summary>結果から続行・ヤメを決められますか？</summary>
-            <p>このツールは続行・ヤメを判断しません。結果は記録整理の参考として確認し、最終判断はご自身で行ってください。</p>
+            <p>このツールは続行・終了の判断、設定判別、期待値計算、今後の出玉予測を行いません。入力値の整理と計算結果の確認に使用してください。</p>
           </details>
         </div>
       </section>
 
       <section class="disclaimer shell" aria-labelledby="disclaimer-heading">
         <h2 id="disclaimer-heading">ご利用前の確認</h2>
-        <p>計算結果は、入力値と明示した仮定に基づく整理・概算です。店舗ごとの交換方法、端数処理、遊技条件などにより実際の結果と異なる場合があります。</p>
-        <p>計算結果は入力値と明示した仮定に基づく参考値です。遊技結果や今後の結果を保証するものではありません。</p>
+        <p>計算結果は、入力値と画面に記載した仮定に基づく算出値です。店舗ごとの交換方法、端数処理、遊技条件などにより実際の結果と異なる場合があります。</p>
+        <p>遊技結果、今後の出玉、設定、期待値、収益を保証するものではありません。</p>
       </section>
     </main>
 

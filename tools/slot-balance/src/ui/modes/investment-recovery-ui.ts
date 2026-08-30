@@ -86,25 +86,25 @@ export function setupInvestmentRecoveryUi(): UiModeController {
         {
           items: [
             {
-              label: '交換単位反映後の交換見込額',
+              label: '現在枚数の交換見込額',
               value: formatYen(values.currentExchangeEstimateYen),
               provenance: result.provenance['currentExchangeEstimateYen'] ?? 'estimated',
               primary: true,
             },
             {
-              label: '総回収見込',
+              label: '合計回収見込額',
               value: formatYen(values.grossReturnEstimateYen),
               provenance: result.provenance['grossReturnEstimateYen'] ?? 'estimated',
               primary: true,
             },
             {
-              label: '現金ベース差額',
+              label: '現金投資との差額',
               value: formatYen(values.cashNetEstimateYen, true),
               provenance: result.provenance['cashNetEstimateYen'] ?? 'estimated',
               primary: true,
             },
             {
-              label: '貯メダル込み価値差額',
+              label: '使用貯メダルの価値を含む差額',
               value: formatYen(values.totalValueNetEstimateYen.display, true),
               provenance: result.provenance['totalValueNetEstimateYen'] ?? 'estimated',
               primary: true,
@@ -148,39 +148,39 @@ export function setupInvestmentRecoveryUi(): UiModeController {
       if (values.cashRecoveryLine) {
         lineItems.push(
           {
-            label: '現金回収ライン',
+            label: '現金投資額の回収に必要な枚数',
             value: formatMedals(values.cashRecoveryLine.requiredMedals),
             provenance: result.provenance['cashRecoveryLine'] ?? 'estimated',
           },
           {
-            label: '現金回収ラインとの差枚数',
+            label: '現金投資額の回収までの過不足枚数',
             value: formatSignedMedals(-values.cashRecoveryLine.gapMedals),
             provenance: result.provenance['cashRecoveryLine'] ?? 'estimated',
-            note: 'プラスは現在枚数がラインを上回る状態、マイナスは不足枚数です。',
+            note: 'プラスは必要枚数を上回る状態、マイナスは不足している状態です。',
           },
         );
       }
       if (values.showTotalRecoveryLine && values.totalRecoveryLine) {
         lineItems.push(
           {
-            label: '貯メダル込み回収ライン',
+            label: '現金・使用貯メダル分の回収に必要な枚数',
             value: formatMedals(values.totalRecoveryLine.requiredMedals),
             provenance: result.provenance['totalRecoveryLine'] ?? 'estimated',
           },
           {
-            label: '貯メダル込み回収ラインとの差枚数',
+            label: '現金・使用貯メダル分の回収までの過不足枚数',
             value: formatSignedMedals(-values.totalRecoveryLine.gapMedals),
             provenance: result.provenance['totalRecoveryLine'] ?? 'estimated',
           },
         );
       }
-      if (lineItems.length > 0) groups.push({ title: '回収ライン', items: lineItems });
+      if (lineItems.length > 0) groups.push({ title: '回収に必要な枚数', items: lineItems });
       if (values.cashBorrowedMedalsEquivalent) {
         groups.push({
           title: '貸出条件の参考',
           items: [
             {
-              label: '現金投資の貸出枚数相当',
+              label: '現金投資で借りた枚数の換算値',
               value: formatMedals(values.cashBorrowedMedalsEquivalent.display),
               provenance: result.provenance['cashBorrowedMedalsEquivalent'] ?? 'reference',
             },
@@ -197,7 +197,7 @@ export function setupInvestmentRecoveryUi(): UiModeController {
         ];
         if (values.netMedalsAnalysis.payoutRateEstimate) {
           netItems.unshift({
-            label: '差枚ベース出玉率',
+            label: '差枚から概算した出玉率',
             value: formatPercent(values.netMedalsAnalysis.payoutRateEstimate.display),
             provenance: 'estimated',
           });

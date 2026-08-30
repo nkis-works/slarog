@@ -58,7 +58,7 @@ export async function expectNoHorizontalOverflow(page: Page): Promise<void> {
 export async function gotoDistTool(page: Page): Promise<void> {
   const response = await page.goto(DIST_TOOL_PATH);
   expect(response?.status()).toBe(200);
-  await expect(page).toHaveTitle('スロバランス｜差枚・投資・IN/OUT無料計算ツール');
+  await expect(page).toHaveTitle('スロバランス｜差枚・出玉率・投資回収の無料計算ツール');
 }
 
 export async function calculateDistNet(page: Page): Promise<void> {
@@ -66,7 +66,7 @@ export async function calculateDistNet(page: Page): Promise<void> {
   await page.locator('[name="net.netMedals"]').fill('+987枚');
   await page.locator('[data-calculate="net"]').click();
   await expect(
-    page.locator('#result-net .metric__label', { hasText: '差枚ベース出玉率' }),
+    page.locator('#result-net .metric__label', { hasText: '差枚から概算した出玉率' }),
   ).toBeVisible();
 }
 
