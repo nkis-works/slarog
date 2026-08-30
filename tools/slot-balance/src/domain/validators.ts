@@ -413,7 +413,7 @@ export function validateInOut(input: InOutInput): ValidationMessage[] {
         'error',
         'in_out_values_required',
         undefined,
-        '実IN（投入枚数）と実OUT（払出枚数）、または実測区間を入力してください。',
+        '実IN（総投入枚数）と実OUT（総払出枚数）、または実測区間を入力してください。',
         '同じ対象範囲のINとOUTを揃えてください。',
       ),
     ];
@@ -447,8 +447,8 @@ export function validateInOut(input: InOutInput): ValidationMessage[] {
           'error',
           'actual_in_not_positive',
           value.prefix ? `${value.prefix}.actualIn` : 'actualIn',
-          '実IN（投入枚数）は1枚以上の整数で入力してください。',
-          '同じ対象範囲の投入枚数を確認してください。',
+          '実IN（総投入枚数）は1枚以上の整数で入力してください。',
+          '同じ対象範囲でベットされた総枚数を確認してください。',
         ),
       );
     }
@@ -462,8 +462,8 @@ export function validateInOut(input: InOutInput): ValidationMessage[] {
           'error',
           'actual_out_negative',
           value.prefix ? `${value.prefix}.actualOut` : 'actualOut',
-          '実OUT（払出枚数）は0枚以上の整数で入力してください。',
-          '同じ対象範囲の払出枚数を確認してください。',
+          '実OUT（総払出枚数）は0枚以上の整数で入力してください。',
+          '同じ対象範囲で払い出された総枚数を確認してください。',
         ),
       );
     }
@@ -491,7 +491,7 @@ export function validateCoinHold(input: CoinHoldInput, netUsedMedals: number): V
         'net_used_medals_not_positive',
         input.method === 'direct' ? 'netUsedMedals' : 'breakdown',
         '通常時区間の消費枚数は1枚以上にしてください。',
-        '開始、追加、終了、持ち出し枚数の入力を確認してください。',
+        '開始、追加、終了、途中で取り分けた枚数の入力を確認してください。',
       ),
     );
   }

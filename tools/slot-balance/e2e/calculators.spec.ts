@@ -63,7 +63,7 @@ test.describe('投資・回収', () => {
     await page.locator('[data-calculate="investment"]').click();
     await expect(page.locator('#result-investment')).toContainText('-6,000円');
     await expect(page.locator('#result-investment')).toContainText(
-      '現金・使用貯メダル分の回収に必要な枚数',
+      '現金・使用貯メダル分の回収ライン（現在枚数）',
     );
     await expect(page.locator('#result-investment')).toContainText('1,500枚');
   });
@@ -135,7 +135,7 @@ test.describe('区間・IN/OUT', () => {
 
     await page.locator('[name="inout.actualIn"]').fill('0');
     await page.locator('[data-calculate="inout"]').click();
-    await expect(page.locator('#error-summary')).toContainText('実IN（投入枚数）は1枚以上');
+    await expect(page.locator('#error-summary')).toContainText('実IN（総投入枚数）は1枚以上');
   });
 
   test('coin hold requires confirmations and works for direct and breakdown input', async ({

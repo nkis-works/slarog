@@ -18,7 +18,7 @@ export const NET_MEDALS_KNOWLEDGE: KnowledgeBoundary = {
     { code: 'calculation_games', label: '計算対象G数' },
   ],
   unknown: [
-    { code: 'exact_in_out', label: '実測IN（投入枚数）・実測OUT（払出枚数）' },
+    { code: 'exact_in_out', label: '実測IN（総投入枚数）・実測OUT（総払出枚数）' },
     { code: 'actual_setting', label: '実際の設定' },
     { code: 'future_output', label: '今後の出玉' },
     { code: 'exact_coin_hold', label: '正確な通常時コイン持ち' },
@@ -30,8 +30,8 @@ export const NET_MEDALS_KNOWLEDGE: KnowledgeBoundary = {
 export const INVESTMENT_KNOWLEDGE: KnowledgeBoundary = {
   known: [
     { code: 'exchange_estimate', label: '入力した交換条件での交換見込額' },
-    { code: 'cash_recovery_line', label: '現金投資額の回収に必要な枚数' },
-    { code: 'total_recovery_line', label: '現金・使用貯メダル分の回収に必要な枚数' },
+    { code: 'cash_recovery_line', label: '現金投資額の回収ラインと不足枚数' },
+    { code: 'total_recovery_line', label: '現金・使用貯メダル分の回収ラインと不足枚数' },
     { code: 'recovery_rates', label: '入力条件に基づく回収率' },
   ],
   unknown: [
@@ -192,8 +192,8 @@ export function explainInOut(values: InOutValues): CalculationExplanation[] {
       resultCode: 'payoutRate',
       title: '実測IN/OUTによる出玉率',
       inputs: [
-        { label: '実IN（投入枚数）', value: values.totalIn, unit: '枚' },
-        { label: '実OUT（払出枚数）', value: values.totalOut, unit: '枚' },
+        { label: '実IN（総投入枚数）', value: values.totalIn, unit: '枚' },
+        { label: '実OUT（総払出枚数）', value: values.totalOut, unit: '枚' },
       ],
       steps: [
         {

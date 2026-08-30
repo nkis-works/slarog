@@ -113,8 +113,8 @@ function createInOutSegmentRow(): HTMLElement {
   grid.className = 'field-grid field-grid--dynamic';
   grid.append(
     field('区間名（任意）', 'label', { inputMode: 'text', maxLength: 100 }),
-    field('実IN（投入枚数）', 'actualIn', { unit: '枚' }),
-    field('実OUT（払出枚数）', 'actualOut', { unit: '枚' }),
+    field('実IN（総投入枚数）', 'actualIn', { unit: '枚' }),
+    field('実OUT（総払出枚数）', 'actualOut', { unit: '枚' }),
     field('G数（任意）', 'games', { unit: 'G' }),
   );
   row.append(legend, header, grid);
@@ -350,8 +350,8 @@ function setupInOutCalculator(options: DynamicModeOptions): UiModeController {
       const messages: ValidationMessage[] = [];
       let result;
       if (source === 'total') {
-        const actualIn = requiredInteger(form, 'inout.actualIn', '実IN（投入枚数）');
-        const actualOut = requiredInteger(form, 'inout.actualOut', '実OUT（払出枚数）');
+        const actualIn = requiredInteger(form, 'inout.actualIn', '実IN（総投入枚数）');
+        const actualOut = requiredInteger(form, 'inout.actualOut', '実OUT（総払出枚数）');
         const games = optionalInteger(form, 'inout.games', 'G数');
         messages.push(...combineMessages(actualIn, actualOut, games));
         if (messages.length > 0 || actualIn.value === undefined || actualOut.value === undefined) {
@@ -369,12 +369,12 @@ function setupInOutCalculator(options: DynamicModeOptions): UiModeController {
           const actualIn = requiredIntegerFromRaw(
             dynamicValue(row, 'actualIn'),
             `inoutSegments.${index}.actualIn`,
-            `区間${index + 1}の実IN（投入枚数）`,
+            `区間${index + 1}の実IN（総投入枚数）`,
           );
           const actualOut = requiredIntegerFromRaw(
             dynamicValue(row, 'actualOut'),
             `inoutSegments.${index}.actualOut`,
-            `区間${index + 1}の実OUT（払出枚数）`,
+            `区間${index + 1}の実OUT（総払出枚数）`,
           );
           const games = optionalIntegerFromRaw(
             dynamicValue(row, 'games'),
@@ -524,7 +524,7 @@ function setupCoinHoldCalculator(): UiModeController {
         const start = requiredInteger(form, 'coin.startMedals', '開始時枚数');
         const added = requiredInteger(form, 'coin.addedMedals', '追加枚数');
         const end = requiredInteger(form, 'coin.endMedals', '終了時枚数');
-        const taken = requiredInteger(form, 'coin.takenOutMedals', '持ち出し枚数');
+        const taken = requiredInteger(form, 'coin.takenOutMedals', '途中で取り分けた枚数');
         messages.push(...combineMessages(start, added, end, taken));
         if (
           normalGames.value !== undefined &&

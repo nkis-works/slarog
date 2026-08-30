@@ -148,33 +148,42 @@ export function setupInvestmentRecoveryUi(): UiModeController {
       if (values.cashRecoveryLine) {
         lineItems.push(
           {
-            label: '現金投資額の回収に必要な枚数',
+            label: '現金投資額の回収ライン（現在枚数）',
             value: formatMedals(values.cashRecoveryLine.requiredMedals),
             provenance: result.provenance['cashRecoveryLine'] ?? 'estimated',
+            note: '交換済み金額を差し引いた後、現在枚数として必要な合計枚数です。',
           },
           {
-            label: '現金投資額の回収までの過不足枚数',
-            value: formatSignedMedals(-values.cashRecoveryLine.gapMedals),
+            label: '現金投資額の回収まであと必要',
+            value: formatMedals(Math.max(0, values.cashRecoveryLine.gapMedals)),
             provenance: result.provenance['cashRecoveryLine'] ?? 'estimated',
-            note: 'プラスは必要枚数を上回る状態、マイナスは不足している状態です。',
+            note:
+              values.cashRecoveryLine.gapMedals > 0
+                ? '回収ラインと現在枚数の差です。'
+                : '現在枚数は回収ラインに到達しています。',
           },
         );
       }
       if (values.showTotalRecoveryLine && values.totalRecoveryLine) {
         lineItems.push(
           {
-            label: '現金・使用貯メダル分の回収に必要な枚数',
+            label: '現金・使用貯メダル分の回収ライン（現在枚数）',
             value: formatMedals(values.totalRecoveryLine.requiredMedals),
             provenance: result.provenance['totalRecoveryLine'] ?? 'estimated',
+            note: '交換済み金額を差し引いた後、現在枚数として必要な合計枚数です。',
           },
           {
-            label: '現金・使用貯メダル分の回収までの過不足枚数',
-            value: formatSignedMedals(-values.totalRecoveryLine.gapMedals),
+            label: '現金・使用貯メダル分の回収まであと必要',
+            value: formatMedals(Math.max(0, values.totalRecoveryLine.gapMedals)),
             provenance: result.provenance['totalRecoveryLine'] ?? 'estimated',
+            note:
+              values.totalRecoveryLine.gapMedals > 0
+                ? '回収ラインと現在枚数の差です。'
+                : '現在枚数は回収ラインに到達しています。',
           },
         );
       }
-      if (lineItems.length > 0) groups.push({ title: '回収に必要な枚数', items: lineItems });
+      if (lineItems.length > 0) groups.push({ title: '回収ラインと不足枚数', items: lineItems });
       if (values.cashBorrowedMedalsEquivalent) {
         groups.push({
           title: '貸出条件の参考',

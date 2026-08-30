@@ -70,7 +70,7 @@
           </article>
           <article class="capability-card">
             <h3>投資・回収の試算</h3>
-            <p>現金投資額、現在枚数、交換条件から、交換見込額、回収見込額、投資との差額、回収率、回収に必要な枚数を算出します。</p>
+            <p>現金投資額、現在枚数、交換条件から、交換見込額、回収見込額、投資との差額、回収率、回収ラインとあと必要な枚数を算出します。</p>
           </article>
           <article class="capability-card">
             <h3>複数区間の集計</h3>
@@ -78,7 +78,7 @@
           </article>
           <article class="capability-card">
             <h3>実測IN/OUT</h3>
-            <p>実IN（投入枚数）と実OUT（払出枚数）から、実測出玉率と実測差枚を算出します。複数区間の合計にも対応します。</p>
+            <p>実IN（対象区間の総投入枚数）と実OUT（同じ区間の総払出枚数）から、実測出玉率と実測差枚を算出します。複数区間の合計にも対応します。</p>
           </article>
           <article class="capability-card">
             <h3>通常時コイン持ち</h3>
@@ -108,7 +108,7 @@
             <span>投資・回収</span><small>金額・枚数・交換条件</small>
           </button>
           <button type="button" data-main-mode="segments-inout" aria-pressed="false">
-            <span>区間・実測</span><small>複数区間・実測IN/OUT・コイン持ち</small>
+            <span>複数区間・実測</span><small>区間差枚・実測IN/OUT・コイン持ち</small>
           </button>
         </nav>
 
@@ -175,7 +175,7 @@
                 <p class="field-error" id="net-medals-error" data-field-error-for="net.netMedals"></p>
               </div>
             </div>
-            <button class="calculate-button" type="button" data-calculate="net">差枚を計算する</button>
+            <button class="calculate-button" type="button" data-calculate="net">差枚・出玉率を計算する</button>
           </form>
         </div>
 
@@ -229,7 +229,7 @@
 
             <details class="advanced-inputs">
               <summary>追加条件を入力</summary>
-              <p>使用した貯メダル、交換済み金額、貸出条件、G数・差枚を追加すると、対応する換算値を算出します。</p>
+              <p>使用した貯メダルは価値と貯メダル込み回収率、交換済み金額は合計回収額、貸出条件は借りた枚数の換算値、G数・差枚は概算出玉率と1,000Gあたり差枚へ反映します。</p>
               <div class="field-grid">
                 <div class="field">
                   <label for="investment-stored">使用した貯メダル</label>
@@ -269,7 +269,7 @@
                     <input id="investment-net" name="investment.netMedals" type="text" inputmode="numeric" autocomplete="off" aria-describedby="investment-net-error">
                     <span class="field-unit">枚</span>
                   </div>
-                  <p class="field-hint">現在枚数へ足さず、別の参考計算に使用します。</p>
+                  <p class="field-hint">現在枚数へは加算せず、概算出玉率と1,000Gあたり差枚だけを計算します。</p>
                   <p class="field-error" id="investment-net-error" data-field-error-for="investment.netMedals"></p>
                 </div>
               </div>
@@ -281,11 +281,11 @@
         <div class="mode-panel" data-main-panel="segments-inout" hidden>
           <div class="panel-heading">
             <div>
-              <p class="panel-kicker">区間・実測</p>
+              <p class="panel-kicker">複数区間・実測</p>
               <h2>計算する記録の種類を選ぶ</h2>
             </div>
           </div>
-          <nav class="submode-switcher" aria-label="区間・実測の入力方式">
+          <nav class="submode-switcher" aria-label="複数区間・実測の入力方式">
             <button type="button" data-segments-submode="segments" aria-pressed="true">区間差枚</button>
             <button type="button" data-segments-submode="inout" aria-pressed="false">実測IN/OUT</button>
             <button type="button" data-segments-submode="coin" aria-pressed="false">通常時コイン持ち</button>
@@ -312,7 +312,7 @@
           <div data-submode-panel="inout" hidden>
             <div class="subpanel-heading">
               <h3>実測IN/OUT</h3>
-              <p>同じ対象範囲の実IN（投入枚数）と実OUT（払出枚数）を入力します。G数・差枚からの概算ではありません。</p>
+              <p>実INは対象区間でベットされた総枚数、実OUTは同じ区間で払い出された総枚数です。貸出枚数や開始・終了時の手持ち枚数ではありません。</p>
             </div>
             <form id="inout-form" data-calculation-key="inout" autocomplete="off" novalidate>
               <fieldset class="choice-fieldset">
@@ -324,19 +324,21 @@
               </fieldset>
               <div id="inout-total-fields" class="field-grid">
                 <div class="field">
-                  <label for="inout-actual-in">実IN（投入枚数）</label>
+                  <label for="inout-actual-in">実IN（総投入枚数）</label>
                   <div class="field-control">
-                    <input id="inout-actual-in" name="inout.actualIn" type="text" inputmode="numeric" autocomplete="off" placeholder="例：12,000" aria-describedby="inout-actual-in-error">
+                    <input id="inout-actual-in" name="inout.actualIn" type="text" inputmode="numeric" autocomplete="off" placeholder="例：12,000" aria-describedby="inout-actual-in-hint inout-actual-in-error">
                     <span class="field-unit">枚</span>
                   </div>
+                  <p class="field-hint" id="inout-actual-in-hint">対象区間でベットされた総枚数。貸出枚数ではありません。</p>
                   <p class="field-error" id="inout-actual-in-error" data-field-error-for="inout.actualIn"></p>
                 </div>
                 <div class="field">
-                  <label for="inout-actual-out">実OUT（払出枚数）</label>
+                  <label for="inout-actual-out">実OUT（総払出枚数）</label>
                   <div class="field-control">
-                    <input id="inout-actual-out" name="inout.actualOut" type="text" inputmode="numeric" autocomplete="off" placeholder="例：12,500" aria-describedby="inout-actual-out-error">
+                    <input id="inout-actual-out" name="inout.actualOut" type="text" inputmode="numeric" autocomplete="off" placeholder="例：12,500" aria-describedby="inout-actual-out-hint inout-actual-out-error">
                     <span class="field-unit">枚</span>
                   </div>
+                  <p class="field-hint" id="inout-actual-out-hint">同じ対象区間で払い出された総枚数。終了時の手持ち枚数ではありません。</p>
                   <p class="field-error" id="inout-actual-out-error" data-field-error-for="inout.actualOut"></p>
                 </div>
                 <div class="field">
@@ -392,7 +394,7 @@
                     <input id="coin-net-used" name="coin.netUsedMedals" type="text" inputmode="numeric" autocomplete="off" placeholder="例：1,000" aria-describedby="coin-net-used-hint coin-net-used-error">
                     <span class="field-unit">枚</span>
                   </div>
-                  <p class="field-hint" id="coin-net-used-hint">開始時枚数＋追加枚数−終了時枚数−持ち出し枚数</p>
+                  <p class="field-hint" id="coin-net-used-hint">開始時枚数＋追加枚数−終了時枚数−途中で取り分けた枚数。実INとは別の値です。</p>
                   <p class="field-error" id="coin-net-used-error" data-field-error-for="coin.netUsedMedals"></p>
                 </div>
               </div>
@@ -413,8 +415,9 @@
                   <p class="field-error" id="coin-end-error" data-field-error-for="coin.endMedals"></p>
                 </div>
                 <div class="field">
-                  <label for="coin-taken">持ち出し枚数</label>
-                  <div class="field-control"><input id="coin-taken" name="coin.takenOutMedals" type="text" inputmode="numeric" autocomplete="off" aria-describedby="coin-taken-error"><span class="field-unit">枚</span></div>
+                  <label for="coin-taken">途中で取り分けた枚数</label>
+                  <div class="field-control"><input id="coin-taken" name="coin.takenOutMedals" type="text" inputmode="numeric" autocomplete="off" aria-describedby="coin-taken-hint coin-taken-error"><span class="field-unit">枚</span></div>
+                  <p class="field-hint" id="coin-taken-hint">終了時枚数には含めず、対象区間の途中で別に確保した枚数</p>
                   <p class="field-error" id="coin-taken-error" data-field-error-for="coin.takenOutMedals"></p>
                 </div>
               </div>
@@ -444,7 +447,7 @@
         </div>
         <div class="output-surface" data-output-key="net">
           <p class="stale-banner" id="stale-net" hidden>入力が変更されています。この結果は古いため、再計算してください。</p>
-          <div id="result-net"><p class="empty-note">G数と差枚を入力して「差枚を計算する」を押してください。</p></div>
+          <div id="result-net"><p class="empty-note">G数と差枚を入力して「差枚・出玉率を計算する」を押してください。</p></div>
         </div>
         <div class="output-surface" data-output-key="investment" hidden>
           <p class="stale-banner" id="stale-investment" hidden>入力が変更されています。この結果は古いため、再計算してください。</p>
@@ -456,7 +459,7 @@
         </div>
         <div class="output-surface" data-output-key="inout" hidden>
           <p class="stale-banner" id="stale-inout" hidden>入力が変更されています。この結果は古いため、再計算してください。</p>
-          <div id="result-inout"><p class="empty-note">実IN（投入枚数）と実OUT（払出枚数）を入力して計算してください。</p></div>
+          <div id="result-inout"><p class="empty-note">実IN（総投入枚数）と実OUT（総払出枚数）を入力して計算してください。</p></div>
         </div>
         <div class="output-surface" data-output-key="coin" hidden>
           <p class="stale-banner" id="stale-coin" hidden>入力が変更されています。この結果は古いため、再計算してください。</p>
@@ -524,6 +527,7 @@
           <article class="formula-card">
             <h3>実測IN/OUTによる出玉率</h3>
             <p class="formula-expression">実OUT ÷ 実IN × 100</p>
+            <p class="formula-expression">実測差枚 ＝ 実OUT − 実IN</p>
             <p>複数区間では、各区間のINとOUTを合計してから計算します。</p>
           </article>
           <article class="formula-card">
@@ -547,9 +551,16 @@
             <p>使用貯メダルの理論価値は、使用枚数と交換条件から別に換算します。</p>
           </article>
           <article class="formula-card">
+            <h3>回収ラインとあと必要な枚数</h3>
+            <p class="formula-expression">残り回収額 ＝ max（0, 回収対象額 − 交換済み金額）</p>
+            <p class="formula-expression">回収ライン枚数 ＝ ⌈ 残り回収額 × 交換枚数 ÷ 1,000 ⌉</p>
+            <p class="formula-expression">あと必要な枚数 ＝ max（0, 回収ライン枚数 − 現在枚数）</p>
+            <p>交換単位を入力した場合は、残り回収額を交換単位へ切り上げてから回収ライン枚数を求めます。</p>
+          </article>
+          <article class="formula-card">
             <h3>通常時の消費枚数</h3>
-            <p class="formula-expression">開始時枚数 ＋ 追加枚数 − 終了時枚数 − 持ち出し枚数</p>
-            <p>内訳入力を選んだ場合だけ使用します。</p>
+            <p class="formula-expression">開始時枚数 ＋ 追加枚数 − 終了時枚数 − 途中で取り分けた枚数</p>
+            <p>内訳入力を選んだ場合だけ使用する残高式で、総投入枚数を表す実INとは別の値です。</p>
           </article>
           <article class="formula-card">
             <h3>50枚あたりの通常時コイン持ち</h3>
@@ -557,7 +568,7 @@
             <p>AT・ボーナスを除いた同じ通常時区間の数値を使います。</p>
           </article>
         </div>
-        <p class="rounding-note">表示桁は項目ごとに丸めます。交換単位を使う見込額は切り捨て、回収に必要な枚数は不足しないよう切り上げます。</p>
+        <p class="rounding-note">表示桁は項目ごとに丸めます。交換単位を使う見込額は切り捨て、回収ラインとなる枚数は不足しないよう切り上げます。</p>
       </section>
 
       <section class="guide shell" aria-labelledby="guide-heading">
@@ -577,7 +588,7 @@
         <div class="faq-list">
           <details>
             <summary>何を算出できますか？</summary>
-            <p>1,000Gあたり差枚、差枚から概算した出玉率、交換見込額、回収見込額、投資との差額、回収率、回収に必要な枚数、実測IN/OUTによる出玉率、通常時コイン持ちを算出できます。</p>
+            <p>1,000Gあたり差枚、差枚から概算した出玉率、交換見込額、回収見込額、投資との差額、回収率、回収ラインとあと必要な枚数、実測IN/OUTによる出玉率、通常時コイン持ちを算出できます。</p>
           </details>
           <details>
             <summary>差枚と現在手元にある枚数は同じですか？</summary>
@@ -585,11 +596,11 @@
           </details>
           <details>
             <summary>概算出玉率と実測出玉率の違いは何ですか？</summary>
-            <p>概算はG数に1Gあたり3枚を掛けて想定INを置きます。実測は実IN（投入枚数）と実OUT（払出枚数）を入力し、その値から計算します。</p>
+            <p>概算はG数に1Gあたり3枚を掛けて想定INを置きます。実測は実IN（総投入枚数）と実OUT（総払出枚数）を入力し、その値から計算します。</p>
           </details>
           <details>
             <summary>INとOUTは何を指しますか？</summary>
-            <p>INは対象区間で投入された枚数、OUTは同じ区間で払い出された枚数です。実測出玉率を算出する場合は、同じ対象範囲の実INと実OUTを入力してください。</p>
+            <p>実INは対象区間でベットされた総枚数で、貸出枚数や開始時の手持ち枚数ではありません。実OUTは同じ区間で払い出された総枚数で、終了時の手持ち枚数ではありません。</p>
           </details>
           <details>
             <summary>非等価交換にも対応していますか？</summary>
@@ -600,8 +611,8 @@
             <p>交換できる金額の刻みです。入力すると、その単位に満たない金額を切り捨てて見込額を表示します。</p>
           </details>
           <details>
-            <summary>回収に必要な枚数は何を表しますか？</summary>
-            <p>入力した交換条件で、現金投資額または現金投資額と使用貯メダルの価値を回収するために必要な現在枚数です。店舗固有の端数処理などにより実際の交換結果と異なる場合があります。</p>
+            <summary>回収ラインと「あと必要な枚数」は何を表しますか？</summary>
+            <p>回収ラインは、交換済み金額を差し引いた後、入力した交換条件で回収対象額へ到達するために必要な現在枚数の合計です。「あと必要な枚数」は、その回収ラインから現在枚数を引いた不足分です。</p>
           </details>
           <details>
             <summary>使用した貯メダルを現金投資と分けるのはなぜですか？</summary>
@@ -621,7 +632,7 @@
           </details>
           <details>
             <summary>通常時の消費枚数はどのように求めますか？</summary>
-            <p>消費枚数を直接入力するか、「開始時枚数＋追加枚数−終了時枚数−持ち出し枚数」で内訳から算出できます。すべて同じ通常時区間の数値を入力してください。</p>
+            <p>消費枚数を直接入力するか、「開始時枚数＋追加枚数−終了時枚数−途中で取り分けた枚数」で内訳から算出できます。これは残高から求める実質的な消費枚数で、実INとは別の値です。すべて同じ通常時区間の数値を入力してください。</p>
           </details>
           <details>
             <summary>結果から続行・ヤメを決められますか？</summary>
