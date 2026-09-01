@@ -131,24 +131,36 @@ if (preview) {
     const location = `<loc>${url}</loc>`;
     assert(sitemap.split(location).length - 1 === 1, `sitemapにURLが1件必要です: ${url}`);
   }
-  assert(
-    !sitemap.includes('/products/playlist-toolkit/'),
-    '非公開製品URLがsitemapに含まれています。',
-  );
   for (const route of productRoutes) {
+    const location = `<loc>https://nkisworks.com${route}</loc>`;
+    assert(sitemap.split(location).length - 1 === 1, `sitemapに製品URLが1件必要です: ${route}`);
     const file = `${route.slice(1)}index.html`;
     const html = await readFile(resolve('dist', file), 'utf8');
     assert(
-      html.includes('name="robots" content="noindex, nofollow, noarchive, nosnippet"'),
-      `非公開製品ページに検索除外指定がありません: ${file}`,
+      !html.includes('name="robots" content="noindex'),
+      `公開製品ページに検索除外指定があります: ${file}`,
     );
   }
   assert(
-    headers.includes(
-      '/products/playlist-toolkit/*\n  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet',
-    ),
-    '非公開製品ページのX-Robots-Tagがありません。',
+    !headers.includes('/products/playlist-toolkit/*\n  X-Robots-Tag: noindex'),
+    '公開製品ページにX-Robots-Tagの検索除外指定があります。',
   );
+  const englishProduct = await readFile(
+    resolve('dist', 'products', 'playlist-toolkit', 'index.html'),
+    'utf8',
+  );
+  const japaneseProduct = await readFile(
+    resolve('dist', 'products', 'playlist-toolkit', 'ja', 'index.html'),
+    'utf8',
+  );
+  assert(
+    englishProduct.includes(
+      'https://play.google.com/store/apps/details?id=app.playlistsort.assistant',
+    ),
+    '製品ページにGoogle Playリンクがありません。',
+  );
+  assert(englishProduct.includes('Available on Android'), '英語版が配信中表記ではありません。');
+  assert(japaneseProduct.includes('Android版 配信中'), '日本語版が配信中表記ではありません。');
 }
 
 const sourceBundle = await readFile(

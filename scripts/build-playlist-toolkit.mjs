@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 const ORIGIN = 'https://nkisworks.com';
 const BASE = '/products/playlist-toolkit';
 const SUPPORT_EMAIL = 'slarog.app@gmail.com';
+const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=app.playlistsort.assistant';
 const locales = [
   { code: 'en', segment: '', label: 'English', htmlLang: 'en', og: 'en_US' },
   { code: 'ja', segment: 'ja', label: '日本語', htmlLang: 'ja', og: 'ja_JP' },
@@ -44,9 +45,10 @@ const copy = {
       lead: 'Remember display order, review duplicates and playlist health, prepare additions, and return to the playlists you use most. Playlist Toolkit guides supported actions in Amazon Music without modifying the Amazon Music app.',
       primary: 'Explore features',
       secondary: 'Check support',
+      store: 'Get it on Google Play',
       price: 'Japan: ¥200 / month',
       localPrice: 'Local price is shown in Google Play',
-      status: 'Android release in preparation',
+      status: 'Available on Android',
       consoleLabel: 'COMPATIBILITY CONSOLE',
       consoleStatus: 'SUPPORTED UI',
       rows: [
@@ -173,7 +175,7 @@ const copy = {
       title: 'Privacy Policy',
       intro:
         'This policy explains how Playlist Toolkit handles information while providing playlist assistance for the Amazon Music Android app.',
-      updated: 'Effective and last updated: August 10, 2026',
+      updated: 'Effective and last updated: September 2, 2026',
       sections: [
         [
           '1. Scope and publisher',
@@ -274,7 +276,7 @@ const copy = {
       title: 'Terms of Use',
       intro:
         'These terms apply to the use of Playlist Toolkit, an independent playlist assistance utility published by NKIS Works.',
-      updated: 'Effective and last updated: August 10, 2026',
+      updated: 'Effective and last updated: September 2, 2026',
       sections: [
         [
           '1. Service',
@@ -291,7 +293,7 @@ const copy = {
         [
           '3. Subscription and billing',
           [
-            'Paid features are offered through an automatically renewing Google Play subscription. In Japan, the planned price is ¥200 per month; the actual price, tax, currency, renewal date, trial availability, and other purchase terms are those displayed by Google Play before confirmation. The compatibility check itself does not start a charge.',
+            'Paid features are offered through an automatically renewing Google Play subscription. In Japan, the price is ¥200 per month; the actual price, tax, currency, renewal date, trial availability, and other purchase terms are those displayed by Google Play before confirmation. The compatibility check itself does not start a charge.',
           ],
         ],
         [
@@ -356,9 +358,10 @@ const copy = {
       lead: '表示順の記憶と復元、重複候補やプレイリスト状態の監査、追加候補の整理、よく使うプレイリストへの復帰をひとつに。Amazon Musicアプリを改変せず、対応する画面操作を支援します。',
       primary: '機能を見る',
       secondary: 'サポートを確認',
+      store: 'Google Playで入手',
       price: '日本：月額200円',
       localPrice: '他地域の価格はGoogle Playに表示',
-      status: 'Android版 公開準備中',
+      status: 'Android版 配信中',
       consoleLabel: '互換性コンソール',
       consoleStatus: '対応UIを確認',
       rows: [
@@ -458,7 +461,7 @@ const copy = {
       title: 'プライバシーポリシー',
       intro:
         'Amazon Music Android版のプレイリスト支援において、Playlist Toolkitが情報をどのように扱うかを説明します。',
-      updated: '施行日・最終更新日：2026年8月10日',
+      updated: '施行日・最終更新日：2026年9月2日',
       sections: [
         [
           '1. 適用範囲と提供者',
@@ -558,7 +561,7 @@ const copy = {
       title: '利用規約',
       intro:
         '本規約は、NKIS Worksが提供する独立したプレイリスト整理支援ツールPlaylist Toolkitの利用に適用されます。',
-      updated: '施行日・最終更新日：2026年8月10日',
+      updated: '施行日・最終更新日：2026年9月2日',
       sections: [
         [
           '1. サービス内容',
@@ -575,7 +578,7 @@ const copy = {
         [
           '3. サブスクリプションと請求',
           [
-            '有料機能はGoogle Playの自動更新サブスクリプションで提供します。日本での予定価格は月額200円です。実際の価格、税、通貨、更新日、試用の有無等は購入確定前のGoogle Play表示が優先されます。互換性チェックだけでは料金は発生しません。',
+            '有料機能はGoogle Playの自動更新サブスクリプションで提供します。日本での価格は月額200円です。実際の価格、税、通貨、更新日、試用の有無等は購入確定前のGoogle Play表示が優先されます。互換性チェックだけでは料金は発生しません。',
           ],
         ],
         [
@@ -1060,7 +1063,38 @@ export async function buildPlaylistToolkit(dist) {
   }
 }
 
+function getLocalizedRelease(status) {
+  return {
+    'Android-Veröffentlichung in Vorbereitung': {
+      store: 'Bei Google Play herunterladen',
+      status: 'Für Android verfügbar',
+      updated: 'Gültig und zuletzt aktualisiert: 2. September 2026',
+    },
+    'Lanzamiento para Android en preparación': {
+      store: 'Descargar en Google Play',
+      status: 'Disponible para Android',
+      updated: 'Vigente y actualizado por última vez: 2 de septiembre de 2026',
+    },
+    'Sortie Android en préparation': {
+      store: 'Télécharger sur Google Play',
+      status: 'Disponible sur Android',
+      updated: 'En vigueur et dernière mise à jour : 2 septembre 2026',
+    },
+    'Uscita Android in preparazione': {
+      store: 'Scarica da Google Play',
+      status: 'Disponibile per Android',
+      updated: 'In vigore e ultimo aggiornamento: 2 settembre 2026',
+    },
+    'Lançamento Android em preparação': {
+      store: 'Baixar no Google Play',
+      status: 'Disponível para Android',
+      updated: 'Vigente e atualizado em: 2 de setembro de 2026',
+    },
+  }[status];
+}
+
 function makeTranslation(config) {
+  const release = getLocalizedRelease(config.status);
   const en = copy.en;
   const [features, flow, privacy, support, terms] = config.nav;
   const common = {
@@ -1080,9 +1114,10 @@ function makeTranslation(config) {
     lead: config.lead,
     primary: features,
     secondary: support,
+    store: release.store,
     price: config.price,
     localPrice: config.localPrice,
-    status: config.status,
+    status: release.status,
     consoleLabel: 'COMPATIBILITY CONSOLE',
     consoleStatus: 'SUPPORTED UI',
     rows: en.home.rows,
@@ -1121,7 +1156,7 @@ function makeTranslation(config) {
     privacy: {
       title: config.privacyTitle,
       intro: config.privacyIntro,
-      updated: config.updated,
+      updated: release.updated,
       sections: localSections.privacy,
     },
     support: {
@@ -1133,7 +1168,7 @@ function makeTranslation(config) {
     terms: {
       title: config.termsTitle,
       intro: config.termsIntro,
-      updated: config.updated,
+      updated: release.updated,
       sections: localSections.terms,
     },
   };
@@ -1329,7 +1364,6 @@ function renderPage(locale, text, page) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'self'">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">
@@ -1380,7 +1414,7 @@ function renderHome(text) {
       <p class="pt-eyebrow">${escapeHtml(home.eyebrow)}</p>
       <h1>${escapeHtml(home.title)}</h1>
       <p class="pt-hero-lead">${escapeHtml(home.lead)}</p>
-      <div class="pt-actions"><a class="pt-button pt-button-primary" href="#features">${escapeHtml(home.primary)}</a><a class="pt-button pt-button-secondary" href="support/">${escapeHtml(home.secondary)}</a></div>
+      <div class="pt-actions"><a class="pt-button pt-button-primary" href="${GOOGLE_PLAY_URL}" rel="external">${escapeHtml(home.store)}</a><a class="pt-button pt-button-secondary" href="#features">${escapeHtml(home.primary)}</a></div>
       <div class="pt-price"><span>${escapeHtml(home.price)}</span><span>${escapeHtml(home.localPrice)}</span><span>${escapeHtml(home.status)}</span></div>
       <p class="pt-independent">${escapeHtml(text.common.independent)}</p>
     </div>
@@ -1397,7 +1431,7 @@ function renderHome(text) {
   <section class="pt-dark-band" id="flow"><div class="pt-shell pt-section"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.flowEyebrow)}</p><h2>${escapeHtml(home.flowTitle)}</h2><p>${escapeHtml(home.flowLead)}</p></div><div class="pt-flow">${home.steps.map(([title, body]) => `<article class="pt-step"><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></article>`).join('')}</div></div></section>
   <section class="pt-shell pt-section pt-safety"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.safetyEyebrow)}</p><h2>${escapeHtml(home.safetyTitle)}</h2><p>${escapeHtml(home.safetyLead)}</p></div><div class="pt-safety-panel">${home.safety.map(([title, body]) => `<div class="pt-safety-line"><span>✓</span><div><strong>${escapeHtml(title)}</strong><p>${escapeHtml(body)}</p></div></div>`).join('')}</div></section>
   <section class="pt-shell pt-section"><div class="pt-section-heading"><p class="pt-eyebrow">FAQ</p><h2>${escapeHtml(home.faqTitle)}</h2></div><div class="pt-faq">${home.faqs.map(([question, answer]) => `<details><summary>${escapeHtml(question)}</summary><p>${escapeHtml(answer)}</p></details>`).join('')}</div></section>
-  <section class="pt-shell pt-cta"><div class="pt-cta-card"><h2>${escapeHtml(home.ctaTitle)}</h2><p>${escapeHtml(home.ctaBody)}</p><div class="pt-actions"><a class="pt-button pt-button-primary" href="support/">${escapeHtml(home.ctaButton)}</a></div></div></section>
+  <section class="pt-shell pt-cta"><div class="pt-cta-card"><h2>${escapeHtml(home.ctaTitle)}</h2><p>${escapeHtml(home.ctaBody)}</p><div class="pt-actions"><a class="pt-button pt-button-primary" href="${GOOGLE_PLAY_URL}" rel="external">${escapeHtml(home.store)}</a></div></div></section>
 </main>`;
 }
 
