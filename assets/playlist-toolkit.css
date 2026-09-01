@@ -136,6 +136,92 @@ summary:focus-visible {
 .pt-language {
   position: relative;
 }
+
+.pt-mobile-menu {
+  display: none;
+  position: relative;
+}
+
+.pt-mobile-menu summary {
+  align-items: center;
+  background: var(--pt-ink);
+  border: 1px solid var(--pt-ink);
+  border-radius: 999px;
+  color: var(--pt-paper);
+  cursor: pointer;
+  display: flex;
+  font-size: 0.82rem;
+  font-weight: 800;
+  justify-content: center;
+  letter-spacing: 0.03em;
+  min-height: 44px;
+  min-width: 92px;
+  padding: 0 18px;
+}
+
+.pt-mobile-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.pt-mobile-panel {
+  background: rgba(255, 253, 247, 0.99);
+  border: 1px solid var(--pt-line);
+  border-radius: 22px;
+  box-shadow: var(--pt-shadow);
+  max-height: calc(100vh - 94px);
+  overflow-y: auto;
+  padding: 12px;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: min(330px, calc(100vw - 28px));
+  z-index: 30;
+}
+
+.pt-mobile-page-links,
+.pt-mobile-languages {
+  display: grid;
+  gap: 4px;
+}
+
+.pt-mobile-page-links a,
+.pt-mobile-languages a {
+  align-items: center;
+  border-radius: 12px;
+  color: var(--pt-ink);
+  display: flex;
+  font-size: 0.9rem;
+  font-weight: 750;
+  min-height: 44px;
+  padding: 9px 12px;
+  text-decoration: none;
+}
+
+.pt-mobile-page-links a:hover,
+.pt-mobile-languages a:hover,
+.pt-mobile-page-links a:focus-visible,
+.pt-mobile-languages a:focus-visible,
+.pt-mobile-languages a[aria-current='page'] {
+  background: var(--pt-lime-soft);
+}
+
+.pt-mobile-language-label {
+  border-top: 1px solid var(--pt-line);
+  color: var(--pt-muted);
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.11em;
+  margin: 8px 4px 4px;
+  padding: 14px 8px 4px;
+  text-transform: uppercase;
+}
+
+.pt-console-card,
+.pt-console-card small,
+.pt-console-card b,
+.pt-console-card p {
+  color: var(--pt-ink);
+}
 .pt-language summary {
   min-width: 116px;
   list-style: none;
@@ -730,8 +816,12 @@ summary:focus-visible {
 }
 
 @media (max-width: 940px) {
-  .pt-nav-links > a {
+  .pt-nav-links {
     display: none;
+  }
+
+  .pt-mobile-menu {
+    display: block;
   }
   .pt-hero,
   .pt-safety {
@@ -773,6 +863,11 @@ summary:focus-visible {
   }
   .pt-language summary {
     min-width: 96px;
+  }
+
+  .pt-mobile-menu summary {
+    min-width: 86px;
+    padding-inline: 15px;
   }
   .pt-shell {
     width: min(var(--pt-max), calc(100% - 26px));

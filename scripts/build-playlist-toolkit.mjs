@@ -35,6 +35,7 @@ const copy = {
       back: 'Product overview',
       contents: 'On this page',
       email: 'Email support',
+      menu: 'Menu',
     },
     home: {
       metaTitle: 'Playlist Toolkit | Playlist management utility for Amazon Music',
@@ -46,7 +47,7 @@ const copy = {
       primary: 'Explore features',
       secondary: 'Check support',
       store: 'Get it on Google Play',
-      price: 'Japan: ¥200 / month',
+      price: 'Japan: ¥200 / month · Auto-renewing',
       localPrice: 'Local price is shown in Google Play',
       status: 'Available on Android',
       consoleLabel: 'COMPATIBILITY CONSOLE',
@@ -348,6 +349,7 @@ const copy = {
       back: '製品概要',
       contents: 'このページの内容',
       email: 'メールで問い合わせ',
+      menu: 'メニュー',
     },
     home: {
       metaTitle: 'Playlist Toolkit｜Amazon Musicのプレイリスト整理支援',
@@ -359,7 +361,7 @@ const copy = {
       primary: '機能を見る',
       secondary: 'サポートを確認',
       store: 'Google Playで入手',
-      price: '日本：月額200円',
+      price: '日本：月額200円・自動更新',
       localPrice: '他地域の価格はGoogle Playに表示',
       status: 'Android版 配信中',
       consoleLabel: '互換性コンソール',
@@ -1069,33 +1071,107 @@ function getLocalizedRelease(status) {
       store: 'Bei Google Play herunterladen',
       status: 'Für Android verfügbar',
       updated: 'Gültig und zuletzt aktualisiert: 2. September 2026',
+      menu: 'Menü',
+      autoRenew: 'Automatische Verlängerung',
+      eyebrow: 'PLAYLISTS EINFACH VERWALTEN',
+      featuresEyebrow: 'EIN KLARER ABLAUF',
+      flowEyebrow: 'KLAR UND TRANSPARENT',
+      safetyEyebrow: 'KOMPATIBILITÄT',
+      consoleLabel: 'KOMPATIBILITÄTSPRÜFUNG',
+      consoleStatus: 'OBERFLÄCHE UNTERSTÜTZT',
+      rows: [
+        ['01', 'Künstler-Reihenfolge', 'gespeichert'],
+        ['02', 'Duplikatprüfung', 'auf dem Gerät'],
+        ['03', 'Smart Add', 'vom Nutzer gestartet'],
+      ],
+      cardLabel: 'SICHERHEITSPRÜFUNG',
+      cardTitle: 'Bereit',
     },
     'Lanzamiento para Android en preparación': {
       store: 'Descargar en Google Play',
       status: 'Disponible para Android',
       updated: 'Vigente y actualizado por última vez: 2 de septiembre de 2026',
+      menu: 'Menú',
+      autoRenew: 'Renovación automática',
+      eyebrow: 'PLAYLISTS BAJO CONTROL',
+      featuresEyebrow: 'UN SOLO FLUJO',
+      flowEyebrow: 'CLARO DESDE EL PRINCIPIO',
+      safetyEyebrow: 'COMPATIBILIDAD',
+      consoleLabel: 'COMPROBACIÓN DE COMPATIBILIDAD',
+      consoleStatus: 'INTERFAZ COMPATIBLE',
+      rows: [
+        ['01', 'Orden por artista', 'guardado'],
+        ['02', 'Revisión de duplicados', 'en el dispositivo'],
+        ['03', 'Smart Add', 'iniciado por ti'],
+      ],
+      cardLabel: 'COMPROBACIÓN DE SEGURIDAD',
+      cardTitle: 'Listo',
     },
     'Sortie Android en préparation': {
       store: 'Télécharger sur Google Play',
       status: 'Disponible sur Android',
       updated: 'En vigueur et dernière mise à jour : 2 septembre 2026',
+      menu: 'Menu',
+      autoRenew: 'Renouvellement automatique',
+      eyebrow: 'VOS PLAYLISTS, SOUS CONTRÔLE',
+      featuresEyebrow: 'UN SEUL PARCOURS',
+      flowEyebrow: 'CLAIR DÈS LE DÉPART',
+      safetyEyebrow: 'COMPATIBILITÉ',
+      consoleLabel: 'CONTRÔLE DE COMPATIBILITÉ',
+      consoleStatus: 'INTERFACE PRISE EN CHARGE',
+      rows: [
+        ['01', 'Ordre par artiste', 'mémorisé'],
+        ['02', 'Recherche de doublons', 'sur l’appareil'],
+        ['03', 'Smart Add', 'lancé par vous'],
+      ],
+      cardLabel: 'CONTRÔLE DE SÉCURITÉ',
+      cardTitle: 'Prêt',
     },
     'Uscita Android in preparazione': {
       store: 'Scarica da Google Play',
       status: 'Disponibile per Android',
       updated: 'In vigore e ultimo aggiornamento: 2 settembre 2026',
+      menu: 'Menu',
+      autoRenew: 'Rinnovo automatico',
+      eyebrow: 'PLAYLIST SOTTO CONTROLLO',
+      featuresEyebrow: 'UN SOLO FLUSSO',
+      flowEyebrow: 'CHIARO FIN DALL’INIZIO',
+      safetyEyebrow: 'COMPATIBILITÀ',
+      consoleLabel: 'CONTROLLO COMPATIBILITÀ',
+      consoleStatus: 'INTERFACCIA SUPPORTATA',
+      rows: [
+        ['01', 'Ordine per artista', 'memorizzato'],
+        ['02', 'Controllo duplicati', 'sul dispositivo'],
+        ['03', 'Smart Add', 'avviato da te'],
+      ],
+      cardLabel: 'CONTROLLO DI SICUREZZA',
+      cardTitle: 'Pronto',
     },
     'Lançamento Android em preparação': {
       store: 'Baixar no Google Play',
       status: 'Disponível para Android',
       updated: 'Vigente e atualizado em: 2 de setembro de 2026',
+      menu: 'Menu',
+      autoRenew: 'Renovação automática',
+      eyebrow: 'PLAYLISTS SOB CONTROLE',
+      featuresEyebrow: 'UM ÚNICO FLUXO',
+      flowEyebrow: 'CLARO DESDE O INÍCIO',
+      safetyEyebrow: 'COMPATIBILIDADE',
+      consoleLabel: 'VERIFICAÇÃO DE COMPATIBILIDADE',
+      consoleStatus: 'INTERFACE COMPATÍVEL',
+      rows: [
+        ['01', 'Ordem por artista', 'salva'],
+        ['02', 'Revisão de duplicatas', 'no dispositivo'],
+        ['03', 'Smart Add', 'iniciado por você'],
+      ],
+      cardLabel: 'VERIFICAÇÃO DE SEGURANÇA',
+      cardTitle: 'Pronto',
     },
   }[status];
 }
 
 function makeTranslation(config) {
   const release = getLocalizedRelease(config.status);
-  const en = copy.en;
   const [features, flow, privacy, support, terms] = config.nav;
   const common = {
     product: 'Playlist Toolkit',
@@ -1105,39 +1181,40 @@ function makeTranslation(config) {
     back: features,
     contents: config.language,
     email: support,
+    menu: release.menu,
   };
   const home = {
     metaTitle: `Playlist Toolkit | ${config.title}`,
     metaDescription: config.lead,
-    eyebrow: 'PLAYLIST TOOLKIT',
+    eyebrow: release.eyebrow,
     title: config.title,
     lead: config.lead,
     primary: features,
     secondary: support,
     store: release.store,
-    price: config.price,
+    price: `${config.price} · ${release.autoRenew}`,
     localPrice: config.localPrice,
     status: release.status,
-    consoleLabel: 'COMPATIBILITY CONSOLE',
-    consoleStatus: 'SUPPORTED UI',
-    rows: en.home.rows,
-    cardLabel: 'SAFETY CHECK',
-    cardTitle: 'Ready',
+    consoleLabel: release.consoleLabel,
+    consoleStatus: release.consoleStatus,
+    rows: release.rows,
+    cardLabel: release.cardLabel,
+    cardTitle: release.cardTitle,
     cardBody: config.safety[2][1],
     trust: [
       [config.safety[0][0], config.safety[0][1]],
       [config.steps[2][0], config.steps[2][1]],
       [config.safety[2][0], config.safety[2][1]],
     ],
-    featuresEyebrow: 'ONE WORKFLOW',
+    featuresEyebrow: release.featuresEyebrow,
     featuresTitle: config.featureTitle,
     featuresLead: config.featureLead,
     features: config.features,
-    flowEyebrow: 'CLEAR BY DESIGN',
+    flowEyebrow: release.flowEyebrow,
     flowTitle: config.flowTitle,
     flowLead: config.flowLead,
     steps: config.steps,
-    safetyEyebrow: 'COMPATIBILITY',
+    safetyEyebrow: release.safetyEyebrow,
     safetyTitle: config.safetyTitle,
     safetyLead: config.safetyLead,
     safety: config.safety,
@@ -1175,6 +1252,24 @@ function makeTranslation(config) {
 }
 
 function makeLocalizedLegalSections(config) {
+  const locale = localizedLocale(config.status);
+  const translated = getLocalizedLegalSections(locale);
+  if (translated) {
+    return {
+      privacy: translated.privacy.map((paragraphs, index) => [
+        `${index + 1}. ${localizedSectionTitle(locale, 'privacy', index, '')}`,
+        paragraphs,
+      ]),
+      support: translated.support.map((paragraphs, index) => [
+        localizedSectionTitle(locale, 'support', index, ''),
+        paragraphs,
+      ]),
+      terms: translated.terms.map((paragraphs, index) => [
+        `${index + 1}. ${localizedSectionTitle(locale, 'terms', index, '')}`,
+        paragraphs,
+      ]),
+    };
+  }
   const en = copy.en;
   const localNotice = config.independent;
   const privacy = en.privacy.sections.map(([title, paragraphs], index) => [
@@ -1190,6 +1285,396 @@ function makeLocalizedLegalSections(config) {
     index === 1 ? [localNotice] : paragraphs,
   ]);
   return { privacy, support, terms };
+}
+
+function localizedLocale(status) {
+  return {
+    'Android-Veröffentlichung in Vorbereitung': 'de',
+    'Lanzamiento para Android en preparación': 'es',
+    'Sortie Android en préparation': 'fr',
+    'Uscita Android in preparazione': 'it',
+    'Lançamento Android em preparação': 'pt-BR',
+  }[status];
+}
+
+function getLocalizedLegalSections(language) {
+  return {
+    de: {
+      privacy: [
+        [
+          'Playlist Toolkit ist ein unabhängiges Android-Dienstprogramm von NKIS Works. Es ist kein Amazon-Produkt und weder mit Amazon verbunden noch von Amazon empfohlen.',
+        ],
+        [
+          'Wenn die Android-Bedienungshilfe aktiviert ist, kann die App sichtbare Texte, Beschriftungen, Steuerelemente und Eigenschaften des Bedienungshilfe-Knotenbaums auf unterstützten Amazon-Music-Bildschirmen prüfen. Dies dient dazu, Playlist-Kopfzeilen, Titelzeilen, Sortieroptionen, die Schaltfläche zum Hinzufügen und vom Nutzer gewählte Verschiebeziele zu erkennen.',
+          'Der Dienst ist auf das Amazon-Music-Paket beschränkt. Solange die schwebende Hilfe sichtbar ist, kann die App prüfen, welche App im Vordergrund läuft, damit sie sich außerhalb von Amazon Music ausblendet. Diese Funktion wird nicht für Werbung oder Nutzerprofile verwendet.',
+        ],
+        [
+          'Playlist-Namen, sichtbare Titelnamen und Beschriftungen, Prüfergebnisse, gespeicherte Sortierwünsche, Favoriten, Kompatibilitätssignale und begrenzte Diagnosedaten werden ausschließlich auf dem Gerät verarbeitet. Playlist-Inhalte werden weder an einen NKIS-Works-Server übertragen noch verkauft.',
+        ],
+        [
+          'Ein begrenztes Diagnoseprotokoll kann im App-Speicher verbleiben, solange der Dienst läuft. Es wird auf Wunsch oder beim Beenden des Prozesses gelöscht. Diagnosedaten verlassen die App nur, wenn der Nutzer sie ausdrücklich kopiert und teilt. Bitte prüfen Sie die Daten vor dem Versand an den Support.',
+        ],
+        [
+          'Google Play Billing zeigt Abonnements an, schließt Käufe ab, stellt Zugriffe wieder her und prüft Berechtigungen. Google verarbeitet Zahlungsdaten nach den eigenen Richtlinien. NKIS Works erhält keine vollständigen Kartendaten, sondern nur die für den bezahlten Zugriff erforderlichen Kauf- und Berechtigungsinformationen.',
+        ],
+        [
+          'Bei einer Support-Anfrage erhält NKIS Works die E-Mail-Adresse, die Nachricht und alle Diagnosedaten, Screenshots, Geräteinformationen oder Dateien, die der Nutzer freiwillig mitsendet. Diese Angaben werden nur zur Bearbeitung der Anfrage und zur Fehleranalyse verwendet.',
+        ],
+        [
+          'Lokale Einstellungen und Ergebnisse lassen sich durch Löschen der App-Daten oder Deinstallation entfernen. Die Bedienungshilfe kann jederzeit in den Android-Einstellungen deaktiviert werden. Support-E-Mails werden nur so lange gespeichert, wie es für Bearbeitung, Dokumentation, Missbrauchsschutz oder gesetzliche Pflichten erforderlich ist.',
+        ],
+        [
+          'NKIS Works beschränkt die Verarbeitung auf die hier beschriebenen Funktionen und prüft diese Richtlinie bei Änderungen der App. Wesentliche Änderungen werden mit einem neuen Datum auf dieser Seite veröffentlicht. Datenschutzfragen können an die unten angegebene Support-Adresse gesendet werden.',
+        ],
+      ],
+      support: [
+        [
+          'Nennen Sie die Versionen von Playlist Toolkit, Android und Amazon Music, die gewählte App-Sprache sowie den Vorgang, der gestoppt wurde. Senden Sie niemals Ihr Amazon-Passwort oder Zahlungskartendaten.',
+        ],
+        [
+          'Öffnen Sie eine selbst erstellte oder verwaltbare Playlist. Prüfen Sie, ob Titelliste, Sortierung und „Songs hinzufügen“ sichtbar sind, und kehren Sie dann zur Prüfung zurück. Nach einer Änderung der Amazon-Music-Oberfläche kann ein kompatibles Update erforderlich sein.',
+        ],
+        [
+          'Die App stoppt absichtlich, wenn ein erforderliches Steuerelement nicht eindeutig bestätigt werden kann, der Bildschirm unerwartet wechselt, eine Geste abgelehnt wird oder ein Zeitlimit erreicht ist. Kehren Sie zum erwarteten Playlist-Bildschirm zurück und versuchen Sie es erst bei stabilem Bildschirm erneut.',
+        ],
+        [
+          'Öffnen Sie die Android-Einstellungen, wählen Sie Bedienungshilfen, dann Playlist Toolkit, und deaktivieren Sie den Dienst. Eine Deinstallation entfernt ebenfalls lokale App-Daten und den Dienst.',
+        ],
+        [
+          'Öffnen Sie Google Play, wählen Sie Zahlungen & Abos, dann Abos und anschließend Playlist Toolkit. Kündigung und Abrechnungszeitpunkt richten sich nach Google Play und den beim Kauf angezeigten Bedingungen.',
+        ],
+        [
+          `${SUPPORT_EMAIL} ist der gemeinsame Support-Kanal von NKIS Works. Falls hilfreich, prüfen und kopieren Sie die begrenzten Diagnosedaten der App und fügen Sie sie in die Nachricht ein.`,
+        ],
+      ],
+      terms: [
+        [
+          'Playlist Toolkit unterstützt vom Nutzer gestartete Playlist-Abläufe auf kompatiblen Bildschirmen der separat installierten Amazon-Music-App für Android. Funktionen können je nach App- und Android-Version, Gerät, Region, Sprache, Abonnement und Oberfläche abweichen.',
+        ],
+        [
+          'Playlist Toolkit ist weder mit Amazon verbunden noch von Amazon gesponsert oder empfohlen. Amazon und Amazon Music sind Marken ihrer jeweiligen Inhaber. Amazon Music muss separat und gemäß den Bedingungen von Amazon genutzt werden.',
+        ],
+        [
+          'Bezahlte Funktionen werden über ein automatisch verlängerndes Google-Play-Abonnement angeboten. In Japan beträgt der Preis 200 ¥ pro Monat. Maßgeblich sind Preis, Steuer, Währung, Verlängerungsdatum, Testzeitraum und weitere Bedingungen, die Google Play vor dem Kauf anzeigt. Die Kompatibilitätsprüfung löst keine Zahlung aus.',
+        ],
+        [
+          'Abonnements werden über Google Play verwaltet und gekündigt. Das Löschen von Playlist Toolkit beendet ein Abonnement nicht automatisch. Abrechnung, Kündigungszeitpunkt und Erstattungen richten sich nach Google-Play-Regeln und geltendem Recht.',
+        ],
+        [
+          'Prüfen Sie vor jedem Vorgang Ziel-Playlist und Bildschirm, bedienen Sie Amazon Music nicht während einer automatischen Prüfung oder unterstützten Geste und stoppen Sie bei einem falschen Ziel. Nutzer bleiben für ihre Playlists und Kontoaktivitäten verantwortlich.',
+        ],
+        [
+          'Die App darf nicht zur Verletzung von Gesetzen, Rechten Dritter, Amazon-Bedingungen, Google-Play-Richtlinien oder Gerätesicherheit verwendet werden. Umgehung von Zahlungen, Missbrauch der Bedienungshilfe, Verteilung veränderter Kopien und unbefugte Zugriffsversuche sind im gesetzlich zulässigen Umfang untersagt.',
+        ],
+        [
+          'Amazon Music kann Steuerelemente ohne Vorankündigung ändern oder entfernen. Playlist Toolkit kann einen Bildschirm oder eine Version vorübergehend nicht unterstützen. Bei nicht bestätigten Steuerelementen soll die App stoppen; eine lückenlose Verfügbarkeit oder Unterstützung jeder künftigen Oberfläche wird jedoch nicht garantiert.',
+        ],
+        [
+          'Soweit gesetzlich zulässig, wird der Dienst ohne Garantie für ununterbrochenen Betrieb, fehlerfreie Ergebnisse oder Eignung für jeden Ablauf bereitgestellt. NKIS Works kann diese Bedingungen bei Änderungen des Dienstes aktualisieren. Fragen können an die unten angegebene Support-Adresse gesendet werden.',
+        ],
+      ],
+    },
+    es: {
+      privacy: [
+        [
+          'Playlist Toolkit es una utilidad independiente para Android publicada por NKIS Works. No es un producto de Amazon ni está afiliada, patrocinada o respaldada por Amazon.',
+        ],
+        [
+          'Cuando se activa la asistencia de Accesibilidad de Android, la aplicación puede examinar textos, etiquetas, controles y propiedades visibles del árbol de nodos de accesibilidad en pantallas compatibles de Amazon Music. Se usa para identificar encabezados y filas de playlists, opciones de orden, el control para añadir canciones y destinos de movimiento solicitados por el usuario.',
+          'El servicio está limitado al paquete de Amazon Music. Mientras la ayuda flotante está visible, la aplicación puede comprobar qué app está en primer plano para ocultarse fuera de Amazon Music. Esta capacidad no se usa para publicidad ni para crear perfiles.',
+        ],
+        [
+          'Los nombres de playlists, títulos y etiquetas visibles, resultados de auditoría, preferencias de orden, favoritos, señales de compatibilidad y diagnósticos limitados se procesan localmente. El contenido de las playlists no se envía a servidores de NKIS Works ni se vende.',
+        ],
+        [
+          'Puede conservarse un registro de diagnóstico limitado en la memoria mientras funciona el servicio. Se elimina al solicitarlo o al finalizar el proceso. Solo sale de la aplicación cuando el usuario lo copia y comparte expresamente. Revísalo antes de enviarlo al soporte.',
+        ],
+        [
+          'Google Play Billing muestra suscripciones, completa compras, restaura el acceso y verifica derechos. Google trata los datos de pago según sus propias políticas. NKIS Works no recibe números completos de tarjeta; solo la información de compra y derecho necesaria para habilitar el acceso de pago.',
+        ],
+        [
+          'Si contactas con soporte, NKIS Works recibe tu correo, mensaje y los diagnósticos, capturas, datos del dispositivo o archivos que decidas adjuntar. Se usan para responder y analizar el problema comunicado.',
+        ],
+        [
+          'Las preferencias y resultados locales pueden eliminarse borrando los datos o desinstalando la aplicación. La asistencia de pantalla puede desactivarse en Ajustes de Android. Los correos de soporte se conservan solo el tiempo razonablemente necesario para atender la solicitud, mantener registros, evitar abusos o cumplir la ley.',
+        ],
+        [
+          'NKIS Works limita el tratamiento a las funciones descritas y revisa esta política cuando cambia el comportamiento de la app. Los cambios importantes aparecerán en esta página con una fecha nueva. Las consultas de privacidad pueden enviarse al correo de soporte indicado abajo.',
+        ],
+      ],
+      support: [
+        [
+          'Indica las versiones de Playlist Toolkit, Android y Amazon Music, el idioma seleccionado y la operación que se detuvo. No incluyas tu contraseña de Amazon ni datos de tarjetas.',
+        ],
+        [
+          'Abre una playlist creada o administrable por ti, confirma que se ven la lista, el control de orden y la opción para añadir canciones, y vuelve a comprobar. Si Amazon Music cambió su interfaz, puede ser necesaria una actualización compatible.',
+        ],
+        [
+          'La parada es intencionada cuando no puede verificarse un control, la pantalla cambia de forma inesperada, se rechaza un gesto o vence el tiempo. Regresa a la pantalla de playlist esperada y reintenta solo cuando esté estable.',
+        ],
+        [
+          'Abre Ajustes de Android, ve a Accesibilidad, selecciona Playlist Toolkit y desactiva el servicio. Desinstalar la aplicación también elimina sus datos locales y el servicio.',
+        ],
+        [
+          'Abre Google Play, entra en Pagos y suscripciones, después en Suscripciones y elige Playlist Toolkit. Google Play controla la cancelación, las fechas de cobro y las condiciones mostradas al comprar.',
+        ],
+        [
+          `${SUPPORT_EMAIL} es el canal compartido de soporte de NKIS Works. Si resulta útil, revisa y copia los diagnósticos limitados de la aplicación antes de pegarlos en el mensaje.`,
+        ],
+      ],
+      terms: [
+        [
+          'Playlist Toolkit ayuda en flujos de organización iniciados por el usuario sobre pantallas compatibles de la aplicación Amazon Music para Android instalada por separado. Las funciones pueden variar según las versiones, el dispositivo, la región, el idioma, la suscripción y la interfaz.',
+        ],
+        [
+          'Playlist Toolkit no está afiliada, patrocinada ni respaldada por Amazon. Amazon y Amazon Music son marcas de sus respectivos titulares. El usuario debe obtener y utilizar Amazon Music por separado conforme a las condiciones de Amazon.',
+        ],
+        [
+          'Las funciones de pago se ofrecen mediante una suscripción de Google Play con renovación automática. En Japón cuesta 200 ¥ al mes. El precio, impuestos, moneda, fecha de renovación, prueba y demás condiciones válidas son las mostradas por Google Play antes de confirmar. La comprobación de compatibilidad no genera ningún cargo.',
+        ],
+        [
+          'Las suscripciones se gestionan o cancelan en Google Play. Eliminar Playlist Toolkit no cancela la suscripción. La facturación, el momento de cancelación y los reembolsos se rigen por Google Play y la legislación aplicable.',
+        ],
+        [
+          'Antes de iniciar, revisa la playlist y la pantalla de destino, no interactúes con Amazon Music durante una auditoría automática o gesto asistido y detén la operación si el objetivo mostrado no es correcto. Cada usuario conserva la responsabilidad sobre sus playlists y su cuenta.',
+        ],
+        [
+          'No se puede usar la aplicación para infringir leyes, derechos de terceros, condiciones de Amazon, políticas de Google Play o seguridad del dispositivo. Se prohíbe eludir pagos, abusar de la Accesibilidad, distribuir copias modificadas o intentar accesos no autorizados en la medida permitida por la ley.',
+        ],
+        [
+          'Amazon Music puede cambiar o eliminar controles sin aviso. Playlist Toolkit puede dejar de admitir temporalmente una pantalla o versión. La app está diseñada para detenerse si no verifica los controles, pero no se garantiza disponibilidad continua ni compatibilidad con todas las interfaces futuras.',
+        ],
+        [
+          'En la medida permitida por la ley, el servicio se ofrece sin garantías de funcionamiento ininterrumpido, resultados sin errores o idoneidad para todos los flujos. NKIS Works puede actualizar estas condiciones cuando cambie el servicio. Las consultas pueden enviarse al soporte indicado abajo.',
+        ],
+      ],
+    },
+    fr: {
+      privacy: [
+        [
+          'Playlist Toolkit est un utilitaire Android indépendant publié par NKIS Works. Ce n’est pas un produit Amazon et il n’est ni affilié, ni sponsorisé, ni approuvé par Amazon.',
+        ],
+        [
+          'Lorsque l’assistance d’Accessibilité Android est activée, l’application peut examiner les textes, libellés, commandes et propriétés visibles de l’arbre de nœuds d’accessibilité sur les écrans Amazon Music compatibles. Cela permet d’identifier les en-têtes et lignes de playlist, les choix de tri, la commande d’ajout et les destinations de déplacement demandées par l’utilisateur.',
+          'Le service est limité au package Amazon Music. Tant que l’assistant flottant est affiché, l’application peut vérifier quelle app est au premier plan afin de se masquer hors d’Amazon Music. Cette capacité n’est utilisée ni pour la publicité ni pour le profilage.',
+        ],
+        [
+          'Les noms de playlists, titres et libellés visibles, résultats d’audit, préférences de tri, favoris, signaux de compatibilité et diagnostics limités sont traités localement sur l’appareil. Le contenu des playlists n’est ni transmis à un serveur NKIS Works ni vendu.',
+        ],
+        [
+          'Un journal de diagnostic limité peut rester en mémoire tant que le service fonctionne. Il est effacé sur demande ou à la fin du processus. Il ne quitte l’application que si l’utilisateur le copie et le partage expressément. Vérifiez-le avant tout envoi au support.',
+        ],
+        [
+          'Google Play Billing affiche les abonnements, finalise les achats, restaure l’accès et vérifie les droits. Google traite les données de paiement selon ses propres règles. NKIS Works ne reçoit pas les numéros complets de carte, uniquement les informations d’achat et de droit nécessaires à l’accès payant.',
+        ],
+        [
+          'Si vous contactez le support, NKIS Works reçoit votre adresse e-mail, votre message et les diagnostics, captures, informations sur l’appareil ou fichiers que vous choisissez de joindre. Ces éléments servent à répondre et à analyser le problème signalé.',
+        ],
+        [
+          'Les préférences et résultats locaux peuvent être supprimés en effaçant les données ou en désinstallant l’application. L’assistance d’écran peut être désactivée dans les paramètres Android. Les e-mails de support ne sont conservés que le temps raisonnablement nécessaire au traitement, au suivi, à la prévention des abus ou au respect de la loi.',
+        ],
+        [
+          'NKIS Works limite le traitement aux fonctions décrites et révise cette politique lorsque le comportement de l’application change. Toute modification importante apparaîtra ici avec une nouvelle date. Les questions de confidentialité peuvent être envoyées à l’adresse de support ci-dessous.',
+        ],
+      ],
+      support: [
+        [
+          'Indiquez les versions de Playlist Toolkit, Android et Amazon Music, la langue choisie et l’opération interrompue. Ne transmettez jamais votre mot de passe Amazon ni vos données de carte bancaire.',
+        ],
+        [
+          'Ouvrez une playlist que vous avez créée ou pouvez gérer, vérifiez que la liste, le tri et l’ajout de titres sont visibles, puis relancez le contrôle. Si l’interface Amazon Music a changé, une mise à jour compatible peut être nécessaire.',
+        ],
+        [
+          'L’arrêt est volontaire lorsqu’une commande requise ne peut pas être vérifiée, que l’écran change de façon inattendue, qu’un geste est refusé ou qu’un délai expire. Revenez à l’écran de playlist attendu et réessayez uniquement lorsqu’il est stable.',
+        ],
+        [
+          'Ouvrez les paramètres Android, accédez à Accessibilité, sélectionnez Playlist Toolkit et désactivez le service. La désinstallation supprime également les données locales et le service.',
+        ],
+        [
+          'Dans Google Play, ouvrez Paiements et abonnements, puis Abonnements et sélectionnez Playlist Toolkit. Google Play gère l’annulation, les échéances et les conditions affichées lors de l’achat.',
+        ],
+        [
+          `${SUPPORT_EMAIL} est le canal de support commun de NKIS Works. Si nécessaire, examinez puis copiez les diagnostics limités de l’application avant de les joindre au message.`,
+        ],
+      ],
+      terms: [
+        [
+          'Playlist Toolkit assiste les parcours de gestion lancés par l’utilisateur sur les écrans compatibles de l’application Amazon Music Android installée séparément. Les fonctions peuvent varier selon les versions, l’appareil, la région, la langue, l’abonnement et l’interface.',
+        ],
+        [
+          'Playlist Toolkit n’est ni affilié, ni sponsorisé, ni approuvé par Amazon. Amazon et Amazon Music sont des marques de leurs propriétaires respectifs. L’utilisateur doit obtenir et utiliser Amazon Music séparément selon les conditions d’Amazon.',
+        ],
+        [
+          'Les fonctions payantes sont proposées par un abonnement Google Play à renouvellement automatique. Au Japon, le tarif est de 200 ¥ par mois. Le prix, les taxes, la devise, la date de renouvellement, l’essai et les autres conditions applicables sont ceux affichés par Google Play avant confirmation. Le contrôle de compatibilité ne déclenche aucun paiement.',
+        ],
+        [
+          'Les abonnements se gèrent et s’annulent dans Google Play. Supprimer Playlist Toolkit ne résilie pas l’abonnement. La facturation, la date d’effet de l’annulation et les remboursements relèvent des règles Google Play et du droit applicable.',
+        ],
+        [
+          'Avant toute opération, vérifiez la playlist et l’écran ciblés, n’utilisez pas Amazon Music pendant un audit automatique ou un geste assisté et arrêtez si la cible affichée n’est pas la bonne. L’utilisateur reste responsable de ses playlists et de son compte.',
+        ],
+        [
+          'L’application ne doit pas servir à enfreindre la loi, les droits de tiers, les conditions d’Amazon, les règles Google Play ou la sécurité de l’appareil. Le contournement du paiement, l’abus de l’Accessibilité, la diffusion de copies modifiées et les tentatives d’accès non autorisé sont interdits dans les limites de la loi.',
+        ],
+        [
+          'Amazon Music peut modifier ou supprimer des commandes sans préavis. Playlist Toolkit peut cesser temporairement de prendre en charge un écran ou une version. L’application doit s’arrêter si les commandes ne sont pas vérifiées, mais la disponibilité continue et la compatibilité avec toute interface future ne sont pas garanties.',
+        ],
+        [
+          'Dans les limites autorisées par la loi, le service est fourni sans garantie de fonctionnement continu, de résultats exempts d’erreur ou d’adaptation à tous les parcours. NKIS Works peut modifier ces conditions si le service évolue. Les questions peuvent être adressées au support ci-dessous.',
+        ],
+      ],
+    },
+    it: {
+      privacy: [
+        [
+          'Playlist Toolkit è un’utilità Android indipendente pubblicata da NKIS Works. Non è un prodotto Amazon e non è affiliata, sponsorizzata o approvata da Amazon.',
+        ],
+        [
+          'Quando l’assistenza Accessibilità di Android è attiva, l’app può esaminare testi, etichette, controlli e proprietà visibili dell’albero dei nodi di accessibilità nelle schermate Amazon Music supportate. Serve a individuare intestazioni e righe delle playlist, opzioni di ordinamento, il controllo di aggiunta e le destinazioni di spostamento richieste dall’utente.',
+          'Il servizio è limitato al pacchetto Amazon Music. Finché l’assistente mobile è visibile, l’app può verificare quale applicazione è in primo piano per nascondersi fuori da Amazon Music. Questa capacità non viene usata per pubblicità o profilazione.',
+        ],
+        [
+          'Nomi delle playlist, titoli ed etichette visibili, risultati di controllo, preferenze di ordinamento, preferiti, segnali di compatibilità e diagnostica limitata sono elaborati localmente sul dispositivo. Il contenuto delle playlist non viene inviato a server NKIS Works né venduto.',
+        ],
+        [
+          'Un registro diagnostico limitato può restare in memoria durante il servizio. Viene cancellato su richiesta o alla chiusura del processo. Esce dall’app solo se l’utente lo copia e condivide esplicitamente. Verificalo prima di inviarlo al supporto.',
+        ],
+        [
+          'Google Play Billing mostra gli abbonamenti, completa gli acquisti, ripristina l’accesso e verifica i diritti. Google gestisce i dati di pagamento secondo le proprie norme. NKIS Works non riceve numeri completi di carta, ma solo le informazioni di acquisto e diritto necessarie all’accesso a pagamento.',
+        ],
+        [
+          'Se contatti il supporto, NKIS Works riceve l’indirizzo e-mail, il messaggio e gli eventuali dati diagnostici, screenshot, informazioni sul dispositivo o file che scegli di allegare. Sono usati per rispondere e analizzare il problema segnalato.',
+        ],
+        [
+          'Preferenze e risultati locali possono essere rimossi cancellando i dati o disinstallando l’app. L’assistenza schermo può essere disattivata nelle impostazioni Android. Le e-mail di supporto sono conservate solo per il tempo ragionevolmente necessario a gestire la richiesta, mantenere registri, prevenire abusi o rispettare la legge.',
+        ],
+        [
+          'NKIS Works limita il trattamento alle funzioni descritte e rivede questa informativa quando cambia il comportamento dell’app. Le modifiche sostanziali saranno pubblicate qui con una nuova data. Le domande sulla privacy possono essere inviate all’indirizzo di supporto indicato sotto.',
+        ],
+      ],
+      support: [
+        [
+          'Indica le versioni di Playlist Toolkit, Android e Amazon Music, la lingua scelta e l’operazione interrotta. Non includere la password Amazon o dati delle carte di pagamento.',
+        ],
+        [
+          'Apri una playlist creata o gestibile da te, verifica che siano visibili elenco, ordinamento e aggiunta di brani, quindi ripeti il controllo. Se l’interfaccia Amazon Music è cambiata, potrebbe servire un aggiornamento compatibile.',
+        ],
+        [
+          'L’arresto è intenzionale quando un controllo necessario non può essere verificato, la schermata cambia inaspettatamente, un gesto viene rifiutato o scade il tempo. Torna alla schermata playlist prevista e riprova solo quando è stabile.',
+        ],
+        [
+          'Apri Impostazioni Android, vai ad Accessibilità, scegli Playlist Toolkit e disattiva il servizio. La disinstallazione rimuove anche dati locali e servizio.',
+        ],
+        [
+          'Apri Google Play, scegli Pagamenti e abbonamenti, poi Abbonamenti e Playlist Toolkit. Google Play gestisce cancellazione, tempi di fatturazione e condizioni mostrate all’acquisto.',
+        ],
+        [
+          `${SUPPORT_EMAIL} è il canale di supporto condiviso di NKIS Works. Se utile, esamina e copia la diagnostica limitata dell’app prima di inserirla nel messaggio.`,
+        ],
+      ],
+      terms: [
+        [
+          'Playlist Toolkit assiste i flussi di gestione avviati dall’utente sulle schermate supportate dell’app Amazon Music per Android installata separatamente. Le funzioni possono variare in base a versioni, dispositivo, regione, lingua, abbonamento e interfaccia.',
+        ],
+        [
+          'Playlist Toolkit non è affiliata, sponsorizzata o approvata da Amazon. Amazon e Amazon Music sono marchi dei rispettivi proprietari. L’utente deve ottenere e usare Amazon Music separatamente secondo i termini Amazon.',
+        ],
+        [
+          'Le funzioni a pagamento sono offerte tramite un abbonamento Google Play a rinnovo automatico. In Giappone il prezzo è di 200 ¥ al mese. Fanno fede prezzo, imposte, valuta, data di rinnovo, prova e altre condizioni mostrate da Google Play prima della conferma. Il controllo di compatibilità non avvia alcun addebito.',
+        ],
+        [
+          'Gli abbonamenti si gestiscono o annullano tramite Google Play. Eliminare Playlist Toolkit non annulla l’abbonamento. Fatturazione, tempi di annullamento e rimborsi seguono le regole Google Play e la legge applicabile.',
+        ],
+        [
+          'Prima di iniziare, controlla playlist e schermata di destinazione, non interagire con Amazon Music durante un controllo automatico o gesto assistito e interrompi se la destinazione mostrata non è corretta. L’utente resta responsabile di playlist e attività dell’account.',
+        ],
+        [
+          'L’app non può essere usata per violare leggi, diritti di terzi, termini Amazon, norme Google Play o sicurezza del dispositivo. Elusione dei pagamenti, abuso dell’Accessibilità, distribuzione di copie modificate e tentativi di accesso non autorizzato sono vietati nei limiti di legge.',
+        ],
+        [
+          'Amazon Music può cambiare o rimuovere controlli senza preavviso. Playlist Toolkit può smettere temporaneamente di supportare una schermata o versione. L’app è progettata per fermarsi se i controlli non sono verificabili, ma non garantisce disponibilità continua o compatibilità con ogni interfaccia futura.',
+        ],
+        [
+          'Nei limiti consentiti dalla legge, il servizio è fornito senza garanzia di funzionamento ininterrotto, risultati privi di errori o idoneità a ogni flusso. NKIS Works può aggiornare questi termini quando il servizio cambia. Le domande possono essere inviate al supporto indicato sotto.',
+        ],
+      ],
+    },
+    'pt-BR': {
+      privacy: [
+        [
+          'Playlist Toolkit é um utilitário Android independente publicado pela NKIS Works. Não é um produto da Amazon e não é afiliado, patrocinado ou endossado pela Amazon.',
+        ],
+        [
+          'Quando a assistência de Acessibilidade do Android está ativada, o app pode examinar textos, rótulos, controles e propriedades visíveis da árvore de nós de acessibilidade em telas compatíveis do Amazon Music. Isso identifica cabeçalhos e linhas de playlists, opções de ordenação, o controle de adicionar músicas e destinos de movimento solicitados pelo usuário.',
+          'O serviço é limitado ao pacote Amazon Music. Enquanto o assistente flutuante estiver visível, o app pode verificar qual aplicativo está em primeiro plano para se ocultar fora do Amazon Music. Esse recurso não é usado para publicidade ou criação de perfis.',
+        ],
+        [
+          'Nomes de playlists, títulos e rótulos visíveis, resultados de auditoria, preferências de ordenação, favoritos, sinais de compatibilidade e diagnósticos limitados são processados localmente no dispositivo. O conteúdo das playlists não é enviado a servidores da NKIS Works nem vendido.',
+        ],
+        [
+          'Um registro de diagnóstico limitado pode permanecer na memória enquanto o serviço funciona. Ele é apagado quando solicitado ou quando o processo termina. Só sai do app se o usuário o copiar e compartilhar expressamente. Revise-o antes de enviar ao suporte.',
+        ],
+        [
+          'O Google Play Billing exibe assinaturas, conclui compras, restaura acesso e verifica direitos. O Google processa dados de pagamento conforme as próprias políticas. A NKIS Works não recebe números completos de cartão, apenas as informações de compra e direito necessárias ao acesso pago.',
+        ],
+        [
+          'Ao contatar o suporte, a NKIS Works recebe seu e-mail, mensagem e os diagnósticos, capturas, informações do dispositivo ou arquivos que você decidir anexar. Esses dados são usados para responder e investigar o problema relatado.',
+        ],
+        [
+          'Preferências e resultados locais podem ser removidos ao limpar os dados ou desinstalar o app. A assistência de tela pode ser desativada nas configurações do Android. E-mails de suporte são mantidos apenas pelo tempo razoavelmente necessário para atender a solicitação, manter registros, evitar abuso ou cumprir a lei.',
+        ],
+        [
+          'A NKIS Works limita o processamento às funções descritas e revisa esta política quando o comportamento do app muda. Alterações relevantes serão publicadas nesta página com nova data. Dúvidas sobre privacidade podem ser enviadas ao endereço de suporte abaixo.',
+        ],
+      ],
+      support: [
+        [
+          'Informe as versões do Playlist Toolkit, Android e Amazon Music, o idioma selecionado e a operação interrompida. Não inclua sua senha da Amazon nem dados de cartão.',
+        ],
+        [
+          'Abra uma playlist criada ou gerenciável por você, confirme que lista, ordenação e adição de músicas estão visíveis e repita a verificação. Se a interface do Amazon Music mudou, uma atualização compatível pode ser necessária.',
+        ],
+        [
+          'A parada é intencional quando um controle necessário não pode ser verificado, a tela muda inesperadamente, um gesto é rejeitado ou o tempo se esgota. Volte à tela esperada da playlist e tente novamente somente quando ela estiver estável.',
+        ],
+        [
+          'Abra Configurações do Android, vá a Acessibilidade, selecione Playlist Toolkit e desative o serviço. Desinstalar o app também remove dados locais e o serviço.',
+        ],
+        [
+          'Abra o Google Play, escolha Pagamentos e assinaturas, depois Assinaturas e selecione Playlist Toolkit. O Google Play controla cancelamento, datas de cobrança e condições exibidas na compra.',
+        ],
+        [
+          `${SUPPORT_EMAIL} é o canal compartilhado de suporte da NKIS Works. Quando útil, revise e copie os diagnósticos limitados do app antes de colá-los na mensagem.`,
+        ],
+      ],
+      terms: [
+        [
+          'Playlist Toolkit auxilia fluxos de organização iniciados pelo usuário em telas compatíveis do app Amazon Music para Android instalado separadamente. Os recursos podem variar conforme versões, dispositivo, região, idioma, assinatura e interface.',
+        ],
+        [
+          'Playlist Toolkit não é afiliado, patrocinado ou endossado pela Amazon. Amazon e Amazon Music são marcas de seus respectivos proprietários. O usuário deve obter e usar o Amazon Music separadamente conforme os termos da Amazon.',
+        ],
+        [
+          'Os recursos pagos são oferecidos por assinatura do Google Play com renovação automática. No Japão, o preço é de ¥ 200 por mês. Valem preço, impostos, moeda, data de renovação, teste e demais condições mostradas pelo Google Play antes da confirmação. A verificação de compatibilidade não gera cobrança.',
+        ],
+        [
+          'Assinaturas são gerenciadas ou canceladas pelo Google Play. Excluir o Playlist Toolkit não cancela a assinatura. Cobrança, momento do cancelamento e reembolsos seguem as regras do Google Play e a legislação aplicável.',
+        ],
+        [
+          'Antes de iniciar, confira playlist e tela de destino, não interaja com o Amazon Music durante auditoria automática ou gesto assistido e interrompa se o destino exibido não for o pretendido. O usuário continua responsável por suas playlists e atividades da conta.',
+        ],
+        [
+          'O app não pode ser usado para violar leis, direitos de terceiros, termos da Amazon, políticas do Google Play ou segurança do dispositivo. Burlar pagamentos, abusar da Acessibilidade, distribuir cópias modificadas e tentar acesso não autorizado são proibidos no limite da lei.',
+        ],
+        [
+          'O Amazon Music pode alterar ou remover controles sem aviso. O Playlist Toolkit pode deixar de oferecer suporte temporariamente a uma tela ou versão. O app foi projetado para parar quando os controles não são verificáveis, mas não garante disponibilidade contínua nem compatibilidade com toda interface futura.',
+        ],
+        [
+          'No limite permitido pela lei, o serviço é fornecido sem garantia de operação ininterrupta, resultados sem erro ou adequação a todo fluxo. A NKIS Works pode atualizar estes termos quando o serviço mudar. Dúvidas podem ser enviadas ao suporte indicado abaixo.',
+        ],
+      ],
+    },
+  }[language];
 }
 
 function localizedSectionTitle(language, type, index, fallback) {
@@ -1373,10 +1858,19 @@ function renderPage(locale, text, page) {
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:url" content="${ORIGIN}${route}">
   <meta property="og:locale" content="${locale.og}">
+  <meta property="og:image" content="${ORIGIN}/assets/playlist-toolkit-og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Playlist Toolkit by NKIS Works">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escapeHtml(title)}">
+  <meta name="twitter:description" content="${escapeHtml(description)}">
+  <meta name="twitter:image" content="${ORIGIN}/assets/playlist-toolkit-og.png">
   <link rel="canonical" href="${ORIGIN}${route}">
 ${alternateLinks(page)}
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/playlist-toolkit.css">
+${page === 'home' ? renderStructuredData(data, route) : ''}
 </head>
 <body>
   ${renderHeader(locale, text, page)}
@@ -1396,14 +1890,53 @@ function renderHeader(locale, text, page) {
       <a href="${routeFor(locale, 'home')}#flow">${escapeHtml(text.nav.flow)}</a>
       <a href="${routeFor(locale, 'privacy')}">${escapeHtml(text.nav.privacy)}</a>
       <a href="${routeFor(locale, 'support')}">${escapeHtml(text.nav.support)}</a>
+      <a href="${routeFor(locale, 'terms')}">${escapeHtml(text.nav.terms)}</a>
       ${renderLanguage(locale, text, page)}
     </div>
+    ${renderMobileMenu(locale, text, page)}
   </nav>
 </header>`;
 }
 
 function renderLanguage(current, text, page) {
   return `<details class="pt-language"><summary>${escapeHtml(text.language)}</summary><div class="pt-language-list">${locales.map((locale) => `<a href="${routeFor(locale, page)}" hreflang="${locale.code}"${locale.code === current.code ? ' aria-current="page"' : ''}>${escapeHtml(locale.label)}</a>`).join('')}</div></details>`;
+}
+
+function renderMobileMenu(current, text, page) {
+  const home = routeFor(current, 'home');
+  return `<details class="pt-mobile-menu"><summary>${escapeHtml(text.common.menu)}</summary><div class="pt-mobile-panel"><div class="pt-mobile-page-links"><a href="${home}#features">${escapeHtml(text.nav.features)}</a><a href="${home}#flow">${escapeHtml(text.nav.flow)}</a><a href="${routeFor(current, 'privacy')}">${escapeHtml(text.nav.privacy)}</a><a href="${routeFor(current, 'support')}">${escapeHtml(text.nav.support)}</a><a href="${routeFor(current, 'terms')}">${escapeHtml(text.nav.terms)}</a></div><strong class="pt-mobile-language-label">${escapeHtml(text.language)}</strong><div class="pt-mobile-languages">${locales.map((locale) => `<a href="${routeFor(locale, page)}" hreflang="${locale.code}"${locale.code === current.code ? ' aria-current="page"' : ''}>${escapeHtml(locale.label)}</a>`).join('')}</div></div></details>`;
+}
+
+function renderStructuredData(home, route) {
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Playlist Toolkit',
+    description: home.metaDescription,
+    url: `${ORIGIN}${route}`,
+    downloadUrl: GOOGLE_PLAY_URL,
+    image: `${ORIGIN}/assets/playlist-toolkit-og.png`,
+    operatingSystem: 'Android',
+    applicationCategory: 'MultimediaApplication',
+    softwareVersion: '1.1.3',
+    publisher: {
+      '@type': 'Organization',
+      name: 'NKIS Works',
+      url: ORIGIN,
+    },
+    offers: {
+      '@type': 'Offer',
+      availability: 'https://schema.org/InStock',
+      eligibleRegion: 'JP',
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        price: '200',
+        priceCurrency: 'JPY',
+        billingDuration: 'P1M',
+      },
+    },
+  };
+  return `  <script type="application/ld+json">${JSON.stringify(data).replaceAll('<', '\\u003c')}</script>`;
 }
 
 function renderHome(text) {
