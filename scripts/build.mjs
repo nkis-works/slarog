@@ -9,7 +9,7 @@ const dist = resolve('dist');
 const mode = process.argv.includes('--production') ? 'production' : 'preview';
 const pages = ['support', 'privacy', 'terms', 'legal'];
 const productRoutes = playlistToolkitRoutes();
-const sitemapLastModified = '2026-08-25';
+const sitemapLastModified = '2026-09-02';
 const productSitemapLastModified = '2026-09-02';
 const routeFiles = [
   ['index.html', 'index.html'],
@@ -34,6 +34,8 @@ const redirects =
     '/tools/slot-balance/index.html /tools/slot-balance/ 301',
     '/en /en/ 301',
     '/en/index.html /en/ 301',
+    '/ja /ja/ 301',
+    '/ja/index.html /ja/ 301',
     ...productRoutes.flatMap((route) => [
       `${route.slice(0, -1)} ${route} 301`,
       `${route}index.html ${route} 301`,
@@ -71,6 +73,10 @@ await mkdir(resolve(dist, 'en'), { recursive: true });
 const englishHome = await readFile(resolve(root, 'en', 'index.html'), 'utf8');
 await writeFile(resolve(dist, 'en', 'index.html'), render(englishHome));
 
+await mkdir(resolve(dist, 'ja'), { recursive: true });
+const japaneseHome = await readFile(resolve(root, 'ja', 'index.html'), 'utf8');
+await writeFile(resolve(dist, 'ja', 'index.html'), render(japaneseHome));
+
 await buildPlaylistToolkit(dist);
 for (const route of productRoutes) {
   const productPage = resolve(dist, route.slice(1), 'index.html');
@@ -102,7 +108,7 @@ if (mode === 'preview') {
     'User-agent: *\nAllow: /\nSitemap: https://nkisworks.com/sitemap.xml\n',
   );
   const urls = [
-    ...['', ...pages.map((page) => `${page}/`), 'tools/slot-balance/', 'en/'].map(
+    ...['', ...pages.map((page) => `${page}/`), 'tools/slot-balance/', 'en/', 'ja/'].map(
       (path) =>
         `  <url><loc>https://nkisworks.com/${path}</loc><lastmod>${sitemapLastModified}</lastmod></url>`,
     ),

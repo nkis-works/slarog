@@ -124,9 +124,9 @@ test('release page uses the confirmed store destinations', () => {
   assert.match(pages.index, /schema\.org\/InStock/);
 });
 
-test('unreleased products are not linked from the Slarog website', () => {
-  assert.doesNotMatch(pages.index, /Playlist Toolkit/);
-  assert.doesNotMatch(pages.index, /\/products\/playlist-toolkit\//);
+test('released NKIS Works products are mutually linked', () => {
+  assert.match(pages.index, /\/products\/playlist-toolkit\/ja\//);
+  assert.match(pages.index, /\/ja\//);
 });
 
 test('structured application offers are valid for both stores', () => {

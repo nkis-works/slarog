@@ -36,11 +36,13 @@ const copy = {
       contents: 'On this page',
       email: 'Email support',
       menu: 'Menu',
+      studio: 'NKIS Works home',
+      slarog: 'Slarog (Japan)',
     },
     home: {
-      metaTitle: 'Playlist Toolkit | Playlist management utility for Amazon Music',
+      metaTitle: 'Amazon Music Playlist Organizer & Sort Tool | Playlist Toolkit',
       metaDescription:
-        'An independent Android utility for Amazon Music playlist sorting, audits, duplicate review, Smart Add and compatibility checks.',
+        'Sort and organize Amazon Music playlists on Android. Review duplicate songs, restore display order, audit long playlists and check compatibility before subscribing.',
       eyebrow: 'PLAYLIST CONTROL, WITHOUT THE CLUTTER',
       title: 'Put every playlist back in order.',
       lead: 'Remember display order, review duplicates and playlist health, prepare additions, and return to the playlists you use most. Playlist Toolkit guides supported actions in Amazon Music without modifying the Amazon Music app.',
@@ -142,6 +144,28 @@ const copy = {
         [
           'Updates through Google Play',
           'Compatibility improvements are delivered through Playlist Toolkit updates after Amazon Music changes are reviewed.',
+        ],
+      ],
+      searchEyebrow: 'AMAZON MUSIC PLAYLIST ORGANIZER',
+      searchTitle: 'A clearer way to sort and organize Amazon Music playlists.',
+      searchLead:
+        'Playlist Toolkit supports the repetitive playlist work that is difficult to manage one song at a time, while keeping Amazon Music as a separate, unmodified app.',
+      searchItems: [
+        [
+          'Sort Amazon Music playlists',
+          'Restore artist, title, recently added, or duration display order on supported playlist screens.',
+        ],
+        [
+          'Find duplicate songs',
+          'Review duplicate candidates across a long playlist without uploading visible track labels to an NKIS Works server.',
+        ],
+        [
+          'Reorder and audit playlists',
+          'Prepare supported organization steps, review playlist condition, and safely stop when the expected interface cannot be verified.',
+        ],
+        [
+          'Return to favorite playlists',
+          'Reduce repeated navigation by saving the playlist destination you use most.',
         ],
       ],
       faqTitle: 'Before you install',
@@ -350,11 +374,13 @@ const copy = {
       contents: 'このページの内容',
       email: 'メールで問い合わせ',
       menu: 'メニュー',
+      studio: 'NKIS Worksホーム',
+      slarog: 'スラログ',
     },
     home: {
-      metaTitle: 'Playlist Toolkit｜Amazon Musicのプレイリスト整理支援',
+      metaTitle: 'Amazon Musicプレイリスト並び替え・整理ツール｜Playlist Toolkit',
       metaDescription:
-        'Amazon Musicのプレイリスト並び順復元、監査、重複確認、Smart Add、互換性チェックを支援する独立したAndroidユーティリティです。',
+        'Amazon MusicのプレイリストをAndroidで並び替え・整理。表示順の復元、重複曲候補の確認、長いプレイリストの監査、購入前の互換性確認を支援します。',
       eyebrow: 'プレイリスト整理を、もっと軽やかに',
       title: '聴きたい順を、いつもの状態に。',
       lead: '表示順の記憶と復元、重複候補やプレイリスト状態の監査、追加候補の整理、よく使うプレイリストへの復帰をひとつに。Amazon Musicアプリを改変せず、対応する画面操作を支援します。',
@@ -429,6 +455,28 @@ const copy = {
         [
           'Google Play更新で継続対応',
           'Amazon Musicの変更を確認後、Playlist Toolkitの更新を通じて互換性を改善します。',
+        ],
+      ],
+      searchEyebrow: 'AMAZON MUSIC プレイリスト整理',
+      searchTitle: 'Amazon Musicのプレイリスト並び替えを、分かりやすく。',
+      searchLead:
+        '一曲ずつの手作業では負担が大きいプレイリスト整理を支援します。Amazon Musicアプリ自体や保存済みの曲順を改変するツールではありません。',
+      searchItems: [
+        [
+          'プレイリストを並び替える',
+          'アーティスト、タイトル、最近追加、再生時間の表示順を対応画面で記憶・復元します。',
+        ],
+        [
+          '重複曲の候補を確認する',
+          '長いプレイリストを監査し、表示された曲名をNKIS Worksのサーバーへ送らずに重複候補を確認します。',
+        ],
+        [
+          'プレイリストを整理・監査する',
+          '追加候補や状態をまとめて確認し、必要な画面を確認できない場合は推測せず安全に停止します。',
+        ],
+        [
+          'よく使うプレイリストへ戻る',
+          'お気に入りの移動先を記憶し、Amazon Music内で繰り返していた移動を減らします。',
         ],
       ],
       faqTitle: 'インストール前の確認',
@@ -1086,6 +1134,28 @@ function getLocalizedRelease(status) {
       ],
       cardLabel: 'SICHERHEITSPRÜFUNG',
       cardTitle: 'Bereit',
+      searchEyebrow: 'AMAZON-MUSIC-PLAYLISTS ORGANISIEREN',
+      searchTitle: 'Amazon-Music-Playlists einfacher sortieren und organisieren.',
+      searchLead:
+        'Playlist Toolkit unterstützt wiederkehrende Sortier-, Prüf- und Navigationsschritte, ohne die Amazon-Music-App zu verändern.',
+      searchItems: [
+        [
+          'Playlists sortieren',
+          'Künstler-, Titel-, zuletzt hinzugefügt- oder Daueransicht auf unterstützten Bildschirmen wiederherstellen.',
+        ],
+        [
+          'Doppelte Songs prüfen',
+          'Duplikatkandidaten in langen Playlists lokal auf dem Gerät überprüfen.',
+        ],
+        [
+          'Playlists prüfen',
+          'Zustand und unterstützte Organisationsschritte prüfen und bei unbekannten Ansichten sicher stoppen.',
+        ],
+        [
+          'Favoriten schneller öffnen',
+          'Wiederholte Navigation zur meistgenutzten Playlist reduzieren.',
+        ],
+      ],
     },
     'Lanzamiento para Android en preparación': {
       store: 'Descargar en Google Play',
@@ -1106,6 +1176,28 @@ function getLocalizedRelease(status) {
       ],
       cardLabel: 'COMPROBACIÓN DE SEGURIDAD',
       cardTitle: 'Listo',
+      searchEyebrow: 'ORGANIZADOR DE PLAYLISTS DE AMAZON MUSIC',
+      searchTitle: 'Ordena y organiza playlists de Amazon Music con menos pasos.',
+      searchLead:
+        'Playlist Toolkit ayuda con tareas repetitivas de orden, revisión y navegación sin modificar la aplicación Amazon Music.',
+      searchItems: [
+        [
+          'Ordenar playlists',
+          'Restaura la vista por artista, título, añadidas recientemente o duración en pantallas compatibles.',
+        ],
+        [
+          'Buscar canciones duplicadas',
+          'Revisa candidatos duplicados en playlists largas mediante procesamiento local.',
+        ],
+        [
+          'Auditar playlists',
+          'Comprueba el estado y detiene la operación si no puede verificar la interfaz esperada.',
+        ],
+        [
+          'Volver a playlists favoritas',
+          'Reduce la navegación repetida hasta la playlist que más utilizas.',
+        ],
+      ],
     },
     'Sortie Android en préparation': {
       store: 'Télécharger sur Google Play',
@@ -1126,6 +1218,28 @@ function getLocalizedRelease(status) {
       ],
       cardLabel: 'CONTRÔLE DE SÉCURITÉ',
       cardTitle: 'Prêt',
+      searchEyebrow: 'ORGANISATEUR DE PLAYLISTS AMAZON MUSIC',
+      searchTitle: 'Triez et organisez vos playlists Amazon Music plus simplement.',
+      searchLead:
+        'Playlist Toolkit facilite les tâches répétitives de tri, de contrôle et de navigation sans modifier l’application Amazon Music.',
+      searchItems: [
+        [
+          'Trier les playlists',
+          'Restaurez l’affichage par artiste, titre, ajout récent ou durée sur les écrans compatibles.',
+        ],
+        [
+          'Repérer les doublons',
+          'Examinez localement les doublons potentiels dans les longues playlists.',
+        ],
+        [
+          'Contrôler les playlists',
+          'Vérifiez leur état et arrêtez en sécurité si l’interface attendue ne peut pas être confirmée.',
+        ],
+        [
+          'Retrouver les favorites',
+          'Réduisez la navigation répétée vers la playlist la plus utilisée.',
+        ],
+      ],
     },
     'Uscita Android in preparazione': {
       store: 'Scarica da Google Play',
@@ -1146,6 +1260,28 @@ function getLocalizedRelease(status) {
       ],
       cardLabel: 'CONTROLLO DI SICUREZZA',
       cardTitle: 'Pronto',
+      searchEyebrow: 'ORGANIZZATORE PLAYLIST AMAZON MUSIC',
+      searchTitle: 'Ordina e organizza le playlist Amazon Music con meno passaggi.',
+      searchLead:
+        'Playlist Toolkit assiste le attività ripetitive di ordinamento, controllo e navigazione senza modificare l’app Amazon Music.',
+      searchItems: [
+        [
+          'Ordinare le playlist',
+          'Ripristina la vista per artista, titolo, aggiunte recenti o durata nelle schermate supportate.',
+        ],
+        [
+          'Trovare brani duplicati',
+          'Controlla localmente i possibili duplicati nelle playlist lunghe.',
+        ],
+        [
+          'Verificare le playlist',
+          'Controlla lo stato e si ferma in sicurezza se l’interfaccia attesa non è verificabile.',
+        ],
+        [
+          'Tornare alle preferite',
+          'Riduce la navigazione ripetuta verso la playlist usata più spesso.',
+        ],
+      ],
     },
     'Lançamento Android em preparação': {
       store: 'Baixar no Google Play',
@@ -1166,6 +1302,25 @@ function getLocalizedRelease(status) {
       ],
       cardLabel: 'VERIFICAÇÃO DE SEGURANÇA',
       cardTitle: 'Pronto',
+      searchEyebrow: 'ORGANIZADOR DE PLAYLISTS DO AMAZON MUSIC',
+      searchTitle: 'Ordene e organize playlists do Amazon Music com menos etapas.',
+      searchLead:
+        'Playlist Toolkit auxilia tarefas repetitivas de ordenação, revisão e navegação sem modificar o app Amazon Music.',
+      searchItems: [
+        [
+          'Ordenar playlists',
+          'Restaure a exibição por artista, título, adição recente ou duração em telas compatíveis.',
+        ],
+        [
+          'Encontrar músicas duplicadas',
+          'Revise localmente possíveis duplicatas em playlists longas.',
+        ],
+        [
+          'Auditar playlists',
+          'Verifique o estado e pare com segurança quando a interface esperada não puder ser confirmada.',
+        ],
+        ['Voltar às favoritas', 'Reduza a navegação repetida até a playlist que você mais usa.'],
+      ],
     },
   }[status];
 }
@@ -1182,6 +1337,8 @@ function makeTranslation(config) {
     contents: config.language,
     email: support,
     menu: release.menu,
+    studio: 'NKIS Works',
+    slarog: 'Slarog (Japan)',
   };
   const home = {
     metaTitle: `Playlist Toolkit | ${config.title}`,
@@ -1218,6 +1375,10 @@ function makeTranslation(config) {
     safetyTitle: config.safetyTitle,
     safetyLead: config.safetyLead,
     safety: config.safety,
+    searchEyebrow: release.searchEyebrow,
+    searchTitle: release.searchTitle,
+    searchLead: release.searchLead,
+    searchItems: release.searchItems,
     faqTitle: config.faqTitle,
     faqs: config.faqs,
     ctaTitle: config.flowTitle,
@@ -1899,7 +2060,7 @@ function renderHeader(locale, text, page) {
 }
 
 function renderLanguage(current, text, page) {
-  return `<details class="pt-language"><summary>${escapeHtml(text.language)}</summary><div class="pt-language-list">${locales.map((locale) => `<a href="${routeFor(locale, page)}" hreflang="${locale.code}"${locale.code === current.code ? ' aria-current="page"' : ''}>${escapeHtml(locale.label)}</a>`).join('')}</div></details>`;
+  return `<details class="pt-language"><summary aria-label="${escapeHtml(text.language)}: ${escapeHtml(current.label)}">${escapeHtml(text.language)}: ${escapeHtml(current.label)}</summary><div class="pt-language-list">${locales.map((locale) => `<a href="${routeFor(locale, page)}" hreflang="${locale.code}"${locale.code === current.code ? ' aria-current="page"' : ''}>${escapeHtml(locale.label)}</a>`).join('')}</div></details>`;
 }
 
 function renderMobileMenu(current, text, page) {
@@ -1919,6 +2080,13 @@ function renderStructuredData(home, route) {
     operatingSystem: 'Android',
     applicationCategory: 'MultimediaApplication',
     softwareVersion: '1.1.3',
+    keywords: home.searchItems.map(([title]) => title),
+    sameAs: [GOOGLE_PLAY_URL],
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'NKIS Works',
+      url: `${ORIGIN}/en/`,
+    },
     publisher: {
       '@type': 'Organization',
       name: 'NKIS Works',
@@ -1934,6 +2102,17 @@ function renderStructuredData(home, route) {
         priceCurrency: 'JPY',
         billingDuration: 'P1M',
       },
+    },
+    subjectOf: {
+      '@type': 'FAQPage',
+      mainEntity: home.faqs.map(([question, answer]) => ({
+        '@type': 'Question',
+        name: question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: answer,
+        },
+      })),
     },
   };
   return `  <script type="application/ld+json">${JSON.stringify(data).replaceAll('<', '\\u003c')}</script>`;
@@ -1963,6 +2142,7 @@ function renderHome(text) {
   <section class="pt-shell pt-section" id="features"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.featuresEyebrow)}</p><h2>${escapeHtml(home.featuresTitle)}</h2><p>${escapeHtml(home.featuresLead)}</p></div><div class="pt-feature-grid">${home.features.map(([label, title, body], index) => `<article class="pt-feature-card" data-index="0${index + 1}"><small>${escapeHtml(label)}</small><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></article>`).join('')}</div></section>
   <section class="pt-dark-band" id="flow"><div class="pt-shell pt-section"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.flowEyebrow)}</p><h2>${escapeHtml(home.flowTitle)}</h2><p>${escapeHtml(home.flowLead)}</p></div><div class="pt-flow">${home.steps.map(([title, body]) => `<article class="pt-step"><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></article>`).join('')}</div></div></section>
   <section class="pt-shell pt-section pt-safety"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.safetyEyebrow)}</p><h2>${escapeHtml(home.safetyTitle)}</h2><p>${escapeHtml(home.safetyLead)}</p></div><div class="pt-safety-panel">${home.safety.map(([title, body]) => `<div class="pt-safety-line"><span>✓</span><div><strong>${escapeHtml(title)}</strong><p>${escapeHtml(body)}</p></div></div>`).join('')}</div></section>
+  <section class="pt-shell pt-section" id="playlist-organizer"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.searchEyebrow)}</p><h2>${escapeHtml(home.searchTitle)}</h2><p>${escapeHtml(home.searchLead)}</p></div><div class="pt-feature-grid">${home.searchItems.map(([title, body], index) => `<article class="pt-feature-card" data-index="0${index + 1}"><small>PLAYLIST</small><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></article>`).join('')}</div></section>
   <section class="pt-shell pt-section"><div class="pt-section-heading"><p class="pt-eyebrow">FAQ</p><h2>${escapeHtml(home.faqTitle)}</h2></div><div class="pt-faq">${home.faqs.map(([question, answer]) => `<details><summary>${escapeHtml(question)}</summary><p>${escapeHtml(answer)}</p></details>`).join('')}</div></section>
   <section class="pt-shell pt-cta"><div class="pt-cta-card"><h2>${escapeHtml(home.ctaTitle)}</h2><p>${escapeHtml(home.ctaBody)}</p><div class="pt-actions"><a class="pt-button pt-button-primary" href="${GOOGLE_PLAY_URL}" rel="external">${escapeHtml(home.store)}</a></div></div></section>
 </main>`;
@@ -1974,7 +2154,8 @@ function renderDocument(text, page) {
 }
 
 function renderFooter(text, locale) {
-  return `<footer class="pt-footer"><div class="pt-footer-inner"><div class="pt-footer-copy"><strong>© 2026 NKIS Works</strong><p>${escapeHtml(text.common.footer)}</p></div><nav class="pt-footer-links" aria-label="Footer"><a href="${routeFor(locale, 'home')}">${escapeHtml(text.common.back)}</a><a href="${routeFor(locale, 'privacy')}">${escapeHtml(text.nav.privacy)}</a><a href="${routeFor(locale, 'support')}">${escapeHtml(text.nav.support)}</a><a href="${routeFor(locale, 'terms')}">${escapeHtml(text.nav.terms)}</a></nav></div></footer>`;
+  const studioRoute = locale.code === 'ja' ? '/ja/' : '/en/';
+  return `<footer class="pt-footer"><div class="pt-footer-inner"><div class="pt-footer-copy"><strong>© 2026 NKIS Works</strong><p>${escapeHtml(text.common.footer)}</p></div><nav class="pt-footer-links" aria-label="Footer"><a href="${studioRoute}">${escapeHtml(text.common.studio)}</a><a href="/">${escapeHtml(text.common.slarog)}</a><a href="${routeFor(locale, 'home')}">${escapeHtml(text.common.back)}</a><a href="${routeFor(locale, 'privacy')}">${escapeHtml(text.nav.privacy)}</a><a href="${routeFor(locale, 'support')}">${escapeHtml(text.nav.support)}</a><a href="${routeFor(locale, 'terms')}">${escapeHtml(text.nav.terms)}</a></nav></div></footer>`;
 }
 
 function alternateLinks(page) {

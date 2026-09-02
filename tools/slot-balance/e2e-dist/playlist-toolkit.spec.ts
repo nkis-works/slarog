@@ -73,6 +73,31 @@ test.describe('Playlist Toolkit product site', () => {
     );
     expect(structuredData['@type']).toBe('SoftwareApplication');
     expect(structuredData.offers.priceSpecification.price).toBe('200');
+    expect(structuredData.subjectOf['@type']).toBe('FAQPage');
+    await expect(page).toHaveTitle(/Amazon Music Playlist Organizer/);
+    await expect(page.locator('#playlist-organizer')).toContainText('Sort Amazon Music playlists');
+  });
+
+  test('language navigation cannot leave the product site', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/products/playlist-toolkit/ja/');
+    const language = page.locator('.pt-language');
+    await language.locator('summary').click();
+    const paths = await language
+      .locator('a')
+      .evaluateAll((links) =>
+        links.map((link) => new URL((link as HTMLAnchorElement).href).pathname),
+      );
+    expect(paths).toHaveLength(7);
+    for (const path of paths) expect(path).toMatch(/^\/products\/playlist-toolkit\//);
+  });
+
+  test('NKIS Works language links stay on the studio site', async ({ page }) => {
+    await page.goto('/en/');
+    await expect(page.locator('.language-link')).toHaveAttribute('href', '/ja/');
+    await page.goto('/ja/');
+    await expect(page.locator('.language-link')).toHaveAttribute('href', '/en/');
+    await expect(page.locator('a[href="/products/playlist-toolkit/ja/"]').first()).toBeVisible();
   });
 
   for (const locale of locales.slice(0, 2)) {

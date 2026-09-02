@@ -21,6 +21,7 @@ const requiredFiles = new Set([
   'tools/slot-balance/assets/styles.css',
   'tools/slot-balance/assets/slot-balance-app.js',
   'en/index.html',
+  'ja/index.html',
   ...productRoutes.map((route) => `${route.slice(1)}index.html`),
 ]);
 
@@ -126,7 +127,7 @@ if (preview) {
     (sitemap.match(/https:\/\/nkisworks\.com\/tools\/slot-balance\//g) ?? []).length === 1,
     'ツールURLはsitemapに1件だけ必要です。',
   );
-  for (const path of ['en/']) {
+  for (const path of ['en/', 'ja/']) {
     const url = `https://nkisworks.com/${path}`;
     const location = `<loc>${url}</loc>`;
     assert(sitemap.split(location).length - 1 === 1, `sitemapにURLが1件必要です: ${url}`);
