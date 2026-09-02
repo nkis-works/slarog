@@ -44,7 +44,7 @@ const copy = {
       metaDescription:
         'Sort and organize Amazon Music playlists on Android. Review duplicate songs, restore display order, audit long playlists and check compatibility before subscribing.',
       eyebrow: 'PLAYLIST CONTROL, WITHOUT THE CLUTTER',
-      title: 'Put every playlist back in order.',
+      title: 'Your playlists. Your order.',
       lead: 'Remember display order, review duplicates and playlist health, prepare additions, and return to the playlists you use most. Playlist Toolkit guides supported actions in Amazon Music without modifying the Amazon Music app.',
       primary: 'Explore features',
       secondary: 'Check support',
@@ -381,38 +381,38 @@ const copy = {
       metaTitle: 'Amazon Musicプレイリスト並び替え・整理ツール｜Playlist Toolkit',
       metaDescription:
         'Amazon MusicのプレイリストをAndroidで並び替え・整理。表示順の復元、重複曲候補の確認、長いプレイリストの監査、購入前の互換性確認を支援します。',
-      eyebrow: 'プレイリスト整理を、もっと軽やかに',
-      title: '聴きたい順を、いつもの状態に。',
-      lead: '表示順の記憶と復元、重複候補やプレイリスト状態の監査、追加候補の整理、よく使うプレイリストへの復帰をひとつに。Amazon Musicアプリを改変せず、対応する画面操作を支援します。',
+      eyebrow: 'Amazon Musicのプレイリスト整理を、もっと手軽に',
+      title: '並び替えも、確認も、もっと手軽に。',
+      lead: '表示順の復元、重複候補の確認、追加前の整理、よく使うプレイリストへの移動までをひとつに。Amazon Musicアプリを改変せず、対応する画面で必要な操作を支援します。',
       primary: '機能を見る',
       secondary: 'サポートを確認',
       store: 'Google Playで入手',
-      price: '日本：月額200円・自動更新',
-      localPrice: '他地域の価格はGoogle Playに表示',
-      status: 'Android版 配信中',
-      consoleLabel: '互換性コンソール',
-      consoleStatus: '対応UIを確認',
+      price: '月額200円・自動更新',
+      localPrice: '日本以外の価格はGoogle Playに表示',
+      status: 'Androidで利用できます',
+      consoleLabel: 'PLAYLIST TOOLKIT',
+      consoleStatus: '端末内で確認',
       rows: [
-        ['01', 'アーティスト順', '記憶済み'],
-        ['02', '重複候補の監査', '端末内処理'],
-        ['03', 'Smart Add', 'ユーザー開始'],
+        ['01', '表示順を復元', '設定済み'],
+        ['02', '重複候補を確認', '端末内'],
+        ['03', '追加前に整理', 'ユーザー操作'],
       ],
-      cardLabel: '安全確認',
-      cardTitle: '支援を開始できます',
-      cardBody: '必要な操作項目を確認済み。不明な画面では安全に停止します。',
+      cardLabel: '無料の互換性チェック',
+      cardTitle: '使えることを確かめてから',
+      cardBody: '対応画面を確認できた場合だけ、月額プランをご案内します。',
       trust: [
         ['プレイリスト情報は端末内処理', '表示された曲名等をNKIS Worksのサーバーへ送信しません。'],
         ['購入前に互換性を確認', 'サブスクリプション開始前に対応画面を無料で確認できます。'],
         ['推測せず安全停止', '必要な操作項目を確認できない場合は操作を続行しません。'],
       ],
       featuresEyebrow: 'ひとつの整理フロー',
-      featuresTitle: 'タップを減らして、音楽の時間を増やす。',
+      featuresTitle: '繰り返していた操作を、ひとつの流れに。',
       featuresLead:
-        'Amazon Musicで何度も繰り返していたプレイリスト操作を、分かりやすい流れにまとめます。',
+        '並び替え、確認、追加前の整理、いつものプレイリストへの移動を、迷いにくい手順にまとめます。',
       features: [
         [
           'ORDER',
-          '好みの表示順を記憶・復元',
+          '表示順を、いつでもすぐに復元',
           'アーティスト、タイトル、最近追加、再生時間の表示順を対応画面で復元します。保存された曲順を変更する操作とは区別されます。',
         ],
         [
@@ -431,8 +431,8 @@ const copy = {
           'お気に入りのプレイリストを記憶し、Amazon Musicを開いた後の繰り返し移動を減らします。',
         ],
       ],
-      flowEyebrow: '分かりやすい初回導線',
-      flowTitle: '確認してから、支払う。操作の主導権はユーザーに。',
+      flowEyebrow: 'ご利用開始までの流れ',
+      flowTitle: '使えることを確かめてから、申し込む。',
       flowLead:
         'Android設定を開く前に画面操作支援の目的を説明し、無料互換性チェックだけでは料金が発生しません。',
       steps: [
@@ -442,15 +442,18 @@ const copy = {
         ['利用開始を選択', '対応端末と確認できた場合だけGoogle Playの購入画面へ進めます。'],
       ],
       safetyEyebrow: '継続的な互換性対応',
-      safetyTitle: '動的に探し、分からないときは止まる。',
+      safetyTitle: '確認できる画面だけを、安全に操作。',
       safetyLead:
-        '既知のView IDと多言語ラベルから現在の画面上の操作項目を探します。通常の位置変更には耐性がありますが、将来のあらゆるAmazon Music画面を自律理解すると保証するものではありません。',
+        'Amazon Music画面のラベルや操作項目をその場で確認して動作します。少しの配置変更には対応し、必要な項目が見つからないときは、誤操作を避けるため安全に停止します。',
       safety: [
         [
-          '操作項目を動的探索',
-          'ひとつの固定タップ位置ではなく、現在のAccessibility Nodeツリーから対応項目を探します。',
+          '画面上の操作項目を確認',
+          'ひとつの固定位置ではなく、そのとき表示されているラベルやボタンから対象を探します。',
         ],
-        ['既知UI契約を確認', '対応操作の開始前に必要なプレイリスト項目を検査します。'],
+        [
+          '開始前に必要項目を確認',
+          '対応操作を始める前に、必要なプレイリスト項目がそろっているか確認します。',
+        ],
         ['未知UIでは安全停止', '操作項目が不足または曖昧な場合、未確認の操作をせず停止します。'],
         [
           'Google Play更新で継続対応',
@@ -458,28 +461,28 @@ const copy = {
         ],
       ],
       searchEyebrow: 'AMAZON MUSIC プレイリスト整理',
-      searchTitle: 'Amazon Musicのプレイリスト並び替えを、分かりやすく。',
+      searchTitle: '面倒だったプレイリスト整理を、ひとつずつ軽くする。',
       searchLead:
-        '一曲ずつの手作業では負担が大きいプレイリスト整理を支援します。Amazon Musicアプリ自体や保存済みの曲順を改変するツールではありません。',
+        '一曲ずつ確認していた作業や、毎回たどっていた画面を減らします。表示順の復元は、保存済みの曲順そのものを変更しません。',
       searchItems: [
         [
-          'プレイリストを並び替える',
+          '表示順をすぐに戻す',
           'アーティスト、タイトル、最近追加、再生時間の表示順を対応画面で記憶・復元します。',
         ],
         [
-          '重複曲の候補を確認する',
+          '重複候補をまとめて確認',
           '長いプレイリストを監査し、表示された曲名をNKIS Worksのサーバーへ送らずに重複候補を確認します。',
         ],
         [
-          'プレイリストを整理・監査する',
+          'プレイリスト全体を監査',
           '追加候補や状態をまとめて確認し、必要な画面を確認できない場合は推測せず安全に停止します。',
         ],
         [
-          'よく使うプレイリストへ戻る',
+          'いつものプレイリストへ移動',
           'お気に入りの移動先を記憶し、Amazon Music内で繰り返していた移動を減らします。',
         ],
       ],
-      faqTitle: 'インストール前の確認',
+      faqTitle: 'ご利用前によくある質問',
       faqs: [
         [
           'Amazon公式アプリですか？',
@@ -502,7 +505,7 @@ const copy = {
           '整理に使うプレイリスト名と画面上の曲ラベルは端末内で処理し、NKIS Worksのサーバーへ送信しません。購入状態はGoogle Playが別途処理します。',
         ],
       ],
-      ctaTitle: '支払う前に、この端末で使えるか確認。',
+      ctaTitle: 'まずは、この端末で使えるか確認。',
       ctaBody:
         '最初の互換性チェックは無料です。必要なプレイリスト操作項目が見つからない場合、購入画面へ進めません。',
       ctaButton: '互換性ヘルプを見る',
@@ -674,7 +677,7 @@ const translations = {
       'Unabhängiges Drittanbieter-Tool. Keine Verbindung, Förderung oder Unterstützung durch Amazon.',
     footer:
       'Playlist Toolkit arbeitet mit unterstützten Ansichten der separat installierten Amazon Music-App für Android. Amazon und Amazon Music sind Marken ihrer jeweiligen Inhaber.',
-    title: 'Jede Playlist. Wieder in deiner Ordnung.',
+    title: 'Deine Playlists. Deine Reihenfolge.',
     lead: 'Merke die Anzeigeordnung, prüfe Duplikat-Kandidaten, bereite Ergänzungen vor und kehre schneller zu häufig genutzten Playlists zurück. Ohne die Amazon Music-App zu verändern.',
     price: 'Japan: ¥200 / Monat',
     localPrice: 'Lokaler Preis wird in Google Play angezeigt',
@@ -766,7 +769,7 @@ const translations = {
       'Utilidad independiente de terceros. No está afiliada, patrocinada ni respaldada por Amazon.',
     footer:
       'Playlist Toolkit funciona con pantallas compatibles de la aplicación Amazon Music para Android instalada por separado. Amazon y Amazon Music son marcas de sus respectivos propietarios.',
-    title: 'Cada playlist, otra vez en tu orden.',
+    title: 'Tus playlists, en el orden que prefieres.',
     lead: 'Recuerda el orden de visualización, revisa posibles duplicados, prepara adiciones y vuelve antes a tus playlists habituales, sin modificar la aplicación Amazon Music.',
     price: 'Japón: ¥200 al mes',
     localPrice: 'Google Play muestra el precio local',
@@ -852,7 +855,7 @@ const translations = {
       'Utilitaire tiers indépendant. Sans affiliation, parrainage ni approbation d’Amazon.',
     footer:
       'Playlist Toolkit fonctionne avec les écrans compatibles de l’application Amazon Music Android installée séparément. Amazon et Amazon Music sont des marques de leurs propriétaires respectifs.',
-    title: 'Chaque playlist, de nouveau dans votre ordre.',
+    title: 'Vos playlists, dans l’ordre qui vous convient.',
     lead: 'Mémorisez l’ordre d’affichage, examinez les doublons possibles, préparez les ajouts et retrouvez rapidement vos playlists, sans modifier l’application Amazon Music.',
     price: 'Japon : 200 ¥ / mois',
     localPrice: 'Le prix local est affiché dans Google Play',
@@ -935,7 +938,7 @@ const translations = {
       'Utility indipendente di terze parti. Non affiliata, sponsorizzata o approvata da Amazon.',
     footer:
       'Playlist Toolkit funziona con schermate supportate dell’app Amazon Music per Android installata separatamente. Amazon e Amazon Music sono marchi dei rispettivi proprietari.',
-    title: 'Ogni playlist, di nuovo nel tuo ordine.',
+    title: 'Le tue playlist, nell’ordine che preferisci.',
     lead: 'Ricorda l’ordine di visualizzazione, controlla possibili duplicati, prepara le aggiunte e torna rapidamente alle playlist preferite, senza modificare l’app Amazon Music.',
     price: 'Giappone: ¥200 al mese',
     localPrice: 'Google Play mostra il prezzo locale',
@@ -1015,7 +1018,7 @@ const translations = {
       'Utilitário independente de terceiros. Não afiliado, patrocinado nem endossado pela Amazon.',
     footer:
       'O Playlist Toolkit funciona com telas compatíveis do app Amazon Music para Android instalado separadamente. Amazon e Amazon Music são marcas de seus respectivos proprietários.',
-    title: 'Cada playlist, de volta à sua ordem.',
+    title: 'Suas playlists, na ordem que você prefere.',
     lead: 'Lembre a ordem de exibição, revise possíveis duplicatas, prepare adições e volte rapidamente às playlists favoritas, sem modificar o app Amazon Music.',
     price: 'Japão: ¥200 por mês',
     localPrice: 'O Google Play mostra o preço local',
@@ -2019,18 +2022,19 @@ function renderPage(locale, text, page) {
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:url" content="${ORIGIN}${route}">
   <meta property="og:locale" content="${locale.og}">
-  <meta property="og:image" content="${ORIGIN}/assets/playlist-toolkit-og.png">
+  <meta property="og:image" content="${ORIGIN}/assets/playlist-toolkit-og-v2.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Playlist Toolkit by NKIS Works">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${escapeHtml(title)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
-  <meta name="twitter:image" content="${ORIGIN}/assets/playlist-toolkit-og.png">
+  <meta name="twitter:image" content="${ORIGIN}/assets/playlist-toolkit-og-v2.png">
   <link rel="canonical" href="${ORIGIN}${route}">
 ${alternateLinks(page)}
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/playlist-toolkit.css">
+  <link rel="stylesheet" href="/assets/playlist-toolkit-refinement.css">
 ${page === 'home' ? renderStructuredData(data, route) : ''}
 </head>
 <body>
@@ -2076,7 +2080,7 @@ function renderStructuredData(home, route) {
     description: home.metaDescription,
     url: `${ORIGIN}${route}`,
     downloadUrl: GOOGLE_PLAY_URL,
-    image: `${ORIGIN}/assets/playlist-toolkit-og.png`,
+    image: `${ORIGIN}/assets/playlist-toolkit-og-v2.png`,
     operatingSystem: 'Android',
     applicationCategory: 'MultimediaApplication',
     softwareVersion: '1.1.3',
@@ -2142,7 +2146,7 @@ function renderHome(text) {
   <section class="pt-shell pt-section" id="features"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.featuresEyebrow)}</p><h2>${escapeHtml(home.featuresTitle)}</h2><p>${escapeHtml(home.featuresLead)}</p></div><div class="pt-feature-grid">${home.features.map(([label, title, body], index) => `<article class="pt-feature-card" data-index="0${index + 1}"><small>${escapeHtml(label)}</small><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></article>`).join('')}</div></section>
   <section class="pt-dark-band" id="flow"><div class="pt-shell pt-section"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.flowEyebrow)}</p><h2>${escapeHtml(home.flowTitle)}</h2><p>${escapeHtml(home.flowLead)}</p></div><div class="pt-flow">${home.steps.map(([title, body]) => `<article class="pt-step"><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></article>`).join('')}</div></div></section>
   <section class="pt-shell pt-section pt-safety"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.safetyEyebrow)}</p><h2>${escapeHtml(home.safetyTitle)}</h2><p>${escapeHtml(home.safetyLead)}</p></div><div class="pt-safety-panel">${home.safety.map(([title, body]) => `<div class="pt-safety-line"><span>✓</span><div><strong>${escapeHtml(title)}</strong><p>${escapeHtml(body)}</p></div></div>`).join('')}</div></section>
-  <section class="pt-shell pt-section" id="playlist-organizer"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.searchEyebrow)}</p><h2>${escapeHtml(home.searchTitle)}</h2><p>${escapeHtml(home.searchLead)}</p></div><div class="pt-feature-grid">${home.searchItems.map(([title, body], index) => `<article class="pt-feature-card" data-index="0${index + 1}"><small>PLAYLIST</small><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></article>`).join('')}</div></section>
+  <section class="pt-shell pt-section" id="playlist-organizer"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.searchEyebrow)}</p><h2>${escapeHtml(home.searchTitle)}</h2><p>${escapeHtml(home.searchLead)}</p></div><div class="pt-search-panel">${home.searchItems.map(([title, body]) => `<article class="pt-search-item"><span aria-hidden="true"></span><div><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></div></article>`).join('')}</div></section>
   <section class="pt-shell pt-section"><div class="pt-section-heading"><p class="pt-eyebrow">FAQ</p><h2>${escapeHtml(home.faqTitle)}</h2></div><div class="pt-faq">${home.faqs.map(([question, answer]) => `<details><summary>${escapeHtml(question)}</summary><p>${escapeHtml(answer)}</p></details>`).join('')}</div></section>
   <section class="pt-shell pt-cta"><div class="pt-cta-card"><h2>${escapeHtml(home.ctaTitle)}</h2><p>${escapeHtml(home.ctaBody)}</p><div class="pt-actions"><a class="pt-button pt-button-primary" href="${GOOGLE_PLAY_URL}" rel="external">${escapeHtml(home.store)}</a></div></div></section>
 </main>`;

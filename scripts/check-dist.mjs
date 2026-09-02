@@ -161,7 +161,7 @@ if (preview) {
     '製品ページにGoogle Playリンクがありません。',
   );
   assert(englishProduct.includes('Available on Android'), '英語版が配信中表記ではありません。');
-  assert(japaneseProduct.includes('Android版 配信中'), '日本語版が配信中表記ではありません。');
+  assert(japaneseProduct.includes('Androidで利用できます'), '日本語版が配信中表記ではありません。');
 }
 
 const sourceBundle = await readFile(

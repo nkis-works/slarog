@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffaf0"/>
+      <stop offset="1" stop-color="#f1dfbd"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#174f40"/>
+      <stop offset="1" stop-color="#0a2b24"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="24" stdDeviation="22" flood-color="#113c31" flood-opacity=".2"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1115" cy="-25" r="205" fill="#ef5b35" opacity=".93"/>
+  <circle cx="-35" cy="610" r="165" fill="#d6ff46" opacity=".68"/>
+  <path d="M0 104h1200" stroke="#113c31" stroke-opacity=".1"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#113c31">
+    <text x="76" y="76" font-size="20" font-weight="700" letter-spacing="4">NKIS WORKS</text>
+    <text x="76" y="214" font-size="76" font-weight="800" letter-spacing="-4">Playlist</text>
+    <text x="76" y="292" font-size="76" font-weight="800" letter-spacing="-4">Toolkit</text>
+    <text x="80" y="354" font-size="26" font-weight="600">Less sorting. More listening.</text>
+    <text x="80" y="409" font-size="20" fill="#51665e">Sort order  ·  Duplicate review  ·  Smart Add</text>
+    <rect x="78" y="472" width="263" height="52" rx="26" fill="#113c31"/>
+    <text x="110" y="506" font-size="17" font-weight="700" letter-spacing="1.5" fill="#fffaf0">AVAILABLE ON ANDROID</text>
+  </g>
+  <g transform="translate(700 112) rotate(3 200 205)" filter="url(#shadow)">
+    <rect x="18" y="22" width="412" height="414" rx="38" fill="#e5bd7f" transform="rotate(-6 224 229)"/>
+    <rect width="412" height="414" rx="38" fill="url(#panel)" stroke="#fff" stroke-opacity=".16"/>
+    <g font-family="Arial, Helvetica, sans-serif">
+      <text x="34" y="52" font-size="14" font-weight="700" letter-spacing="2.5" fill="#fff">YOUR PLAYLIST</text>
+      <rect x="300" y="29" width="80" height="33" rx="16.5" fill="#d6ff46"/>
+      <text x="319" y="51" font-size="12" font-weight="800" fill="#113c31">READY</text>
+      <g transform="translate(28 89)">
+        <rect width="356" height="65" rx="16" fill="#fff" fill-opacity=".075" stroke="#fff" stroke-opacity=".11"/>
+        <circle cx="36" cy="32.5" r="18" fill="#d6ff46"/>
+        <text x="27" y="38" font-size="14" font-weight="800" fill="#113c31">01</text>
+        <text x="70" y="29" font-size="17" font-weight="700" fill="#fff">Artist order</text>
+        <text x="70" y="49" font-size="13" fill="#cfe0d9">remembered</text>
+      </g>
+      <g transform="translate(28 166)">
+        <rect width="356" height="65" rx="16" fill="#fff" fill-opacity=".075" stroke="#fff" stroke-opacity=".11"/>
+        <circle cx="36" cy="32.5" r="18" fill="#d6ff46"/>
+        <text x="27" y="38" font-size="14" font-weight="800" fill="#113c31">02</text>
+        <text x="70" y="29" font-size="17" font-weight="700" fill="#fff">Duplicate review</text>
+        <text x="70" y="49" font-size="13" fill="#cfe0d9">processed on device</text>
+      </g>
+      <g transform="translate(28 243)">
+        <rect width="356" height="65" rx="16" fill="#fff" fill-opacity=".075" stroke="#fff" stroke-opacity=".11"/>
+        <circle cx="36" cy="32.5" r="18" fill="#d6ff46"/>
+        <text x="27" y="38" font-size="14" font-weight="800" fill="#113c31">03</text>
+        <text x="70" y="29" font-size="17" font-weight="700" fill="#fff">Smart Add</text>
+        <text x="70" y="49" font-size="13" fill="#cfe0d9">started by you</text>
+      </g>
+      <rect x="28" y="332" width="356" height="54" rx="17" fill="#d6ff46"/>
+      <circle cx="58" cy="359" r="11" fill="#113c31"/>
+      <path d="m53 359 4 4 7-9" fill="none" stroke="#d6ff46" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="82" y="365" font-size="16" font-weight="800" fill="#113c31">Check compatibility before purchase</text>
+    </g>
+  </g>
+</svg>

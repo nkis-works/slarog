@@ -62,7 +62,7 @@ test.describe('Playlist Toolkit product site', () => {
     await page.goto('/products/playlist-toolkit/');
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
       'content',
-      /playlist-toolkit-og\.png$/,
+      /playlist-toolkit-og-v2\.png$/,
     );
     await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
       'content',
