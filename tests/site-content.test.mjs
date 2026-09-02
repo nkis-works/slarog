@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import test from 'node:test';
 
 const pageNames = ['index', 'support', 'privacy', 'terms', 'legal', '404'];
@@ -13,6 +13,11 @@ const pages = Object.fromEntries(
 );
 const tool = await readFile(new URL('../tools/slot-balance/index.html', import.meta.url), 'utf8');
 const og = await readFile(new URL('../assets/og-image.svg', import.meta.url), 'utf8');
+const studioPages = {
+  en: await readFile(new URL('../en/index.html', import.meta.url), 'utf8'),
+  ja: await readFile(new URL('../ja/index.html', import.meta.url), 'utf8'),
+};
+const slarogOg = await stat(new URL('../assets/og-image-v3.jpg', import.meta.url));
 const publicCopy = `${Object.values(pages).join('\n')}\n${og}`;
 
 test('main message and feature priorities match the approved product', () => {
@@ -129,6 +134,25 @@ test('released NKIS Works products are mutually linked', () => {
   assert.match(pages.index, /\/ja\//);
 });
 
+test('NKIS Works studio pages expose complete social and organization metadata', () => {
+  for (const [locale, html] of Object.entries(studioPages)) {
+    assert.match(
+      html,
+      /property="og:image" content="https:\/\/nkisworks\.com\/assets\/nkisworks-og\.png"/,
+    );
+    assert.match(html, /name="twitter:card" content="summary_large_image"/);
+    const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    assert.ok(match, `${locale} studio JSON-LD is missing`);
+    const graph = JSON.parse(match[1])['@graph'];
+    assert.equal(graph.find((entry) => entry['@type'] === 'Organization').name, 'NKIS Works');
+    assert.equal(graph.find((entry) => entry['@type'] === 'WebSite').name, 'NKIS Works');
+  }
+  assert.match(
+    studioPages.ja,
+    /<span>必要な機能を、<\/span><span>丁寧に、<\/span><span>分かりやすく。<\/span>/,
+  );
+});
+
 test('structured application offers are valid for both stores', () => {
   const match = pages.index.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   assert.ok(match, 'application JSON-LD is missing');
@@ -159,9 +183,10 @@ test('document pages expose social metadata and current-page navigation', () => 
 });
 
 test('Open Graph metadata uses the generated wide preview artwork', () => {
-  assert.match(pages.index, /og-image-v2\.png/);
+  assert.match(pages.index, /og-image-v3\.jpg/);
   assert.match(pages.index, /summary_large_image/);
   assert.match(pages.index, /https:\/\/nkisworks\.com\//);
+  assert.ok(slarogOg.size < 500_000, `Slarog social preview is too large: ${slarogOg.size}`);
 });
 
 test('only local application JavaScript is loaded', () => {
