@@ -75,7 +75,11 @@ test.describe('Playlist Toolkit product site', () => {
     expect(structuredData.offers.priceSpecification.price).toBe('200');
     expect(structuredData.subjectOf['@type']).toBe('FAQPage');
     await expect(page).toHaveTitle(/Amazon Music Playlist Organizer/);
-    await expect(page.locator('#playlist-organizer')).toContainText('Sort Amazon Music playlists');
+    await expect(page.locator('#playlist-organizer')).toContainText('Move a section of tracks');
+    await expect(page.locator('#playlist-organizer img')).toHaveAttribute(
+      'src',
+      '/assets/playlist-toolkit-app-overview.png',
+    );
   });
 
   test('language navigation cannot leave the product site', async ({ page }) => {

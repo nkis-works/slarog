@@ -52,6 +52,9 @@ const copy = {
       price: 'Japan: ¥200 / month · Auto-renewing',
       localPrice: 'Local price is shown in Google Play',
       status: 'Available on Android',
+      planNote: 'Uses Android screen assistance. Manage or cancel anytime in Google Play.',
+      maintenanceNote:
+        'Monthly access includes compatibility improvements after Amazon Music interface changes are reviewed.',
       consoleLabel: 'COMPATIBILITY CONSOLE',
       consoleStatus: 'SUPPORTED UI',
       rows: [
@@ -382,7 +385,7 @@ const copy = {
       metaDescription:
         'Amazon MusicのプレイリストをAndroidで並び替え・整理。表示順の復元、重複曲候補の確認、長いプレイリストの監査、購入前の互換性確認を支援します。',
       eyebrow: 'Amazon Musicのプレイリスト整理を、もっと手軽に',
-      title: '並び替えも、確認も、もっと手軽に。',
+      title: '表示順も、重複確認も、もっと手軽に。',
       lead: '表示順の復元、重複候補の確認、追加前の整理、よく使うプレイリストへの移動までをひとつに。Amazon Musicアプリを改変せず、対応する画面で必要な操作を支援します。',
       primary: '機能を見る',
       secondary: 'サポートを確認',
@@ -390,6 +393,8 @@ const copy = {
       price: '月額200円・自動更新',
       localPrice: '日本以外の価格はGoogle Playに表示',
       status: 'Androidで利用できます',
+      planNote: 'Androidの画面操作支援を使用。Google Playからいつでも管理・解約できます。',
+      maintenanceNote: '月額プランには、Amazon Musicの画面変更を確認後に行う互換性改善を含みます。',
       consoleLabel: 'PLAYLIST TOOLKIT',
       consoleStatus: '端末内で確認',
       rows: [
@@ -2035,11 +2040,11 @@ ${alternateLinks(page)}
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/playlist-toolkit.css">
   <link rel="stylesheet" href="/assets/playlist-toolkit-refinement.css">
-${page === 'home' ? renderStructuredData(data, route) : ''}
+${page === 'home' ? renderStructuredData(data, route, locale) : ''}
 </head>
 <body>
   ${renderHeader(locale, text, page)}
-  ${page === 'home' ? renderHome(text) : renderDocument(text, page)}
+  ${page === 'home' ? renderHome(text, locale) : renderDocument(text, page)}
   ${renderFooter(text, locale, page)}
 </body>
 </html>
@@ -2072,7 +2077,7 @@ function renderMobileMenu(current, text, page) {
   return `<details class="pt-mobile-menu"><summary>${escapeHtml(text.common.menu)}</summary><div class="pt-mobile-panel"><div class="pt-mobile-page-links"><a href="${home}#features">${escapeHtml(text.nav.features)}</a><a href="${home}#flow">${escapeHtml(text.nav.flow)}</a><a href="${routeFor(current, 'privacy')}">${escapeHtml(text.nav.privacy)}</a><a href="${routeFor(current, 'support')}">${escapeHtml(text.nav.support)}</a><a href="${routeFor(current, 'terms')}">${escapeHtml(text.nav.terms)}</a></div><strong class="pt-mobile-language-label">${escapeHtml(text.language)}</strong><div class="pt-mobile-languages">${locales.map((locale) => `<a href="${routeFor(locale, page)}" hreflang="${locale.code}"${locale.code === current.code ? ' aria-current="page"' : ''}>${escapeHtml(locale.label)}</a>`).join('')}</div></div></details>`;
 }
 
-function renderStructuredData(home, route) {
+function renderStructuredData(home, route, locale) {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
@@ -2089,7 +2094,7 @@ function renderStructuredData(home, route) {
     isPartOf: {
       '@type': 'WebSite',
       name: 'NKIS Works',
-      url: `${ORIGIN}/en/`,
+      url: `${ORIGIN}/${locale.code === 'ja' ? 'ja/' : 'en/'}`,
     },
     publisher: {
       '@type': 'Organization',
@@ -2122,16 +2127,78 @@ function renderStructuredData(home, route) {
   return `  <script type="application/ld+json">${JSON.stringify(data).replaceAll('<', '\\u003c')}</script>`;
 }
 
-function renderHome(text) {
+const rangeMoveCopy = {
+  en: {
+    eyebrow: 'RANGE MOVE',
+    title: 'Move a section of tracks in one guided operation.',
+    body: 'Choose the start and end of a section, then choose its destination. Playlist Toolkit guides the repeated Amazon Music gestures while keeping you informed and stopping safely if the screen changes.',
+    alt: 'Playlist Toolkit app screens in English and Japanese as published on Google Play',
+  },
+  ja: {
+    eyebrow: '範囲移動',
+    title: '一曲ずつではなく、まとまりで移動。',
+    body: '開始位置と終了位置を指定し、移動先を選びます。Playlist ToolkitがAmazon Music上の繰り返し操作を支援し、画面が変わった場合は安全に停止します。',
+    alt: 'Google Playに掲載しているPlaylist Toolkitの英語・日本語アプリ画面',
+  },
+  de: {
+    eyebrow: 'BEREICH VERSCHIEBEN',
+    title: 'Mehrere Titel in einem geführten Ablauf verschieben.',
+    body: 'Wähle Anfang, Ende und Ziel des Bereichs. Playlist Toolkit unterstützt die wiederholten Schritte in Amazon Music und stoppt sicher, wenn sich der Bildschirm unerwartet ändert.',
+    alt: 'Auf Google Play veröffentlichte Playlist-Toolkit-App-Ansichten auf Englisch und Japanisch',
+  },
+  es: {
+    eyebrow: 'MOVER UN RANGO',
+    title: 'Mueve un grupo de canciones en una sola operación guiada.',
+    body: 'Elige el inicio, el final y el destino del grupo. Playlist Toolkit guía los pasos repetitivos en Amazon Music y se detiene de forma segura si cambia la pantalla.',
+    alt: 'Pantallas de Playlist Toolkit en inglés y japonés publicadas en Google Play',
+  },
+  fr: {
+    eyebrow: 'DÉPLACEMENT PAR PLAGE',
+    title: 'Déplacez plusieurs titres en une seule opération guidée.',
+    body: 'Choisissez le début, la fin et la destination de la sélection. Playlist Toolkit accompagne les gestes répétés dans Amazon Music et s’arrête en toute sécurité si l’écran change.',
+    alt: 'Écrans de Playlist Toolkit en anglais et en japonais publiés sur Google Play',
+  },
+  it: {
+    eyebrow: 'SPOSTAMENTO INTERVALLO',
+    title: 'Sposta più brani con un’unica operazione guidata.',
+    body: 'Scegli l’inizio, la fine e la destinazione del gruppo. Playlist Toolkit assiste i passaggi ripetitivi in Amazon Music e si arresta in sicurezza se la schermata cambia.',
+    alt: 'Schermate di Playlist Toolkit in inglese e giapponese pubblicate su Google Play',
+  },
+  'pt-BR': {
+    eyebrow: 'MOVER UM INTERVALO',
+    title: 'Mova um grupo de faixas em uma única operação guiada.',
+    body: 'Escolha o início, o fim e o destino do grupo. O Playlist Toolkit orienta as etapas repetitivas no Amazon Music e interrompe a operação com segurança se a tela mudar.',
+    alt: 'Telas do Playlist Toolkit em inglês e japonês publicadas no Google Play',
+  },
+};
+
+const heroLeadRefinement = {
+  de: 'Speichere deine bevorzugte Sortierung, prüfe mögliche Duplikate, bereite neue Titel vor und öffne häufig genutzte Playlists schneller. Die Amazon Music-App bleibt unverändert.',
+  es: 'Guarda el orden de visualización, revisa posibles duplicados, prepara nuevas canciones y vuelve rápidamente a tus playlists favoritas sin modificar la aplicación Amazon Music.',
+  fr: 'Enregistrez votre ordre d’affichage, vérifiez les doublons possibles, préparez vos ajouts et retrouvez rapidement vos playlists favorites sans modifier l’application Amazon Music.',
+  it: 'Salva l’ordine di visualizzazione, controlla i possibili duplicati, prepara le aggiunte e torna rapidamente alle playlist preferite senza modificare l’app Amazon Music.',
+  'pt-BR':
+    'Salve sua ordem de exibição, verifique possíveis duplicatas, prepare novas faixas e volte rapidamente às playlists favoritas sem modificar o app Amazon Music.',
+};
+
+function renderHome(text, locale) {
   const home = text.home;
+  const rangeMove = rangeMoveCopy[locale.code] || rangeMoveCopy.en;
+  const heroLead = heroLeadRefinement[locale.code] || home.lead;
+  const heroTitle =
+    locale.code === 'ja' ? '表示順も、<br>重複確認も、<br>もっと手軽に。' : escapeHtml(home.title);
+  const planNote =
+    home.planNote || `${home.steps[1][0]} · ${text.support.sections[4][0]} · ${home.safety[3][0]}`;
+  const maintenanceNote = home.maintenanceNote || home.safety[3][1];
   return `<main class="pt-main">
   <section class="pt-shell pt-hero">
     <div>
       <p class="pt-eyebrow">${escapeHtml(home.eyebrow)}</p>
-      <h1>${escapeHtml(home.title)}</h1>
-      <p class="pt-hero-lead">${escapeHtml(home.lead)}</p>
+      <h1>${heroTitle}</h1>
+      <p class="pt-hero-lead">${escapeHtml(heroLead)}</p>
       <div class="pt-actions"><a class="pt-button pt-button-primary" href="${GOOGLE_PLAY_URL}" rel="external">${escapeHtml(home.store)}</a><a class="pt-button pt-button-secondary" href="#features">${escapeHtml(home.primary)}</a></div>
       <div class="pt-price"><span>${escapeHtml(home.price)}</span><span>${escapeHtml(home.localPrice)}</span><span>${escapeHtml(home.status)}</span></div>
+      <div class="pt-plan-note"><p>${escapeHtml(planNote)}</p><p>${escapeHtml(maintenanceNote)}</p></div>
       <p class="pt-independent">${escapeHtml(text.common.independent)}</p>
     </div>
     <div class="pt-console" aria-label="${escapeHtml(home.consoleLabel)}">
@@ -2145,8 +2212,9 @@ function renderHome(text) {
   <section class="pt-trust-strip"><div class="pt-shell pt-trust-grid">${home.trust.map(([title, body]) => `<div class="pt-trust-item"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(body)}</span></div>`).join('')}</div></section>
   <section class="pt-shell pt-section" id="features"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.featuresEyebrow)}</p><h2>${escapeHtml(home.featuresTitle)}</h2><p>${escapeHtml(home.featuresLead)}</p></div><div class="pt-feature-grid">${home.features.map(([label, title, body], index) => `<article class="pt-feature-card" data-index="0${index + 1}"><small>${escapeHtml(label)}</small><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></article>`).join('')}</div></section>
   <section class="pt-dark-band" id="flow"><div class="pt-shell pt-section"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.flowEyebrow)}</p><h2>${escapeHtml(home.flowTitle)}</h2><p>${escapeHtml(home.flowLead)}</p></div><div class="pt-flow">${home.steps.map(([title, body]) => `<article class="pt-step"><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></article>`).join('')}</div></div></section>
+  <section class="pt-mid-cta"><div class="pt-shell pt-mid-cta-inner"><div><strong>${escapeHtml(home.ctaTitle)}</strong><span>${escapeHtml(maintenanceNote)}</span></div><a class="pt-button pt-button-primary" href="${GOOGLE_PLAY_URL}" rel="external">${escapeHtml(home.store)}</a></div></section>
   <section class="pt-shell pt-section pt-safety"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.safetyEyebrow)}</p><h2>${escapeHtml(home.safetyTitle)}</h2><p>${escapeHtml(home.safetyLead)}</p></div><div class="pt-safety-panel">${home.safety.map(([title, body]) => `<div class="pt-safety-line"><span>✓</span><div><strong>${escapeHtml(title)}</strong><p>${escapeHtml(body)}</p></div></div>`).join('')}</div></section>
-  <section class="pt-shell pt-section" id="playlist-organizer"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(home.searchEyebrow)}</p><h2>${escapeHtml(home.searchTitle)}</h2><p>${escapeHtml(home.searchLead)}</p></div><div class="pt-search-panel">${home.searchItems.map(([title, body]) => `<article class="pt-search-item"><span aria-hidden="true"></span><div><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></div></article>`).join('')}</div></section>
+  <section class="pt-shell pt-section pt-proof" id="playlist-organizer"><figure class="pt-proof-visual"><img src="/assets/playlist-toolkit-app-overview.png" width="1052" height="592" loading="lazy" alt="${escapeHtml(rangeMove.alt)}"><figcaption>GOOGLE PLAY</figcaption></figure><div class="pt-proof-copy"><p class="pt-eyebrow">${escapeHtml(rangeMove.eyebrow)}</p><h2>${escapeHtml(rangeMove.title)}</h2><p>${escapeHtml(rangeMove.body)}</p><p class="pt-proof-note">${escapeHtml(home.searchLead)}</p><a class="pt-button pt-button-secondary" href="${GOOGLE_PLAY_URL}" rel="external">${escapeHtml(home.store)}</a></div></section>
   <section class="pt-shell pt-section"><div class="pt-section-heading"><p class="pt-eyebrow">FAQ</p><h2>${escapeHtml(home.faqTitle)}</h2></div><div class="pt-faq">${home.faqs.map(([question, answer]) => `<details><summary>${escapeHtml(question)}</summary><p>${escapeHtml(answer)}</p></details>`).join('')}</div></section>
   <section class="pt-shell pt-cta"><div class="pt-cta-card"><h2>${escapeHtml(home.ctaTitle)}</h2><p>${escapeHtml(home.ctaBody)}</p><div class="pt-actions"><a class="pt-button pt-button-primary" href="${GOOGLE_PLAY_URL}" rel="external">${escapeHtml(home.store)}</a></div></div></section>
 </main>`;
