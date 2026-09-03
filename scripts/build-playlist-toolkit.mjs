@@ -2039,7 +2039,7 @@ function renderPage(locale, text, page) {
 ${alternateLinks(page)}
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/playlist-toolkit.css">
-  <link rel="stylesheet" href="/assets/playlist-toolkit-refinement.css">
+  <link rel="stylesheet" href="/assets/playlist-toolkit-refinement.css?v=20260903-2">
 ${page === 'home' ? renderStructuredData(data, route, locale) : ''}
 </head>
 <body>
