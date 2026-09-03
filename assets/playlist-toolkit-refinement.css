@@ -345,3 +345,23 @@ html[lang='ja'] .pt-cta-card h2 {
     font-size: clamp(4.5rem, 6vw, 4.8rem);
   }
 }
+
+@media (max-width: 940px) {
+  .pt-console {
+    transform: none;
+  }
+
+  .pt-console::before {
+    inset: 12px -7px -10px 11px;
+    transform: rotate(-1.2deg);
+  }
+
+  .pt-console-card {
+    position: static;
+    inset: auto;
+    width: auto;
+    max-width: none;
+    margin: 1rem 0 0;
+    transform: none;
+  }
+}
