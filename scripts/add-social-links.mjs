@@ -19,33 +19,43 @@ const pagePaths = [
 const roots = [process.cwd(), resolve(process.cwd(), "dist")];
 
 function socialLinks(relativePath) {
+  const slarog = relativePath.includes("/slarog/");
   const japanese =
     relativePath === "index.html" ||
     relativePath.startsWith("ja/") ||
     relativePath.includes("/ja/") ||
-    relativePath.includes("/slarog/");
-  const xLabel = japanese ? "NKIS Works 公式X" : "NKIS Works on X";
-  const noteLabel = japanese ? "NKIS Works 公式note" : "NKIS Works on note";
+    slarog;
+  const xUrl = slarog ? "https://x.com/slarog_app" : "https://x.com/NKIS_Works";
+  const xLabel = slarog
+    ? "スラログ公式X"
+    : japanese
+      ? "NKIS Works 公式X"
+      : "NKIS Works on X";
+  const xLink = `<a data-nkis-social="x" href="${xUrl}" target="_blank" rel="noopener noreferrer">${xLabel}</a>`;
 
-  return `\n          <a data-nkis-social="x" href="https://x.com/NKIS_Works" target="_blank" rel="noopener noreferrer">${xLabel}</a>\n          <a data-nkis-social="note" href="https://note.com/nkisworks" target="_blank" rel="noopener noreferrer">${noteLabel}</a>`;
+  if (!slarog) return `\n          ${xLink}`;
+  return `\n          ${xLink}\n          <a data-nkis-social="note" href="https://note.com/nkisworks" target="_blank" rel="noopener noreferrer">スラログ公式note</a>`;
 }
 
 function addLinks(html, relativePath) {
-  if (html.includes('data-nkis-social="x"')) return html;
+  const cleaned = html.replace(
+    /\n?\s*<a data-nkis-social="(?:x|note)"[^>]*>.*?<\/a>/g,
+    "",
+  );
 
-  const footerStart = html.lastIndexOf("<footer");
-  const footerEnd = html.indexOf("</footer>", footerStart);
+  const footerStart = cleaned.lastIndexOf("<footer");
+  const footerEnd = cleaned.indexOf("</footer>", footerStart);
   if (footerStart < 0 || footerEnd < 0) {
     throw new Error(`Footer not found: ${relativePath}`);
   }
 
-  const navEnd = html.lastIndexOf("</nav>", footerEnd);
+  const navEnd = cleaned.lastIndexOf("</nav>", footerEnd);
   const links = socialLinks(relativePath);
   if (navEnd > footerStart) {
-    return `${html.slice(0, navEnd)}${links}\n        ${html.slice(navEnd)}`;
+    return `${cleaned.slice(0, navEnd)}${links}\n        ${cleaned.slice(navEnd)}`;
   }
 
-  return `${html.slice(0, footerEnd)}\n        <nav aria-label="NKIS Works social links">${links}\n        </nav>\n      ${html.slice(footerEnd)}`;
+  return `${cleaned.slice(0, footerEnd)}\n        <nav aria-label="NKIS Works social links">${links}\n        </nav>\n      ${cleaned.slice(footerEnd)}`;
 }
 
 for (const root of roots) {
