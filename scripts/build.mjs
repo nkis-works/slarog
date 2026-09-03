@@ -136,3 +136,6 @@ if (mode === 'preview') {
 
 const output = await readdir(dist);
 console.log(`Built ${mode} distribution with ${output.length} top-level entries.`);
+
+// Keep public profiles linked after generated pages refresh.
+await import("./add-social-links.mjs");
