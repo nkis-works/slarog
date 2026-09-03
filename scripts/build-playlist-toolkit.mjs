@@ -2858,6 +2858,3 @@ function escapeHtml(value) {
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character],
   );
 }
-
-// Keep public profiles linked after product pages refresh.
-await import("./add-social-links.mjs");
