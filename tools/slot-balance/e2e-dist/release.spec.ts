@@ -19,6 +19,10 @@ const pagePaths = [
   '/legal/',
   '/404.html',
   '/tools/slot-balance/',
+  '/products/slarog/',
+  '/products/playlist-toolkit/ja/',
+  '/en/',
+  '/ja/',
 ];
 
 test('curated distribution serves all pages and assets without runtime output or overflow', async ({
@@ -57,11 +61,14 @@ test('curated distribution serves all pages and assets without runtime output or
 test('public copy, section order and navigation are complete', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
+  await expect(page.getByRole('link', { name: /Playlist Toolkitを見る/ })).toBeVisible();
+  await expect(page.getByRole('link', { name: /スラログ公式サイトを見る/ })).toBeVisible();
+  await page.goto('/products/slarog/');
   const menu = page.getByRole('button', { name: 'メニュー' });
   await menu.click();
   await expect(page.getByRole('link', { name: '無料ツール' }).first()).toBeVisible();
   await page.getByRole('link', { name: '無料ツール' }).first().click();
-  await expect(page).toHaveURL(`${DIST_ORIGIN}/#free-tool`);
+  await expect(page).toHaveURL(`${DIST_ORIGIN}/products/slarog/#free-tool`);
   await expect(page.locator('#free-tool')).toBeInViewport();
   await page.getByRole('link', { name: 'スロバランスを使う' }).click();
   await expect(page).toHaveURL(`${DIST_ORIGIN}/tools/slot-balance/`);
@@ -118,7 +125,7 @@ test('public copy, section order and navigation are complete', async ({ page }) 
   }
 
   await page.getByRole('link', { name: 'スラログ公式サイトへ戻る' }).click();
-  await expect(page).toHaveURL(`${DIST_ORIGIN}/`);
+  await expect(page).toHaveURL(`${DIST_ORIGIN}/products/slarog/`);
 });
 
 test('calculation performs no transport, storage, cookie, URL or console side effects', async ({
@@ -163,7 +170,7 @@ test('headers, meta CSP, redirects and runtime surfaces stay fail-closed', async
   expect(headerCsp).toBe(
     "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
   );
-  expect(headers).toContain('X-Robots-Tag: noindex, nofollow');
+  expect(headers).not.toContain('X-Robots-Tag: noindex, nofollow');
   expect(headers).not.toMatch(/unsafe-inline|unsafe-eval/i);
   expect(redirects.trim().split('\n')).toContainEqual(
     '/tools/slot-balance /tools/slot-balance/ 301',
@@ -171,13 +178,18 @@ test('headers, meta CSP, redirects and runtime surfaces stay fail-closed', async
   expect(redirects.trim().split('\n')).toContainEqual(
     '/tools/slot-balance/index.html /tools/slot-balance/ 301',
   );
+  expect(redirects.trim().split('\n')).toContainEqual('/products/slarog /products/slarog/ 301');
 
   for (const path of pagePaths) {
     await page.goto(path);
-    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
-      'content',
-      'noindex, nofollow, noarchive, nosnippet',
-    );
+    if (path === '/404.html') {
+      await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+        'content',
+        'noindex, nofollow, noarchive, nosnippet',
+      );
+    } else {
+      await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+    }
     expect(
       await page.evaluate(() => ({
         externalScripts: Array.from(document.scripts).filter((script) => {

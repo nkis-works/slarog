@@ -20,6 +20,7 @@ const requiredFiles = new Set([
   'tools/slot-balance/index.html',
   'tools/slot-balance/assets/styles.css',
   'tools/slot-balance/assets/slot-balance-app.js',
+  'products/slarog/index.html',
   'en/index.html',
   'ja/index.html',
   ...productRoutes.map((route) => `${route.slice(1)}index.html`),
@@ -91,6 +92,8 @@ for (const rule of [
   '/legal /legal/ 301',
   '/tools/slot-balance /tools/slot-balance/ 301',
   '/tools/slot-balance/index.html /tools/slot-balance/ 301',
+  '/products/slarog /products/slarog/ 301',
+  '/products/slarog/index.html /products/slarog/ 301',
   '/en /en/ 301',
   '/en/index.html /en/ 301',
   ...productRoutes.flatMap((route) => [
@@ -126,6 +129,10 @@ if (preview) {
   assert(
     (sitemap.match(/https:\/\/nkisworks\.com\/tools\/slot-balance\//g) ?? []).length === 1,
     'ツールURLはsitemapに1件だけ必要です。',
+  );
+  assert(
+    (sitemap.match(/https:\/\/nkisworks\.com\/products\/slarog\//g) ?? []).length === 1,
+    'スラログ製品URLはsitemapに1件だけ必要です。',
   );
   for (const path of ['en/', 'ja/']) {
     const url = `https://nkisworks.com/${path}`;

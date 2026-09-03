@@ -14,6 +14,7 @@ const productSitemapLastModified = '2026-09-03';
 const routeFiles = [
   ['index.html', 'index.html'],
   ['404.html', '404.html'],
+  ['products/slarog/index.html', 'products/slarog/index.html'],
 ];
 const noindex = '<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">';
 const baseHeaders = `/*
@@ -32,6 +33,8 @@ const redirects =
     ...pages.flatMap((page) => [`/${page} /${page}/ 301`, `/${page}.html /${page}/ 301`]),
     '/tools/slot-balance /tools/slot-balance/ 301',
     '/tools/slot-balance/index.html /tools/slot-balance/ 301',
+    '/products/slarog /products/slarog/ 301',
+    '/products/slarog/index.html /products/slarog/ 301',
     '/en /en/ 301',
     '/en/index.html /en/ 301',
     '/ja /ja/ 301',
@@ -50,6 +53,7 @@ function render(html) {
 await rm(dist, { recursive: true, force: true });
 await mkdir(dist, { recursive: true });
 await mkdir(resolve(dist, 'tools', 'slot-balance', 'assets'), { recursive: true });
+await mkdir(resolve(dist, 'products', 'slarog'), { recursive: true });
 
 const slotBalanceBundle = await createSlotBalanceBundle();
 await writeFile(resolve(root, SLOT_BALANCE_BUNDLE), slotBalanceBundle);
@@ -108,7 +112,14 @@ if (mode === 'preview') {
     'User-agent: *\nAllow: /\nSitemap: https://nkisworks.com/sitemap.xml\n',
   );
   const urls = [
-    ...['', ...pages.map((page) => `${page}/`), 'tools/slot-balance/', 'en/', 'ja/'].map(
+    ...[
+      '',
+      ...pages.map((page) => `${page}/`),
+      'tools/slot-balance/',
+      'products/slarog/',
+      'en/',
+      'ja/',
+    ].map(
       (path) =>
         `  <url><loc>https://nkisworks.com/${path}</loc><lastmod>${sitemapLastModified}</lastmod></url>`,
     ),

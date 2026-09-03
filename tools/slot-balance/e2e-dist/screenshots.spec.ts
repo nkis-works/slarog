@@ -72,12 +72,23 @@ for (const viewport of [
 
   test(`captures site free tool ${viewport.name}`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    await page.goto('/index.html');
+    await page.goto('/products/slarog/');
     await settle(page);
     const section = page.locator('#free-tool');
     await section.scrollIntoViewIfNeeded();
     await section.screenshot({
       path: `${artifactRoot}/site-free-tool-${viewport.name}.png`,
+      animations: 'disabled',
+    });
+  });
+
+  test(`captures Playlist Toolkit ${viewport.name}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto('/products/playlist-toolkit/ja/');
+    await settle(page);
+    await page.screenshot({
+      path: `${artifactRoot}/playlist-toolkit-${viewport.name}.png`,
+      fullPage: true,
       animations: 'disabled',
     });
   });

@@ -48,7 +48,8 @@ for (const sourcePath of htmlFiles) {
 
   for (const reference of references) {
     if (!reference || isExternal(reference)) continue;
-    const [pathname, fragment] = reference.split('#', 2);
+    const [pathAndQuery, fragment] = reference.split('#', 2);
+    const pathname = pathAndQuery.split('?', 1)[0];
     const targetPath = await resolveTarget(sourcePath, pathname);
     if (!(targetPath === root || targetPath.startsWith(`${root}${sep}`))) {
       errors.push(`${relative(root, sourcePath)}: path escapes dist/: ${reference}`);

@@ -36,12 +36,16 @@
   order: 3;
 }
 
-.pt-price {
+.pt-hero .pt-actions {
   order: 4;
 }
 
-.pt-plan-note {
+.pt-price {
   order: 5;
+}
+
+.pt-plan-note {
+  order: 6;
   max-width: 42rem;
   margin-top: 0.85rem;
   padding: 0.9rem 1rem;
@@ -55,16 +59,29 @@
   margin: 0;
 }
 
+.pt-plan-note strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #113c31;
+  font-size: 0.94rem;
+}
+
 .pt-plan-note p + p {
   margin-top: 0.25rem;
 }
 
-.pt-hero .pt-actions {
-  order: 6;
-}
-
 .pt-independent {
   order: 7;
+}
+
+html:not([lang='ja']) .pt-hero h1 {
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.pt-feature-card,
+.pt-step {
+  min-height: auto;
 }
 
 html[lang='ja'] .pt-hero h1 {

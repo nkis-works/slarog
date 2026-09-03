@@ -12,20 +12,21 @@ const pages = Object.fromEntries(
   ),
 );
 const tool = await readFile(new URL('../tools/slot-balance/index.html', import.meta.url), 'utf8');
+const slarog = await readFile(new URL('../products/slarog/index.html', import.meta.url), 'utf8');
 const og = await readFile(new URL('../assets/og-image.svg', import.meta.url), 'utf8');
 const studioPages = {
   en: await readFile(new URL('../en/index.html', import.meta.url), 'utf8'),
   ja: await readFile(new URL('../ja/index.html', import.meta.url), 'utf8'),
 };
 const slarogOg = await stat(new URL('../assets/og-image-v3.jpg', import.meta.url));
-const publicCopy = `${Object.values(pages).join('\n')}\n${og}`;
+const publicCopy = `${Object.values(pages).join('\n')}\n${slarog}\n${og}`;
 
 test('main message and feature priorities match the approved product', () => {
-  assert.match(pages.index, /スラログで、[\s\S]*スランプグラフを保存・連結/);
-  assert.match(pages.index, /スラログの主な機能/);
-  assert.doesNotMatch(pages.index, /できること|どんな時に便利/);
+  assert.match(slarog, /スラログで、[\s\S]*スランプグラフを保存・連結/);
+  assert.match(slarog, /スラログの主な機能/);
+  assert.doesNotMatch(slarog, /できること|どんな時に便利/);
   for (const text of ['作成', '保存', 'アーカイブ', '連結', 'カレンダー', 'PNG']) {
-    assert.match(pages.index, new RegExp(text));
+    assert.match(slarog, new RegExp(text));
   }
 });
 
@@ -102,7 +103,7 @@ test('the free calculation tool is integrated with public navigation and policie
   for (const text of ['スロバランス', '無料・登録不要', '端末内で計算', '保存・送信されません']) {
     assert.match(tool, new RegExp(text));
   }
-  assert.match(pages.index, /href="\/tools\/slot-balance\/"/);
+  assert.match(slarog, /href="\/tools\/slot-balance\/"/);
   assert.match(pages.support, /無料計算ツール「スロバランス」/);
   assert.match(pages.privacy, /Cookie、localStorage、sessionStorage、IndexedDB/);
   assert.match(pages.terms, /スロバランスは無料・登録不要/);
@@ -117,21 +118,22 @@ test('support and operator contacts use their intended roles', () => {
 });
 
 test('release page uses the confirmed store destinations', () => {
-  assert.match(pages.index, /https:\/\/apps\.apple\.com\/jp\/app\/スラログ\/id6792632919/);
+  assert.match(slarog, /https:\/\/apps\.apple\.com\/jp\/app\/スラログ\/id6792632919/);
   assert.match(
-    pages.index,
+    slarog,
     /https:\/\/play\.google\.com\/store\/apps\/details\?id=jp\.yuya\.slumparchive/,
   );
   assert.doesNotMatch(
-    pages.index,
+    slarog,
     /公開準備中|対応予定|App Store 準備中|Google Play 準備中|schema\.org\/PreOrder/,
   );
-  assert.match(pages.index, /schema\.org\/InStock/);
+  assert.match(slarog, /schema\.org\/InStock/);
 });
 
 test('released NKIS Works products are mutually linked', () => {
   assert.match(pages.index, /\/products\/playlist-toolkit\/ja\//);
-  assert.match(pages.index, /\/ja\//);
+  assert.match(pages.index, /\/products\/slarog\//);
+  assert.match(slarog, /\/products\/playlist-toolkit\/ja\//);
 });
 
 test('NKIS Works studio pages expose complete social and organization metadata', () => {
@@ -154,7 +156,7 @@ test('NKIS Works studio pages expose complete social and organization metadata',
 });
 
 test('structured application offers are valid for both stores', () => {
-  const match = pages.index.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  const match = slarog.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   assert.ok(match, 'application JSON-LD is missing');
   const data = JSON.parse(match[1]);
   const application = data['@graph'].find((entry) => entry['@type'] === 'SoftwareApplication');
@@ -183,23 +185,25 @@ test('document pages expose social metadata and current-page navigation', () => 
 });
 
 test('Open Graph metadata uses the generated wide preview artwork', () => {
-  assert.match(pages.index, /og-image-v3\.jpg/);
-  assert.match(pages.index, /summary_large_image/);
-  assert.match(pages.index, /https:\/\/nkisworks\.com\//);
+  assert.match(slarog, /og-image-v3\.jpg/);
+  assert.match(slarog, /summary_large_image/);
+  assert.match(slarog, /https:\/\/nkisworks\.com\/products\/slarog\//);
   assert.ok(slarogOg.size < 500_000, `Slarog social preview is too large: ${slarogOg.size}`);
 });
 
 test('only local application JavaScript is loaded', () => {
   for (const html of Object.values(pages).filter((value) => value.includes('<!doctype html>'))) {
     const scripts = [...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map((match) => match[1]);
-    if (html === pages.index) {
-      assert.deepEqual(scripts, ['assets/app.js']);
-    } else if (html === pages[404]) {
+    if (html === pages[404]) {
       assert.deepEqual(scripts, ['/assets/app.js']);
     } else {
       assert.deepEqual(scripts, []);
     }
   }
+  assert.deepEqual(
+    [...slarog.matchAll(/<script[^>]+src="([^"]+)"/g)].map((match) => match[1]),
+    ['/assets/app.js'],
+  );
   assert.deepEqual(
     [...tool.matchAll(/<script[^>]+src="([^"]+)"/g)].map((match) => match[1]),
     ['assets/slot-balance-app.js'],

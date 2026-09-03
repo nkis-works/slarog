@@ -467,6 +467,11 @@ a:focus-visible {
 }
 
 @media (max-width: 640px) {
+  .hero-title span {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
   .shell,
   .site-nav {
     width: min(100% - 28px, var(--max));

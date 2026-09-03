@@ -71,10 +71,19 @@ test.describe('Playlist Toolkit product site', () => {
     const structuredData = JSON.parse(
       (await page.locator('script[type="application/ld+json"]').textContent()) || '{}',
     );
-    expect(structuredData['@type']).toBe('SoftwareApplication');
-    expect(structuredData.offers.priceSpecification.price).toBe('200');
-    expect(structuredData.subjectOf['@type']).toBe('FAQPage');
-    await expect(page).toHaveTitle(/Amazon Music Playlist Organizer/);
+    const graph = structuredData['@graph'];
+    const application = graph.find(
+      (entry: { '@type': string }) => entry['@type'] === 'SoftwareApplication',
+    );
+    expect(application.offers.priceSpecification.price).toBe('200');
+    expect(graph.some((entry: { '@type': string }) => entry['@type'] === 'FAQPage')).toBe(true);
+    expect(graph.some((entry: { '@type': string }) => entry['@type'] === 'BreadcrumbList')).toBe(
+      true,
+    );
+    expect(graph.some((entry: { '@type': string }) => entry['@type'] === 'Organization')).toBe(
+      true,
+    );
+    await expect(page).toHaveTitle(/Organize Amazon Music Playlists/);
     await expect(page.locator('#playlist-organizer')).toContainText('Move a section of tracks');
     await expect(page.locator('#playlist-organizer img')).toHaveAttribute(
       'src',
@@ -112,4 +121,16 @@ test.describe('Playlist Toolkit product site', () => {
       expect(results.violations).toEqual([]);
     });
   }
+
+  test('Japanese page remains usable with 200 percent text sizing', async ({ page }) => {
+    await page.goto('/products/playlist-toolkit/ja/');
+    await page.evaluate(() => {
+      document.documentElement.style.fontSize = '200%';
+    });
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
+    expect(overflow).toBeLessThanOrEqual(1);
+    await expect(page.getByRole('link', { name: 'Google Playで入手' }).first()).toBeVisible();
+  });
 });
