@@ -109,7 +109,7 @@ if (mode === 'preview') {
 } else {
   await writeFile(
     resolve(dist, 'robots.txt'),
-    'User-agent: *\nAllow: /\nSitemap: https://nkisworks.com/sitemap.xml\n',
+    'User-agent: *\nAllow: /\nDisallow: /cdn-cgi/\n\nSitemap: https://nkisworks.com/sitemap.xml\n',
   );
   const urls = [
     ...[
@@ -138,4 +138,4 @@ const output = await readdir(dist);
 console.log(`Built ${mode} distribution with ${output.length} top-level entries.`);
 
 // Keep public profiles linked after generated pages refresh.
-await import("./add-social-links.mjs");
+await import('./add-social-links.mjs');

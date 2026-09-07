@@ -126,6 +126,7 @@ if (preview) {
     robots.includes('Sitemap: https://nkisworks.com/sitemap.xml'),
     'production sitemap参照がありません。',
   );
+  assert(robots.includes('Disallow: /cdn-cgi/'), 'Cloudflare内部URLのクロール除外がありません。');
   assert(
     (sitemap.match(/https:\/\/nkisworks\.com\/tools\/slot-balance\//g) ?? []).length === 1,
     'ツールURLはsitemapに1件だけ必要です。',
