@@ -1,0 +1,46 @@
+:root { --ng-ink:#113c31; --ng-muted:#496158; --ng-line:#cfdacf; --ng-paper:#fbf9f0; --ng-accent:#d6ff46; }
+html { scroll-padding-top:6rem; }
+body { margin:0; background:var(--ng-paper); color:var(--ng-ink); }
+.ng-shell { width:min(1120px, calc(100% - 3rem)); margin-inline:auto; }
+.ng-header { border-bottom:1px solid var(--ng-line); background:rgba(251,249,240,.97); }
+.ng-header nav { min-height:92px; display:flex; gap:1.5rem; align-items:center; justify-content:space-between; }
+.ng-header nav>div,.ng-footer nav { display:flex; flex-wrap:wrap; gap:1rem 1.6rem; }
+.ng-header a,.ng-footer a { color:inherit; text-decoration:none; }
+.ng-brand { font-size:1.25rem; font-weight:800; letter-spacing:-.025em; }
+.ng-brand span { display:block; font-size:.66rem; letter-spacing:.17em; margin-top:.2rem; color:var(--ng-muted); }
+.ng-breadcrumbs { display:flex; flex-wrap:wrap; gap:.75rem; padding-top:2rem; font-size:.88rem; }
+.ng-breadcrumbs a,.ng-prose a,.ng-byline a,.ng-toc a { color:inherit; text-underline-offset:4px; }
+.ng-hero { padding:3.3rem 0 3rem; max-width:900px; }
+.ng-kicker { font-weight:750; font-size:.76rem; letter-spacing:.15em; }
+.ng-hero h1 { font-size:clamp(2.3rem,5.5vw,4.7rem); line-height:1.06; letter-spacing:-.045em; margin:1rem 0 1.5rem; text-wrap:balance; overflow-wrap:anywhere; }
+.ng-lead { font-size:clamp(1.1rem,2vw,1.4rem); line-height:1.6; max-width:760px; color:var(--ng-muted); }
+.ng-byline { margin-top:1.7rem; font-size:.84rem; line-height:1.7; color:var(--ng-muted); }
+.ng-layout { display:grid; grid-template-columns:240px minmax(0,1fr); gap:4rem; align-items:start; border-top:1px solid var(--ng-line); padding-top:2.8rem; }
+.ng-toc { display:grid; gap:1rem; font-size:.93rem; line-height:1.5; }
+.ng-toc strong { font-size:.78rem; text-transform:uppercase; letter-spacing:.1em; }
+.ng-prose { min-width:0; max-width:740px; }
+.ng-prose section { margin-bottom:2.9rem; }
+.ng-prose h2,.ng-note h2 { font-size:clamp(1.45rem,2.7vw,2rem); line-height:1.22; letter-spacing:-.025em; text-wrap:balance; }
+.ng-prose p,.ng-note p { color:var(--ng-muted); font-size:1.05rem; line-height:1.85; overflow-wrap:anywhere; }
+.ng-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.2rem; }
+.ng-card { display:flex; flex-direction:column; padding:2rem; border:1px solid var(--ng-line); border-radius:18px; color:inherit; text-decoration:none; background:linear-gradient(140deg,#fffef7,#f0f2e4); }
+.ng-card h2 { font-size:1.5rem; line-height:1.25; letter-spacing:-.025em; text-wrap:balance; margin:0 0 1rem; }
+.ng-card p { color:var(--ng-muted); line-height:1.7; margin:0 0 1.8rem; }
+.ng-card>span { margin-top:auto; font-weight:700; }
+.ng-card:hover { border-color:var(--ng-ink); }
+.ng-note { padding:1.5rem 1.8rem; border-left:4px solid var(--ng-ink); background:#eef1e5; margin-block:3rem; border-radius:0 12px 12px 0; }
+.ng-note h2 { margin-top:0; }
+.ng-note a { color:inherit; }
+.ng-related { margin:4rem 0; }
+.ng-source { font-size:.9rem!important; }
+.ng-cta { margin:4rem 0; padding:2.5rem; border-radius:20px; background:var(--ng-ink); color:#fffdf2; }
+.ng-cta h2 { font-size:clamp(1.6rem,3vw,2.4rem); line-height:1.2; text-wrap:balance; margin:0 0 1rem; }
+.ng-cta p { line-height:1.7; max-width:750px; }
+.ng-cta>a { display:inline-flex; margin:1rem 1.4rem 0 0; color:#fffdf2; }
+.ng-cta .pt-button { background:var(--ng-accent); color:var(--ng-ink); }
+.ng-footer { border-top:1px solid var(--ng-line); padding:2rem 0 3rem; font-size:.9rem; line-height:1.6; }
+.ng-skip { position:absolute; top:-100px; left:1rem; z-index:20; padding:1rem; background:var(--ng-ink); color:white; }
+.ng-skip:focus { top:1rem; }
+a:focus-visible { outline:3px solid #6a8429; outline-offset:5px; }
+@media(max-width:760px) { .ng-shell { width:calc(100% - 2rem); } .ng-header nav { flex-wrap:wrap; padding:1rem 0; gap:1rem; } .ng-header nav>div { font-size:.86rem; gap:1.2rem; } .ng-hero { padding:2rem 0; } .ng-layout { grid-template-columns:1fr; gap:2rem; } .ng-toc { padding:0 0 1.7rem; border-bottom:1px solid var(--ng-line); } .ng-grid { grid-template-columns:1fr; } .ng-card,.ng-cta { padding:1.5rem; } .ng-note { padding:1.1rem 1.3rem; } }
+@media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }

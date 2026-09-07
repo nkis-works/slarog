@@ -10,7 +10,7 @@ const mode = process.argv.includes('--production') ? 'production' : 'preview';
 const pages = ['support', 'privacy', 'terms', 'legal'];
 const productRoutes = playlistToolkitRoutes();
 const sitemapLastModified = '2026-09-03';
-const productSitemapLastModified = '2026-09-03';
+const productSitemapLastModified = '2026-09-08';
 const routeFiles = [
   ['index.html', 'index.html'],
   ['404.html', '404.html'],
