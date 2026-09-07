@@ -9,7 +9,7 @@ const AMAZON_ORDER_HELP = 'https://digprjsurvey.amazon.co.uk/csad/help/node/GZX7
 
 const scopes = {
   en: 'Display sorting changes the view, not the saved track order. Range moves that you save and songs you confirm adding remain in Amazon Music after Playlist Toolkit is closed.',
-  ja: '表示ソートは、保存された曲順を変えずに表示だけを切り替えます。一方、保存した範囲移動や追加を確定した曲は、Playlist Toolkitを閉じてもAmazon Musicに残ります。',
+  ja: '表示順の切り替えで変わるのは、一覧の見え方だけです。保存された曲順は変わりません。範囲移動や曲の追加をAmazon Musicで確定・保存した場合は、Playlist Toolkitを閉じても変更が残ります。',
   de: 'Die Anzeigesortierung ändert nur die Ansicht, nicht die gespeicherte Titelreihenfolge. Gespeicherte Bereichsverschiebungen und bestätigte Ergänzungen bleiben nach dem Schließen von Playlist Toolkit in Amazon Music erhalten.',
   es: 'La clasificación cambia la vista, no el orden guardado. Los movimientos que guardes y las canciones que confirmes añadir permanecen en Amazon Music al cerrar Playlist Toolkit.',
   fr: 'Le tri modifie uniquement l’affichage, pas l’ordre enregistré. Les déplacements enregistrés et les ajouts confirmés restent dans Amazon Music après la fermeture de Playlist Toolkit.',
