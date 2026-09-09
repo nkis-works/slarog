@@ -15,6 +15,19 @@ body { margin:0; background:var(--ng-paper); color:var(--ng-ink); }
 .ng-hero h1 { font-size:clamp(2.3rem,5.5vw,4.7rem); line-height:1.06; letter-spacing:-.045em; margin:1rem 0 1.5rem; text-wrap:balance; overflow-wrap:anywhere; }
 .ng-lead { font-size:clamp(1.1rem,2vw,1.4rem); line-height:1.6; max-width:760px; color:var(--ng-muted); }
 .ng-byline { margin-top:1.7rem; font-size:.84rem; line-height:1.7; color:var(--ng-muted); }
+.ng-answer { margin:0 0 3rem; padding:clamp(1.2rem,3vw,2.2rem); border:1px solid var(--ng-line); border-radius:18px; background:linear-gradient(135deg,#fffef7,#eef2e7); }
+.ng-answer h2 { font-size:clamp(1.5rem,3vw,2rem); line-height:1.25; letter-spacing:-.025em; text-wrap:balance; margin:.7rem 0 1rem; }
+.ng-answer>p:not(.ng-kicker),.ng-answer li { max-width:850px; color:var(--ng-muted); line-height:1.8; overflow-wrap:anywhere; }
+.ng-answer ol { padding-left:1.5rem; margin:1.2rem 0; }
+.ng-answer li { padding-left:.35rem; margin:.6rem 0; }
+.ng-answer li::marker { color:var(--ng-ink); font-weight:750; }
+.ng-answer-actions { display:flex; align-items:center; flex-wrap:wrap; gap:1rem 1.5rem; margin-top:1.7rem; }
+.ng-answer-actions>a { color:var(--ng-ink); text-underline-offset:4px; }
+.ng-answer-actions .pt-button,.ng-cta .pt-button { max-width:100%; min-width:0; box-sizing:border-box; height:auto; white-space:normal; overflow-wrap:anywhere; text-align:center; line-height:1.4; }
+.ng-disclosure { font-size:.88rem; margin-bottom:0; }
+.ng-faq details { border-bottom:1px solid var(--ng-line); padding:1.15rem 0; }
+.ng-faq summary { cursor:pointer; font-weight:700; line-height:1.5; padding:.25rem 0; overflow-wrap:anywhere; }
+.ng-faq summary:focus-visible { outline:3px solid #6a8429; outline-offset:5px; }
 .ng-layout { display:grid; grid-template-columns:240px minmax(0,1fr); gap:4rem; align-items:start; border-top:1px solid var(--ng-line); padding-top:2.8rem; }
 .ng-toc { display:grid; gap:1rem; font-size:.93rem; line-height:1.5; }
 .ng-toc strong { font-size:.78rem; text-transform:uppercase; letter-spacing:.1em; }

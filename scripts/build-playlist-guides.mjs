@@ -4,7 +4,8 @@ import { resolve } from 'node:path';
 const ORIGIN = 'https://nkisworks.com';
 const BASE = '/products/playlist-toolkit/';
 const GUIDES = `${BASE}guides/`;
-const UPDATED = '2026-09-08';
+const PUBLISHED = '2026-09-08';
+const UPDATED = '2026-09-09';
 const AMAZON_ORDER_HELP = 'https://digprjsurvey.amazon.co.uk/csad/help/node/GZX7QVLGPB4MKRDV';
 
 const scopes = {
@@ -85,8 +86,8 @@ const articles = [
   {
     slug: 'find-amazon-music-playlist-duplicates',
     title: 'Find possible duplicate songs in an Amazon Music playlist',
-    description: 'Review duplicate candidates, distinguish versions and protect a playlist from accidental deletion. Includes the audit-first Smart Add workflow on Android.',
-    summary: 'Treat matching entries as something to review, not an instruction to delete.',
+    description: 'Find possible duplicate songs in an Amazon Music playlist on Android. Compare versions, review a full audit and check additions without automatic deletion.',
+    summary: 'Find repeated songs, compare versions and decide what to keep. Start with a manual check or review a complete playlist audit on Android.',
     sections: [
       ['The same title is not always the same recording', [
         'A playlist may contain a studio recording, a live version, an edit and a remaster with similar titles. Some are intentional. Before removing anything, compare the artist, version label, album and duration where available, and listen if the distinction matters.',
@@ -147,6 +148,73 @@ function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 }
 
+
+const shortAnswers = {
+  "sort-amazon-music-playlist": {
+    "title": "Change the view, or change the saved order?",
+    "text": "For an alphabetical view, use the title or artist sorting control if your Amazon Music screen offers it. To change the sequence saved in the playlist, use the editor instead. Playlist Toolkit helps restore a display choice; it does not turn that choice into a permanently saved track sequence.",
+    "steps": [
+      "Try Amazon Music's own sorting control first. You do not need Playlist Toolkit to use a control already available in Amazon Music.",
+      "For assisted restoration, check compatibility, choose a display mode and follow the one-tap Sort prompt.",
+      "For a custom saved sequence, use the playlist editor and confirm Save in Amazon Music."
+    ]
+  },
+  "amazon-music-sort-order-resets": {
+    "title": "Check the view before changing the playlist",
+    "text": "A playlist returning to a different display order does not, by itself, mean your saved edits were lost. Check the active sorting choice first. Playlist Toolkit can remember a preferred view, but applying it still needs a supported screen and the guided Sort interaction.",
+    "steps": [
+      "Check Amazon Music's current display sort and compare it with the order you expected.",
+      "If you use Playlist Toolkit, confirm that screen assistance is enabled and follow the Sort prompt on the intended playlist.",
+      "If a required control is missing, stop and check compatibility rather than repeating taps."
+    ]
+  },
+  "find-amazon-music-playlist-duplicates": {
+    "title": "How to check a playlist for duplicate songs",
+    "text": "Compare the title and artist, then check the version, album and duration where available. A live recording or remaster may be worth keeping. On Android, Playlist Toolkit can scan a supported playlist for possible duplicates and build a report for you to review. It does not delete songs.",
+    "steps": [
+      "For a short playlist, inspect repeated titles directly in Amazon Music. Use its title or artist sort if that control is available.",
+      "For a long playlist, run a complete Playlist Toolkit audit and review the possible matches. Audits require a subscription; the compatibility check is free.",
+      "Remove only entries you have checked, using Amazon Music's own playlist controls. Keep alternate versions you want."
+    ]
+  },
+  "move-multiple-amazon-music-songs": {
+    "title": "Move a group, then save the result",
+    "text": "Use the playlist editor for changes you want to keep. Playlist Toolkit can guide repeated moves for a continuous group on a compatible screen. It is not unrestricted bulk selection, and a completed movement still needs your review and Save confirmation in Amazon Music.",
+    "steps": [
+      "Choose visible start and end tracks, then a destination outside the selected group.",
+      "Keep the screen untouched during the assisted movement. If it stops, inspect any partial changes before continuing.",
+      "Review the new positions and confirm Save in Amazon Music. Saved changes remain after the support tool closes."
+    ]
+  }
+};
+
+function storeLink(article, placement) {
+  const url = new URL('https://play.google.com/store/apps/details');
+  url.searchParams.set('id', 'app.playlistsort.assistant');
+  url.searchParams.set('utm_source', 'nkisworks_guides');
+  url.searchParams.set('utm_medium', 'referral');
+  url.searchParams.set('utm_campaign', article?.slug || 'guide_index');
+  url.searchParams.set('utm_content', placement);
+  return escapeHtml(url.href);
+}
+
+function quickAnswer(article) {
+  const answer = article && shortAnswers[article.slug];
+  if (!answer) return '';
+  return `<section class="ng-answer" aria-labelledby="quick-answer-title"><p class="ng-kicker">AT A GLANCE</p><h2 id="quick-answer-title">${escapeHtml(answer.title)}</h2><p>${escapeHtml(answer.text)}</p><ol>${answer.steps.map(step => `<li>${escapeHtml(step)}</li>`).join('')}</ol><div class="ng-answer-actions"><a class="pt-button pt-button-primary" href="${storeLink(article, 'quick_answer')}">Get Playlist Toolkit on Google Play</a><a href="${BASE}">Features and pricing</a></div><p class="ng-disclosure">Android only. Compatibility check: free. Playlist management: monthly subscription. You choose whether to subscribe after the check.</p></section>`;
+}
+
+function duplicateQuestions(article) {
+  if (article?.slug !== 'find-amazon-music-playlist-duplicates') return '';
+  const questions = [
+    ['Can I check without another app?', 'Yes. You can compare entries manually in Amazon Music. For a short playlist, that may be enough. Playlist Toolkit is an optional Android assistant for reviewing a longer list, not a requirement for removing a track yourself.'],
+    ['Will a duplicate scan remove songs?', 'No. A Playlist Toolkit audit reads the playlist and builds a report. It does not remove or reorder tracks. Review each finding and make any removal yourself in Amazon Music.'],
+    ['Does the same title mean the same recording?', 'No. A live version, edit or remaster can share a title with another recording. Compare the available labels and listen when needed. A screen-based audit does not compare audio fingerprints.'],
+    ['Is the duplicate audit free?', 'The compatibility check is free. Playlist audits and other management features require a monthly, auto-renewing Google Play subscription. The local price is shown before you confirm a purchase.']
+  ];
+  return `<section class="ng-faq" aria-labelledby="duplicate-questions"><h2 id="duplicate-questions">Questions about duplicate songs</h2>${questions.map(([question, answer]) => `<details><summary>${escapeHtml(question)}</summary><p>${escapeHtml(answer)}</p></details>`).join('')}</section>`;
+}
+
 function card(article) {
   return `<a class="ng-card" href="${GUIDES}${article.slug}/"><h2>${escapeHtml(article.title)}</h2><p>${escapeHtml(article.summary)}</p><span>Read guide <span aria-hidden="true">&rarr;</span></span></a>`;
 }
@@ -163,7 +231,7 @@ function render(article) {
   if (article) breadcrumbs.push({ '@type':'ListItem', position:4, name:title, item:`${ORIGIN}${route}` });
   const structured = {
     '@context':'https://schema.org', '@graph': [
-      { '@type':article ? 'Article' : 'CollectionPage', '@id':`${ORIGIN}${route}#page`, url:`${ORIGIN}${route}`, headline:title, name:title, description, inLanguage:'en', datePublished:UPDATED, dateModified:UPDATED,
+      { '@type':article ? 'Article' : 'CollectionPage', '@id':`${ORIGIN}${route}#page`, url:`${ORIGIN}${route}`, headline:title, name:title, description, inLanguage:'en', datePublished:PUBLISHED, dateModified:UPDATED,
         author:{ '@type':'Organization', name:'NKIS Works', url:`${ORIGIN}/en/` },
         publisher:{ '@type':'Organization', '@id':`${ORIGIN}/#organization`, name:'NKIS Works', url:`${ORIGIN}/` },
         mainEntityOfPage:`${ORIGIN}${route}` },
@@ -171,7 +239,7 @@ function render(article) {
     ],
   };
   const body = article
-    ? `<div class="ng-layout"><nav class="ng-toc" aria-label="In this guide"><strong>In this guide</strong>${article.sections.map(([heading], index) => `<a href="#section-${index + 1}">${escapeHtml(heading)}</a>`).join('')}</nav><article class="ng-prose">${article.sections.map(([heading, paragraphs], index) => `<section id="section-${index + 1}"><h2>${escapeHtml(heading)}</h2>${paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('')}</section>`).join('')}${article.source ? `<p class="ng-source">Reference: <a href="${AMAZON_ORDER_HELP}" rel="external">Amazon’s official playlist-reordering help</a>.</p>` : ''}<aside class="ng-note"><h2>Before using Playlist Toolkit</h2><p>The compatibility check is free and does not start a subscription. Management features require a monthly, auto-renewing Google Play subscription. Check the local price before purchasing; renewal can be cancelled in Google Play.</p><p>Screen assistance uses Android Accessibility. It works only with supported Amazon Music screens and stops if required controls cannot be confirmed. It cannot guarantee compatibility with future Amazon Music updates. Playlist Toolkit is an independent third-party product, not affiliated with or endorsed by Amazon.</p><a href="${BASE}privacy/">How screen data is handled</a></aside></article></div><section class="ng-related"><p class="ng-kicker">CONTINUE READING</p><div class="ng-grid">${article.related.map(slug => card(articles.find(item => item.slug === slug))).join('')}</div></section>`
+    ? `<div class="ng-layout"><nav class="ng-toc" aria-label="In this guide"><strong>In this guide</strong>${article.sections.map(([heading], index) => `<a href="#section-${index + 1}">${escapeHtml(heading)}</a>`).join('')}</nav><article class="ng-prose">${article.sections.map(([heading, paragraphs], index) => `<section id="section-${index + 1}"><h2>${escapeHtml(heading)}</h2>${paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('')}</section>`).join('')}${article.source ? `<p class="ng-source">Reference: <a href="${AMAZON_ORDER_HELP}" rel="external">Amazon’s official playlist-reordering help</a>.</p>` : ''}${duplicateQuestions(article)}<aside class="ng-note"><h2>Before using Playlist Toolkit</h2><p>The compatibility check is free and does not start a subscription. Management features require a monthly, auto-renewing Google Play subscription. Check the local price before purchasing; renewal can be cancelled in Google Play.</p><p>Screen assistance uses Android Accessibility. It works only with supported Amazon Music screens and stops if required controls cannot be confirmed. It cannot guarantee compatibility with future Amazon Music updates. Playlist Toolkit is an independent third-party product, not affiliated with or endorsed by Amazon.</p><a href="${BASE}privacy/">How screen data is handled</a></aside></article></div><section class="ng-related"><p class="ng-kicker">CONTINUE READING</p><div class="ng-grid">${article.related.map(slug => card(articles.find(item => item.slug === slug))).join('')}</div></section>`
     : `<div class="ng-grid">${articles.map(card).join('')}</div><section class="ng-note"><h2>A view is not a saved edit.</h2><p>${escapeHtml(scopes.en)}</p><p>These guides explain both the manual options and where assisted operations can help. Playlist Toolkit does not provide music playback or replace an Amazon Music subscription.</p></section>`;
   return `<!doctype html>
 <html lang="en"><head>
@@ -183,7 +251,7 @@ function render(article) {
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/playlist-toolkit.css"><link rel="stylesheet" href="/assets/playlist-guides.css">
 <script type="application/ld+json">${JSON.stringify(structured).replaceAll('<','\\u003c')}</script></head>
 <body><a class="ng-skip" href="#main">Skip to content</a><header class="ng-header"><nav class="ng-shell" aria-label="Main navigation"><a class="ng-brand" href="${BASE}">Playlist Toolkit<span>NKIS WORKS</span></a><div><a href="${GUIDES}"${!article ? ' aria-current="page"' : ''}>Guides</a><a href="${BASE}support/">Support</a><a href="/en/">NKIS Works</a></div></nav></header>
-<main id="main" class="ng-shell"><nav class="ng-breadcrumbs" aria-label="Breadcrumb"><a href="${BASE}">Playlist Toolkit</a><span aria-hidden="true">/</span>${article ? `<a href="${GUIDES}">Guides</a>` : '<span>Guides</span>'}</nav><header class="ng-hero"><p class="ng-kicker">PRACTICAL PLAYLIST GUIDES</p><h1>${escapeHtml(title)}</h1><p class="ng-lead">${escapeHtml(article?.summary || 'Find the right approach before changing your playlist. Clear steps, honest limits and no guesswork about what gets saved.')}</p><p class="ng-byline">By <a href="/en/">NKIS Works</a>, developer of Playlist Toolkit. Updated <time datetime="${UPDATED}">September 8, 2026</time>.</p></header>${body}<section class="ng-cta"><h2>See whether Playlist Toolkit fits your workflow.</h2><p>Explore the features, requirements and free compatibility check before deciding on a subscription.</p><a class="pt-button pt-button-primary" href="${BASE}">Explore Playlist Toolkit</a><a href="${BASE}support/">Get help</a></section></main>
+<main id="main" class="ng-shell"><nav class="ng-breadcrumbs" aria-label="Breadcrumb"><a href="${BASE}">Playlist Toolkit</a><span aria-hidden="true">/</span>${article ? `<a href="${GUIDES}">Guides</a>` : '<span>Guides</span>'}</nav><header class="ng-hero"><p class="ng-kicker">PRACTICAL PLAYLIST GUIDES</p><h1>${escapeHtml(title)}</h1><p class="ng-lead">${escapeHtml(article?.summary || 'Find the right approach before changing your playlist. Clear steps, honest limits and no guesswork about what gets saved.')}</p><p class="ng-byline">By <a href="/en/">NKIS Works</a>, developer of Playlist Toolkit. Updated <time datetime="${UPDATED}">September 9, 2026</time>.</p></header>${quickAnswer(article)}${body}<section class="ng-cta"><h2>Start with a free compatibility check.</h2><p>Install Playlist Toolkit on Android and check whether it can assist your Amazon Music screens. Playlist audits, sorting assistance and other management features require a monthly, auto-renewing subscription. Google Play shows the local price before you confirm a purchase.</p><a class="pt-button pt-button-primary" href="${storeLink(article, 'footer')}">Get Playlist Toolkit on Google Play</a><a href="${BASE}">Compare features and pricing</a><a href="${BASE}support/">Get help</a></section></main>
 <footer class="ng-footer"><div class="ng-shell"><p>© 2026 NKIS Works. Independent of Amazon.</p><nav aria-label="Footer"><a href="/en/">NKIS Works</a><a href="${BASE}">Product</a><a href="${GUIDES}">Guides</a><a href="${BASE}privacy/">Privacy</a><a href="${BASE}terms/">Terms</a><a href="${BASE}support/">Support</a><a href="https://x.com/NKIS_Works" rel="external">NKIS Works on X</a></nav></div></footer></body></html>`;
 }
 

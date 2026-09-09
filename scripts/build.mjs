@@ -11,6 +11,7 @@ const pages = ['support', 'privacy', 'terms', 'legal'];
 const productRoutes = playlistToolkitRoutes();
 const sitemapLastModified = '2026-09-03';
 const productSitemapLastModified = '2026-09-08';
+const guideSitemapLastModified = '2026-09-09';
 const routeFiles = [
   ['index.html', 'index.html'],
   ['404.html', '404.html'],
@@ -125,7 +126,7 @@ if (mode === 'preview') {
     ),
     ...productRoutes.map(
       (route) =>
-        `  <url><loc>https://nkisworks.com${route}</loc><lastmod>${productSitemapLastModified}</lastmod></url>`,
+        `  <url><loc>https://nkisworks.com${route}</loc><lastmod>${route.startsWith('/products/playlist-toolkit/guides/') ? guideSitemapLastModified : productSitemapLastModified}</lastmod></url>`,
     ),
   ].join('\n');
   await writeFile(
