@@ -23,6 +23,7 @@ body { margin:0; background:var(--ng-paper); color:var(--ng-ink); }
 .ng-answer li::marker { color:var(--ng-ink); font-weight:750; }
 .ng-answer-actions { display:flex; align-items:center; flex-wrap:wrap; gap:1rem 1.5rem; margin-top:1.7rem; }
 .ng-answer-actions>a { color:var(--ng-ink); text-underline-offset:4px; }
+.ng-answer-actions>.pt-button-primary { color:#fffdf2; }
 .ng-answer-actions .pt-button,.ng-cta .pt-button { max-width:100%; min-width:0; box-sizing:border-box; height:auto; white-space:normal; overflow-wrap:anywhere; text-align:center; line-height:1.4; }
 .ng-disclosure { font-size:.88rem; margin-bottom:0; }
 .ng-faq details { border-bottom:1px solid var(--ng-line); padding:1.15rem 0; }

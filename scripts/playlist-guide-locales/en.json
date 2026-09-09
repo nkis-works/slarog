@@ -64,7 +64,7 @@
         [
           "Use Playlist Toolkit to remember a display choice",
           [
-            "Run the free compatibility check and read the screen-access explanation before enabling Android Accessibility assistance. The check itself does not charge you; the management features require a monthly Google Play subscription.",
+            "Read the explanation of screen access and give your consent, then enable Playlist Toolkit in Android's Accessibility settings. Next, run the free compatibility check. The check does not start a subscription or charge you. Management features require a monthly Google Play subscription.",
             "Open the supported playlist in Amazon Music. Start sorting from the floating assistant and choose the display mode. When prompted, tap Amazon Music’s Sort chip once. The assistant handles the remaining supported steps and remembers the choice for that playlist.",
             "Keep the playlist visible and avoid touching the screen during the assisted steps. If a needed control cannot be confirmed, the operation stops. This is guided assistance, not a guarantee of fully unattended sorting."
           ]

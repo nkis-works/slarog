@@ -4,7 +4,8 @@ import { resolve } from 'node:path';
 
 const ORIGIN = 'https://nkisworks.com';
 const BASE = '/products/playlist-toolkit/';
-const UPDATED = '2026-09-09';
+const UPDATED = '2026-09-10';
+const LOCALIZED_PUBLISHED = '2026-09-09';
 const AMAZON_ORDER_HELP = 'https://digprjsurvey.amazon.co.uk/csad/help/node/GZX7QVLGPB4MKRDV';
 const locales = [
   {
@@ -138,7 +139,7 @@ function render(locale, article) {
   if (article) breadcrumbs.push({'@type':'ListItem',position:4,name:title,item:`${ORIGIN}${route}`});
   const structured = {'@context':'https://schema.org','@graph':[
     {'@type':article?'Article':'CollectionPage','@id':`${ORIGIN}${route}#page`,url:`${ORIGIN}${route}`,headline:title,name:title,description,inLanguage:locale.code,
-      datePublished:locale.code==='en'?'2026-09-08':UPDATED,dateModified:UPDATED,
+      datePublished:locale.code==='en'?'2026-09-08':LOCALIZED_PUBLISHED,dateModified:UPDATED,
       author:{'@type':'Organization',name:'NKIS Works',url:`${ORIGIN}${studioHome(locale)}`},
       publisher:{'@type':'Organization','@id':`${ORIGIN}/#organization`,name:'NKIS Works',url:`${ORIGIN}/`},
       mainEntityOfPage:`${ORIGIN}${route}`},
