@@ -2833,7 +2833,7 @@ function renderHome(text, locale) {
   <section class="pt-shell pt-section" id="playlist-guide"><div class="pt-section-heading"><p class="pt-eyebrow">${escapeHtml(refined.searchEyebrow)}</p><h2>${escapeHtml(refined.searchTitle)}</h2><p>${escapeHtml(refined.searchLead)}</p></div><div class="pt-search-panel">${searchItems.map(([title, body]) => `<article class="pt-search-item"><span aria-hidden="true"></span><div><h3>${escapeHtml(title)}</h3><p>${escapeHtml(body)}</p></div></article>`).join('')}</div></section>
   <section class="pt-shell pt-section"><div class="pt-section-heading"><p class="pt-eyebrow">FAQ</p><h2>${escapeHtml(home.faqTitle)}</h2></div><div class="pt-faq">${home.faqs.map(([question, answer]) => `<details><summary>${escapeHtml(question)}</summary><p>${escapeHtml(answer)}</p></details>`).join('')}</div></section>
   <section class="pt-shell pt-cta"><div class="pt-cta-card"><h2>${escapeHtml(home.ctaTitle)}</h2><p>${escapeHtml(home.ctaBody)}</p><div class="pt-actions"><a class="pt-button pt-button-primary" href="${GOOGLE_PLAY_URL}" rel="external">${escapeHtml(home.store)}</a></div></div></section>
-  <section class="pt-shell pt-section" aria-label="Playlist guides">${guideLink(locale.code)}</section>
+  <section class="pt-shell pt-section">${guideLink(locale.code)}</section>
 </main>`;
 }
 

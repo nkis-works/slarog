@@ -1,0 +1,267 @@
+{
+  "ui": {
+    "language": "Idioma",
+    "guides": "Guias",
+    "support": "Suporte",
+    "home": "NKIS Works",
+    "product": "Produto",
+    "privacy": "Privacidade",
+    "terms": "Termos de uso",
+    "skip": "Ir para o conteúdo",
+    "mainNav": "Navegação principal",
+    "footerNav": "Links do site",
+    "breadcrumb": "Caminho da página",
+    "toc": "Neste guia",
+    "kicker": "Guias para organizar playlists",
+    "atGlance": "O essencial",
+    "readGuide": "Ler o guia",
+    "related": "Guias relacionados",
+    "author": "Por NKIS Works, desenvolvedora do Playlist Toolkit.",
+    "updated": "Atualizado em",
+    "indexTitle": "Como organizar playlists do Amazon Music no Android",
+    "indexDesc": "Guias para ordenar playlists, recuperar a visualização, conferir possíveis duplicatas e mover várias músicas. Passos, limites e quais alterações ficam salvas.",
+    "indexLead": "Escolha o caminho certo antes de alterar sua playlist. Veja as etapas e entenda quais mudanças ficam salvas.",
+    "scopeTitle": "Ordenar a visualização não muda a sequência salva.",
+    "scopeNote": "Os guias mostram opções manuais e situações em que a assistência pode ajudar. O Playlist Toolkit não reproduz música nem substitui uma assinatura do Amazon Music.",
+    "beforeTitle": "Antes de usar o Playlist Toolkit",
+    "billing": "O teste de compatibilidade é gratuito e não inicia uma assinatura. Os recursos de gerenciamento exigem uma assinatura mensal do Google Play com renovação automática. Confira o preço antes da compra. Você pode cancelar a renovação no Google Play.",
+    "safety": "A assistência na tela usa os recursos de acessibilidade do Android. Ela atua apenas nas telas compatíveis do Amazon Music e para se não conseguir identificar os controles necessários. Não há garantia de compatibilidade com todas as atualizações futuras. O Playlist Toolkit é um produto independente, sem vínculo ou endosso da Amazon.",
+    "dataLink": "Como os dados da tela são tratados",
+    "ctaTitle": "Comece pelo teste gratuito de compatibilidade.",
+    "ctaText": "Instale o Playlist Toolkit no Android e confira se ele pode ajudar nas suas telas do Amazon Music. A verificação de playlists, a assistência de ordenação e os demais recursos de gerenciamento exigem uma assinatura mensal com renovação automática. O Google Play mostra o preço local antes da confirmação.",
+    "play": "Baixar Playlist Toolkit no Google Play",
+    "features": "Recursos e preços",
+    "help": "Obter ajuda",
+    "disclosure": "Somente Android. Teste de compatibilidade gratuito; gerenciamento de playlists com assinatura mensal. Você decide se quer assinar depois do teste.",
+    "faqTitle": "Dúvidas sobre músicas duplicadas",
+    "reference": "Referência",
+    "sourceLabel": "Ajuda oficial da Amazon para alterar a ordem de uma playlist",
+    "independence": "Independente da Amazon.",
+    "guideLink": "Ler os guias de playlists"
+  },
+  "scope": "A ordenação muda apenas a visualização, não a sequência salva. Os movimentos salvos e as adições confirmadas no Amazon Music continuam lá depois que você fecha o Playlist Toolkit.",
+  "articles": [
+    {
+      "title": "Ordenar uma playlist do Amazon Music por título ou artista",
+      "description": "Entenda a diferença entre a ordem de exibição e a sequência salva. Veja as opções do Amazon Music e a assistência do Playlist Toolkit no Android.",
+      "summary": "Encontrar uma música com mais facilidade e mudar a sequência salva são objetivos diferentes. Cada um pede uma operação.",
+      "answer": {
+        "title": "Mudar a visualização ou salvar outra sequência?",
+        "text": "Para uma lista em ordem alfabética, use a opção por título ou artista, se estiver disponível na sua tela do Amazon Music. Para mudar a sequência salva, use o editor. O Playlist Toolkit lembra uma preferência de exibição, mas não a grava como uma nova sequência de músicas.",
+        "steps": [
+          "Experimente primeiro a ordenação do próprio Amazon Music. Não é preciso assinar o Playlist Toolkit para usar um recurso que já está disponível.",
+          "Para recuperar uma visualização com assistência, confira a compatibilidade, escolha a ordem e toque uma vez no controle de ordenação quando solicitado.",
+          "Para manter uma sequência personalizada, edite a playlist e confirme o salvamento no Amazon Music."
+        ]
+      },
+      "sections": [
+        [
+          "Visualização e sequência salva não são a mesma coisa",
+          [
+            "Ordenar por título ou artista ajuda a encontrar músicas na lista. Isso não equivale a editar a sequência salva. Nas telas compatíveis, o Playlist Toolkit oferece assistência para exibição por artista, título, data de adição e duração, sem regravar a sequência.",
+            "Para montar uma sequência com começo, meio e fim, use o editor. Uma visualização alfabética não significa que a ordem salva ou a reprodução mudou. O modo aleatório e as demais opções de reprodução são separados."
+          ]
+        ],
+        [
+          "Confira primeiro os controles do Amazon Music",
+          [
+            "Abra a playlist no aplicativo Android e procure a opção de ordenação. Se as opções por título ou artista atenderem ao que você precisa, não é necessário outro aplicativo. Os recursos do próprio Amazon Music não exigem uma assinatura do Playlist Toolkit.",
+            "Os controles variam conforme a tela, a conta e a versão do aplicativo. Uma orientação para computador ou navegador não garante que a mesma opção exista na tela do Android."
+          ]
+        ],
+        [
+          "Lembrar uma preferência com o Playlist Toolkit",
+          [
+            "Faça o teste gratuito e leia a finalidade do acesso à tela antes de ativar a assistência pela acessibilidade do Android. O teste não gera cobrança; os recursos de gerenciamento exigem uma assinatura mensal do Google Play.",
+            "Abra uma playlist compatível no Amazon Music. Inicie a ordenação pelo botão flutuante e escolha a visualização. Quando solicitado, toque uma vez no controle de ordenação do Amazon Music. A assistência realiza as etapas seguintes compatíveis e lembra a escolha para aquela playlist.",
+            "Mantenha a playlist visível e não toque na tela durante as etapas assistidas. Se um controle necessário não puder ser identificado, a operação para. É uma assistência guiada, não uma garantia de execução sem nenhuma interação."
+          ]
+        ],
+        [
+          "O que esse recurso não altera",
+          [
+            "Ele não salva uma sequência alfabética, não muda o modo aleatório nem fixa a mesma visualização em todos os dispositivos. Também não libera funções do Amazon Music indisponíveis para sua conta.",
+            "Se a visualização não for aplicada na próxima visita, confira se a assistência está ativa e siga novamente a orientação de ordenação. Uma mudança na interface do Amazon Music pode exigir uma atualização do Playlist Toolkit."
+          ]
+        ]
+      ],
+      "slug": "sort-amazon-music-playlist",
+      "related": [
+        "amazon-music-sort-order-resets",
+        "move-multiple-amazon-music-songs"
+      ]
+    },
+    {
+      "title": "A ordem da playlist do Amazon Music volta ao padrão?",
+      "description": "Confira a visualização e a sequência salva separadamente. Recupere uma preferência de ordenação e verifique a assistência sem mudar as músicas da playlist.",
+      "summary": "Uma visualização diferente não significa, necessariamente, que sua playlist salva foi alterada.",
+      "answer": {
+        "title": "Confira a visualização antes de editar de novo",
+        "text": "A exibição voltar para outra ordem não prova que suas edições salvas foram perdidas. Confira primeiro a opção ativa. O Playlist Toolkit lembra a visualização preferida, mas aplicá-la ainda exige uma tela compatível e a etapa de ordenação indicada.",
+        "steps": [
+          "Compare a ordenação ativa no Amazon Music com a visualização que você esperava.",
+          "Se usa o Playlist Toolkit, confira se a assistência está ativa e siga a orientação de ordenação na playlist correta.",
+          "Se faltar um controle, verifique a compatibilidade em vez de tocar repetidamente."
+        ]
+      },
+      "sections": [
+        [
+          "Identifique o que realmente mudou",
+          [
+            "A lista só estava sendo exibida por artista ou título, ou você havia movido e salvado músicas no editor? São operações diferentes. Uma mudança na exibição não prova, por si só, que músicas foram excluídas ou uma edição salva foi desfeita.",
+            "Confira primeiro a ordenação escolhida no Amazon Music. Para verificar uma edição salva, veja a sequência normal da playlist, não uma lista em ordem alfabética. Confira separadamente o modo aleatório e os demais ajustes de reprodução."
+          ]
+        ],
+        [
+          "Recupere uma visualização lembrada",
+          [
+            "O Playlist Toolkit lembra uma preferência por playlist. Abra a lista, inicie a ordenação pela assistência e toque uma vez no controle do Amazon Music quando solicitado. As etapas seguintes compatíveis são executadas depois disso.",
+            "Você não precisa manter a janela do Playlist Toolkit à frente do Amazon Music, mas a assistência deve continuar ativa. Fechar uma janela não é o mesmo que desativar o serviço de acessibilidade. Forçar a parada ou desativar o aplicativo pode impedir a assistência.",
+            "Isso não fixa permanentemente as configurações do Amazon Music. A preferência fica no Playlist Toolkit; aplicá-la ainda depende da tela correta e da interação guiada."
+          ]
+        ],
+        [
+          "Se a visualização não for recuperada",
+          [
+            "Nas configurações de acessibilidade do Android, confira se o Playlist Toolkit está ativado. Abra novamente a playlist desejada no Amazon Music, volte ao início da lista e comece a operação.",
+            "Não navegue, role a lista ou toque nos controles durante uma etapa assistida. Se um controle não for reconhecido, pare em vez de experimentar repetidamente outros pontos da tela.",
+            "Depois de atualizar o Amazon Music, refaça o teste gratuito de compatibilidade. Uma interface desconhecida pode precisar de uma atualização futura do Playlist Toolkit. Não há promessa de suporte a todas as versões futuras."
+          ]
+        ],
+        [
+          "As edições salvas somem quando o aplicativo fecha?",
+          [
+            "Não. Os movimentos salvos e as adições confirmadas no Amazon Music continuam lá depois de fechar o Playlist Toolkit. Já a ordenação da visualização não regrava a sequência salva.",
+            "A verificação da playlist também não altera seu conteúdo: ela lê a lista e cria um relatório e um índice local. Abrir o aplicativo de novo não desfaz edições já salvas."
+          ]
+        ]
+      ],
+      "slug": "amazon-music-sort-order-resets",
+      "related": [
+        "sort-amazon-music-playlist",
+        "move-multiple-amazon-music-songs"
+      ]
+    },
+    {
+      "title": "Encontrar possíveis músicas duplicadas em playlists do Amazon Music",
+      "description": "Compare títulos e versões, confira possíveis duplicatas no Android e verifique novas adições. Sem excluir músicas automaticamente.",
+      "summary": "Encontre entradas repetidas e decida quais versões manter, com uma conferência manual ou um relatório completo da playlist.",
+      "answer": {
+        "title": "Como conferir músicas duplicadas",
+        "text": "Compare título e artista e, quando disponíveis, versão, álbum e duração. Uma gravação ao vivo ou remasterizada pode ter sido incluída de propósito. O Playlist Toolkit gera um relatório de possíveis duplicatas em telas Android compatíveis; ele não exclui músicas.",
+        "steps": [
+          "Se a playlist for curta, confira as entradas diretamente no Amazon Music. Use a ordenação por título ou artista, se disponível.",
+          "Para uma lista longa, conclua a verificação do Playlist Toolkit e analise os resultados. A verificação exige assinatura; o teste de compatibilidade é gratuito.",
+          "Remova apenas entradas já conferidas, usando os controles do Amazon Music. Mantenha as versões alternativas que você quer ouvir."
+        ]
+      },
+      "sections": [
+        [
+          "O mesmo título nem sempre é a mesma gravação",
+          [
+            "Uma gravação de estúdio, uma versão ao vivo, uma edição curta e uma remasterização podem ter nomes parecidos. Antes de remover algo, compare artista, versão, álbum e duração, se disponíveis. Ouça as versões se for necessário.",
+            "A conferência pelas informações da tela não compara impressões digitais de áudio. Nomes iguais não provam que os arquivos sejam idênticos. O Playlist Toolkit apresenta candidatos para análise, em vez de apagar todas as correspondências."
+          ]
+        ],
+        [
+          "Verifique a playlist inteira sem alterá-la",
+          [
+            "Conclua o teste de compatibilidade e leia a explicação do acesso à tela antes de ativar a assistência. Abra a playlist desejada e inicie a verificação completa pelo Playlist Toolkit.",
+            "Mantenha o Amazon Music na tela enquanto a assistência percorre a lista. Não role manualmente nem troque de aplicativo. Para interromper, use o controle de parar ou cancelar.",
+            "Espere o relatório completo antes de considerar toda a playlist verificada. Uma leitura interrompida não prova que o trecho restante esteja livre de duplicatas. A verificação não adiciona, exclui, reordena ou baixa músicas, nem marca curtidas."
+          ]
+        ],
+        [
+          "Confira o relatório antes de editar",
+          [
+            "Analise separadamente os grupos de duplicatas e os de possíveis versões alternativas. Mantenha as gravações desejadas e confirme alterações reais no Amazon Music. Um grupo não é uma indicação para apagar todos os seus itens.",
+            "Os relatórios e o índice visível são processados no dispositivo. Os nomes das músicas não vão para um servidor da NKIS Works. Antes de copiar ou compartilhar um relatório, confira o conteúdo: ele pode incluir o nome da playlist e dados das faixas."
+          ]
+        ],
+        [
+          "Use a verificação completa antes de adicionar músicas",
+          [
+            "O Smart Add precisa de uma verificação completa da playlist de destino para liberar adições verificadas. Sem ela, só é possível analisar candidatos. Confira a playlist em que pretende adicionar músicas, não outra com um nome parecido.",
+            "Abra a tela de adicionar músicas do Amazon Music e confira os candidatos coletados. Selecione e confirme as faixas desejadas. As adições ocorrem uma a uma e permanecem depois; se o resultado não puder ser verificado, o processo pausa.",
+            "Se os candidatos expirarem ou a seleção não corresponder mais às verificações atuais, atualize a lista. Não force uma seleção antiga. Essas verificações ajudam a evitar adições desnecessárias, mas não garantem identificar toda duplicata ou versão."
+          ]
+        ]
+      ],
+      "slug": "find-amazon-music-playlist-duplicates",
+      "related": [
+        "sort-amazon-music-playlist",
+        "move-multiple-amazon-music-songs"
+      ]
+    },
+    {
+      "title": "Mover várias músicas em uma playlist do Amazon Music",
+      "description": "Como mover um grupo no Android: início e fim visíveis, destinos permitidos, pequenos deslocamentos fora da tela e salvamento final no Amazon Music.",
+      "summary": "Mova um grupo de músicas consecutivas com assistência. Confira o resultado e salve no Amazon Music.",
+      "answer": {
+        "title": "Mova o grupo e depois salve",
+        "text": "Para manter alterações na sequência, use o editor de playlists. O Playlist Toolkit pode ajudar nos movimentos repetidos de um grupo consecutivo em uma tela compatível. Não é uma seleção múltipla sem limites: depois, você precisa conferir e salvar no Amazon Music.",
+        "steps": [
+          "Escolha músicas de início e fim visíveis e um destino fora desse grupo.",
+          "Não toque na tela durante o movimento. Se ele parar, confira as alterações parciais antes de continuar.",
+          "Revise as posições e salve no Amazon Music. As mudanças salvas permanecem depois de fechar a assistência."
+        ]
+      },
+      "sections": [
+        [
+          "Altere a sequência salva pelo editor",
+          [
+            "Use o editor do Amazon Music, não a visualização por título ou artista. A ajuda oficial descreve como manter pressionado o controle de movimentação de uma faixa, arrastá-la e concluir a edição. As opções dependem da assinatura do Amazon Music; alterações online e offline podem afetar a sincronização.",
+            "O Playlist Toolkit não concede permissões de edição nem substitui o salvamento do Amazon Music. Ele auxilia gestos repetidos em um editor compatível. Para mover uma única música, fazer isso manualmente pode ser mais simples."
+          ]
+        ],
+        [
+          "Selecione um grupo consecutivo e visível",
+          [
+            "As músicas precisam estar visíveis no editor. Escolha o início acima do fim; todas as faixas entre os dois pontos entram na seleção. O destino precisa ficar fora do intervalo.",
+            "Não é uma seleção livre como em uma planilha. Não permite juntar arbitrariamente músicas separadas nem pular centenas de posições de uma só vez."
+          ]
+        ],
+        [
+          "Escolha um destino compatível",
+          [
+            "Você pode colocar o grupo antes de uma música visível ou movê-lo 1, 5 ou 10 músicas além da tela, para cima ou para baixo. A ordem interna do grupo é preservada.",
+            "Comece com poucas músicas e uma distância curta para facilitar a conferência. Não toque na tela durante os gestos assistidos. Use o controle de parar se precisar interromper.",
+            "A operação para se entradas iguais não puderem ser distinguidas com segurança, se a tela mudar ou se um limite for atingido. Parar não desfaz automaticamente os movimentos já realizados. Confira o estado atual do editor antes de seguir."
+          ]
+        ],
+        [
+          "Confira e salve no Amazon Music",
+          [
+            "Verifique a posição do grupo e as faixas ao redor antes de confirmar o salvamento. Um movimento concluído não é o mesmo que uma playlist salva.",
+            "As alterações salvas continuam depois de fechar o Playlist Toolkit. Fechar a assistência não recupera a ordem anterior. Para desfazer uma edição salva, edite a playlist novamente.",
+            "Se precisar sincronizar entre dispositivos, siga as orientações atuais da Amazon sobre edição online. Um movimento bem-sucedido em uma tela não confirma que os outros dispositivos já foram sincronizados."
+          ]
+        ]
+      ],
+      "slug": "move-multiple-amazon-music-songs",
+      "related": [
+        "sort-amazon-music-playlist",
+        "amazon-music-sort-order-resets"
+      ],
+      "source": true
+    }
+  ],
+  "faqs": [
+    [
+      "Posso conferir sem outro aplicativo?",
+      "Sim. Você pode comparar as entradas manualmente no Amazon Music. Para uma playlist curta, isso pode bastar. O Playlist Toolkit é uma ajuda opcional para listas longas no Android, não uma exigência para remover uma música."
+    ],
+    [
+      "A verificação exclui músicas?",
+      "Não. Ela lê a playlist e cria um relatório sem excluir nem reordenar faixas. Confira cada resultado e faça as remoções desejadas no próprio Amazon Music."
+    ],
+    [
+      "Títulos iguais significam a mesma gravação?",
+      "Não necessariamente. Versões ao vivo, edições curtas e remasterizações podem ter o mesmo título. Compare os dados visíveis e ouça se precisar. A verificação não compara impressões digitais de áudio."
+    ],
+    [
+      "A verificação de duplicatas é gratuita?",
+      "O teste de compatibilidade é gratuito. A verificação de playlists e os demais recursos de gerenciamento exigem uma assinatura mensal do Google Play com renovação automática. O preço aparece antes da compra."
+    ]
+  ]
+}

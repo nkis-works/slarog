@@ -126,7 +126,7 @@ if (mode === 'preview') {
     ),
     ...productRoutes.map(
       (route) =>
-        `  <url><loc>https://nkisworks.com${route}</loc><lastmod>${route.startsWith('/products/playlist-toolkit/guides/') ? guideSitemapLastModified : productSitemapLastModified}</lastmod></url>`,
+        `  <url><loc>https://nkisworks.com${route}</loc><lastmod>${(route.includes('/guides/') || /^\/products\/playlist-toolkit\/(?:[a-z-]+\/)?$/.test(route)) ? guideSitemapLastModified : productSitemapLastModified}</lastmod></url>`,
     ),
   ].join('\n');
   await writeFile(

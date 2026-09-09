@@ -57,3 +57,17 @@ body { margin:0; background:var(--ng-paper); color:var(--ng-ink); }
 a:focus-visible { outline:3px solid #6a8429; outline-offset:5px; }
 @media(max-width:760px) { .ng-shell { width:calc(100% - 2rem); } .ng-header nav { flex-wrap:wrap; padding:1rem 0; gap:1rem; } .ng-header nav>div { font-size:.86rem; gap:1.2rem; } .ng-hero { padding:2rem 0; } .ng-layout { grid-template-columns:1fr; gap:2rem; } .ng-toc { padding:0 0 1.7rem; border-bottom:1px solid var(--ng-line); } .ng-grid { grid-template-columns:1fr; } .ng-card,.ng-cta { padding:1.5rem; } .ng-note { padding:1.1rem 1.3rem; } }
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+
+.ng-header-links { min-width:0; align-items:center; }
+.ng-language { position:relative; margin-left:auto; max-width:100%; }
+.ng-language summary { cursor:pointer; padding:.65rem .95rem; border:1px solid var(--ng-line); border-radius:999px; line-height:1.4; overflow-wrap:anywhere; }
+.ng-language summary:focus-visible { outline:3px solid #6a8429; outline-offset:4px; }
+.ng-language-list { position:absolute; z-index:30; right:0; top:calc(100% + .6rem); width:min(19rem,calc(100vw - 2rem)); box-sizing:border-box; display:grid; gap:.15rem; padding:.6rem; border:1px solid var(--ng-line); border-radius:14px; background:var(--ng-paper); box-shadow:0 12px 30px #113c3120; }
+.ng-language-list a { display:block; padding:.7rem .8rem; border-radius:8px; line-height:1.5; overflow-wrap:anywhere; }
+.ng-language-list a:hover,.ng-language-list a[aria-current] { background:#e7eddf; }
+.ng-byline span { display:inline-block; }
+.ng-header a,.ng-footer a,.ng-toc a { overflow-wrap:anywhere; }
+html[lang="ja"] .ng-hero h1 { font-size:clamp(2rem,4.5vw,3.8rem); line-height:1.45; letter-spacing:-.025em; word-break:normal; overflow-wrap:break-word; }
+html[lang="ja"] .ng-prose h2,html[lang="ja"] .ng-answer h2,html[lang="ja"] .ng-card h2 { line-height:1.5; }
+html[lang="ja"] .ng-prose p,html[lang="ja"] .ng-answer li { line-height:1.95; overflow-wrap:break-word; }
+@media(max-width:760px) { .ng-header-links { width:100%; } .ng-language { flex:0 0 100%; width:100%; min-width:0; margin-left:0; } .ng-language summary { width:fit-content; max-width:100%; box-sizing:border-box; } .ng-language-list { right:auto; left:0; width:100%; max-width:19rem; } .ng-byline span { display:block; margin-top:.25rem; } }
