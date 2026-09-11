@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>結果表示比較｜非公開設計プロトタイプ</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="variants-page">
+    <a class="skip-link" href="#main">メインコンテンツへ移動</a>
+    <div class="prototype-banner" role="note">非公開設計プロトタイプ — 結果表示案の比較</div>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="./index.html"><span class="brand-mark" aria-hidden="true">N</span><span>NKIS Works</span></a>
+        <nav aria-label="プロトタイプ内ナビゲーション"><a href="./index.html">推奨案へ戻る</a></nav>
+      </div>
+    </header>
+    <main class="shell variants-main" id="main">
+      <div class="section-heading">
+        <p class="section-kicker">4,000G / +500枚の結果</p>
+        <h1>基準比較の表示案</h1>
+        <p>同じ情報を横レールと縦リストで比較します。正式推奨は案Bです。</p>
+      </div>
+
+      <section class="variant-card" aria-labelledby="rail-title">
+        <div class="variant-heading"><div><span class="variant-label rejected">案A・非推奨</span><h2 id="rail-title">横レール</h2></div><p>デスクトップでは密度が高い一方、狭い画面と拡大時に項目が隠れます。</p></div>
+        <div class="result-rail" tabindex="0" aria-label="基準比較。横にスクロールできます">
+          <article><span>100%基準</span><strong>+500枚</strong><small>基準差枚 0枚</small><em>上回る</em></article>
+          <article><span>103%基準</span><strong>+140枚</strong><small>基準差枚 +360枚</small><em>上回る</em></article>
+          <article><span>105%基準</span><strong>−100枚</strong><small>基準差枚 +600枚</small><em class="negative">下回る</em></article>
+        </div>
+        <ul class="tradeoffs"><li>横スクロールの存在を伝える必要がある</li><li>200%ズームで比較全体を同時に読めない</li><li>カードの視覚性は高い</li></ul>
+      </section>
+
+      <section class="variant-card recommended-variant" aria-labelledby="list-title">
+        <div class="variant-heading"><div><span class="variant-label recommended">案B・推奨</span><h2 id="list-title">縦リスト</h2></div><p>3件が同時に見え、DOMの読み順と視覚順が一致します。</p></div>
+        <div class="benchmark-list static-benchmarks">
+          <div class="benchmark-row"><span class="benchmark-rate">100%</span><span><small>基準差枚</small><strong>0枚</strong></span><span><small>実績との差</small><strong>+500枚</strong></span><span class="relation positive">上回る</span></div>
+          <div class="benchmark-row"><span class="benchmark-rate">103%</span><span><small>基準差枚</small><strong>+360枚</strong></span><span><small>実績との差</small><strong>+140枚</strong></span><span class="relation positive">上回る</span></div>
+          <div class="benchmark-row"><span class="benchmark-rate">105%</span><span><small>基準差枚</small><strong>+600枚</strong></span><span><small>実績との差</small><strong>−100枚</strong></span><span class="relation negative">下回る</span></div>
+        </div>
+        <p class="benchmark-summary">基準はまだ選択されていません。</p>
+        <ul class="tradeoffs"><li>横操作なしで全件を発見できる</li><li>200%ズームでも自然に折り返す</li><li>行選択の状態をテキストでも伝えられる</li></ul>
+      </section>
+
+      <aside class="decision-callout"><strong>設計判断</strong><p>正式UIは縦リストとし、初期選択は置きません。利用者が行を選んだ後だけ、過去形の1文要約を表示します。</p><a class="button primary" href="./index.html">推奨プロトタイプを見る</a></aside>
+    </main>
+  </body>
+</html>
