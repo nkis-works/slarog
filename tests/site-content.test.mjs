@@ -149,12 +149,16 @@ test('NKIS Works studio pages expose complete social and organization metadata',
     assert.equal(graph.find((entry) => entry['@type'] === 'Organization').name, 'NKIS Works');
     assert.equal(graph.find((entry) => entry['@type'] === 'WebSite').name, 'NKIS Works');
   }
-  assert.match(studioPages.ja, /日々の手間を減らす、実用的なソフトウェア。/);
+  assert.match(
+    studioPages.ja,
+    /<h1 class="hero-title hero-title-ja"><span>日々の手間を減らす<\/span><span>ソフトウェア。<\/span><\/h1>/,
+  );
   assert.match(studioPages.ja, /<h2>製品<\/h2>/);
   assert.match(studioPages.ja, /<h2>NKIS Worksについて<\/h2>/);
+  assert.match(studioPages.ja, /<!--email_off--><a class="button button-light" href="mailto:slarog\.app@gmail\.com">メールで問い合わせる<\/a><!--\/email_off-->/);
   assert.doesNotMatch(
     studioPages.ja,
-    /CURRENT PRODUCTS|DEVELOPMENT APPROACH|必要なところに絞って作る|構成を増やしすぎない|これ、ちょっと欲しかった|ジャンルはバラバラ|困りごとを見つけたら、また作る|小さな道具を、コツコツ/,
+    /CURRENT PRODUCTS|DEVELOPMENT APPROACH|必要なところに絞って作る|構成を増やしすぎない|これ、ちょっと欲しかった|ジャンルはバラバラ|困りごとを見つけたら、また作る|小さな道具を、コツコツ|実用的なソフトウェア。/,
   );
 });
 
