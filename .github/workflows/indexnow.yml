@@ -1,0 +1,100 @@
+name: Notify IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/build.mjs"
+      - "scripts/build-playlist-guides.mjs"
+      - "scripts/build-playlist-toolkit.mjs"
+      - "scripts/playlist-guide-locales/**"
+      - "scripts/submit-indexnow.mjs"
+      - "indexnow-*.txt"
+      - ".github/workflows/indexnow.yml"
+  pull_request:
+    paths:
+      - "scripts/build.mjs"
+      - "scripts/build-playlist-guides.mjs"
+      - "scripts/build-playlist-toolkit.mjs"
+      - "scripts/playlist-guide-locales/**"
+      - "scripts/submit-indexnow.mjs"
+      - "indexnow-*.txt"
+      - ".github/workflows/indexnow.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check executable-file formatting
+        run: >-
+          pnpm exec prettier --check
+          scripts/build.mjs
+          scripts/submit-indexnow.mjs
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Unit tests
+        run: pnpm run test
+
+      - name: Build preview
+        run: pnpm run build:preview
+
+      - name: Check distribution
+        run: pnpm run check:dist
+
+      - name: Check links
+        run: pnpm run test:links
+
+  notify:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Wait for production ownership key
+        shell: bash
+        run: |
+          set -euo pipefail
+          key='91cf5ab81b6506ff4c8c279ce4405142'
+          url="https://nkisworks.com/indexnow-${key}.txt"
+          for attempt in $(seq 1 20); do
+            body="$(curl --fail --silent --show-error "$url" 2>/dev/null || true)"
+            if [ "$body" = "$key" ]; then
+              exit 0
+            fi
+            sleep 15
+          done
+          echo 'Production IndexNow key was not available.' >&2
+          exit 1
+
+      - name: Submit playlist guide URLs
+        run: node scripts/submit-indexnow.mjs

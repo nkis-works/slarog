@@ -17,6 +17,7 @@ const requiredFiles = new Set([
   'sitemap.xml',
   '_headers',
   '_redirects',
+  'indexnow-91cf5ab81b6506ff4c8c279ce4405142.txt',
   'tools/slot-balance/index.html',
   'tools/slot-balance/assets/styles.css',
   'tools/slot-balance/assets/slot-balance-app.js',
