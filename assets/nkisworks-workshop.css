@@ -1,0 +1,316 @@
+.jp-home {
+  --paper: #f7f4ea;
+  --surface: #fffdf7;
+  --line: #cfd8d2;
+  --green: #174438;
+  --green-deep: #103128;
+  --green-bright: #276c57;
+  --lime: #d9ff67;
+  --orange: #ef6a3b;
+  background:
+    linear-gradient(rgba(16, 49, 40, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 49, 40, 0.022) 1px, transparent 1px),
+    #f8f5eb;
+  background-size: 30px 30px;
+}
+
+.jp-home .site-header {
+  position: relative;
+  background: rgba(248, 245, 235, 0.94);
+  backdrop-filter: none;
+}
+
+.jp-home .site-nav {
+  min-height: 68px;
+}
+
+.jp-home .brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.jp-home .brand-mark::before,
+.jp-home .brand-mark::after,
+.jp-home .brand-mark span {
+  left: 8px;
+}
+
+.jp-home .hero {
+  min-height: auto;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  align-items: center;
+  gap: 84px;
+  padding-block: 92px 108px;
+}
+
+.jp-home .eyebrow {
+  color: var(--green-bright);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.jp-home .eyebrow::before {
+  width: 18px;
+}
+
+.jp-home .hero h1.hero-title-ja {
+  max-width: 760px;
+  margin-top: 24px;
+  font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  font-size: clamp(3.4rem, 6.8vw, 6.4rem);
+  font-weight: 850;
+  letter-spacing: -0.075em;
+  line-height: 0.98;
+}
+
+.jp-home .hero-lead {
+  max-width: 720px;
+  margin-top: 30px;
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  line-height: 1.9;
+}
+
+.jp-home .button {
+  border-radius: 14px;
+  box-shadow: none;
+}
+
+.jp-home .button-primary {
+  box-shadow: 4px 4px 0 #b9cabf;
+}
+
+.jp-home .button-primary:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 6px 6px 0 #b9cabf;
+}
+
+.jp-home .button-secondary {
+  background: transparent;
+}
+
+.workbench-card {
+  position: relative;
+  border: 1.5px solid #284d43;
+  border-radius: 18px;
+  background: #fffdf4;
+  padding: 28px;
+  box-shadow: 9px 9px 0 #dce5dc;
+  transform: rotate(0.8deg);
+}
+
+.workbench-card::before {
+  content: '';
+  width: 74px;
+  height: 18px;
+  position: absolute;
+  top: -10px;
+  right: 36px;
+  background: rgba(217, 255, 103, 0.8);
+  transform: rotate(-3deg);
+}
+
+.workbench-label {
+  margin: 0 0 24px;
+  color: var(--orange);
+  font: 800 11px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.1em;
+}
+
+.workbench-item {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 14px;
+  border-top: 1px solid #cfd8d2;
+  padding: 20px 0;
+}
+
+.workbench-item > span {
+  color: var(--orange);
+  font: 800 11px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.workbench-item strong {
+  display: block;
+  font-size: 1.05rem;
+}
+
+.workbench-item p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.workbench-next {
+  opacity: 0.74;
+}
+
+.jp-home .products-section {
+  border-block: 1px solid var(--line);
+  background: rgba(255, 253, 247, 0.52);
+  padding: 88px 0 96px;
+}
+
+.jp-home .section-heading {
+  max-width: 800px;
+}
+
+.jp-home .section-heading h2,
+.jp-home .contact-card h2 {
+  font-size: clamp(2.4rem, 4.8vw, 4.8rem);
+  letter-spacing: -0.065em;
+}
+
+.jp-home .section-heading > p:last-child {
+  max-width: 700px;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.jp-home .product-grid {
+  gap: 24px;
+  margin-top: 42px;
+}
+
+.jp-home .product-card {
+  min-height: 390px;
+  border: 1.5px solid #45665d;
+  border-radius: 18px;
+  background: #fffdf7;
+  box-shadow: 6px 6px 0 #e0e6df;
+  padding: clamp(26px, 4vw, 40px);
+}
+
+.jp-home .product-card-featured {
+  border-color: #45665d;
+  background: #fffdf7;
+}
+
+.jp-home .product-type {
+  margin: 24px 0 0;
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.jp-home .product-card h3 {
+  margin-top: 9px;
+  font-size: clamp(2rem, 3.6vw, 3.1rem);
+}
+
+.jp-home .product-summary {
+  line-height: 1.85;
+}
+
+.jp-home .product-link {
+  color: var(--green);
+}
+
+.jp-home .principles-section {
+  padding-block: 96px 104px;
+}
+
+.jp-home .principles-grid {
+  gap: 26px;
+  margin-top: 42px;
+}
+
+.jp-home .principles-grid article {
+  border-top: 1.5px solid #7f968d;
+  padding-top: 18px;
+}
+
+.jp-home .principles-grid h3 {
+  margin-top: 20px;
+}
+
+.jp-home .contact-section {
+  padding-bottom: 86px;
+}
+
+.jp-home .contact-card {
+  border: 1.5px solid #45665d;
+  border-radius: 18px;
+  background: #fffdf7;
+  color: var(--ink);
+  box-shadow: 7px 7px 0 #dce5dc;
+  padding: clamp(30px, 5vw, 54px);
+}
+
+.jp-home .contact-card .eyebrow {
+  color: var(--orange);
+}
+
+.jp-home .contact-card p:not(.eyebrow) {
+  color: var(--muted);
+}
+
+.jp-home .button-light {
+  background: var(--green);
+  color: #fff;
+}
+
+.jp-home .site-footer {
+  background: #efede4;
+}
+
+@media (max-width: 840px) {
+  .jp-home .hero {
+    grid-template-columns: 1fr;
+    gap: 54px;
+    padding-block: 68px 82px;
+  }
+
+  .workbench-card {
+    max-width: 620px;
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .jp-home .site-header {
+    position: sticky;
+  }
+
+  .jp-home .hero {
+    padding-block: 54px 70px;
+  }
+
+  .jp-home .hero h1.hero-title-ja {
+    font-size: clamp(3.05rem, 14vw, 4.2rem);
+    letter-spacing: -0.07em;
+  }
+
+  .jp-home .hero-title span {
+    white-space: normal;
+  }
+
+  .workbench-card {
+    border-radius: 14px;
+    padding: 24px 20px;
+    box-shadow: 6px 6px 0 #dce5dc;
+  }
+
+  .jp-home .products-section,
+  .jp-home .principles-section {
+    padding-block: 70px;
+  }
+
+  .jp-home .product-card {
+    min-height: 0;
+    border-radius: 14px;
+    box-shadow: 4px 4px 0 #e0e6df;
+  }
+
+  .jp-home .principles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .jp-home .contact-card {
+    border-radius: 14px;
+    box-shadow: 5px 5px 0 #dce5dc;
+  }
+}
