@@ -4,22 +4,22 @@ on:
   push:
     branches: [main]
     paths:
-      - 'scripts/build.mjs'
-      - 'scripts/build-playlist-guides.mjs'
-      - 'scripts/build-playlist-toolkit.mjs'
-      - 'scripts/playlist-guide-locales/**'
-      - 'scripts/submit-indexnow.mjs'
-      - 'indexnow-*.txt'
-      - '.github/workflows/indexnow.yml'
+      - "scripts/build.mjs"
+      - "scripts/build-playlist-guides.mjs"
+      - "scripts/build-playlist-toolkit.mjs"
+      - "scripts/playlist-guide-locales/**"
+      - "scripts/submit-indexnow.mjs"
+      - "indexnow-*.txt"
+      - ".github/workflows/indexnow.yml"
   pull_request:
     paths:
-      - 'scripts/build.mjs'
-      - 'scripts/build-playlist-guides.mjs'
-      - 'scripts/build-playlist-toolkit.mjs'
-      - 'scripts/playlist-guide-locales/**'
-      - 'scripts/submit-indexnow.mjs'
-      - 'indexnow-*.txt'
-      - '.github/workflows/indexnow.yml'
+      - "scripts/build.mjs"
+      - "scripts/build-playlist-guides.mjs"
+      - "scripts/build-playlist-toolkit.mjs"
+      - "scripts/playlist-guide-locales/**"
+      - "scripts/submit-indexnow.mjs"
+      - "indexnow-*.txt"
+      - ".github/workflows/indexnow.yml"
   workflow_dispatch:
 
 permissions:
@@ -36,7 +36,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
 
       - name: Enable Corepack
         run: corepack enable
@@ -44,8 +44,32 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run preflight
-        run: pnpm run preflight
+      - name: Check changed-file formatting
+        run: >-
+          pnpm exec prettier --check
+          .github/workflows/indexnow.yml
+          scripts/build.mjs
+          scripts/submit-indexnow.mjs
+          indexnow-91cf5ab81b6506ff4c8c279ce4405142.txt
+          --ignore-unknown
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Unit tests
+        run: pnpm run test
+
+      - name: Build preview
+        run: pnpm run build:preview
+
+      - name: Check distribution
+        run: pnpm run check:dist
+
+      - name: Check links
+        run: pnpm run test:links
 
   notify:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
@@ -57,7 +81,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
 
       - name: Wait for production ownership key
         shell: bash
