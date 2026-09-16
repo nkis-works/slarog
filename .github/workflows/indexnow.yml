@@ -13,6 +13,9 @@ on:
       - ".github/workflows/indexnow.yml"
   pull_request:
     paths:
+      - "index.html"
+      - "ja/index.html"
+      - "assets/nkisworks*.css"
       - "scripts/build.mjs"
       - "scripts/build-playlist-guides.mjs"
       - "scripts/build-playlist-toolkit.mjs"
@@ -44,9 +47,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Check executable-file formatting
+      - name: Check changed-file formatting
         run: >-
           pnpm exec prettier --check
+          index.html
+          ja/index.html
+          assets/nkisworks-workshop.css
           scripts/build.mjs
           scripts/submit-indexnow.mjs
 
