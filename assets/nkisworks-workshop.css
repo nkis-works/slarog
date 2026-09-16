@@ -115,7 +115,12 @@
 .workbench-label {
   margin: 0 0 24px;
   color: var(--orange);
-  font: 800 11px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font:
+    800 11px/1.2 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
   letter-spacing: 0.1em;
 }
 
@@ -129,7 +134,12 @@
 
 .workbench-item > span {
   color: var(--orange);
-  font: 800 11px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font:
+    800 11px/1.4 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
 }
 
 .workbench-item strong {
