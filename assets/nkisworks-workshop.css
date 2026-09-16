@@ -5,18 +5,13 @@
   --green: #174438;
   --green-deep: #103128;
   --green-bright: #276c57;
-  --lime: #d9ff67;
-  --orange: #ef6a3b;
-  background:
-    linear-gradient(rgba(16, 49, 40, 0.022) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(16, 49, 40, 0.022) 1px, transparent 1px),
-    #f8f5eb;
-  background-size: 30px 30px;
+  --orange: #d85f35;
+  background: #f8f5eb;
 }
 
 .jp-home .site-header {
   position: relative;
-  background: rgba(248, 245, 235, 0.94);
+  background: rgba(248, 245, 235, 0.96);
   backdrop-filter: none;
 }
 
@@ -41,7 +36,7 @@
   min-height: auto;
   grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
   align-items: center;
-  gap: 84px;
+  gap: 78px;
   padding-block: 92px 108px;
 }
 
@@ -57,34 +52,29 @@
 }
 
 .jp-home .hero h1.hero-title-ja {
-  max-width: 760px;
+  max-width: 780px;
   margin-top: 24px;
   font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
-  font-size: clamp(3.4rem, 6.8vw, 6.4rem);
+  font-size: clamp(3.2rem, 6.4vw, 6rem);
   font-weight: 850;
-  letter-spacing: -0.075em;
-  line-height: 0.98;
+  letter-spacing: -0.07em;
+  line-height: 1;
 }
 
 .jp-home .hero-lead {
   max-width: 720px;
   margin-top: 30px;
-  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  font-size: clamp(1.02rem, 1.5vw, 1.16rem);
   line-height: 1.9;
 }
 
 .jp-home .button {
-  border-radius: 14px;
+  border-radius: 12px;
   box-shadow: none;
 }
 
-.jp-home .button-primary {
-  box-shadow: 4px 4px 0 #b9cabf;
-}
-
 .jp-home .button-primary:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 6px 6px 0 #b9cabf;
+  transform: translateY(-1px);
 }
 
 .jp-home .button-secondary {
@@ -92,35 +82,18 @@
 }
 
 .workbench-card {
-  position: relative;
-  border: 1.5px solid #284d43;
-  border-radius: 18px;
-  background: #fffdf4;
-  padding: 28px;
-  box-shadow: 9px 9px 0 #dce5dc;
-  transform: rotate(0.8deg);
-}
-
-.workbench-card::before {
-  content: '';
-  width: 74px;
-  height: 18px;
-  position: absolute;
-  top: -10px;
-  right: 36px;
-  background: rgba(217, 255, 103, 0.8);
-  transform: rotate(-3deg);
+  border: 1px solid #8ea39a;
+  border-radius: 16px;
+  background: #fffdf7;
+  padding: 30px;
 }
 
 .workbench-label {
-  margin: 0 0 24px;
-  color: var(--orange);
-  font:
-    800 11px/1.2 ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Consolas,
-    monospace;
+  margin: 0 0 22px;
+  color: var(--green-bright);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 800;
   letter-spacing: 0.1em;
 }
 
@@ -128,23 +101,20 @@
   display: grid;
   grid-template-columns: 38px 1fr;
   gap: 14px;
-  border-top: 1px solid #cfd8d2;
+  border-top: 1px solid #d6ded9;
   padding: 20px 0;
 }
 
 .workbench-item > span {
   color: var(--orange);
-  font:
-    800 11px/1.4 ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Consolas,
-    monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 800;
 }
 
 .workbench-item strong {
   display: block;
-  font-size: 1.05rem;
+  font-size: 1.04rem;
 }
 
 .workbench-item p {
@@ -154,13 +124,15 @@
   line-height: 1.65;
 }
 
-.workbench-next {
-  opacity: 0.74;
+.workbench-note {
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 12px;
 }
 
 .jp-home .products-section {
   border-block: 1px solid var(--line);
-  background: rgba(255, 253, 247, 0.52);
+  background: rgba(255, 253, 247, 0.58);
   padding: 88px 0 96px;
 }
 
@@ -170,8 +142,8 @@
 
 .jp-home .section-heading h2,
 .jp-home .contact-card h2 {
-  font-size: clamp(2.4rem, 4.8vw, 4.8rem);
-  letter-spacing: -0.065em;
+  font-size: clamp(2.35rem, 4.6vw, 4.5rem);
+  letter-spacing: -0.06em;
 }
 
 .jp-home .section-heading > p:last-child {
@@ -181,33 +153,35 @@
 }
 
 .jp-home .product-grid {
-  gap: 24px;
+  gap: 22px;
   margin-top: 42px;
 }
 
 .jp-home .product-card {
   min-height: 390px;
-  border: 1.5px solid #45665d;
-  border-radius: 18px;
+  border: 1px solid #9aada5;
+  border-radius: 16px;
   background: #fffdf7;
-  box-shadow: 6px 6px 0 #e0e6df;
   padding: clamp(26px, 4vw, 40px);
+  box-shadow: none;
 }
 
 .jp-home .product-card-featured {
-  border-color: #45665d;
+  border-color: #789388;
   background: #fffdf7;
 }
 
 .jp-home .product-type {
   margin: 24px 0 0;
   color: var(--orange);
-  font-size: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
   font-weight: 800;
+  letter-spacing: 0.06em;
 }
 
 .jp-home .product-card h3 {
-  margin-top: 9px;
+  margin-top: 10px;
   font-size: clamp(2rem, 3.6vw, 3.1rem);
 }
 
@@ -229,7 +203,7 @@
 }
 
 .jp-home .principles-grid article {
-  border-top: 1.5px solid #7f968d;
+  border-top: 1px solid #91a49c;
   padding-top: 18px;
 }
 
@@ -242,16 +216,16 @@
 }
 
 .jp-home .contact-card {
-  border: 1.5px solid #45665d;
-  border-radius: 18px;
+  border: 1px solid #8ea39a;
+  border-radius: 16px;
   background: #fffdf7;
   color: var(--ink);
-  box-shadow: 7px 7px 0 #dce5dc;
   padding: clamp(30px, 5vw, 54px);
+  box-shadow: none;
 }
 
 .jp-home .contact-card .eyebrow {
-  color: var(--orange);
+  color: var(--green-bright);
 }
 
 .jp-home .contact-card p:not(.eyebrow) {
@@ -270,13 +244,12 @@
 @media (max-width: 840px) {
   .jp-home .hero {
     grid-template-columns: 1fr;
-    gap: 54px;
+    gap: 50px;
     padding-block: 68px 82px;
   }
 
   .workbench-card {
     max-width: 620px;
-    transform: none;
   }
 }
 
@@ -290,8 +263,8 @@
   }
 
   .jp-home .hero h1.hero-title-ja {
-    font-size: clamp(3.05rem, 14vw, 4.2rem);
-    letter-spacing: -0.07em;
+    font-size: clamp(2.9rem, 13vw, 4rem);
+    letter-spacing: -0.065em;
   }
 
   .jp-home .hero-title span {
@@ -299,9 +272,8 @@
   }
 
   .workbench-card {
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 24px 20px;
-    box-shadow: 6px 6px 0 #dce5dc;
   }
 
   .jp-home .products-section,
@@ -311,8 +283,7 @@
 
   .jp-home .product-card {
     min-height: 0;
-    border-radius: 14px;
-    box-shadow: 4px 4px 0 #e0e6df;
+    border-radius: 12px;
   }
 
   .jp-home .principles-grid {
@@ -320,7 +291,6 @@
   }
 
   .jp-home .contact-card {
-    border-radius: 14px;
-    box-shadow: 5px 5px 0 #dce5dc;
+    border-radius: 12px;
   }
 }
