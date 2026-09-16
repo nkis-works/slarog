@@ -1,18 +1,15 @@
 .jp-home {
-  --paper: #f7f4ea;
-  --surface: #fffdf7;
-  --line: #cfd8d2;
+  --paper: #f6f4ee;
+  --surface: #fffefa;
+  --line: #d7ddd8;
   --green: #174438;
   --green-deep: #103128;
-  --green-bright: #276c57;
-  --orange: #d85f35;
-  background: #f8f5eb;
+  --green-bright: #2c6b59;
+  background: var(--paper);
 }
 
 .jp-home .site-header {
-  position: relative;
-  background: rgba(248, 245, 235, 0.96);
-  backdrop-filter: none;
+  background: rgba(246, 244, 238, 0.96);
 }
 
 .jp-home .site-nav {
@@ -33,18 +30,20 @@
 }
 
 .jp-home .hero {
-  min-height: auto;
-  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
-  align-items: center;
-  gap: 78px;
-  padding-block: 92px 108px;
+  min-height: 0;
+  display: block;
+  padding-block: 96px 104px;
+}
+
+.jp-home .hero-copy {
+  max-width: 880px;
 }
 
 .jp-home .eyebrow {
   color: var(--green-bright);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 11px;
-  letter-spacing: 0.08em;
+  font-weight: 850;
+  letter-spacing: 0.1em;
 }
 
 .jp-home .eyebrow::before {
@@ -52,24 +51,29 @@
 }
 
 .jp-home .hero h1.hero-title-ja {
-  max-width: 780px;
+  max-width: 860px;
   margin-top: 24px;
   font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
-  font-size: clamp(3.2rem, 6.4vw, 6rem);
-  font-weight: 850;
-  letter-spacing: -0.07em;
-  line-height: 1;
+  font-size: clamp(3.2rem, 6.8vw, 5.8rem);
+  font-weight: 800;
+  letter-spacing: -0.065em;
+  line-height: 1.04;
+  overflow-wrap: anywhere;
 }
 
 .jp-home .hero-lead {
-  max-width: 720px;
+  max-width: 700px;
   margin-top: 30px;
-  font-size: clamp(1.02rem, 1.5vw, 1.16rem);
+  font-size: clamp(1.03rem, 1.5vw, 1.16rem);
   line-height: 1.9;
 }
 
+.jp-home .hero-actions {
+  margin-top: 30px;
+}
+
 .jp-home .button {
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow: none;
 }
 
@@ -81,111 +85,55 @@
   background: transparent;
 }
 
-.workbench-card {
-  border: 1px solid #8ea39a;
-  border-radius: 16px;
-  background: #fffdf7;
-  padding: 30px;
-}
-
-.workbench-label {
-  margin: 0 0 22px;
-  color: var(--green-bright);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-}
-
-.workbench-item {
-  display: grid;
-  grid-template-columns: 38px 1fr;
-  gap: 14px;
-  border-top: 1px solid #d6ded9;
-  padding: 20px 0;
-}
-
-.workbench-item > span {
-  color: var(--orange);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.workbench-item strong {
-  display: block;
-  font-size: 1.04rem;
-}
-
-.workbench-item p {
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.65;
-}
-
-.workbench-note {
-  margin: 22px 0 0;
-  color: var(--muted);
-  font-size: 12px;
-}
-
 .jp-home .products-section {
   border-block: 1px solid var(--line);
-  background: rgba(255, 253, 247, 0.58);
-  padding: 88px 0 96px;
+  background: var(--surface);
+  padding: 82px 0 90px;
 }
 
 .jp-home .section-heading {
-  max-width: 800px;
+  max-width: 760px;
 }
 
 .jp-home .section-heading h2,
-.jp-home .contact-card h2 {
-  font-size: clamp(2.35rem, 4.6vw, 4.5rem);
-  letter-spacing: -0.06em;
+.jp-home .contact-card h2,
+.jp-home .about-grid h2 {
+  margin-top: 14px;
+  font-size: clamp(2.3rem, 4.5vw, 4rem);
+  letter-spacing: -0.055em;
+  line-height: 1.08;
 }
 
 .jp-home .section-heading > p:last-child {
-  max-width: 700px;
+  max-width: 680px;
+  margin-top: 18px;
+  color: var(--muted);
   font-size: 16px;
   line-height: 1.8;
 }
 
 .jp-home .product-grid {
-  gap: 22px;
-  margin-top: 42px;
+  gap: 18px;
+  margin-top: 40px;
 }
 
-.jp-home .product-card {
-  min-height: 390px;
-  border: 1px solid #9aada5;
-  border-radius: 16px;
-  background: #fffdf7;
-  padding: clamp(26px, 4vw, 40px);
+.jp-home .product-card,
+.jp-home .product-card-featured {
+  min-height: 360px;
+  border: 1px solid #a9b7b1;
+  border-radius: 14px;
+  background: var(--surface);
+  padding: clamp(26px, 4vw, 38px);
   box-shadow: none;
 }
 
-.jp-home .product-card-featured {
-  border-color: #789388;
-  background: #fffdf7;
-}
-
-.jp-home .product-type {
-  margin: 24px 0 0;
-  color: var(--orange);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-}
-
 .jp-home .product-card h3 {
-  margin-top: 10px;
-  font-size: clamp(2rem, 3.6vw, 3.1rem);
+  margin-top: 24px;
+  font-size: clamp(2rem, 3.4vw, 2.9rem);
 }
 
 .jp-home .product-summary {
+  max-width: 560px;
   line-height: 1.85;
 }
 
@@ -193,34 +141,52 @@
   color: var(--green);
 }
 
-.jp-home .principles-section {
-  padding-block: 96px 104px;
+.jp-home .about-section {
+  padding-block: 88px 96px;
 }
 
-.jp-home .principles-grid {
-  gap: 26px;
-  margin-top: 42px;
+.jp-home .about-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1.3fr);
+  gap: 72px;
+  align-items: start;
+  margin-top: 18px;
 }
 
-.jp-home .principles-grid article {
-  border-top: 1px solid #91a49c;
-  padding-top: 18px;
+.jp-home .about-grid h2 {
+  margin: 0;
 }
 
-.jp-home .principles-grid h3 {
-  margin-top: 20px;
+.jp-home .about-copy {
+  max-width: 680px;
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 1.9;
+}
+
+.jp-home .about-copy p {
+  margin: 0;
+}
+
+.jp-home .about-copy p + p {
+  margin-top: 18px;
 }
 
 .jp-home .contact-section {
-  padding-bottom: 86px;
+  padding-bottom: 82px;
 }
 
 .jp-home .contact-card {
-  border: 1px solid #8ea39a;
-  border-radius: 16px;
-  background: #fffdf7;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 36px;
+  border: 0;
+  border-top: 1px solid #a9b7b1;
+  border-radius: 0;
+  background: transparent;
   color: var(--ink);
-  padding: clamp(30px, 5vw, 54px);
+  padding: 54px 0 0;
   box-shadow: none;
 }
 
@@ -229,6 +195,7 @@
 }
 
 .jp-home .contact-card p:not(.eyebrow) {
+  max-width: 680px;
   color: var(--muted);
 }
 
@@ -238,59 +205,86 @@
 }
 
 .jp-home .site-footer {
-  background: #efede4;
+  background: #eceae4;
 }
 
 @media (max-width: 840px) {
   .jp-home .hero {
-    grid-template-columns: 1fr;
-    gap: 50px;
-    padding-block: 68px 82px;
+    padding-block: 76px 82px;
   }
 
-  .workbench-card {
-    max-width: 620px;
+  .jp-home .about-grid,
+  .jp-home .contact-card {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .jp-home .about-copy {
+    max-width: 760px;
   }
 }
 
 @media (max-width: 640px) {
-  .jp-home .site-header {
-    position: sticky;
-  }
-
   .jp-home .hero {
-    padding-block: 54px 70px;
+    padding-block: 56px 64px;
   }
 
   .jp-home .hero h1.hero-title-ja {
-    font-size: clamp(2.9rem, 13vw, 4rem);
-    letter-spacing: -0.065em;
+    max-width: 100%;
+    font-size: clamp(2.55rem, 11.5vw, 3.45rem);
+    letter-spacing: -0.05em;
+    line-height: 1.08;
+    overflow-wrap: normal;
+    word-break: normal;
   }
 
-  .jp-home .hero-title span {
-    white-space: normal;
+  .jp-home .hero-lead {
+    margin-top: 24px;
+    font-size: 1rem;
+    line-height: 1.8;
   }
 
-  .workbench-card {
-    border-radius: 12px;
-    padding: 24px 20px;
+  .jp-home .hero-actions {
+    display: grid;
+    margin-top: 26px;
   }
 
   .jp-home .products-section,
-  .jp-home .principles-section {
-    padding-block: 70px;
+  .jp-home .about-section {
+    padding-block: 64px;
   }
 
-  .jp-home .product-card {
+  .jp-home .section-heading h2,
+  .jp-home .contact-card h2,
+  .jp-home .about-grid h2 {
+    font-size: clamp(2.15rem, 9.5vw, 2.8rem);
+  }
+
+  .jp-home .product-grid {
+    grid-template-columns: 1fr;
+    margin-top: 32px;
+  }
+
+  .jp-home .product-card,
+  .jp-home .product-card-featured {
     min-height: 0;
     border-radius: 12px;
+    padding: 26px 24px;
   }
 
-  .jp-home .principles-grid {
-    grid-template-columns: 1fr;
+  .jp-home .product-card h3 {
+    font-size: 2rem;
+  }
+
+  .jp-home .about-grid {
+    gap: 22px;
+  }
+
+  .jp-home .contact-section {
+    padding-bottom: 64px;
   }
 
   .jp-home .contact-card {
-    border-radius: 12px;
+    padding-top: 40px;
   }
 }
