@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'self'">
+  <title>複数日のスランプグラフを連結して見る方法｜スラログ</title>
+  <meta name="description" content="同じ台のスランプグラフを日付順につなぎ、3日・7日・最大31日の推移として振り返る方法と、連結表示の解釈上の注意点を解説します。">
+  <link rel="canonical" href="https://nkisworks.com/products/slarog/guides/connect-multiple-days/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="NKIS Works">
+  <meta property="og:title" content="複数日のスランプグラフを連結して見る方法｜スラログ">
+  <meta property="og:description" content="同一台の記録を日付順につなぎ、複数日の推移として確認する方法。">
+  <meta property="og:url" content="https://nkisworks.com/products/slarog/guides/connect-multiple-days/">
+  <meta property="og:image" content="https://nkisworks.com/assets/og-image-v3.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/slarog-guides.css">
+</head>
+<body class="guide-page">
+  <header class="guide-header">
+    <div class="guide-shell guide-nav">
+      <a class="guide-brand" href="/products/slarog/">NKIS Works / スラログ</a>
+      <nav class="guide-nav-links" aria-label="ガイドナビゲーション">
+        <a href="/products/slarog/guides/">ガイド一覧</a>
+        <a href="/products/slarog/">製品概要</a>
+        <a href="/support/">サポート</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="guide-shell guide-hero">
+      <p class="guide-kicker">SLAROG GUIDE / CONNECT</p>
+      <h1>複数日のスランプグラフを連結して、前後の流れを振り返る。</h1>
+      <p class="guide-lead">単日のグラフだけでは、その日の動きが前後の期間のどこに位置するか分かりにくいことがあります。スラログでは、保存した同じ台の記録を日付順につなぎ、複数日の推移として確認できます。</p>
+    </section>
+
+    <article class="guide-article">
+      <div class="guide-shell">
+        <section>
+          <h2>「連結」は、保存した日ごとの記録を時系列につなぐ機能</h2>
+          <p>連結の対象になるのは、同じ店舗・機種・台番号として保存された記録です。日付順に並べ、各日のグラフを続けて表示することで、単日では見えにくい前後関係を確認しやすくします。</p>
+          <p>例えば、ある日の大きな上昇が前日までの下落の中でどの位置にあるか、上昇後に翌日以降も高い位置を維持したか、すぐ反落したか、といった見方ができます。</p>
+        </section>
+
+        <section>
+          <h2>3日・7日・最大31日で見る意味は少し違う</h2>
+          <h3>3日程度</h3>
+          <p>前日・当日・翌日のように、特定日の前後関係を確認するのに向いています。単日の変化を周辺の日と比較したいときに扱いやすい長さです。</p>
+          <h3>7日程度</h3>
+          <p>1週間の中で、上昇・下落・停滞がどのように続いたかを見るのに向いています。曜日や営業日の区切りと合わせて見返す場合にも扱いやすい期間です。</p>
+          <h3>8日〜31日</h3>
+          <p>より長い期間を残す場合は、月内の位置関係や複数週の変化を確認できます。スラログでは最大31日まで連結でき、長い記録は7日ずつ切り替えて確認できます。</p>
+          <figure class="guide-figure">
+            <img src="/assets/screenshots/slarog-seven-day-view.jpg" width="370" height="804" alt="スラログで7日分の連結グラフを確認している画面" loading="lazy" decoding="async">
+            <figcaption>7日分の連結記録を確認する画面。</figcaption>
+          </figure>
+        </section>
+
+        <section>
+          <h2>連結前に、保存条件をそろえる</h2>
+          <p>別の店舗や別台の記録が混ざると、連結しても意味のある比較になりません。保存時点で日付・店舗・機種・台番号を正しく登録しておくことが重要です。</p>
+          <ol>
+            <li>同じ店舗・機種・台番号の記録を保存する</li>
+            <li>日付が正しく連続しているか確認する</li>
+            <li>連結したい期間を選ぶ</li>
+            <li>表示幅を切り替えながら前後の推移を確認する</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>連結グラフは「内部状態が日をまたいだ」証拠ではない</h2>
+          <p>日ごとのグラフをつなぐと、見た目として一本の長いグラフになります。ただし、それは保存記録を時系列に並べた表示です。台の内部状態や抽選状態が日をまたいで継続したことを示すものではありません。</p>
+          <aside class="guide-note">
+            <strong>表示の意味を分ける</strong>
+            連結は複数日の差枚推移を比較しやすくするための表示です。設定、内部状態、将来結果の継続性を示すものではありません。
+          </aside>
+        </section>
+
+        <section>
+          <h2>上がった日だけをつながない</h2>
+          <p>比較用の記録として使うなら、目立つ上昇日だけでなく、その前後や何も起きなかった日も同じ基準で保存した方が偏りにくくなります。後から「この形の次にどうなったか」を確認するときも、成功例だけではなく失速例や反発しなかった例が残っている方が検証しやすくなります。</p>
+        </section>
+
+        <section class="guide-cta">
+          <h2>単日を、複数日の記録へ。</h2>
+          <p>スラログは保存したグラフを同じ台ごとに連結し、最大31日まで振り返れます。</p>
+          <div class="store-actions">
+            <a class="guide-button primary" href="https://apps.apple.com/jp/app/スラログ/id6792632919" target="_blank" rel="noopener noreferrer">App Storeで見る</a>
+            <a class="guide-button primary" href="https://play.google.com/store/apps/details?id=jp.yuya.slumparchive" target="_blank" rel="noopener noreferrer">Google Playで見る</a>
+            <a class="guide-button" href="/products/slarog/guides/align-zero-and-scale/">次：ゼロ線と目盛りを合わせる →</a>
+          </div>
+        </section>
+      </div>
+    </article>
+  </main>
+
+  <footer class="guide-footer">
+    <div class="guide-shell guide-footer-inner">
+      <p>© 2026 NKIS Works</p>
+      <nav aria-label="フッターナビゲーション">
+        <a href="/products/slarog/guides/">ガイド一覧</a>
+        <a href="/products/slarog/">スラログ</a>
+        <a href="/privacy/">プライバシー</a>
+        <a href="/terms/">利用規約</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
