@@ -9,6 +9,7 @@ const dist = resolve('dist');
 const mode = process.argv.includes('--production') ? 'production' : 'preview';
 const pages = ['support', 'privacy', 'terms', 'legal'];
 const productRoutes = playlistToolkitRoutes();
+const indexNowKeyFile = 'indexnow-91cf5ab81b6506ff4c8c279ce4405142.txt';
 const sitemapLastModified = '2026-09-03';
 const productSitemapLastModified = '2026-09-08';
 const guideSitemapLastModified = '2026-09-10';
@@ -98,6 +99,7 @@ await cp(
 );
 
 await cp(resolve(root, 'assets'), resolve(dist, 'assets'), { recursive: true });
+await cp(resolve(root, indexNowKeyFile), resolve(dist, indexNowKeyFile));
 await writeFile(resolve(dist, '.nojekyll'), '');
 await writeFile(resolve(dist, '_headers'), mode === 'preview' ? previewHeaders : baseHeaders);
 await writeFile(resolve(dist, '_redirects'), redirects);
