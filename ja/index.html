@@ -4,22 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'self'">
-  <title>NKIS Works｜用途に集中したモバイルアプリ</title>
-  <meta name="description" content="NKIS Worksは、Playlist Toolkitとスラログを開発・提供する日本の独立系ソフトウェアスタジオです。分かりやすい操作、プライバシーに配慮した設計、明確な利用条件を大切にしています。">
-  <meta name="theme-color" content="#12231f">
+  <title>NKIS Works｜これ、ちょっと欲しかったを道具に。</title>
+  <meta name="description" content="NKIS Worksは、日々のちょっとした不便を小さなソフトウェアにする独立開発所です。Playlist Toolkitとスラログを開発・提供しています。">
+  <meta name="theme-color" content="#f6f3e9">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="NKIS Works">
-  <meta property="og:title" content="NKIS Works｜用途に集中したモバイルアプリ">
-  <meta property="og:description" content="実際の不便を、明確で使いやすいモバイルツールへ。">
+  <meta property="og:title" content="NKIS Works｜これ、ちょっと欲しかったを道具に。">
+  <meta property="og:description" content="大げさなことより、毎日の『微妙に面倒』をひとつずつ。">
   <meta property="og:url" content="https://nkisworks.com/">
   <meta property="og:locale" content="ja_JP">
   <meta property="og:image" content="https://nkisworks.com/assets/nkisworks-og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="NKIS Works｜用途に集中したモバイルアプリ">
+  <meta property="og:image:alt" content="NKIS Works｜これ、ちょっと欲しかったを道具に。">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="NKIS Works｜用途に集中したモバイルアプリ">
-  <meta name="twitter:description" content="実際の不便を、明確で使いやすいモバイルツールへ。">
+  <meta name="twitter:title" content="NKIS Works｜これ、ちょっと欲しかったを道具に。">
+  <meta name="twitter:description" content="大げさなことより、毎日の『微妙に面倒』をひとつずつ。">
   <meta name="twitter:image" content="https://nkisworks.com/assets/nkisworks-og.png">
   <link rel="canonical" href="https://nkisworks.com/">
   <link rel="alternate" hreflang="ja" href="https://nkisworks.com/">
@@ -27,6 +27,7 @@
   <link rel="alternate" hreflang="x-default" href="https://nkisworks.com/en/">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/nkisworks.css">
+  <link rel="stylesheet" href="/assets/nkisworks-workshop.css">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -50,7 +51,7 @@
     }
   </script>
 </head>
-<body>
+<body class="jp-home">
   <header class="site-header">
     <nav class="site-nav" aria-label="メインナビゲーション">
       <a class="brand" href="/ja/" aria-label="NKIS Worksホーム">
@@ -58,9 +59,9 @@
         <span>NKIS WORKS</span>
       </a>
       <div class="nav-links">
-        <a href="#products">製品</a>
-        <a href="#principles">開発方針</a>
-        <a href="#contact">お問い合わせ</a>
+        <a href="#products">つくったもの</a>
+        <a href="#about">この場所について</a>
+        <a href="#contact">連絡</a>
         <a class="language-link" href="/en/" hreflang="en" lang="en">English</a>
       </div>
     </nav>
@@ -69,58 +70,70 @@
   <main>
     <section class="hero shell">
       <div class="hero-copy">
-        <p class="eyebrow">INDEPENDENT SOFTWARE STUDIO · JAPAN</p>
-        <h1 class="hero-title hero-title-ja"><span>必要な機能を、</span><span>丁寧に、</span><span>分かりやすく。</span></h1>
-        <p class="hero-lead">NKIS Worksは、日々の不便を減らすためのモバイルツールを開発しています。目的が伝わる操作、落ち着いた画面、信頼できる結果を大切にしています。</p>
+        <p class="eyebrow">NKIS WORKS / SMALL SOFTWARE WORKSHOP</p>
+        <h1 class="hero-title hero-title-ja"><span>これ、ちょっと</span><span>欲しかった。</span></h1>
+        <p class="hero-lead">大きなことより、毎日の「微妙に面倒」をひとつずつ。ジャンルに縛られず、使う理由がはっきりした小さなアプリを作っています。</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#products">製品を見る</a>
-          <a class="button button-secondary" href="mailto:slarog.app@gmail.com">NKIS Worksへ問い合わせ</a>
+          <a class="button button-primary" href="#products">つくったものを見る</a>
+          <a class="button button-secondary" href="mailto:slarog.app@gmail.com">連絡する</a>
         </div>
       </div>
-      <div class="studio-panel" aria-label="NKIS Worksの製品基準">
-        <p class="panel-label">PRODUCT STANDARD</p>
-        <div class="panel-row"><span>01</span><strong>複雑さより目的を優先</strong></div>
-        <div class="panel-row"><span>02</span><strong>操作と条件を明確に</strong></div>
-        <div class="panel-row"><span>03</span><strong>プライバシーに配慮</strong></div>
-        <p class="panel-note">実際の用途に集中した、小さく確かなツール。</p>
-      </div>
+
+      <aside class="workbench-card" aria-label="いま作っているもの">
+        <p class="workbench-label">ON THE WORKBENCH</p>
+        <div class="workbench-item">
+          <span>01</span>
+          <div><strong>Playlist Toolkit</strong><p>長いプレイリストを、もう少し扱いやすく。</p></div>
+        </div>
+        <div class="workbench-item">
+          <span>02</span>
+          <div><strong>スラログ</strong><p>グラフを、つなぐ。残す。</p></div>
+        </div>
+        <div class="workbench-item workbench-next">
+          <span>03</span>
+          <div><strong>NEXT</strong><p>困りごとを見つけたら、また作る。</p></div>
+        </div>
+      </aside>
     </section>
 
     <section class="products-section" id="products">
       <div class="shell">
         <header class="section-heading">
-          <p class="eyebrow">PRODUCTS</p>
-          <h2>用途の異なる、二つの製品。</h2>
-          <p>製品ごとに機能、対象地域、サポート情報、利用条件を明確に案内しています。</p>
+          <p class="eyebrow">MADE HERE</p>
+          <h2>つくったもの。</h2>
+          <p>ジャンルはバラバラ。困ったところから作っています。</p>
         </header>
         <div class="product-grid">
           <article class="product-card product-card-featured">
             <div class="product-meta"><span>ANDROID</span><span>GLOBAL</span></div>
+            <p class="product-type">音楽まわりの道具</p>
             <h3>Playlist Toolkit</h3>
-            <p class="product-summary">Amazon Musicのプレイリスト並び替え、重複候補やプレイリスト全体の確認、Smart Add、互換性確認を支援する独立系Androidユーティリティです。</p>
+            <p class="product-summary">Amazon Musicの長いプレイリストを整理するためのAndroidツール。並び替えの記憶、重複候補の確認、プレイリスト全体の監査など、「曲が増えるほど面倒になる作業」を補助します。</p>
             <p class="product-disclaimer">Amazonとの提携・後援・承認関係はありません。</p>
-            <a class="product-link" href="/products/playlist-toolkit/ja/">Playlist Toolkitを見る <span aria-hidden="true">→</span></a>
+            <a class="product-link" href="/products/playlist-toolkit/ja/">詳しく見る <span aria-hidden="true">→</span></a>
           </article>
           <article class="product-card">
             <div class="product-meta"><span>IOS + ANDROID</span><span>JAPAN</span></div>
+            <p class="product-type">パチスロ記録の道具</p>
             <h3>スラログ <small lang="en">Slarog</small></h3>
-            <p class="product-summary">スランプグラフを画像から作成し、日付・店舗・機種・台番号ごとに保存。複数日の記録を連結して振り返るための記録アプリです。</p>
+            <p class="product-summary">ホールのスランプグラフを画像から清書して保存。日付をまたいで連結し、あとから同じ台の流れを見返せるようにする記録アプリです。</p>
             <p class="product-disclaimer">日本市場向け、日本語対応製品です。</p>
-            <a class="product-link" href="/products/slarog/">スラログ公式サイトを見る <span aria-hidden="true">→</span></a>
+            <a class="product-link" href="/products/slarog/">詳しく見る <span aria-hidden="true">→</span></a>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="principles-section shell" id="principles">
+    <section class="principles-section shell" id="about">
       <header class="section-heading">
-        <p class="eyebrow">HOW WE BUILD</p>
-        <h2>理解しやすさを、設計の中心に。</h2>
+        <p class="eyebrow">ABOUT THE WORKBENCH</p>
+        <h2>小さく作る。ちゃんと動かす。</h2>
+        <p>立派に見せるための機能は足さない。必要なところを作って、使えるところまで持っていく。NKIS Worksはそんな小さな独立開発所です。</p>
       </header>
       <div class="principles-grid">
-        <article><span>01</span><h3>範囲を明確に</h3><p>何ができるか、何ができないか、互換性の境界を明確に説明します。</p></article>
-        <article><span>02</span><h3>ユーザーが主導</h3><p>重要な処理はユーザーが開始し、状態を見える形で示し、必要に応じて安全に停止します。</p></article>
-        <article><span>03</span><h3>条件を透明に</h3><p>価格、自動更新、サポート、プライバシー情報を利用開始前に確認できます。</p></article>
+        <article><span>01</span><h3>困りごとから始める</h3><p>先に流行やジャンルを決めず、「ここ、面倒だな」が残っている場所から作ります。</p></article>
+        <article><span>02</span><h3>なるべくシンプルに</h3><p>アカウントやサーバーが要らないなら増やさない。余計な手順もできるだけ減らします。</p></article>
+        <article><span>03</span><h3>出したあとも直す</h3><p>使われ方や外部サービスが変われば、必要なところを見直して更新します。</p></article>
       </div>
     </section>
 
@@ -128,8 +141,8 @@
       <div class="shell contact-card">
         <div>
           <p class="eyebrow">CONTACT</p>
-          <h2>製品についてお困りですか？</h2>
-          <p>各製品のサポートページ、またはNKIS Works共通サポート窓口をご利用ください。</p>
+          <h2>何かあれば、メールください。</h2>
+          <p>不具合、使い方、要望、ちょっとした質問まで。各製品のサポートページからでも、共通窓口からでも大丈夫です。</p>
         </div>
         <a class="button button-light" href="mailto:slarog.app@gmail.com">slarog.app@gmail.com</a>
       </div>
@@ -138,16 +151,16 @@
 
   <footer class="site-footer">
     <div class="shell footer-inner">
-      <p><strong>© 2026 NKIS Works</strong><span>日本の独立系ソフトウェアスタジオ。</span></p>
+      <p><strong>© 2026 NKIS Works</strong><span>小さな道具を、コツコツ。</span></p>
       <nav aria-label="フッターナビゲーション">
-        <a href="/products/slarog/">スラログ公式サイト</a>
+        <a href="/products/slarog/">スラログ</a>
+        <a href="/products/playlist-toolkit/ja/">Playlist Toolkit</a>
         <a href="/legal/">運営者情報</a>
-        <a href="/products/playlist-toolkit/ja/privacy/">Playlist Toolkit プライバシー</a>
-        <a href="/products/playlist-toolkit/ja/support/">Playlist Toolkit サポート</a>
-        <a href="/products/playlist-toolkit/ja/terms/">Playlist Toolkit 利用規約</a>
-        
-          <a data-nkis-social="x" href="https://x.com/NKIS_Works" target="_blank" rel="noopener noreferrer">NKIS Works 公式X</a>
-        </nav>
+        <a href="/products/playlist-toolkit/ja/privacy/">プライバシー</a>
+        <a href="/products/playlist-toolkit/ja/support/">サポート</a>
+        <a href="/products/playlist-toolkit/ja/terms/">利用規約</a>
+        <a data-nkis-social="x" href="https://x.com/NKIS_Works" target="_blank" rel="noopener noreferrer">X</a>
+      </nav>
     </div>
   </footer>
 </body>
