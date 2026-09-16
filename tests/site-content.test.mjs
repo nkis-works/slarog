@@ -151,7 +151,12 @@ test('NKIS Works studio pages expose complete social and organization metadata',
   }
   assert.match(
     studioPages.ja,
-    /<span>必要な機能を、<\/span><span>丁寧に、<\/span><span>分かりやすく。<\/span>/,
+    /<span>実際の不便を、<\/span><span>使えるソフトウェアに。<\/span>/,
+  );
+  assert.match(studioPages.ja, /必要なところに絞って作る。/);
+  assert.doesNotMatch(
+    studioPages.ja,
+    /これ、ちょっと欲しかった|ジャンルはバラバラ|困りごとを見つけたら、また作る|小さな道具を、コツコツ/,
   );
 });
 
