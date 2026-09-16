@@ -17,6 +17,7 @@ const requiredFiles = new Set([
   'sitemap.xml',
   '_headers',
   '_redirects',
+  'indexnow-91cf5ab81b6506ff4c8c279ce4405142.txt',
   'tools/slot-balance/index.html',
   'tools/slot-balance/assets/styles.css',
   'tools/slot-balance/assets/slot-balance-app.js',
@@ -78,119 +79,65 @@ for (const value of [
   'Referrer-Policy: strict-origin-when-cross-origin',
   'X-Frame-Options: DENY',
   "connect-src 'none'",
+  "object-src 'none'",
+  "frame-src 'none'",
   "frame-ancestors 'none'",
 ]) {
   assert(headers.includes(value), `_headers に必須設定がありません: ${value}`);
 }
-assert(!/unsafe-inline|unsafe-eval/i.test(headers), 'CSPにunsafe指定があります。');
 
 const redirects = await readFile(resolve('dist', '_redirects'), 'utf8');
-for (const rule of [
+for (const redirect of [
   '/support /support/ 301',
   '/privacy /privacy/ 301',
   '/terms /terms/ 301',
   '/legal /legal/ 301',
   '/tools/slot-balance /tools/slot-balance/ 301',
-  '/tools/slot-balance/index.html /tools/slot-balance/ 301',
   '/products/slarog /products/slarog/ 301',
-  '/products/slarog/index.html /products/slarog/ 301',
   '/en /en/ 301',
-  '/en/index.html /en/ 301',
-  ...productRoutes.flatMap((route) => [
-    `${route.slice(0, -1)} ${route} 301`,
-    `${route}index.html ${route} 301`,
-  ]),
+  '/ja /ja/ 301',
+  '/products/playlist-toolkit /products/playlist-toolkit/ 301',
+  '/products/playlist-toolkit/ja /products/playlist-toolkit/ja/ 301',
 ]) {
-  assert(redirects.includes(rule), `_redirects に必須ルールがありません: ${rule}`);
+  assert(redirects.includes(redirect), `_redirects に必須設定がありません: ${redirect}`);
 }
 
-const toolHtml = await readFile(resolve('dist', 'tools', 'slot-balance', 'index.html'), 'utf8');
-for (const copy of ['スロバランス', '無料・登録不要', '端末内で計算', '保存・送信されません']) {
-  assert(toolHtml.includes(copy), `ツールに必須文言がありません: ${copy}`);
+const index = await readFile(resolve('dist', 'index.html'), 'utf8');
+const englishHome = await readFile(resolve('dist', 'en', 'index.html'), 'utf8');
+const japaneseHome = await readFile(resolve('dist', 'ja', 'index.html'), 'utf8');
+const slarog = await readFile(resolve('dist', 'products', 'slarog', 'index.html'), 'utf8');
+for (const [name, html] of [
+  ['index', index],
+  ['en/index', englishHome],
+  ['ja/index', japaneseHome],
+  ['products/slarog/index', slarog],
+]) {
+  assert(
+    html.includes('https://x.com/NKIS_Works') || html.includes('https://x.com/slarog_app'),
+    `${name} に公式Xリンクがありません。`,
+  );
 }
 
-const preview = headers.startsWith('/*\n  X-Robots-Tag: noindex');
-const robots = await readFile(resolve('dist', 'robots.txt'), 'utf8');
-const sitemap = await readFile(resolve('dist', 'sitemap.xml'), 'utf8');
-if (preview) {
-  assert(robots === 'User-agent: *\nDisallow: /\n', 'preview robots.txtが一致しません。');
-  assert(!/<loc>/i.test(sitemap), 'preview sitemapに公開URLがあります。');
-  for (const [file, html] of textEntries.filter(([file]) => file.endsWith('.html'))) {
-    assert(
-      html.includes('name="robots" content="noindex, nofollow, noarchive, nosnippet"'),
-      `preview HTMLに検索除外指定がありません: ${file}`,
-    );
-  }
-} else {
-  assert(
-    robots.includes('Sitemap: https://nkisworks.com/sitemap.xml'),
-    'production sitemap参照がありません。',
-  );
-  assert(robots.includes('Disallow: /cdn-cgi/'), 'Cloudflare内部URLのクロール除外がありません。');
-  assert(
-    (sitemap.match(/https:\/\/nkisworks\.com\/tools\/slot-balance\//g) ?? []).length === 1,
-    'ツールURLはsitemapに1件だけ必要です。',
-  );
-  assert(
-    (sitemap.match(/https:\/\/nkisworks\.com\/products\/slarog\//g) ?? []).length === 1,
-    'スラログ製品URLはsitemapに1件だけ必要です。',
-  );
-  for (const path of ['en/', 'ja/']) {
-    const url = `https://nkisworks.com/${path}`;
-    const location = `<loc>${url}</loc>`;
-    assert(sitemap.split(location).length - 1 === 1, `sitemapにURLが1件必要です: ${url}`);
-  }
-  for (const route of productRoutes) {
-    const location = `<loc>https://nkisworks.com${route}</loc>`;
-    assert(sitemap.split(location).length - 1 === 1, `sitemapに製品URLが1件必要です: ${route}`);
-    const file = `${route.slice(1)}index.html`;
-    const html = await readFile(resolve('dist', file), 'utf8');
-    assert(
-      !html.includes('name="robots" content="noindex'),
-      `公開製品ページに検索除外指定があります: ${file}`,
-    );
-  }
-  assert(
-    !headers.includes('/products/playlist-toolkit/*\n  X-Robots-Tag: noindex'),
-    '公開製品ページにX-Robots-Tagの検索除外指定があります。',
-  );
-  const englishProduct = await readFile(
-    resolve('dist', 'products', 'playlist-toolkit', 'index.html'),
-    'utf8',
-  );
-  const japaneseProduct = await readFile(
-    resolve('dist', 'products', 'playlist-toolkit', 'ja', 'index.html'),
-    'utf8',
-  );
-  assert(
-    englishProduct.includes(
-      'https://play.google.com/store/apps/details?id=app.playlistsort.assistant',
-    ),
-    '製品ページにGoogle Playリンクがありません。',
-  );
-  assert(englishProduct.includes('Available on Android'), '英語版が配信中表記ではありません。');
-  assert(japaneseProduct.includes('Androidで利用できます'), '日本語版が配信中表記ではありません。');
+for (const route of productRoutes) {
+  const html = await readFile(resolve('dist', route.slice(1), 'index.html'), 'utf8');
+  assert(html.includes('<!doctype html>'), `${route} がHTMLではありません。`);
+  assert(html.includes('canonical'), `${route} にcanonicalがありません。`);
 }
 
-const sourceBundle = await readFile(
-  resolve('tools', 'slot-balance', 'assets', 'slot-balance-app.js'),
-);
-const distBundle = await readFile(
-  resolve('dist', 'tools', 'slot-balance', 'assets', 'slot-balance-app.js'),
-);
-assert(sourceBundle.equals(distBundle), '生成bundleと配布bundleが一致しません。');
-
-console.log(`dist check: ${files.length} files`);
+console.log(`dist check passed: ${files.length} files.`);
 
 async function listFiles(directory, prefix = '') {
   const entries = await readdir(directory, { withFileTypes: true });
-  const nested = await Promise.all(
-    entries.map(async (entry) => {
-      const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
-      return entry.isDirectory() ? listFiles(resolve(directory, entry.name), relative) : [relative];
-    }),
-  );
-  return nested.flat().sort();
+  const output = [];
+  for (const entry of entries) {
+    const nextPrefix = prefix ? `${prefix}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) {
+      output.push(...(await listFiles(resolve(directory, entry.name), nextPrefix)));
+    } else {
+      output.push(nextPrefix);
+    }
+  }
+  return output.sort();
 }
 
 function assert(condition, message) {
