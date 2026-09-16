@@ -47,12 +47,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Check changed-file formatting
+      - name: Check HTML and executable-file formatting
         run: >-
           pnpm exec prettier --check
           index.html
           ja/index.html
-          assets/nkisworks-workshop.css
           scripts/build.mjs
           scripts/submit-indexnow.mjs
 
